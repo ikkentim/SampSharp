@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,28 +15,27 @@
 
 using System.Threading.Tasks;
 
-namespace SampSharp.Entities
+namespace SampSharp.Entities;
+
+/// <summary>
+/// Provides helper methods for event data.
+/// </summary>
+public static class EventHelper
 {
     /// <summary>
-    /// Provides helper methods for event data.
+    /// Gets a value indicating whether the specified <paramref name="eventResponse" /> indicates the event ran successfully. A
+    /// neutral <c>null</c> response is not considered a success response.
     /// </summary>
-    public static class EventHelper
+    /// <param name="eventResponse">The event response to check.</param>
+    /// <returns>
+    /// <c>true</c> if the specified response indicates success; otherwise, <c>false</c>.
+    /// </returns>
+    public static bool IsSuccessResponse(object eventResponse)
     {
-        /// <summary>
-        /// Gets a value indicating whether the specified <paramref name="eventResponse" /> indicates the event ran successfully. A
-        /// neutral <c>null</c> response is not considered a success response.
-        /// </summary>
-        /// <param name="eventResponse">The event response to check.</param>
-        /// <returns>
-        /// <c>true</c> if the specified response indicates success; otherwise, <c>false</c>.
-        /// </returns>
-        public static bool IsSuccessResponse(object eventResponse)
-        {
-            return !(eventResponse == null ||
-                     eventResponse is false ||
-                     eventResponse is 0 ||
-                     eventResponse is Task<bool> tB && tB.IsCompleted && !tB.Result ||
-                     eventResponse is Task<int> tI && tI.IsCompleted && tI.Result == 0);
-        }
+        return !(eventResponse == null ||
+                 eventResponse is false ||
+                 eventResponse is 0 ||
+                 eventResponse is Task<bool> tB && tB.IsCompleted && !tB.Result ||
+                 eventResponse is Task<int> tI && tI.IsCompleted && tI.Result == 0);
     }
 }

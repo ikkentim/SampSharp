@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2017 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,37 +12,37 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 using System;
 using SampSharp.GameMode.Display;
 using SampSharp.GameMode.World;
 
-namespace SampSharp.GameMode.Events
+namespace SampSharp.GameMode.Events;
+
+/// <summary>
+///     Provides data for the <see cref="BaseMode.PlayerClickTextDraw" />, <see cref="Display.TextDraw.Click" /> or
+///     <see cref="BasePlayer.ClickTextDraw" /> event.
+/// </summary>
+public class ClickTextDrawEventArgs : EventArgs
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerClickTextDraw" />, <see cref="Display.TextDraw.Click" /> or
-    ///     <see cref="BasePlayer.ClickTextDraw" /> event.
+    ///     Initializes a new instance of the ClickTextDrawEventArgs class.
     /// </summary>
-    public class ClickTextDrawEventArgs : EventArgs
+    /// <param name="player">The player.</param>
+    /// <param name="textDraw">The text draw.</param>
+    public ClickTextDrawEventArgs(BasePlayer player, TextDraw textDraw)
     {
-        /// <summary>
-        ///     Initializes a new instance of the ClickTextDrawEventArgs class.
-        /// </summary>
-        /// <param name="player">The player.</param>
-        /// <param name="textDraw">The text draw.</param>
-        public ClickTextDrawEventArgs(BasePlayer player, TextDraw textDraw)
-        {
-            Player = player;
-            TextDraw = textDraw;
-        }
-
-        /// <summary>
-        ///     Gets the player.
-        /// </summary>
-        public BasePlayer Player { get; }
-
-        /// <summary>
-        ///     Gets the text draw.
-        /// </summary>
-        public TextDraw TextDraw { get; }
+        Player = player;
+        TextDraw = textDraw;
     }
+
+    /// <summary>
+    ///     Gets the player.
+    /// </summary>
+    public BasePlayer Player { get; }
+
+    /// <summary>
+    ///     Gets the text draw.
+    /// </summary>
+    public TextDraw TextDraw { get; }
 }

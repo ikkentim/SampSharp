@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,30 +13,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace SampSharp.Entities.SAMP
+namespace SampSharp.Entities.SAMP;
+
+/// <summary>
+/// Represents a system for handling dialog functionality
+/// </summary>
+public class DialogSystem : ISystem
 {
-    /// <summary>
-    /// Represents a system for handling dialog functionality
-    /// </summary>
-    public class DialogSystem : ISystem
+    [Event]
+    // ReSharper disable once UnusedMember.Local
+    private void OnPlayerDisconnect(VisibleDialog player, DisconnectReason _)
     {
-        [Event]
-        // ReSharper disable once UnusedMember.Local
-        private void OnPlayerDisconnect(VisibleDialog player, DisconnectReason _)
-        {
-            player.Handler(new DialogResult(DialogResponse.Disconnected, 0, null));
-        }
+        player.Handler(new DialogResult(DialogResponse.Disconnected, 0, null));
+    }
 
-        [Event]
-        // ReSharper disable once UnusedMember.Local
-        private void OnDialogResponse(VisibleDialog player, int dialogId, int response, int listItem, string inputText)
-        {
-            if (dialogId != DialogService.DialogId)
-                return; // Prevent dialog hacks
+    [Event]
+    // ReSharper disable once UnusedMember.Local
+    private void OnDialogResponse(VisibleDialog player, int dialogId, int response, int listItem, string inputText)
+    {
+        if (dialogId != DialogService.DialogId)
+            return; // Prevent dialog hacks
 
-            player.ResponseReceived = true;
-            player.Handler(new DialogResult(
-                response == 1 ? DialogResponse.LeftButton : DialogResponse.RightButtonOrCancel, listItem, inputText));
-        }
+        player.ResponseReceived = true;
+        player.Handler(new DialogResult(
+            response == 1 ? DialogResponse.LeftButton : DialogResponse.RightButtonOrCancel, listItem, inputText));
     }
 }

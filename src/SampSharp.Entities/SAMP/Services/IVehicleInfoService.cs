@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,27 +15,26 @@
 
 using System;
 
-namespace SampSharp.Entities.SAMP
+namespace SampSharp.Entities.SAMP;
+
+/// <summary>
+/// Provides functionality for getting information about vehicle models and components.
+/// </summary>
+public interface IVehicleInfoService
 {
     /// <summary>
-    /// Provides functionality for getting information about vehicle models and components.
+    /// Gets the car mod type of the specified <paramref name="componentId" />.
     /// </summary>
-    public interface IVehicleInfoService
-    {
-        /// <summary>
-        /// Gets the car mod type of the specified <paramref name="componentId" />.
-        /// </summary>
-        /// <param name="componentId">The identifier of the component.</param>
-        /// <returns>The car mod type of the component.</returns>
-        /// <exception cref="ArgumentOutOfRangeException">Thrown if the specified <paramref name="componentId" /> is invalid.</exception>
-        CarModType GetComponentType(int componentId);
+    /// <param name="componentId">The identifier of the component.</param>
+    /// <returns>The car mod type of the component.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">Thrown if the specified <paramref name="componentId" /> is invalid.</exception>
+    CarModType GetComponentType(int componentId);
 
-        /// <summary>
-        /// Gets information of type specified by <paramref name="infoType" /> for the specified <paramref name="vehicleModel" />.
-        /// </summary>
-        /// <param name="vehicleModel">The model of the vehicle.</param>
-        /// <param name="infoType">The type of information to get.</param>
-        /// <returns>The information about the vehicle model.</returns>
-        Vector3 GetModelInfo(VehicleModelType vehicleModel, VehicleModelInfoType infoType);
-    }
+    /// <summary>
+    /// Gets information of type specified by <paramref name="infoType" /> for the specified <paramref name="vehicleModel" />.
+    /// </summary>
+    /// <param name="vehicleModel">The model of the vehicle.</param>
+    /// <param name="infoType">The type of information to get.</param>
+    /// <returns>The information about the vehicle model.</returns>
+    Vector3 GetModelInfo(VehicleModelType vehicleModel, VehicleModelInfoType infoType);
 }

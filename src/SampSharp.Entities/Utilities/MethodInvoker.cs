@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,15 +15,14 @@
 
 using System;
 
-namespace SampSharp.Entities.Utilities
-{
-    /// <summary>
-    /// Invoker for an instance method with dependency injection.
-    /// </summary>
-    /// <param name="target">The target instance to invoke the method on.</param>
-    /// <param name="args">The arguments of the method excluding the injected dependencies.</param>
-    /// <param name="services">The service provider from which dependencies are loaded.</param>
-    /// <param name="entityManager">The entity manager from which components are loaded.</param>
-    /// <returns>The result of the method.</returns>
-    public delegate object MethodInvoker(object target, object[] args, IServiceProvider services, IEntityManager entityManager);
-}
+namespace SampSharp.Entities.Utilities;
+
+/// <summary>
+/// Invoker for an instance method with dependency injection.
+/// </summary>
+/// <param name="target">The target instance to invoke the method on.</param>
+/// <param name="args">The arguments of the method excluding the injected dependencies.</param>
+/// <param name="services">The service provider from which dependencies are loaded.</param>
+/// <param name="entityManager">The entity manager from which components are loaded.</param>
+/// <returns>The result of the method.</returns>
+public delegate object MethodInvoker(object target, object[] args, IServiceProvider services, IEntityManager entityManager);

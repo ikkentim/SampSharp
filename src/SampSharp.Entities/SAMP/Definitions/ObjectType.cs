@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,21 +13,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace SampSharp.Entities.SAMP
+namespace SampSharp.Entities.SAMP;
+
+/// <summary>
+/// Contains all object types
+/// </summary>
+public enum ObjectType
 {
     /// <summary>
-    /// Contains all object types
+    /// Global object.
     /// </summary>
-    public enum ObjectType
-    {
-        /// <summary>
-        /// Global object.
-        /// </summary>
-        GlobalObject = 1,
+    GlobalObject = 1,
 
-        /// <summary>
-        /// Player object.
-        /// </summary>
-        PlayerObject = 2
-    }
+    /// <summary>
+    /// Player object.
+    /// </summary>
+    PlayerObject = 2
 }

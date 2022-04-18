@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2017 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,36 +12,36 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 using System;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.World;
 
-namespace SampSharp.GameMode.Events
+namespace SampSharp.GameMode.Events;
+
+/// <summary>
+///     Provides data for the <see cref="BaseMode.PlayerStateChanged" /> or <see cref="BasePlayer.StateChanged" /> event.
+/// </summary>
+public class StateEventArgs : EventArgs
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerStateChanged" /> or <see cref="BasePlayer.StateChanged" /> event.
+    ///     Initializes a new instance of the <see cref="StateEventArgs" /> class.
     /// </summary>
-    public class StateEventArgs : EventArgs
+    /// <param name="newstate">The new state.</param>
+    /// <param name="oldstate">The old state.</param>
+    public StateEventArgs(PlayerState newstate, PlayerState oldstate)
     {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="StateEventArgs" /> class.
-        /// </summary>
-        /// <param name="newstate">The new state.</param>
-        /// <param name="oldstate">The old state.</param>
-        public StateEventArgs(PlayerState newstate, PlayerState oldstate)
-        {
-            NewState = newstate;
-            OldState = oldstate;
-        }
-
-        /// <summary>
-        ///     Gets the new state.
-        /// </summary>
-        public PlayerState NewState { get; }
-
-        /// <summary>
-        ///     Gets the old state.
-        /// </summary>
-        public PlayerState OldState { get; }
+        NewState = newstate;
+        OldState = oldstate;
     }
+
+    /// <summary>
+    ///     Gets the new state.
+    /// </summary>
+    public PlayerState NewState { get; }
+
+    /// <summary>
+    ///     Gets the old state.
+    /// </summary>
+    public PlayerState OldState { get; }
 }

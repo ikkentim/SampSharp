@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2017 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,36 +12,36 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 using System;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.World;
 
-namespace SampSharp.GameMode.Events
+namespace SampSharp.GameMode.Events;
+
+/// <summary>
+///     Provides data for the <see cref="BaseMode.PlayerDied" /> or <see cref="BasePlayer.Died" /> event.
+/// </summary>
+public class DeathEventArgs : EventArgs
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerDied" /> or <see cref="BasePlayer.Died" /> event.
+    ///     Initializes a new instance of the DeathEventArgs class.
     /// </summary>
-    public class DeathEventArgs : EventArgs
+    /// <param name="killer">The killer.</param>
+    /// <param name="reason">Reason of the death.</param>
+    public DeathEventArgs(BasePlayer killer, Weapon reason)
     {
-        /// <summary>
-        ///     Initializes a new instance of the DeathEventArgs class.
-        /// </summary>
-        /// <param name="killer">The killer.</param>
-        /// <param name="reason">Reason of the death.</param>
-        public DeathEventArgs(BasePlayer killer, Weapon reason)
-        {
-            Killer = killer;
-            DeathReason = reason;
-        }
-
-        /// <summary>
-        ///     Gets the killer.
-        /// </summary>
-        public BasePlayer Killer { get; }
-
-        /// <summary>
-        ///     Gets the reason of the death.
-        /// </summary>
-        public Weapon DeathReason { get; }
+        Killer = killer;
+        DeathReason = reason;
     }
+
+    /// <summary>
+    ///     Gets the killer.
+    /// </summary>
+    public BasePlayer Killer { get; }
+
+    /// <summary>
+    ///     Gets the reason of the death.
+    /// </summary>
+    public Weapon DeathReason { get; }
 }

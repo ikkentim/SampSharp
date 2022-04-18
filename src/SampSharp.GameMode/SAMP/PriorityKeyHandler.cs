@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2017 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,63 +12,63 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 using System;
 using SampSharp.GameMode.Events;
 
-namespace SampSharp.GameMode.SAMP
+namespace SampSharp.GameMode.SAMP;
+
+/// <summary>
+///     Contains a set priority events.
+/// </summary>
+public sealed class PriorityKeyHandler
 {
     /// <summary>
-    ///     Contains a set priority events.
+    ///     Occurs as first handler.
     /// </summary>
-    public sealed class PriorityKeyHandler
+    public event EventHandler<CancelableEventArgs> HighPriority;
+
+    /// <summary>
+    ///     Occurs as second handler, if the no <see cref="HighPriority" /> have canceled the event.
+    /// </summary>
+    public event EventHandler<CancelableEventArgs> NormalPriority;
+
+    /// <summary>
+    ///     Occurs as third handler, if the no <see cref="HighPriority" /> or <see cref="NormalPriority" /> have canceled the
+    ///     event.
+    /// </summary>
+    public event EventHandler<CancelableEventArgs> LowPriority;
+
+    /// <summary>
+    ///     Handles a change in PlayerKeyState.
+    /// </summary>
+    /// <param name="sender">Sender of the event.</param>
+    /// <param name="e">Object containing information about the event.</param>
+    public void Handle(object sender, KeyStateChangedEventArgs e)
     {
-        /// <summary>
-        ///     Occurs as first handler.
-        /// </summary>
-        public event EventHandler<CancelableEventArgs> HighPriority;
+        var args = new CancelableEventArgs();
 
-        /// <summary>
-        ///     Occurs as second handler, if the no <see cref="HighPriority" /> have canceled the event.
-        /// </summary>
-        public event EventHandler<CancelableEventArgs> NormalPriority;
+        OnHighPriority(sender, args);
 
-        /// <summary>
-        ///     Occurs as third handler, if the no <see cref="HighPriority" /> or <see cref="NormalPriority" /> have canceled the
-        ///     event.
-        /// </summary>
-        public event EventHandler<CancelableEventArgs> LowPriority;
+        if (!args.IsCanceled)
+            OnNormalPriority(sender, args);
 
-        /// <summary>
-        ///     Handles a change in PlayerKeyState.
-        /// </summary>
-        /// <param name="sender">Sender of the event.</param>
-        /// <param name="e">Object containing information about the event.</param>
-        public void Handle(object sender, KeyStateChangedEventArgs e)
-        {
-            var args = new CancelableEventArgs();
+        if (!args.IsCanceled)
+            OnLowPriority(sender, args);
+    }
 
-            OnHighPriority(sender, args);
+    private void OnHighPriority(object sender, CancelableEventArgs e)
+    {
+        HighPriority?.Invoke(sender, e);
+    }
 
-            if (!args.IsCanceled)
-                OnNormalPriority(sender, args);
+    private void OnNormalPriority(object sender, CancelableEventArgs e)
+    {
+        NormalPriority?.Invoke(sender, e);
+    }
 
-            if (!args.IsCanceled)
-                OnLowPriority(sender, args);
-        }
-
-        private void OnHighPriority(object sender, CancelableEventArgs e)
-        {
-            HighPriority?.Invoke(sender, e);
-        }
-
-        private void OnNormalPriority(object sender, CancelableEventArgs e)
-        {
-            NormalPriority?.Invoke(sender, e);
-        }
-
-        private void OnLowPriority(object sender, CancelableEventArgs e)
-        {
-            LowPriority?.Invoke(sender, e);
-        }
+    private void OnLowPriority(object sender, CancelableEventArgs e)
+    {
+        LowPriority?.Invoke(sender, e);
     }
 }

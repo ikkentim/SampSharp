@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2017 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,105 +17,104 @@ using System.Diagnostics.CodeAnalysis;
 using SampSharp.Core.Natives.NativeObjects;
 
 // ReSharper disable MemberHidesStaticFromOuterClass
-namespace SampSharp.GameMode.SAMP
+namespace SampSharp.GameMode.SAMP;
+
+public static partial class Server
 {
-    public static partial class Server
-    {
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        [SuppressMessage("Critical Code Smell", "S3218:Inner class members should not shadow outer class \"static\" or type members", Justification = "Native function declarations")]
-        public class ServerInternal : NativeObjectSingleton<ServerInternal>
+    [SuppressMessage("Critical Code Smell", "S3218:Inner class members should not shadow outer class \"static\" or type members", Justification = "Native function declarations")]
+    public class ServerInternal : NativeObjectSingleton<ServerInternal>
+    {
+        [NativeMethod]
+        public virtual bool BlockIpAddress(string ipAddress, int timems)
         {
-            [NativeMethod]
-            public virtual bool BlockIpAddress(string ipAddress, int timems)
-            {
-                throw new NativeNotImplementedException();
-            }
-
-            [NativeMethod]
-            public virtual bool UnBlockIpAddress(string ipAddress)
-            {
-                throw new NativeNotImplementedException();
-            }
-
-            [NativeMethod]
-            public virtual bool IsPlayerConnected(int playerid)
-            {
-                throw new NativeNotImplementedException();
-            }
-
-            [NativeMethod]
-            public virtual int GetMaxPlayers()
-            {
-                throw new NativeNotImplementedException();
-            }
-            
-            [NativeMethod]
-            public virtual int GetTickCount()
-            {
-                throw new NativeNotImplementedException();
-            }
-
-            [NativeMethod]
-            public virtual int GetServerTickRate()
-            {
-                throw new NativeNotImplementedException();
-            }
-            
-            // ReSharper disable once InconsistentNaming
-            [NativeMethod]
-            public virtual bool ConnectNPC(string name, string script)
-            {
-                throw new NativeNotImplementedException();
-            }
-
-            [NativeMethod]
-            public virtual bool SendRconCommand(string command)
-            {
-                throw new NativeNotImplementedException();
-            }
-
-            [NativeMethod]
-            public virtual bool SetWorldTime(int hour)
-            {
-                throw new NativeNotImplementedException();
-            }
-
-            [NativeMethod]
-            public virtual bool SetWeather(int weatherid)
-            {
-                throw new NativeNotImplementedException();
-            }
-
-            [NativeMethod]
-            public virtual bool GetNetworkStats(out string retstr, int size)
-            {
-                throw new NativeNotImplementedException();
-            }
-
-            [NativeMethod]
-            public virtual bool GetConsoleVarAsString(string varname, out string value, int size)
-            {
-                throw new NativeNotImplementedException();
-            }
-
-            [NativeMethod]
-            public virtual int GetConsoleVarAsInt(string varname)
-            {
-                throw new NativeNotImplementedException();
-            }
-
-            [NativeMethod]
-            public virtual bool GetConsoleVarAsBool(string varname)
-            {
-                throw new NativeNotImplementedException();
-            }
-            
-            [NativeMethod]
-            public virtual bool GetWeaponName(int weaponid, out string retstr, int size)
-            {
-                throw new NativeNotImplementedException();
-            }
+            throw new NativeNotImplementedException();
         }
-#pragma warning restore CS1591
+
+        [NativeMethod]
+        public virtual bool UnBlockIpAddress(string ipAddress)
+        {
+            throw new NativeNotImplementedException();
+        }
+
+        [NativeMethod]
+        public virtual bool IsPlayerConnected(int playerid)
+        {
+            throw new NativeNotImplementedException();
+        }
+
+        [NativeMethod]
+        public virtual int GetMaxPlayers()
+        {
+            throw new NativeNotImplementedException();
+        }
+            
+        [NativeMethod]
+        public virtual int GetTickCount()
+        {
+            throw new NativeNotImplementedException();
+        }
+
+        [NativeMethod]
+        public virtual int GetServerTickRate()
+        {
+            throw new NativeNotImplementedException();
+        }
+            
+        // ReSharper disable once InconsistentNaming
+        [NativeMethod]
+        public virtual bool ConnectNPC(string name, string script)
+        {
+            throw new NativeNotImplementedException();
+        }
+
+        [NativeMethod]
+        public virtual bool SendRconCommand(string command)
+        {
+            throw new NativeNotImplementedException();
+        }
+
+        [NativeMethod]
+        public virtual bool SetWorldTime(int hour)
+        {
+            throw new NativeNotImplementedException();
+        }
+
+        [NativeMethod]
+        public virtual bool SetWeather(int weatherid)
+        {
+            throw new NativeNotImplementedException();
+        }
+
+        [NativeMethod]
+        public virtual bool GetNetworkStats(out string retstr, int size)
+        {
+            throw new NativeNotImplementedException();
+        }
+
+        [NativeMethod]
+        public virtual bool GetConsoleVarAsString(string varname, out string value, int size)
+        {
+            throw new NativeNotImplementedException();
+        }
+
+        [NativeMethod]
+        public virtual int GetConsoleVarAsInt(string varname)
+        {
+            throw new NativeNotImplementedException();
+        }
+
+        [NativeMethod]
+        public virtual bool GetConsoleVarAsBool(string varname)
+        {
+            throw new NativeNotImplementedException();
+        }
+            
+        [NativeMethod]
+        public virtual bool GetWeaponName(int weaponid, out string retstr, int size)
+        {
+            throw new NativeNotImplementedException();
+        }
     }
+#pragma warning restore CS1591
 }

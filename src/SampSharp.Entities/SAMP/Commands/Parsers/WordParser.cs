@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,33 +15,32 @@
 
 using System;
 
-namespace SampSharp.Entities.SAMP.Commands.Parsers
+namespace SampSharp.Entities.SAMP.Commands.Parsers;
+
+/// <summary>
+/// A parser for an <see cref="string" /> parameter which only consumes the text up to the next space character of the end
+/// off the input.
+/// </summary>
+public class WordParser : ICommandParameterParser
 {
-    /// <summary>
-    /// A parser for an <see cref="string" /> parameter which only consumes the text up to the next space character of the end
-    /// off the input.
-    /// </summary>
-    public class WordParser : ICommandParameterParser
+    /// <inheritdoc />
+    public bool TryParse(IServiceProvider services, ref string inputText, out object result)
     {
-        /// <inheritdoc />
-        public bool TryParse(IServiceProvider services, ref string inputText, out object result)
-        {
-            result = null;
-            inputText = inputText.TrimStart();
+        result = null;
+        inputText = inputText.TrimStart();
 
-            if (inputText.Length == 0)
-                return false;
+        if (inputText.Length == 0)
+            return false;
 
-            var index = inputText.IndexOf(" ", StringComparison.InvariantCulture);
+        var index = inputText.IndexOf(" ", StringComparison.InvariantCulture);
 
-            if (index == 0)
-                return false;
+        if (index == 0)
+            return false;
 
-            var str = index < 0 ? inputText : inputText.Substring(0, index);
-            inputText = inputText.Substring(str.Length);
+        var str = index < 0 ? inputText : inputText.Substring(0, index);
+        inputText = inputText.Substring(str.Length);
 
-            result = str;
-            return true;
-        }
+        result = str;
+        return true;
     }
 }

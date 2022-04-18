@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2017 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,87 +12,87 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 using System;
 using System.Globalization;
 using System.Linq;
 
-namespace SampSharp.GameMode.SAMP.Commands
+namespace SampSharp.GameMode.SAMP.Commands;
+
+/// <summary>
+/// Represents a single path to a command.
+/// </summary>
+public readonly struct CommandPath
 {
     /// <summary>
-    /// Represents a single path to a command.
+    ///     Gets the group.
     /// </summary>
-    public readonly struct CommandPath
+    public string Group { get; }
+
+    /// <summary>
+    ///     Gets the name.
+    /// </summary>
+    public string Name { get; }
+
+    /// <summary>
+    ///     Gets the full name.
+    /// </summary>
+    public string FullName { get; }
+
+    /// <summary>
+    ///     Gets the length.
+    /// </summary>
+    public int Length => FullName.Length;
+
+    /// <summary>
+    ///     Initializes a new instance of the <see cref="CommandPath" /> struct.
+    /// </summary>
+    /// <param name="words">The words.</param>
+    public CommandPath(params string[] words)
     {
-        /// <summary>
-        ///     Gets the group.
-        /// </summary>
-        public string Group { get; }
+        if (words == null) throw new ArgumentNullException(nameof(words));
 
-        /// <summary>
-        ///     Gets the name.
-        /// </summary>
-        public string Name { get; }
+        words = words.SelectMany(w => w.Split(' ')).Where(w => !string.IsNullOrEmpty(w)).ToArray();
 
-        /// <summary>
-        ///     Gets the full name.
-        /// </summary>
-        public string FullName { get; }
+        if (words.Length == 0)
+            throw new ArgumentException("must contain at least one non-empty word", nameof(words));
+        Group = string.Join(" ", words.Take(words.Length - 1));
+        Name = words.Last();
+        FullName = string.IsNullOrEmpty(Group) ? Name : $"{Group} {Name}";
+    }
 
-        /// <summary>
-        ///     Gets the length.
-        /// </summary>
-        public int Length => FullName.Length;
+    /// <summary>
+    ///     Matches the specified command text.
+    /// </summary>
+    /// <param name="commandText">The command text.</param>
+    /// <param name="ignoreCase">A value indicating whether to ignore the case of the command.</param>
+    /// <returns>true if matches; false otherwise.</returns>
+    public bool Matches(string commandText, bool ignoreCase = true)
+    {
+        // The command text is shorter than the full name.
+        if (commandText.Length < Length)
+            return false;
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="CommandPath" /> struct.
-        /// </summary>
-        /// <param name="words">The words.</param>
-        public CommandPath(params string[] words)
+        // The command text is longer than the full name and the next character in the command text must be a space.
+        if (commandText.Length > Length && commandText[Length] != ' ')
         {
-            if (words == null) throw new ArgumentNullException(nameof(words));
-
-            words = words.SelectMany(w => w.Split(' ')).Where(w => !string.IsNullOrEmpty(w)).ToArray();
-
-            if (words.Length == 0)
-                throw new ArgumentException("must contain at least one non-empty word", nameof(words));
-            Group = string.Join(" ", words.Take(words.Length - 1));
-            Name = words.Last();
-            FullName = string.IsNullOrEmpty(Group) ? Name : $"{Group} {Name}";
+            return false;
         }
 
-        /// <summary>
-        ///     Matches the specified command text.
-        /// </summary>
-        /// <param name="commandText">The command text.</param>
-        /// <param name="ignoreCase">A value indicating whether to ignore the case of the command.</param>
-        /// <returns>true if matches; false otherwise.</returns>
-        public bool Matches(string commandText, bool ignoreCase = true)
-        {
-            // The command text is shorter than the full name.
-            if (commandText.Length < Length)
-                return false;
+        // The substring of the command text matches the full name.
+        return ignoreCase
+            ? commandText.Substring(0, Length).ToLower(CultureInfo.InvariantCulture) == FullName.ToLower(CultureInfo.InvariantCulture)
+            : commandText.Substring(0, Length) == FullName;
+    }
 
-            // The command text is longer than the full name and the next character in the command text must be a space.
-            if (commandText.Length > Length && commandText[Length] != ' ')
-            {
-                    return false;
-            }
-
-            // The substring of the command text matches the full name.
-            return ignoreCase
-                ? commandText.Substring(0, Length).ToLower(CultureInfo.InvariantCulture) == FullName.ToLower(CultureInfo.InvariantCulture)
-                : commandText.Substring(0, Length) == FullName;
-        }
-
-        /// <summary>
-        ///     Returns the fully qualified type name of this instance.
-        /// </summary>
-        /// <returns>
-        ///     A <see cref="T:System.String" /> containing a fully qualified type name.
-        /// </returns>
-        public override string ToString()
-        {
-            return FullName;
-        }
+    /// <summary>
+    ///     Returns the fully qualified type name of this instance.
+    /// </summary>
+    /// <returns>
+    ///     A <see cref="T:System.String" /> containing a fully qualified type name.
+    /// </returns>
+    public override string ToString()
+    {
+        return FullName;
     }
 }

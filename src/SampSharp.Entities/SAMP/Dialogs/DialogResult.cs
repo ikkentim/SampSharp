@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,39 +13,38 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace SampSharp.Entities.SAMP
+namespace SampSharp.Entities.SAMP;
+
+/// <summary>
+/// Represents a raw response value to a dialog.
+/// </summary>
+public struct DialogResult
 {
     /// <summary>
-    /// Represents a raw response value to a dialog.
+    /// Initializes a new instance of the <see cref="DialogResult" /> struct.
     /// </summary>
-    public struct DialogResult
+    /// <param name="response">The way in which the player has responded to the dialog.</param>
+    /// <param name="listItem">The index of item selected by the player in the dialog.</param>
+    /// <param name="inputText">The text entered by the player in the dialog.</param>
+    public DialogResult(DialogResponse response, int listItem, string inputText)
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DialogResult" /> struct.
-        /// </summary>
-        /// <param name="response">The way in which the player has responded to the dialog.</param>
-        /// <param name="listItem">The index of item selected by the player in the dialog.</param>
-        /// <param name="inputText">The text entered by the player in the dialog.</param>
-        public DialogResult(DialogResponse response, int listItem, string inputText)
-        {
-            Response = response;
-            ListItem = listItem;
-            InputText = inputText;
-        }
-
-        /// <summary>
-        /// Gets the way in which the player has responded to the dialog.
-        /// </summary>
-        public DialogResponse Response { get; }
-
-        /// <summary>
-        /// Gets the index of item selected by the player in the dialog.
-        /// </summary>
-        public int ListItem { get; }
-
-        /// <summary>
-        /// Gets the text entered by the player in the dialog.
-        /// </summary>
-        public string InputText { get; }
+        Response = response;
+        ListItem = listItem;
+        InputText = inputText;
     }
+
+    /// <summary>
+    /// Gets the way in which the player has responded to the dialog.
+    /// </summary>
+    public DialogResponse Response { get; }
+
+    /// <summary>
+    /// Gets the index of item selected by the player in the dialog.
+    /// </summary>
+    public int ListItem { get; }
+
+    /// <summary>
+    /// Gets the text entered by the player in the dialog.
+    /// </summary>
+    public string InputText { get; }
 }

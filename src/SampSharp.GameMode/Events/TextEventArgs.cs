@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2017 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,34 +12,34 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 using System;
 using SampSharp.GameMode.World;
 
-namespace SampSharp.GameMode.Events
+namespace SampSharp.GameMode.Events;
+
+/// <summary>
+///     Provides data for the <see cref="BaseMode.PlayerText" /> or <see cref="BasePlayer.Text" /> event.
+/// </summary>
+public class TextEventArgs : EventArgs
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerText" /> or <see cref="BasePlayer.Text" /> event.
+    ///     Initializes a new instance of the TextEventArgs class.
     /// </summary>
-    public class TextEventArgs : EventArgs
+    /// <param name="text">The text sent by the player.</param>
+    public TextEventArgs(string text)
     {
-        /// <summary>
-        ///     Initializes a new instance of the TextEventArgs class.
-        /// </summary>
-        /// <param name="text">The text sent by the player.</param>
-        public TextEventArgs(string text)
-        {
-            Text = text;
-            SendToPlayers = true;
-        }
-
-        /// <summary>
-        ///     Gets the text sent by the player.
-        /// </summary>
-        public string Text { get; }
-
-        /// <summary>
-        ///     Gets or sets whether this message should be sent to all players.
-        /// </summary>
-        public bool SendToPlayers { get; set; }
+        Text = text;
+        SendToPlayers = true;
     }
+
+    /// <summary>
+    ///     Gets the text sent by the player.
+    /// </summary>
+    public string Text { get; }
+
+    /// <summary>
+    ///     Gets or sets whether this message should be sent to all players.
+    /// </summary>
+    public bool SendToPlayers { get; set; }
 }

@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2017 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,26 +14,25 @@
 // limitations under the License.
 
 // ReSharper disable CommentTypo
-namespace SampSharp.GameMode.SAMP
+namespace SampSharp.GameMode.SAMP;
+
+/// <summary>
+///     Contains different formats of String representations of Color instances.
+/// </summary>
+public enum ColorFormat
 {
     /// <summary>
-    ///     Contains different formats of String representations of Color instances.
+    ///     {RRGGBBAA}
     /// </summary>
-    public enum ColorFormat
-    {
-        /// <summary>
-        ///     {RRGGBBAA}
-        /// </summary>
-        RGBA,
+    RGBA,
 
-        /// <summary>
-        ///     {AARRGGBB}
-        /// </summary>
-        ARGB,
+    /// <summary>
+    ///     {AARRGGBB}
+    /// </summary>
+    ARGB,
 
-        /// <summary>
-        ///     {RRGGBB}
-        /// </summary>
-        RGB
-    }
+    /// <summary>
+    ///     {RRGGBB}
+    /// </summary>
+    RGB
 }

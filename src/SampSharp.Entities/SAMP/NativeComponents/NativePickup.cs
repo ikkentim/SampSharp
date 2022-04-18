@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,16 +17,15 @@ using SampSharp.Core.Natives.NativeObjects;
 
 #pragma warning disable 1591
 
-namespace SampSharp.Entities.SAMP
-{
-    public class NativePickup : BaseNativeComponent
-    {
-        public const int InvalidId = -1;
+namespace SampSharp.Entities.SAMP;
 
-        [NativeMethod]
-        public virtual bool DestroyPickup()
-        {
-            throw new NativeNotImplementedException();
-        }
+public class NativePickup : BaseNativeComponent
+{
+    public const int InvalidId = -1;
+
+    [NativeMethod]
+    public virtual bool DestroyPickup()
+    {
+        throw new NativeNotImplementedException();
     }
 }

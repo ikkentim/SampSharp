@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2017 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,73 +17,72 @@ using System;
 using System.Collections.Generic;
 using SampSharp.GameMode.SAMP;
 
-namespace SampSharp.GameMode.Controllers
+namespace SampSharp.GameMode.Controllers;
+
+/// <summary>
+///     A controller processing all timer actions.
+/// </summary>
+[Controller]
+public class TimerController : IEventListener
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Critical Code Smell", "S2223:Non-constant static fields should not be visible", Justification = "By design")]
+    internal static TimerController _instance;
+    private readonly List<Timer> _activeTimers = new();
+
     /// <summary>
-    ///     A controller processing all timer actions.
+    ///     Initializes a new instance of the <see cref="TimerController" /> class.
     /// </summary>
-    [Controller]
-    public class TimerController : IEventListener
+    public TimerController()
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Critical Code Smell", "S2223:Non-constant static fields should not be visible", Justification = "By design")]
-        internal static TimerController _instance;
-        private readonly List<Timer> _activeTimers = new();
+        SetActiveInstance(this);
+    }
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="TimerController" /> class.
-        /// </summary>
-        public TimerController()
+    internal void AddTimer(Timer timer)
+    {
+        if (timer == null) throw new ArgumentNullException(nameof(timer));
+        _activeTimers.Add(timer);
+    }
+
+    internal void RemoveTimer(Timer timer)
+    {
+        if (timer == null) throw new ArgumentNullException(nameof(timer));
+        _activeTimers.Remove(timer);
+    }
+
+    /// <summary>
+    ///     Registers the events this TimerController wants to listen to.
+    /// </summary>
+    /// <param name="gameMode">The running GameMode.</param>
+    public virtual void RegisterEvents(BaseMode gameMode)
+    {
+        gameMode.Tick += OnTick;
+    }
+
+    private void OnTick(object sender, EventArgs eventArgs)
+    {
+        if (_activeTimers.Count == 0)
+            return;
+
+        var now = DateTime.UtcNow;
+        for(var i = _activeTimers.Count - 1; i >= 0;i--)
         {
-            SetActiveInstance(this);
-        }
+            if (i >= _activeTimers.Count) continue;
 
-        internal void AddTimer(Timer timer)
-        {
-            if (timer == null) throw new ArgumentNullException(nameof(timer));
-            _activeTimers.Add(timer);
-        }
+            var timer = _activeTimers[i];
 
-        internal void RemoveTimer(Timer timer)
-        {
-            if (timer == null) throw new ArgumentNullException(nameof(timer));
-            _activeTimers.Remove(timer);
-        }
-
-        /// <summary>
-        ///     Registers the events this TimerController wants to listen to.
-        /// </summary>
-        /// <param name="gameMode">The running GameMode.</param>
-        public virtual void RegisterEvents(BaseMode gameMode)
-        {
-            gameMode.Tick += OnTick;
-        }
-
-        private void OnTick(object sender, EventArgs eventArgs)
-        {
-            if (_activeTimers.Count == 0)
-                return;
-
-            var now = DateTime.UtcNow;
-            for(var i = _activeTimers.Count - 1; i >= 0;i--)
+            if (!timer.IsRunning)
             {
-                if (i >= _activeTimers.Count) continue;
-
-                var timer = _activeTimers[i];
-
-                if (!timer.IsRunning)
-                {
-                    _activeTimers.Remove(timer);
-                }
-                else if (timer.NextTick <= now)
-                {
-                    timer.PerformTick();
-                }
+                _activeTimers.Remove(timer);
+            }
+            else if (timer.NextTick <= now)
+            {
+                timer.PerformTick();
             }
         }
+    }
 
-        private static void SetActiveInstance(TimerController controller)
-        {
-            _instance = controller;
-        }
+    private static void SetActiveInstance(TimerController controller)
+    {
+        _instance = controller;
     }
 }

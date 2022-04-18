@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,64 +13,63 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace SampSharp.Entities.SAMP
+namespace SampSharp.Entities.SAMP;
+
+/// <summary>
+/// Represents a component which provides the data and functionality of a player 3D text label.
+/// </summary>
+public sealed class PlayerTextLabel : Component
 {
-    /// <summary>
-    /// Represents a component which provides the data and functionality of a player 3D text label.
-    /// </summary>
-    public sealed class PlayerTextLabel : Component
+    private PlayerTextLabel(string text, Color color, Vector3 position, float drawDistance, int virtualWorld,
+        bool testLos, EntityId attachedEntity)
     {
-        private PlayerTextLabel(string text, Color color, Vector3 position, float drawDistance, int virtualWorld,
-            bool testLos, EntityId attachedEntity)
-        {
-            Text = text;
-            Color = color;
-            Position = position;
-            DrawDistance = drawDistance;
-            VirtualWorld = virtualWorld;
-            TestLos = testLos;
-            AttachedEntity = attachedEntity;
-        }
+        Text = text;
+        Color = color;
+        Position = position;
+        DrawDistance = drawDistance;
+        VirtualWorld = virtualWorld;
+        TestLos = testLos;
+        AttachedEntity = attachedEntity;
+    }
 
-        /// <summary>
-        /// Gets the color of this player text label.
-        /// </summary>
-        public Color Color { get; }
+    /// <summary>
+    /// Gets the color of this player text label.
+    /// </summary>
+    public Color Color { get; }
 
-        /// <summary>
-        /// Gets the text of this player text label.
-        /// </summary>
-        public string Text { get; }
+    /// <summary>
+    /// Gets the text of this player text label.
+    /// </summary>
+    public string Text { get; }
 
-        /// <summary>
-        /// Gets the position of this player text label.
-        /// </summary>
-        public Vector3 Position { get; }
+    /// <summary>
+    /// Gets the position of this player text label.
+    /// </summary>
+    public Vector3 Position { get; }
 
-        /// <summary>
-        /// Gets the draw distance.
-        /// </summary>
-        public float DrawDistance { get; }
+    /// <summary>
+    /// Gets the draw distance.
+    /// </summary>
+    public float DrawDistance { get; }
 
-        /// <summary>
-        /// Gets the virtual world.
-        /// </summary>
-        public int VirtualWorld { get; }
+    /// <summary>
+    /// Gets the virtual world.
+    /// </summary>
+    public int VirtualWorld { get; }
 
-        /// <summary>
-        /// Gets a value indicating whether to test the line of sight.
-        /// </summary>
-        public bool TestLos { get; }
+    /// <summary>
+    /// Gets a value indicating whether to test the line of sight.
+    /// </summary>
+    public bool TestLos { get; }
 
-        /// <summary>
-        /// Gets the attached entity.
-        /// </summary>
-        public EntityId AttachedEntity { get; }
+    /// <summary>
+    /// Gets the attached entity.
+    /// </summary>
+    public EntityId AttachedEntity { get; }
 
-        /// <inheritdoc />
-        protected override void OnDestroyComponent()
-        {
-            GetComponent<NativePlayerTextLabel>().DeletePlayer3DTextLabel();
-        }
+    /// <inheritdoc />
+    protected override void OnDestroyComponent()
+    {
+        GetComponent<NativePlayerTextLabel>().DeletePlayer3DTextLabel();
     }
 }

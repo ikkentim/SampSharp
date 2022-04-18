@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2017 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,25 +12,25 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-namespace SampSharp.GameMode
+
+namespace SampSharp.GameMode;
+
+/// <summary>
+///     Defines the base implementation for the <see cref="IService" />.
+/// </summary>
+public abstract class Service : IService
 {
     /// <summary>
-    ///     Defines the base implementation for the <see cref="IService" />.
+    ///     Initializes a new instance of the <see cref="Service" /> class.
     /// </summary>
-    public abstract class Service : IService
+    /// <param name="gameMode">The game mode.</param>
+    protected Service(BaseMode gameMode)
     {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="Service" /> class.
-        /// </summary>
-        /// <param name="gameMode">The game mode.</param>
-        protected Service(BaseMode gameMode)
-        {
-            GameMode = gameMode;
-        }
-
-        /// <summary>
-        ///     Gets the game mode.
-        /// </summary>
-        public virtual BaseMode GameMode { get; }
+        GameMode = gameMode;
     }
+
+    /// <summary>
+    ///     Gets the game mode.
+    /// </summary>
+    public virtual BaseMode GameMode { get; }
 }

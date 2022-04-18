@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,51 +13,50 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace SampSharp.Entities.SAMP
+namespace SampSharp.Entities.SAMP;
+
+/// <summary>
+/// Contains limits of SA:MP.
+/// </summary>
+public static class SampLimits
 {
     /// <summary>
-    /// Contains limits of SA:MP.
+    /// Maximum number of players which can exist.
     /// </summary>
-    public static class SampLimits
-    {
-        /// <summary>
-        /// Maximum number of players which can exist.
-        /// </summary>
-        public const int MaxPlayers = 1000;
+    public const int MaxPlayers = 1000;
 
-        /// <summary>
-        /// Maximum number of actors which can exist.
-        /// </summary>
-        public const int MaxActors = 1000;
+    /// <summary>
+    /// Maximum number of actors which can exist.
+    /// </summary>
+    public const int MaxActors = 1000;
 
-        /// <summary>
-        /// Maximum number of vehicles which can exist.
-        /// </summary>
-        public const int MaxVehicles = 2000;
+    /// <summary>
+    /// Maximum number of vehicles which can exist.
+    /// </summary>
+    public const int MaxVehicles = 2000;
 
-        /// <summary>
-        /// Maximum number of global objects which can exist.
-        /// </summary>
-        public const int MaxGlobalObjects = 1000;
+    /// <summary>
+    /// Maximum number of global objects which can exist.
+    /// </summary>
+    public const int MaxGlobalObjects = 1000;
 
-        /// <summary>
-        /// Maximum number of per-player objects which can exist per player.
-        /// </summary>
-        public const int MaxPlayerObjects = 1000;
+    /// <summary>
+    /// Maximum number of per-player objects which can exist per player.
+    /// </summary>
+    public const int MaxPlayerObjects = 1000;
 
-        /// <summary>
-        /// Maximum number of attached objects attached to a player.
-        /// </summary>
-        public const int MaxPlayerAttachedObjects = 10;
+    /// <summary>
+    /// Maximum number of attached objects attached to a player.
+    /// </summary>
+    public const int MaxPlayerAttachedObjects = 10;
 
-        /// <summary>
-        /// Maximum length of a player's name.
-        /// </summary>
-        public const int MaxPlayerNameLength = 24;
+    /// <summary>
+    /// Maximum length of a player's name.
+    /// </summary>
+    public const int MaxPlayerNameLength = 24;
 
-        /// <summary>
-        /// Maximum length of the text in a player chat bubble.
-        /// </summary>
-        public const int MaxPlayerChatBubbleLength = 144;
-    }
+    /// <summary>
+    /// Maximum length of the text in a player chat bubble.
+    /// </summary>
+    public const int MaxPlayerChatBubbleLength = 144;
 }

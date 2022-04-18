@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,40 +15,39 @@
 
 using SampSharp.Core.Logging;
 
-namespace SampSharp.Entities.SAMP.Commands
+namespace SampSharp.Entities.SAMP.Commands;
+
+/// <summary>
+/// Represents a middleware which lets unhandled OnRconCommand events be processed by the <see cref="IRconCommandService" />.
+/// </summary>
+public class RconCommandProcessingMiddleware
 {
+    private readonly EventDelegate _next;
+        
     /// <summary>
-    /// Represents a middleware which lets unhandled OnRconCommand events be processed by the <see cref="IRconCommandService" />.
+    /// Initializes a new instance of the <see cref="RconCommandProcessingMiddleware" /> class.
     /// </summary>
-    public class RconCommandProcessingMiddleware
+    /// <param name="next">The next middleware handler.</param>
+    public RconCommandProcessingMiddleware(EventDelegate next)
     {
-        private readonly EventDelegate _next;
+        _next = next;
+    }
         
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RconCommandProcessingMiddleware" /> class.
-        /// </summary>
-        /// <param name="next">The next middleware handler.</param>
-        public RconCommandProcessingMiddleware(EventDelegate next)
-        {
-            _next = next;
-        }
-        
-        /// <summary>
-        /// Invokes the middleware.
-        /// </summary>
-        public object Invoke(EventContext context, IRconCommandService commandService)
-        {
-            var result = _next(context);
+    /// <summary>
+    /// Invokes the middleware.
+    /// </summary>
+    public object Invoke(EventContext context, IRconCommandService commandService)
+    {
+        var result = _next(context);
 
-            if (EventHelper.IsSuccessResponse(result))
-                return result;
+        if (EventHelper.IsSuccessResponse(result))
+            return result;
 
-            if (context.Arguments[0] is string text)
-                return commandService.Invoke(context.EventServices, text);
+        if (context.Arguments[0] is string text)
+            return commandService.Invoke(context.EventServices, text);
 
-            CoreLog.Log(CoreLogLevel.Error, "Invalid command middleware input argument types!");
-            return null;
+        CoreLog.Log(CoreLogLevel.Error, "Invalid command middleware input argument types!");
+        return null;
 
-        }
     }
 }

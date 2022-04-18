@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,20 +15,19 @@
 
 using System;
 
-namespace SampSharp.Entities.SAMP
+namespace SampSharp.Entities.SAMP;
+
+internal class ArgumentsOverrideEventContext : EventContext
 {
-    internal class ArgumentsOverrideEventContext : EventContext
+    public ArgumentsOverrideEventContext(int argumentCount)
     {
-        public ArgumentsOverrideEventContext(int argumentCount)
-        {
-            Arguments = new object[argumentCount];
-        }
-
-        public EventContext BaseContext { get; set; }
-            
-        public override string Name => BaseContext.Name;
-        public override object[] Arguments { get; }
-
-        public override IServiceProvider EventServices => BaseContext.EventServices;
+        Arguments = new object[argumentCount];
     }
+
+    public EventContext BaseContext { get; set; }
+            
+    public override string Name => BaseContext.Name;
+    public override object[] Arguments { get; }
+
+    public override IServiceProvider EventServices => BaseContext.EventServices;
 }

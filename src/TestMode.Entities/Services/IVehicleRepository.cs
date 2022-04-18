@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2019 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,11 +15,10 @@
 
 using SampSharp.Entities;
 
-namespace TestMode.Entities.Services
+namespace TestMode.Entities.Services;
+
+public interface IVehicleRepository
 {
-    public interface IVehicleRepository
-    {
-        void Foo();
-        void FooForPlayer(EntityId player);
-    }
+    void Foo();
+    void FooForPlayer(EntityId player);
 }

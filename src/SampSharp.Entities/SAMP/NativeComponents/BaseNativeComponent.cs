@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,16 +17,15 @@ using SampSharp.Core.Natives.NativeObjects;
 
 #pragma warning disable 1591
 
-namespace SampSharp.Entities.SAMP
-{
-    [NativeObjectIdentifiers("Id")]
-    public abstract class BaseNativeComponent : NativeComponent
-    {
-        public int Id { get; private set; }
+namespace SampSharp.Entities.SAMP;
 
-        protected override void OnInitializeComponent()
-        {
-            Id = Entity;
-        }
+[NativeObjectIdentifiers("Id")]
+public abstract class BaseNativeComponent : NativeComponent
+{
+    public int Id { get; private set; }
+
+    protected override void OnInitializeComponent()
+    {
+        Id = Entity;
     }
 }

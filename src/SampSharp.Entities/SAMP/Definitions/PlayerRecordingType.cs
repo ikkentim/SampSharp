@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,26 +13,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace SampSharp.Entities.SAMP
+namespace SampSharp.Entities.SAMP;
+
+/// <summary>
+/// Contains all PlayerRecording types.
+/// </summary>
+public enum PlayerRecordingType
 {
     /// <summary>
-    /// Contains all PlayerRecording types.
+    /// Nothing.
     /// </summary>
-    public enum PlayerRecordingType
-    {
-        /// <summary>
-        /// Nothing.
-        /// </summary>
-        None = 0,
+    None = 0,
 
-        /// <summary>
-        /// As a driver.
-        /// </summary>
-        Driver = 1,
+    /// <summary>
+    /// As a driver.
+    /// </summary>
+    Driver = 1,
 
-        /// <summary>
-        /// As a pedestrian
-        /// </summary>
-        OnFoot = 2
-    }
+    /// <summary>
+    /// As a pedestrian
+    /// </summary>
+    OnFoot = 2
 }

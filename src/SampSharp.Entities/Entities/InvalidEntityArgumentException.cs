@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,49 +17,48 @@ using System;
 using System.Linq;
 using System.Runtime.Serialization;
 
-namespace SampSharp.Entities
+namespace SampSharp.Entities;
+
+/// <summary>
+/// The exception that is thrown when one of the arguments is of an invalid entity identifier type.
+/// </summary>
+[Serializable]
+public class InvalidEntityArgumentException : ArgumentException
 {
     /// <summary>
-    /// The exception that is thrown when one of the arguments is of an invalid entity identifier type.
+    /// Initializes a new instance of the <see cref="InvalidEntityArgumentException" /> class.
     /// </summary>
-    [Serializable]
-    public class InvalidEntityArgumentException : ArgumentException
+    /// <param name="paramName">Name of the parameter.</param>
+    /// <param name="expectedType">The expected entity identifier type.</param>
+    public InvalidEntityArgumentException(string paramName, Guid expectedType) : base(
+        $"Invalid entity identifier type, expected type to be {EntityTypeRegistry.GetTypeName(expectedType)}.",
+        paramName)
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InvalidEntityArgumentException" /> class.
-        /// </summary>
-        /// <param name="paramName">Name of the parameter.</param>
-        /// <param name="expectedType">The expected entity identifier type.</param>
-        public InvalidEntityArgumentException(string paramName, Guid expectedType) : base(
-            $"Invalid entity identifier type, expected type to be {EntityTypeRegistry.GetTypeName(expectedType)}.",
-            paramName)
-        {
-        }
+    }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InvalidEntityArgumentException" /> class.
-        /// </summary>
-        /// <param name="paramName">Name of the parameter.</param>
-        /// <param name="expectedTypes">The expected entity identifier types.</param>
-        public InvalidEntityArgumentException(string paramName, params Guid[] expectedTypes) : base(
-            $"Invalid entity identifier type, expected type to be any of {expectedTypes.Select(EntityTypeRegistry.GetTypeName)}.",
-            paramName)
-        {
-        }
+    /// <summary>
+    /// Initializes a new instance of the <see cref="InvalidEntityArgumentException" /> class.
+    /// </summary>
+    /// <param name="paramName">Name of the parameter.</param>
+    /// <param name="expectedTypes">The expected entity identifier types.</param>
+    public InvalidEntityArgumentException(string paramName, params Guid[] expectedTypes) : base(
+        $"Invalid entity identifier type, expected type to be any of {expectedTypes.Select(EntityTypeRegistry.GetTypeName)}.",
+        paramName)
+    {
+    }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InvalidEntityArgumentException" /> class.
-        /// </summary>
-        /// <param name="info">
-        /// The <see cref="SerializationInfo" /> that holds the serialized
-        /// object data about the exception being thrown.
-        /// </param>
-        /// <param name="context">
-        /// The <see cref="StreamingContext" /> that contains contextual
-        /// information about the source or destination.
-        /// </param>
-        protected InvalidEntityArgumentException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
+    /// <summary>
+    /// Initializes a new instance of the <see cref="InvalidEntityArgumentException" /> class.
+    /// </summary>
+    /// <param name="info">
+    /// The <see cref="SerializationInfo" /> that holds the serialized
+    /// object data about the exception being thrown.
+    /// </param>
+    /// <param name="context">
+    /// The <see cref="StreamingContext" /> that contains contextual
+    /// information about the source or destination.
+    /// </param>
+    protected InvalidEntityArgumentException(SerializationInfo info, StreamingContext context) : base(info, context)
+    {
     }
 }

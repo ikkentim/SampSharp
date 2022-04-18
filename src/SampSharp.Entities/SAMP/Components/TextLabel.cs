@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,106 +13,105 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace SampSharp.Entities.SAMP
+namespace SampSharp.Entities.SAMP;
+
+/// <summary>
+/// Represents a component which provides the data and functionality of a 3D text label.
+/// </summary>
+public sealed class TextLabel : Component
 {
-    /// <summary>
-    /// Represents a component which provides the data and functionality of a 3D text label.
-    /// </summary>
-    public sealed class TextLabel : Component
+    private EntityId _attachedEntity;
+    private string _text;
+    private Color _color;
+
+    private TextLabel(string text, Color color, Vector3 position, float drawDistance, int virtualWorld,
+        bool testLos)
     {
-        private EntityId _attachedEntity;
-        private string _text;
-        private Color _color;
+        _text = text;
+        _color = color;
+        Position = position;
+        DrawDistance = drawDistance;
+        VirtualWorld = virtualWorld;
+        TestLos = testLos;
+    }
 
-        private TextLabel(string text, Color color, Vector3 position, float drawDistance, int virtualWorld,
-            bool testLos)
+    /// <summary>
+    /// Gets or sets the color of this text label.
+    /// </summary>
+    public Color Color
+    {
+        get => _color;
+        set
         {
-            _text = text;
-            _color = color;
-            Position = position;
-            DrawDistance = drawDistance;
-            VirtualWorld = virtualWorld;
-            TestLos = testLos;
+            _color = value;
+            GetComponent<NativeTextLabel>().Update3DTextLabelText(value, Text);
         }
+    }
 
-        /// <summary>
-        /// Gets or sets the color of this text label.
-        /// </summary>
-        public Color Color
+    /// <summary>
+    /// Gets or sets the text of this text label.
+    /// </summary>
+    public string Text
+    {
+        get => _text;
+        set
         {
-            get => _color;
-            set
-            {
-                _color = value;
-                GetComponent<NativeTextLabel>().Update3DTextLabelText(value, Text);
-            }
+            _text = value;
+            GetComponent<NativeTextLabel>().Update3DTextLabelText(Color, value ?? string.Empty);
         }
+    }
 
-        /// <summary>
-        /// Gets or sets the text of this text label.
-        /// </summary>
-        public string Text
+    /// <summary>
+    /// Gets the position of this text label.
+    /// </summary>
+    public Vector3 Position { get; }
+
+    /// <summary>
+    /// Gets the draw distance of this text label.
+    /// </summary>
+    public float DrawDistance { get; }
+
+    /// <summary>
+    /// Gets the virtual world of this text label.
+    /// </summary>
+    public int VirtualWorld { get; }
+
+    /// <summary>
+    /// Gets a value indicating whether to test the line of sight.
+    /// </summary>
+    public bool TestLos { get; }
+
+    /// <summary>
+    /// Gets or sets the offset at which this text label is attached to an entity.
+    /// </summary>
+    public Vector3 AttachOffset { get; set; }
+
+    /// <summary>
+    /// Gets or sets the attached entity (player or vehicle).
+    /// </summary>
+    public EntityId AttachedEntity
+    {
+        get =>  _attachedEntity;
+        set
         {
-            get => _text;
-            set
-            {
-                _text = value;
-                GetComponent<NativeTextLabel>().Update3DTextLabelText(Color, value ?? string.Empty);
-            }
+            if (!value.IsOfAnyType(SampEntities.PlayerType, SampEntities.VehicleType))
+                throw new InvalidEntityArgumentException(nameof(value), SampEntities.PlayerType, SampEntities.VehicleType);
+
+            // TODO: Can detach maybe if id is empty?
+
+            if (value.IsOfType(SampEntities.PlayerType))
+                GetComponent<NativeTextLabel>()
+                    .Attach3DTextLabelToPlayer(value, AttachOffset.X, AttachOffset.Y, AttachOffset.Z);
+            else
+                GetComponent<NativeTextLabel>()
+                    .Attach3DTextLabelToVehicle(value, AttachOffset.X, AttachOffset.Y, AttachOffset.Z);
+            _attachedEntity = value;
         }
+    }
 
-        /// <summary>
-        /// Gets the position of this text label.
-        /// </summary>
-        public Vector3 Position { get; }
-
-        /// <summary>
-        /// Gets the draw distance of this text label.
-        /// </summary>
-        public float DrawDistance { get; }
-
-        /// <summary>
-        /// Gets the virtual world of this text label.
-        /// </summary>
-        public int VirtualWorld { get; }
-
-        /// <summary>
-        /// Gets a value indicating whether to test the line of sight.
-        /// </summary>
-        public bool TestLos { get; }
-
-        /// <summary>
-        /// Gets or sets the offset at which this text label is attached to an entity.
-        /// </summary>
-        public Vector3 AttachOffset { get; set; }
-
-        /// <summary>
-        /// Gets or sets the attached entity (player or vehicle).
-        /// </summary>
-        public EntityId AttachedEntity
-        {
-            get =>  _attachedEntity;
-            set
-            {
-                if (!value.IsOfAnyType(SampEntities.PlayerType, SampEntities.VehicleType))
-                    throw new InvalidEntityArgumentException(nameof(value), SampEntities.PlayerType, SampEntities.VehicleType);
-
-                // TODO: Can detach maybe if id is empty?
-
-                if (value.IsOfType(SampEntities.PlayerType))
-                    GetComponent<NativeTextLabel>()
-                        .Attach3DTextLabelToPlayer(value, AttachOffset.X, AttachOffset.Y, AttachOffset.Z);
-                else
-                    GetComponent<NativeTextLabel>()
-                        .Attach3DTextLabelToVehicle(value, AttachOffset.X, AttachOffset.Y, AttachOffset.Z);
-                _attachedEntity = value;
-            }
-        }
-
-        /// <inheritdoc />
-        protected override void OnDestroyComponent()
-        {
-            GetComponent<NativeTextLabel>().Delete3DTextLabel();
-        }
+    /// <inheritdoc />
+    protected override void OnDestroyComponent()
+    {
+        GetComponent<NativeTextLabel>().Delete3DTextLabel();
     }
 }

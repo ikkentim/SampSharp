@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2019 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,29 +17,28 @@ using System;
 using SampSharp.Entities;
 using SampSharp.Entities.SAMP;
 
-namespace TestMode.Entities.Services
+namespace TestMode.Entities.Services;
+
+public class FunnyService : IScopedFunnyService
 {
-    public class FunnyService : IScopedFunnyService
+    private readonly IEntityManager _entityManager;
+    public Guid FunnyGuid { get; } = Guid.NewGuid();
+
+    public FunnyService(IEntityManager entityManager)
     {
-        private readonly IEntityManager _entityManager;
-        public Guid FunnyGuid { get; } = Guid.NewGuid();
+        _entityManager = entityManager;
+    }
 
-        public FunnyService(IEntityManager entityManager)
+    public string MakePlayerNameFunny(EntityId player)
+    {
+        var name = _entityManager.GetComponent<Player>(player).Name;
+
+        return string.Create(name.Length, name, (span, orig) =>
         {
-            _entityManager = entityManager;
-        }
-
-        public string MakePlayerNameFunny(EntityId player)
-        {
-            var name = _entityManager.GetComponent<Player>(player).Name;
-
-            return string.Create(name.Length, name, (span, orig) =>
+            for (var i = 0; i < orig.Length; i++)
             {
-                for (var i = 0; i < orig.Length; i++)
-                {
-                    span[i] = orig[orig.Length - 1 - i];
-                }
-            });
-        }
+                span[i] = orig[orig.Length - 1 - i];
+            }
+        });
     }
 }

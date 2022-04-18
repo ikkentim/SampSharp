@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,53 +15,52 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-namespace SampSharp.Entities.SAMP
+namespace SampSharp.Entities.SAMP;
+
+/// <summary>
+/// Contains all shop names.
+/// </summary>
+[SuppressMessage("ReSharper", "IdentifierTypo")]
+[SuppressMessage("ReSharper", "CommentTypo")]
+public static class ShopName
 {
     /// <summary>
-    /// Contains all shop names.
+    /// The Well Stacked Pizza Co.
     /// </summary>
-    [SuppressMessage("ReSharper", "IdentifierTypo")]
-    [SuppressMessage("ReSharper", "CommentTypo")]
-    public static class ShopName
-    {
-        /// <summary>
-        /// The Well Stacked Pizza Co.
-        /// </summary>
-        public const string PizzaStack = "FDPIZA";
+    public const string PizzaStack = "FDPIZA";
 
-        /// <summary>
-        /// Burger Shot.
-        /// </summary>
-        public const string BurgerShot = "FDBURG";
+    /// <summary>
+    /// Burger Shot.
+    /// </summary>
+    public const string BurgerShot = "FDBURG";
 
-        /// <summary>
-        /// Cluckin' Bell.
-        /// </summary>
-        public const string CluckinBell = "FDCHICK";
+    /// <summary>
+    /// Cluckin' Bell.
+    /// </summary>
+    public const string CluckinBell = "FDCHICK";
 
-        /// <summary>
-        /// Ammunation 1.
-        /// </summary>
-        public const string Ammunation1 = "AMMUN1";
+    /// <summary>
+    /// Ammunation 1.
+    /// </summary>
+    public const string Ammunation1 = "AMMUN1";
 
-        /// <summary>
-        /// Ammunation 2.
-        /// </summary>
-        public const string Ammunation2 = "AMMUN2";
+    /// <summary>
+    /// Ammunation 2.
+    /// </summary>
+    public const string Ammunation2 = "AMMUN2";
 
-        /// <summary>
-        /// Ammunation 3.
-        /// </summary>
-        public const string Ammunation3 = "AMMUN3";
+    /// <summary>
+    /// Ammunation 3.
+    /// </summary>
+    public const string Ammunation3 = "AMMUN3";
 
-        /// <summary>
-        /// Ammunation 4.
-        /// </summary>
-        public const string Ammunation4 = "AMMUN4";
+    /// <summary>
+    /// Ammunation 4.
+    /// </summary>
+    public const string Ammunation4 = "AMMUN4";
 
-        /// <summary>
-        /// Ammunation 5.
-        /// </summary>
-        public const string Ammunation5 = "AMMUN5";
-    }
+    /// <summary>
+    /// Ammunation 5.
+    /// </summary>
+    public const string Ammunation5 = "AMMUN5";
 }

@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2017 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,21 +12,21 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 using SampSharp.Core.Natives.NativeObjects;
 
-namespace SampSharp.GameMode.World
+namespace SampSharp.GameMode.World;
+
+public readonly partial struct VehicleModelInfo
 {
-    public readonly partial struct VehicleModelInfo
-    {
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        public class VehicleModelInfoInternal : NativeObjectSingleton<VehicleModelInfoInternal>
+    public class VehicleModelInfoInternal : NativeObjectSingleton<VehicleModelInfoInternal>
+    {
+        [NativeMethod]
+        public virtual bool GetVehicleModelInfo(int model, int infotype, out float x, out float y, out float z)
         {
-            [NativeMethod]
-            public virtual bool GetVehicleModelInfo(int model, int infotype, out float x, out float y, out float z)
-            {
-                throw new NativeNotImplementedException();
-            }
+            throw new NativeNotImplementedException();
         }
-#pragma warning restore CS1591
     }
+#pragma warning restore CS1591
 }

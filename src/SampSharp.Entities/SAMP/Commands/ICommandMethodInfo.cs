@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,16 +13,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace SampSharp.Entities.SAMP.Commands
+namespace SampSharp.Entities.SAMP.Commands;
+
+/// <summary>
+/// Provides information about a command method.
+/// </summary>
+public interface ICommandMethodInfo
 {
     /// <summary>
-    /// Provides information about a command method.
+    /// Gets the overriden name of the command.
     /// </summary>
-    public interface ICommandMethodInfo
-    {
-        /// <summary>
-        /// Gets the overriden name of the command.
-        /// </summary>
-        string Name { get; }
-    }
+    string Name { get; }
 }

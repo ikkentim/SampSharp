@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2017 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,33 +12,33 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 using SampSharp.GameMode.World;
 
-namespace SampSharp.GameMode.Controllers
+namespace SampSharp.GameMode.Controllers;
+
+/// <summary>
+///     A controller processing all actor actions.
+/// </summary>
+[Controller]
+public class ActorController : ITypeProvider, IEventListener
 {
     /// <summary>
-    ///     A controller processing all actor actions.
+    ///     Registers the events this <see cref="IEventListener" /> wants to listen to.
     /// </summary>
-    [Controller]
-    public class ActorController : ITypeProvider, IEventListener
+    /// <param name="gameMode">An instance of the <see cref="BaseMode" /> currently running.</param>
+    public virtual void RegisterEvents(BaseMode gameMode)
     {
-        /// <summary>
-        ///     Registers the events this <see cref="IEventListener" /> wants to listen to.
-        /// </summary>
-        /// <param name="gameMode">An instance of the <see cref="BaseMode" /> currently running.</param>
-        public virtual void RegisterEvents(BaseMode gameMode)
-        {
-            gameMode.PlayerGiveDamageActor += (sender, args) => (sender as Actor)?.OnPlayerGiveDamage(args);
-            gameMode.ActorStreamIn += (sender, args) => (sender as Actor)?.OnStreamIn(args);
-            gameMode.ActorStreamOut += (sender, args) => (sender as Actor)?.OnStreamOut(args);
-        }
+        gameMode.PlayerGiveDamageActor += (sender, args) => (sender as Actor)?.OnPlayerGiveDamage(args);
+        gameMode.ActorStreamIn += (sender, args) => (sender as Actor)?.OnStreamIn(args);
+        gameMode.ActorStreamOut += (sender, args) => (sender as Actor)?.OnStreamOut(args);
+    }
         
-        /// <summary>
-        ///     Registers types this <see cref="ITypeProvider" /> requires the system to use.
-        /// </summary>
-        public virtual void RegisterTypes()
-        {
-            Actor.Register<Actor>();
-        }
+    /// <summary>
+    ///     Registers types this <see cref="ITypeProvider" /> requires the system to use.
+    /// </summary>
+    public virtual void RegisterTypes()
+    {
+        Actor.Register<Actor>();
     }
 }

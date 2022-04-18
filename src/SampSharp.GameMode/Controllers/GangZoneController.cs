@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2017 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,22 +12,22 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 using SampSharp.GameMode.World;
 
-namespace SampSharp.GameMode.Controllers
+namespace SampSharp.GameMode.Controllers;
+
+/// <summary>
+///     A controller processing all gang zone actions.
+/// </summary>
+[Controller]
+public class GangZoneController : ITypeProvider
 {
     /// <summary>
-    ///     A controller processing all gang zone actions.
+    ///     Registers the types.
     /// </summary>
-    [Controller]
-    public class GangZoneController : ITypeProvider
+    public void RegisterTypes()
     {
-        /// <summary>
-        ///     Registers the types.
-        /// </summary>
-        public void RegisterTypes()
-        {
-            GangZone.Register<GangZone>();
-        }
+        GangZone.Register<GangZone>();
     }
 }

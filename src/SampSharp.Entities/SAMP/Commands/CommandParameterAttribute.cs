@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,22 +15,21 @@
 
 using System;
 
-namespace SampSharp.Entities.SAMP.Commands
+namespace SampSharp.Entities.SAMP.Commands;
+
+/// <summary>
+/// An attribute which provides additional information a command parameter.
+/// </summary>
+[AttributeUsage(AttributeTargets.Parameter)]
+public class CommandParameterAttribute : Attribute
 {
     /// <summary>
-    /// An attribute which provides additional information a command parameter.
+    /// Gets or sets an override value for the name of the parameter.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Parameter)]
-    public class CommandParameterAttribute : Attribute
-    {
-        /// <summary>
-        /// Gets or sets an override value for the name of the parameter.
-        /// </summary>
-        public string Name { get; set; }
+    public string Name { get; set; }
 
-        /// <summary>
-        /// Gets or sets an override value for the parser of the parameter.
-        /// </summary>
-        public Type Parser { get; set; }
-    }
+    /// <summary>
+    /// Gets or sets an override value for the parser of the parameter.
+    /// </summary>
+    public Type Parser { get; set; }
 }

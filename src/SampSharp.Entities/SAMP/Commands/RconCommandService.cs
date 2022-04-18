@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,36 +21,35 @@ using Microsoft.Extensions.DependencyInjection;
 using SampSharp.Core;
 using SampSharp.Entities.Utilities;
 
-namespace SampSharp.Entities.SAMP.Commands
+namespace SampSharp.Entities.SAMP.Commands;
+
+/// <summary>
+/// Provides rcon commands functionality.
+/// </summary>
+public class RconCommandService : CommandServiceBase, IRconCommandService
 {
-    /// <summary>
-    /// Provides rcon commands functionality.
-    /// </summary>
-    public class RconCommandService : CommandServiceBase, IRconCommandService
+    /// <inheritdoc />
+    public RconCommandService(IEntityManager entityManager) : base(entityManager, 0)
     {
-        /// <inheritdoc />
-        public RconCommandService(IEntityManager entityManager) : base(entityManager, 0)
-        {
-        }
+    }
 
-        /// <inheritdoc />
-        public bool Invoke(IServiceProvider services, string inputText)
-        {
-            var result = Invoke(services, null, inputText);
+    /// <inheritdoc />
+    public bool Invoke(IServiceProvider services, string inputText)
+    {
+        var result = Invoke(services, null, inputText);
 
-            if (result.Response != InvokeResponse.InvalidArguments) 
-                return result.Response == InvokeResponse.Success;
+        if (result.Response != InvokeResponse.InvalidArguments) 
+            return result.Response == InvokeResponse.Success;
 
-            services.GetRequiredService<IGameModeClient>().Print(result.UsageMessage);
-            return true;
-        }
+        services.GetRequiredService<IGameModeClient>().Print(result.UsageMessage);
+        return true;
+    }
 
-        /// <inheritdoc />
-        protected override IEnumerable<(MethodInfo method, ICommandMethodInfo commandInfo)> ScanMethods(
-            AssemblyScanner scanner)
-        {
-            return scanner.ScanMethods<RconCommandAttribute>()
-                .Select(r => (r.method, r.attribute as ICommandMethodInfo));
-        }
+    /// <inheritdoc />
+    protected override IEnumerable<(MethodInfo method, ICommandMethodInfo commandInfo)> ScanMethods(
+        AssemblyScanner scanner)
+    {
+        return scanner.ScanMethods<RconCommandAttribute>()
+            .Select(r => (r.method, r.attribute as ICommandMethodInfo));
     }
 }

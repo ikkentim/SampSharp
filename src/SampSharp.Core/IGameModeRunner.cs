@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2017 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,22 +13,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace SampSharp.Core
+namespace SampSharp.Core;
+
+/// <summary>
+///     Contains the methods of a runnable game mode.
+/// </summary>
+public interface IGameModeRunner
 {
     /// <summary>
-    ///     Contains the methods of a runnable game mode.
+    ///     Runs the game mode of this runner.
     /// </summary>
-    public interface IGameModeRunner
-    {
-        /// <summary>
-        ///     Runs the game mode of this runner.
-        /// </summary>
-        /// <returns><c>true</c> on success; <c>false</c> otherwise.</returns>
-        bool Run();
+    /// <returns><c>true</c> on success; <c>false</c> otherwise.</returns>
+    bool Run();
 
-        /// <summary>
-        ///     Gets the client of this game mode runner.
-        /// </summary>
-        IGameModeClient Client { get; }
-    }
+    /// <summary>
+    ///     Gets the client of this game mode runner.
+    /// </summary>
+    IGameModeClient Client { get; }
 }

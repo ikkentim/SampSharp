@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,17 +13,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace SampSharp.Entities
+namespace SampSharp.Entities;
+
+/// <summary>
+/// Provides a proxy object around a native object of type <typeparamref name="T" />.
+/// </summary>
+/// <typeparam name="T">The type of the native object for which a proxy object should be provided.</typeparam>
+public interface INativeProxy<out T> where T : class
 {
     /// <summary>
-    /// Provides a proxy object around a native object of type <typeparamref name="T" />.
+    /// Gets the native object proxy instance.
     /// </summary>
-    /// <typeparam name="T">The type of the native object for which a proxy object should be provided.</typeparam>
-    public interface INativeProxy<out T> where T : class
-    {
-        /// <summary>
-        /// Gets the native object proxy instance.
-        /// </summary>
-        T Instance { get; }
-    }
+    T Instance { get; }
 }

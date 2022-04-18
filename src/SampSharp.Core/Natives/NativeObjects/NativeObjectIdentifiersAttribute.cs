@@ -1,5 +1,5 @@
 // SampSharp
-// Copyright 2017 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,26 +15,25 @@
 
 using System;
 
-namespace SampSharp.Core.Natives.NativeObjects
+namespace SampSharp.Core.Natives.NativeObjects;
+
+/// <summary>
+///     Specifies the identifier properties for a native object class.
+/// </summary>
+[AttributeUsage(AttributeTargets.Class)]
+public class NativeObjectIdentifiersAttribute : Attribute
 {
     /// <summary>
-    ///     Specifies the identifier properties for a native object class.
+    ///     Initializes a new instance of the <see cref="NativeObjectIdentifiersAttribute" /> class.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class)]
-    public class NativeObjectIdentifiersAttribute : Attribute
+    /// <param name="identifiers">The identifiers of the native object.</param>
+    public NativeObjectIdentifiersAttribute(params string[] identifiers)
     {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="NativeObjectIdentifiersAttribute" /> class.
-        /// </summary>
-        /// <param name="identifiers">The identifiers of the native object.</param>
-        public NativeObjectIdentifiersAttribute(params string[] identifiers)
-        {
-            Identifiers = identifiers;
-        }
-
-        /// <summary>
-        ///     Gets or sets the identifiers of the native object.
-        /// </summary>
-        public string[] Identifiers { get; set; }
+        Identifiers = identifiers;
     }
+
+    /// <summary>
+    ///     Gets or sets the identifiers of the native object.
+    /// </summary>
+    public string[] Identifiers { get; set; }
 }

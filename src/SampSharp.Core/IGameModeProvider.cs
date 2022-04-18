@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2017 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,22 +15,21 @@
 
 using System;
 
-namespace SampSharp.Core
+namespace SampSharp.Core;
+
+/// <summary>
+///     Contains the methods of a provider of game mode routines.
+/// </summary>
+public interface IGameModeProvider : IDisposable
 {
     /// <summary>
-    ///     Contains the methods of a provider of game mode routines.
+    ///     Initializes the game mode with the specified game mode client.
     /// </summary>
-    public interface IGameModeProvider : IDisposable
-    {
-        /// <summary>
-        ///     Initializes the game mode with the specified game mode client.
-        /// </summary>
-        /// <param name="client">The game mode client which is loading this game mode.</param>
-        void Initialize(IGameModeClient client);
+    /// <param name="client">The game mode client which is loading this game mode.</param>
+    void Initialize(IGameModeClient client);
 
-        /// <summary>
-        ///     A method called once every server tick.
-        /// </summary>
-        void Tick();
-    }
+    /// <summary>
+    ///     A method called once every server tick.
+    /// </summary>
+    void Tick();
 }

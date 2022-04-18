@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,46 +15,45 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-namespace SampSharp.Entities.SAMP
+namespace SampSharp.Entities.SAMP;
+
+/// <summary>
+/// Contains all fighting styles.
+/// </summary>
+/// <remarks>
+/// See <see href="https://www.open.mp/docs/scripting/resources/fightingstyles">https://www.open.mp/docs/scripting/resources/fightingstyles</see>.
+/// </remarks>
+[SuppressMessage("ReSharper", "IdentifierTypo")]
+[SuppressMessage("ReSharper", "CommentTypo")]
+public enum FightStyle
 {
     /// <summary>
-    /// Contains all fighting styles.
+    /// Normal fighting style.
     /// </summary>
-    /// <remarks>
-    /// See <see href="https://www.open.mp/docs/scripting/resources/fightingstyles">https://www.open.mp/docs/scripting/resources/fightingstyles</see>.
-    /// </remarks>
-    [SuppressMessage("ReSharper", "IdentifierTypo")]
-    [SuppressMessage("ReSharper", "CommentTypo")]
-    public enum FightStyle
-    {
-        /// <summary>
-        /// Normal fighting style.
-        /// </summary>
-        Normal = 4,
+    Normal = 4,
 
-        /// <summary>
-        /// Boxing fighting style.
-        /// </summary>
-        Boxing = 5,
+    /// <summary>
+    /// Boxing fighting style.
+    /// </summary>
+    Boxing = 5,
 
-        /// <summary>
-        /// Kung fu fighting style.
-        /// </summary>
-        Kungfu = 6,
+    /// <summary>
+    /// Kung fu fighting style.
+    /// </summary>
+    Kungfu = 6,
 
-        /// <summary>
-        /// Kneehead fighting style.
-        /// </summary>
-        Kneehead = 7,
+    /// <summary>
+    /// Kneehead fighting style.
+    /// </summary>
+    Kneehead = 7,
 
-        /// <summary>
-        /// Grabkick fighting style.
-        /// </summary>
-        Grabkick = 15,
+    /// <summary>
+    /// Grabkick fighting style.
+    /// </summary>
+    Grabkick = 15,
 
-        /// <summary>
-        /// Elbow fighting style.
-        /// </summary>
-        Elbow = 16
-    }
+    /// <summary>
+    /// Elbow fighting style.
+    /// </summary>
+    Elbow = 16
 }

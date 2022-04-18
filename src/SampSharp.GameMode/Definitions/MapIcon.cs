@@ -1,5 +1,5 @@
 // SampSharp
-// Copyright 2017 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,336 +16,334 @@
 using System;
 
 // ReSharper disable CommentTypo
-namespace SampSharp.GameMode.Definitions
+namespace SampSharp.GameMode.Definitions;
+
+/// <summary>
+///     Contains all map icons.
+/// </summary>
+public enum MapIcon
 {
+    /// <summary>
+    /// Can be used in any color. Used for Single Player objectives.
+    /// </summary>
+    ColoredSquareTriangleDynamic = 0,
+   
+    /// <summary>
+    /// 2 times bigger than ID 0 and without the border.
+    /// </summary>
+    [Obsolete("This element will cause your game to crash if you have map legends enabled while viewing the map", false)] 
+    WhiteSquare = 1,
         
     /// <summary>
-    ///     Contains all map icons.
+    /// Will be used on the mini-map by default.
     /// </summary>
-    public enum MapIcon
-    {
-        /// <summary>
-        /// Can be used in any color. Used for Single Player objectives.
-        /// </summary>
-        ColoredSquareTriangleDynamic = 0,
-   
-        /// <summary>
-        /// 2 times bigger than ID 0 and without the border.
-        /// </summary>
-        [Obsolete("This element will cause your game to crash if you have map legends enabled while viewing the map", false)] 
-        WhiteSquare = 1,
+    [Obsolete("This element will cause your game to crash if you have map legends enabled while viewing the map", false)] 
+    PlayerPosition = 2,
         
-        /// <summary>
-        /// Will be used on the mini-map by default.
-        /// </summary>
-        [Obsolete("This element will cause your game to crash if you have map legends enabled while viewing the map", false)] 
-        PlayerPosition = 2,
+    /// <summary>
+    /// Your position when on the large map.
+    /// </summary>
+    PlayerMenuMap = 3,
         
-        /// <summary>
-        /// Your position when on the large map.
-        /// </summary>
-        PlayerMenuMap = 3,
+    /// <summary>
+    /// Always appears on the radar toward the north.
+    /// </summary>
+    [Obsolete("This element will cause your game to crash if you have map legends enabled while viewing the map", false)] 
+    North = 4,
         
-        /// <summary>
-        /// Always appears on the radar toward the north.
-        /// </summary>
-        [Obsolete("This element will cause your game to crash if you have map legends enabled while viewing the map", false)] 
-        North = 4,
+    /// <summary>
+    /// Air Yard
+    /// </summary>
+    AirYard = 5,
         
-        /// <summary>
-        /// Air Yard
-        /// </summary>
-        AirYard = 5,
+    /// <summary>
+    /// Ammunation
+    /// </summary>
+    Ammunation = 6,
         
-        /// <summary>
-        /// Ammunation
-        /// </summary>
-        Ammunation = 6,
+    /// <summary>
+    /// Barber
+    /// </summary>
+    Barber = 7,
         
-        /// <summary>
-        /// Barber
-        /// </summary>
-        Barber = 7,
+    /// <summary>
+    /// Big Smoke
+    /// </summary>
+    BigSmoke = 8,
         
-        /// <summary>
-        /// Big Smoke
-        /// </summary>
-        BigSmoke = 8,
+    /// <summary>
+    /// Boat Yard
+    /// </summary>
+    BoatYard = 9,
         
-        /// <summary>
-        /// Boat Yard
-        /// </summary>
-        BoatYard = 9,
+    /// <summary>
+    /// Burger Shot
+    /// </summary>
+    BurgerShot = 10,
         
-        /// <summary>
-        /// Burger Shot
-        /// </summary>
-        BurgerShot = 10,
+    /// <summary>
+    /// Quarry
+    /// </summary>
+    Quarry = 11,
         
-        /// <summary>
-        /// Quarry
-        /// </summary>
-        Quarry = 11,
+    /// <summary>
+    /// Catalina
+    /// </summary>
+    Catalina = 12,
         
-        /// <summary>
-        /// Catalina
-        /// </summary>
-        Catalina = 12,
+    /// <summary>
+    /// Cesar
+    /// </summary>
+    Cesar = 13,
         
-        /// <summary>
-        /// Cesar
-        /// </summary>
-        Cesar = 13,
+    /// <summary>
+    /// Cluckin' Bell
+    /// </summary>
+    CluckinBell = 14,
         
-        /// <summary>
-        /// Cluckin' Bell
-        /// </summary>
-        CluckinBell = 14,
+    /// <summary>
+    /// Carl Johnson
+    /// </summary>
+    CarlJohnson = 15,
         
-        /// <summary>
-        /// Carl Johnson
-        /// </summary>
-        CarlJohnson = 15,
+    /// <summary>
+    /// C.R.A.S.H
+    /// </summary>
+    Crash = 16,
         
-        /// <summary>
-        /// C.R.A.S.H
-        /// </summary>
-        Crash = 16,
+    /// <summary>
+    /// Diner
+    /// </summary>
+    Diner = 17,
         
-        /// <summary>
-        /// Diner
-        /// </summary>
-        Diner = 17,
+    /// <summary>
+    /// Emmet
+    /// </summary>
+    Emmet = 18,
         
-        /// <summary>
-        /// Emmet
-        /// </summary>
-        Emmet = 18,
+    /// <summary>
+    /// Enemy Attack
+    /// </summary>
+    EnemyAttack = 19,
         
-        /// <summary>
-        /// Enemy Attack
-        /// </summary>
-        EnemyAttack = 19,
+    /// <summary>
+    /// Fire
+    /// </summary>
+    Fire = 20,
         
-        /// <summary>
-        /// Fire
-        /// </summary>
-        Fire = 20,
+    /// <summary>
+    /// Girlfriend
+    /// </summary>
+    Girlfriend = 21,
         
-        /// <summary>
-        /// Girlfriend
-        /// </summary>
-        Girlfriend = 21,
+    /// <summary>
+    /// Hospital
+    /// </summary>
+    Hospital = 22,
         
-        /// <summary>
-        /// Hospital
-        /// </summary>
-        Hospital = 22,
+    /// <summary>
+    /// Loco
+    /// </summary>
+    Loco = 23,
         
-        /// <summary>
-        /// Loco
-        /// </summary>
-        Loco = 23,
+    /// <summary>
+    /// Madd Dogg
+    /// </summary>
+    MaddDogg = 24,
         
-        /// <summary>
-        /// Madd Dogg
-        /// </summary>
-        MaddDogg = 24,
+    /// <summary>
+    /// Caligulas
+    /// </summary>
+    Caligulas = 25,
         
-        /// <summary>
-        /// Caligulas
-        /// </summary>
-        Caligulas = 25,
+    /// <summary>
+    /// MC Loc
+    /// </summary>
+    McLoc = 26,
         
-        /// <summary>
-        /// MC Loc
-        /// </summary>
-        McLoc = 26,
+    /// <summary>
+    /// Mod garage
+    /// </summary>
+    ModGarage = 27,
         
-        /// <summary>
-        /// Mod garage
-        /// </summary>
-        ModGarage = 27,
+    /// <summary>
+    /// OG Loc
+    /// </summary>
+    OgLoc = 28,
         
-        /// <summary>
-        /// OG Loc
-        /// </summary>
-        OgLoc = 28,
+    /// <summary>
+    /// Well Stacked Pizza Co
+    /// </summary>
+    WellStackedPizzaCo = 29,
         
-        /// <summary>
-        /// Well Stacked Pizza Co
-        /// </summary>
-        WellStackedPizzaCo = 29,
+    /// <summary>
+    /// Police
+    /// </summary>
+    Police = 30,
         
-        /// <summary>
-        /// Police
-        /// </summary>
-        Police = 30,
+    /// <summary>
+    /// A property you're free to purchase. 
+    /// </summary>
+    FreeProperty = 31,
         
-        /// <summary>
-        /// A property you're free to purchase. 
-        /// </summary>
-        FreeProperty = 31,
+    /// <summary>
+    /// A property that isn't available for purchase.
+    /// </summary>
+    Property = 32,
         
-        /// <summary>
-        /// A property that isn't available for purchase.
-        /// </summary>
-        Property = 32,
+    /// <summary>
+    /// Race
+    /// </summary>
+    Race = 33,
         
-        /// <summary>
-        /// Race
-        /// </summary>
-        Race = 33,
+    /// <summary>
+    /// Ryder
+    /// </summary>
+    Ryder = 34,
         
-        /// <summary>
-        /// Ryder
-        /// </summary>
-        Ryder = 34,
+    /// <summary>
+    /// Used for safehouses where you save the game in singleplayer.
+    /// </summary>
+    SaveGame = 35,
         
-        /// <summary>
-        /// Used for safehouses where you save the game in singleplayer.
-        /// </summary>
-        SaveGame = 35,
+    /// <summary>
+    /// School
+    /// </summary>
+    School = 36,
         
-        /// <summary>
-        /// School
-        /// </summary>
-        School = 36,
+    /// <summary>
+    /// Unknown
+    /// </summary>
+    Unknown = 37,
         
-        /// <summary>
-        /// Unknown
-        /// </summary>
-        Unknown = 37,
+    /// <summary>
+    /// Sweet
+    /// </summary>
+    Sweet = 38,
         
-        /// <summary>
-        /// Sweet
-        /// </summary>
-        Sweet = 38,
+    /// <summary>
+    /// Tattoo
+    /// </summary>
+    Tattoo = 39,
         
-        /// <summary>
-        /// Tattoo
-        /// </summary>
-        Tattoo = 39,
+    /// <summary>
+    /// The Truth
+    /// </summary>
+    TheTruth = 40,
         
-        /// <summary>
-        /// The Truth
-        /// </summary>
-        TheTruth = 40,
+    /// <summary>
+    /// Can be placed by players on the pause menu map by right-clicking 
+    /// </summary>
+    Waypoint = 41,
         
-        /// <summary>
-        /// Can be placed by players on the pause menu map by right-clicking 
-        /// </summary>
-        Waypoint = 41,
+    /// <summary>
+    /// Toreno
+    /// </summary>
+    Toreno = 42,
         
-        /// <summary>
-        /// Toreno
-        /// </summary>
-        Toreno = 42,
+    /// <summary>
+    /// Triads
+    /// </summary>
+    Triads = 43,
         
-        /// <summary>
-        /// Triads
-        /// </summary>
-        Triads = 43,
+    /// <summary>
+    /// Triads Casino
+    /// </summary>
+    TriadsCasino = 44,
         
-        /// <summary>
-        /// Triads Casino
-        /// </summary>
-        TriadsCasino = 44,
+    /// <summary>
+    /// Clothes
+    /// </summary>
+    Clothes = 45,
         
-        /// <summary>
-        /// Clothes
-        /// </summary>
-        Clothes = 45,
+    /// <summary>
+    /// Woozie
+    /// </summary>
+    Woozie = 46,
         
-        /// <summary>
-        /// Woozie
-        /// </summary>
-        Woozie = 46,
+    /// <summary>
+    /// Zero
+    /// </summary>
+    Zero = 47,
         
-        /// <summary>
-        /// Zero
-        /// </summary>
-        Zero = 47,
+    /// <summary>
+    /// Club
+    /// </summary>
+    Club = 48,
         
-        /// <summary>
-        /// Club
-        /// </summary>
-        Club = 48,
+    /// <summary>
+    /// Bar
+    /// </summary>
+    Bar = 49,
         
-        /// <summary>
-        /// Bar
-        /// </summary>
-        Bar = 49,
+    /// <summary>
+    /// Restaurant
+    /// </summary>
+    Restaurant = 50,
         
-        /// <summary>
-        /// Restaurant
-        /// </summary>
-        Restaurant = 50,
+    /// <summary>
+    /// Truck
+    /// </summary>
+    Truck = 51,
         
-        /// <summary>
-        /// Truck
-        /// </summary>
-        Truck = 51,
+    /// <summary>
+    /// Frequently used for banks.
+    /// </summary>
+    Robbery = 52,
         
-        /// <summary>
-        /// Frequently used for banks.
-        /// </summary>
-        Robbery = 52,
+    /// <summary>
+    /// Race
+    /// </summary>
+    RaceFlag = 53,
         
-        /// <summary>
-        /// Race
-        /// </summary>
-        RaceFlag = 53,
+    /// <summary>
+    /// Gym
+    /// </summary>
+    Gym = 54,
         
-        /// <summary>
-        /// Gym
-        /// </summary>
-        Gym = 54,
+    /// <summary>
+    /// Car
+    /// </summary>
+    Car = 55,
         
-        /// <summary>
-        /// Car
-        /// </summary>
-        Car = 55,
+    /// <summary>
+    /// Light
+    /// </summary>
+    [Obsolete("This element will cause your game to crash if you have map legends enabled while viewing the map", false)] 
+    Light = 56,
         
-        /// <summary>
-        /// Light
-        /// </summary>
-        [Obsolete("This element will cause your game to crash if you have map legends enabled while viewing the map", false)] 
-        Light = 56,
+    /// <summary>
+    /// Closest airport
+    /// </summary>
+    ClosestAirport = 57,
         
-        /// <summary>
-        /// Closest airport
-        /// </summary>
-        ClosestAirport = 57,
+    /// <summary>
+    /// Varrios Los Aztecas
+    /// </summary>
+    VarriosLosAztecas = 58,
         
-        /// <summary>
-        /// Varrios Los Aztecas
-        /// </summary>
-        VarriosLosAztecas = 58,
+    /// <summary>
+    /// Ballas
+    /// </summary>
+    Ballas = 59,
         
-        /// <summary>
-        /// Ballas
-        /// </summary>
-        Ballas = 59,
+    /// <summary>
+    /// Los Santos Vagos
+    /// </summary>
+    LosSantosVagos = 60,
         
-        /// <summary>
-        /// Los Santos Vagos
-        /// </summary>
-        LosSantosVagos = 60,
+    /// <summary>
+    /// San Fierro Rifa
+    /// </summary>
+    SanFierroRifa = 61,
         
-        /// <summary>
-        /// San Fierro Rifa
-        /// </summary>
-        SanFierroRifa = 61,
+    /// <summary>
+    /// Grove street
+    /// </summary>
+    GroveStreet = 62,
         
-        /// <summary>
-        /// Grove street
-        /// </summary>
-        GroveStreet = 62,
-        
-        /// <summary>
-        /// Pay 'n' Spray
-        /// </summary>
-        PayNSpray = 63
-    }
+    /// <summary>
+    /// Pay 'n' Spray
+    /// </summary>
+    PayNSpray = 63
 }

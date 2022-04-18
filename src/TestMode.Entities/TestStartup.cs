@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,70 +21,69 @@ using SampSharp.Entities;
 using SampSharp.Entities.SAMP;
 using TestMode.Entities.Services;
 
-namespace TestMode.Entities
+namespace TestMode.Entities;
+
+public class TestStartup : IStartup
 {
-    public class TestStartup : IStartup
+    public void Configure(IServiceCollection services)
     {
-        public void Configure(IServiceCollection services)
+        // Load services (e.g. repositories), systems, etc.
+        services
+            .AddTransient<IVehicleRepository, VehicleRepository>()
+            .AddTransient<IFunnyService, FunnyService>()
+            .AddScoped<IScopedFunnyService, FunnyService>()
+            .AddSystemsInAssembly();
+    }
+
+    public void Configure(IEcsBuilder builder)
+    {
+        builder.EnableSampEvents()
+            .EnablePlayerCommands()
+            .EnableRconCommands()
+            .EnableEventScope("OnPlayerConnect")
+            .EnableEventScope("OnPlayerText");
+
+        builder.EnableEvent<int, int>("TestCallback");
+
+        // Load middleware:
+        // Can also be loaded by systems which are IConfiguringSystem
+        builder.UseMiddleware("OnGameModeInit", (_, next) =>
         {
-            // Load services (e.g. repositories), systems, etc.
-            services
-                .AddTransient<IVehicleRepository, VehicleRepository>()
-                .AddTransient<IFunnyService, FunnyService>()
-                .AddScoped<IScopedFunnyService, FunnyService>()
-                .AddSystemsInAssembly();
-        }
+            Console.WriteLine("I am middleware for OnGameModeInit!");
+            return next();
+        });
 
-        public void Configure(IEcsBuilder builder)
+        builder.UseMiddleware("OnPlayerText", (ctx, next) =>
         {
-            builder.EnableSampEvents()
-                .EnablePlayerCommands()
-                .EnableRconCommands()
-                .EnableEventScope("OnPlayerConnect")
-                .EnableEventScope("OnPlayerText");
+            if (ctx.Arguments[1] is string txt && txt.Contains("I dislike SampSharp"))
+                return null;
+            return next();
+        });
 
-            builder.EnableEvent<int, int>("TestCallback");
+        WarmUpNativeObjects();
+    }
 
-            // Load middleware:
-            // Can also be loaded by systems which are IConfiguringSystem
-            builder.UseMiddleware("OnGameModeInit", (_, next) =>
-            {
-                Console.WriteLine("I am middleware for OnGameModeInit!");
-                return next();
-            });
+    private void WarmUpNativeObjects()
+    {
+        // Warm up native objects for profiling purposes
 
-            builder.UseMiddleware("OnPlayerText", (ctx, next) =>
-            {
-                if (ctx.Arguments[1] is string txt && txt.Contains("I dislike SampSharp"))
-                    return null;
-                return next();
-            });
+        // Components
+        NativeObjectProxyFactory.CreateInstance<NativeActor>();
+        NativeObjectProxyFactory.CreateInstance<NativeGangZone>();
+        NativeObjectProxyFactory.CreateInstance<NativeMenu>();
+        NativeObjectProxyFactory.CreateInstance<NativeObject>();
+        NativeObjectProxyFactory.CreateInstance<NativePickup>();
+        NativeObjectProxyFactory.CreateInstance<NativePlayer>();
+        NativeObjectProxyFactory.CreateInstance<NativePlayerObject>();
+        NativeObjectProxyFactory.CreateInstance<NativePlayerTextDraw>();
+        NativeObjectProxyFactory.CreateInstance<NativePlayerTextLabel>();
+        NativeObjectProxyFactory.CreateInstance<NativeTextDraw>();
+        NativeObjectProxyFactory.CreateInstance<NativeTextLabel>();
+        NativeObjectProxyFactory.CreateInstance<NativeVehicle>();
 
-            WarmUpNativeObjects();
-        }
-
-        private void WarmUpNativeObjects()
-        {
-            // Warm up native objects for profiling purposes
-
-            // Components
-            NativeObjectProxyFactory.CreateInstance<NativeActor>();
-            NativeObjectProxyFactory.CreateInstance<NativeGangZone>();
-            NativeObjectProxyFactory.CreateInstance<NativeMenu>();
-            NativeObjectProxyFactory.CreateInstance<NativeObject>();
-            NativeObjectProxyFactory.CreateInstance<NativePickup>();
-            NativeObjectProxyFactory.CreateInstance<NativePlayer>();
-            NativeObjectProxyFactory.CreateInstance<NativePlayerObject>();
-            NativeObjectProxyFactory.CreateInstance<NativePlayerTextDraw>();
-            NativeObjectProxyFactory.CreateInstance<NativePlayerTextLabel>();
-            NativeObjectProxyFactory.CreateInstance<NativeTextDraw>();
-            NativeObjectProxyFactory.CreateInstance<NativeTextLabel>();
-            NativeObjectProxyFactory.CreateInstance<NativeVehicle>();
-
-            // Services
-            NativeObjectProxyFactory.CreateInstance<ServerServiceNative>();
-            NativeObjectProxyFactory.CreateInstance<VehicleInfoServiceNative>();
-            NativeObjectProxyFactory.CreateInstance<WorldServiceNative>();
-        }
+        // Services
+        NativeObjectProxyFactory.CreateInstance<ServerServiceNative>();
+        NativeObjectProxyFactory.CreateInstance<VehicleInfoServiceNative>();
+        NativeObjectProxyFactory.CreateInstance<WorldServiceNative>();
     }
 }

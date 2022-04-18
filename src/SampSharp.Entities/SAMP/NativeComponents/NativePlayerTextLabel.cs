@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,33 +17,32 @@ using SampSharp.Core.Natives.NativeObjects;
 
 #pragma warning disable 1591
 
-namespace SampSharp.Entities.SAMP
+namespace SampSharp.Entities.SAMP;
+
+[NativeObjectIdentifiers("PlayerId", "Id")]
+public class NativePlayerTextLabel : NativeComponent
 {
-    [NativeObjectIdentifiers("PlayerId", "Id")]
-    public class NativePlayerTextLabel : NativeComponent
+    public const int InvalidId = 0xFFFF;
+
+    public int Id { get; private set; }
+
+    public int PlayerId { get; private set; }
+
+    protected override void OnInitializeComponent()
     {
-        public const int InvalidId = 0xFFFF;
+        Id = Entity / SampLimits.MaxPlayers;
+        PlayerId = Parent;
+    }
 
-        public int Id { get; private set; }
+    [NativeMethod]
+    public virtual int DeletePlayer3DTextLabel()
+    {
+        throw new NativeNotImplementedException();
+    }
 
-        public int PlayerId { get; private set; }
-
-        protected override void OnInitializeComponent()
-        {
-            Id = Entity / SampLimits.MaxPlayers;
-            PlayerId = Parent;
-        }
-
-        [NativeMethod]
-        public virtual int DeletePlayer3DTextLabel()
-        {
-            throw new NativeNotImplementedException();
-        }
-
-        [NativeMethod]
-        public virtual int UpdatePlayer3DTextLabelText(int color, string text)
-        {
-            throw new NativeNotImplementedException();
-        }
+    [NativeMethod]
+    public virtual int UpdatePlayer3DTextLabelText(int color, string text)
+    {
+        throw new NativeNotImplementedException();
     }
 }

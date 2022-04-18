@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,88 +19,87 @@ using System.Linq;
 using System.Reflection;
 using SampSharp.Entities.Utilities;
 
-namespace SampSharp.Entities.SAMP.Commands
+namespace SampSharp.Entities.SAMP.Commands;
+
+/// <summary>
+/// Provides player commands functionality.
+/// </summary>
+public class PlayerCommandService : CommandServiceBase, IPlayerCommandService
 {
-    /// <summary>
-    /// Provides player commands functionality.
-    /// </summary>
-    public class PlayerCommandService : CommandServiceBase, IPlayerCommandService
+    private readonly IEntityManager _entityManager;
+
+    /// <inheritdoc />
+    public PlayerCommandService(IEntityManager entityManager) : base(entityManager, 1)
     {
-        private readonly IEntityManager _entityManager;
+        _entityManager = entityManager;
+    }
 
-        /// <inheritdoc />
-        public PlayerCommandService(IEntityManager entityManager) : base(entityManager, 1)
+    /// <inheritdoc />
+    protected override bool TryCollectParameters(ParameterInfo[] parameters, int prefixParameters, out CommandParameterInfo[] result)
+    {
+        if (!base.TryCollectParameters(parameters, prefixParameters, out result))
+            return false;
+
+        // Ensure player is first parameter
+        var type = parameters[0].ParameterType;
+        return type == typeof(EntityId) || typeof(Component).IsAssignableFrom(type);
+    }
+
+    /// <inheritdoc />
+    public bool Invoke(IServiceProvider services, EntityId player, string inputText)
+    {
+        if (!player.IsOfType(SampEntities.PlayerType))
+            throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
+
+        var result = Invoke(services, new object[] {player}, inputText);
+
+        if (result.Response != InvokeResponse.InvalidArguments)
+            return result.Response == InvokeResponse.Success;
+
+        _entityManager.GetComponent<Player>(player)
+            ?.SendClientMessage(result.UsageMessage);
+        return true;
+    }
+
+    /// <inheritdoc />
+    protected override bool ValidateInputText(ref string inputText)
+    {
+        if (!base.ValidateInputText(ref inputText))
+            return false;
+
+        // Player commands must start with a slash.
+        if (!inputText.StartsWith("/") || inputText.Length <= 1)
+            return false;
+
+        inputText = inputText.Substring(1);
+
+        return true;
+    }
+
+    /// <inheritdoc />
+    protected override IEnumerable<(MethodInfo method, ICommandMethodInfo commandInfo)> ScanMethods(
+        AssemblyScanner scanner)
+    {
+        return scanner.ScanMethods<PlayerCommandAttribute>()
+            .Select(r => (r.method, r.attribute as ICommandMethodInfo));
+    }
+
+    private static string CommandText(CommandInfo command)
+    {
+        if (command.Parameters.Length == 0)
         {
-            _entityManager = entityManager;
+            return $"Usage: /{command.Name}";
         }
 
-        /// <inheritdoc />
-        protected override bool TryCollectParameters(ParameterInfo[] parameters, int prefixParameters, out CommandParameterInfo[] result)
-        {
-            if (!base.TryCollectParameters(parameters, prefixParameters, out result))
-                return false;
+        return $"Usage: /{command.Name} " + string.Join(" ",
+            command.Parameters.Select(arg => arg.IsRequired ? $"[{arg.Name}]" : $"<{arg.Name}>"));
+    }
 
-            // Ensure player is first parameter
-            var type = parameters[0].ParameterType;
-            return type == typeof(EntityId) || typeof(Component).IsAssignableFrom(type);
-        }
-
-        /// <inheritdoc />
-        public bool Invoke(IServiceProvider services, EntityId player, string inputText)
-        {
-            if (!player.IsOfType(SampEntities.PlayerType))
-                throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
-
-            var result = Invoke(services, new object[] {player}, inputText);
-
-            if (result.Response != InvokeResponse.InvalidArguments)
-                return result.Response == InvokeResponse.Success;
-
-            _entityManager.GetComponent<Player>(player)
-                ?.SendClientMessage(result.UsageMessage);
-            return true;
-        }
-
-        /// <inheritdoc />
-        protected override bool ValidateInputText(ref string inputText)
-        {
-            if (!base.ValidateInputText(ref inputText))
-                return false;
-
-            // Player commands must start with a slash.
-            if (!inputText.StartsWith("/") || inputText.Length <= 1)
-                return false;
-
-            inputText = inputText.Substring(1);
-
-            return true;
-        }
-
-        /// <inheritdoc />
-        protected override IEnumerable<(MethodInfo method, ICommandMethodInfo commandInfo)> ScanMethods(
-            AssemblyScanner scanner)
-        {
-            return scanner.ScanMethods<PlayerCommandAttribute>()
-                .Select(r => (r.method, r.attribute as ICommandMethodInfo));
-        }
-
-        private static string CommandText(CommandInfo command)
-        {
-            if (command.Parameters.Length == 0)
-            {
-                return $"Usage: /{command.Name}";
-            }
-
-            return $"Usage: /{command.Name} " + string.Join(" ",
-                command.Parameters.Select(arg => arg.IsRequired ? $"[{arg.Name}]" : $"<{arg.Name}>"));
-        }
-
-        /// <inheritdoc />
-        protected override string GetUsageMessage(CommandInfo[] commands)
-        {
-            return commands.Length == 1
-                ? CommandText(commands[0])
-                : $"Usage: {string.Join(" -or- ", commands.Select(CommandText))}";
-        }
+    /// <inheritdoc />
+    protected override string GetUsageMessage(CommandInfo[] commands)
+    {
+        return commands.Length == 1
+            ? CommandText(commands[0])
+            : $"Usage: {string.Join(" -or- ", commands.Select(CommandText))}";
     }
 }

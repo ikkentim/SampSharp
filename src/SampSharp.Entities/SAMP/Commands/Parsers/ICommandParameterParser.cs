@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,21 +15,20 @@
 
 using System;
 
-namespace SampSharp.Entities.SAMP.Commands.Parsers
+namespace SampSharp.Entities.SAMP.Commands.Parsers;
+
+/// <summary>
+/// Provides functionality for a parser of a command parameter.
+/// </summary>
+public interface ICommandParameterParser
 {
     /// <summary>
-    /// Provides functionality for a parser of a command parameter.
+    /// Tries to parse the specified <paramref name="inputText" /> into the argument for this parser. The consumed text is
+    /// removed from the <paramref name="inputText" />.
     /// </summary>
-    public interface ICommandParameterParser
-    {
-        /// <summary>
-        /// Tries to parse the specified <paramref name="inputText" /> into the argument for this parser. The consumed text is
-        /// removed from the <paramref name="inputText" />.
-        /// </summary>
-        /// <param name="services">A service provider.</param>
-        /// <param name="inputText">The input text to parse.</param>
-        /// <param name="result">The parsed result.</param>
-        /// <returns><c>true</c> if the parameter could be parsed; otherwise <c>false</c>.</returns>
-        bool TryParse(IServiceProvider services, ref string inputText, out object result);
-    }
+    /// <param name="services">A service provider.</param>
+    /// <param name="inputText">The input text to parse.</param>
+    /// <param name="result">The parsed result.</param>
+    /// <returns><c>true</c> if the parameter could be parsed; otherwise <c>false</c>.</returns>
+    bool TryParse(IServiceProvider services, ref string inputText, out object result);
 }

@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,32 +16,31 @@
 using System;
 using SampSharp.Entities.Annotations;
 
-namespace SampSharp.Entities.SAMP.Commands
+namespace SampSharp.Entities.SAMP.Commands;
+
+/// <summary>
+/// An attribute which indicates the method is invokable as a RCON command.
+/// </summary>
+[AttributeUsage(AttributeTargets.Method)]
+[MeansImplicitUse]
+public class RconCommandAttribute : Attribute, ICommandMethodInfo
 {
     /// <summary>
-    /// An attribute which indicates the method is invokable as a RCON command.
+    /// Initializes a new instance of the <see cref="RconCommandAttribute" /> class.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Method)]
-    [MeansImplicitUse]
-    public class RconCommandAttribute : Attribute, ICommandMethodInfo
+    public RconCommandAttribute()
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RconCommandAttribute" /> class.
-        /// </summary>
-        public RconCommandAttribute()
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RconCommandAttribute" /> class.
-        /// </summary>
-        /// <param name="name">The overridden name of the command.</param>
-        public RconCommandAttribute(string name)
-        {
-            Name = name;
-        }
-
-        /// <inheritdoc />
-        public string Name { get; set; }
     }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="RconCommandAttribute" /> class.
+    /// </summary>
+    /// <param name="name">The overridden name of the command.</param>
+    public RconCommandAttribute(string name)
+    {
+        Name = name;
+    }
+
+    /// <inheritdoc />
+    public string Name { get; set; }
 }

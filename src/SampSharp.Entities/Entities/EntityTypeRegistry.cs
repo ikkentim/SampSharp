@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,54 +17,53 @@ using System;
 using System.Collections.Generic;
 using SampSharp.Entities.Utilities;
 
-namespace SampSharp.Entities
+namespace SampSharp.Entities;
+
+internal static class EntityTypeRegistry
 {
-    internal static class EntityTypeRegistry
+    private static readonly Dictionary<Guid, string> Names = new();
+    private static readonly Dictionary<Guid, int> InvalidHandles = new();
+
+    static EntityTypeRegistry()
     {
-        private static readonly Dictionary<Guid, string> Names = new();
-        private static readonly Dictionary<Guid, int> InvalidHandles = new();
+        var fields = new AssemblyScanner()
+            .IncludeAllAssemblies()
+            .IncludeStatic(true)
+            .IncludeAbstract()
+            .IncludeNonPublicMembers()
+            .ScanFields<EntityTypeAttribute>();
 
-        static EntityTypeRegistry()
+        Names[Guid.Empty] = "Empty";
+
+        foreach (var (field, attribute) in fields)
         {
-            var fields = new AssemblyScanner()
-                .IncludeAllAssemblies()
-                .IncludeStatic(true)
-                .IncludeAbstract()
-                .IncludeNonPublicMembers()
-                .ScanFields<EntityTypeAttribute>();
-
-            Names[Guid.Empty] = "Empty";
-
-            foreach (var (field, attribute) in fields)
+            var name = attribute.Name;
+            if(string.IsNullOrWhiteSpace(name))
             {
-                var name = attribute.Name;
-                if(string.IsNullOrWhiteSpace(name))
-                {
-                    name = field.Name;
-                    if (name.Length > 4 && name.EndsWith("Type"))
-                        name = name.Substring(0, name.Length - 4);
-                }
+                name = field.Name;
+                if (name.Length > 4 && name.EndsWith("Type"))
+                    name = name.Substring(0, name.Length - 4);
+            }
 
-                if (field.GetValue(null) is Guid g)
-                {
-                    Names[g] = name;
-                    InvalidHandles[g] = attribute.InvalidHandle;
-                }
+            if (field.GetValue(null) is Guid g)
+            {
+                Names[g] = name;
+                InvalidHandles[g] = attribute.InvalidHandle;
             }
         }
+    }
         
-        public static string GetTypeName(Guid type)
-        {
-            return Names.TryGetValue(type, out var name)
-                ? name
-                : type.ToString();
-        }
+    public static string GetTypeName(Guid type)
+    {
+        return Names.TryGetValue(type, out var name)
+            ? name
+            : type.ToString();
+    }
 
-        public static int GetTypeInvalidHandle(Guid type)
-        {
-            return InvalidHandles.TryGetValue(type, out var handle)
-                ? handle
-                : -1;
-        }
+    public static int GetTypeInvalidHandle(Guid type)
+    {
+        return InvalidHandles.TryGetValue(type, out var handle)
+            ? handle
+            : -1;
     }
 }

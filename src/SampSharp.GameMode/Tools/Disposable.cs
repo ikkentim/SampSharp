@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2017 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,90 +12,90 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 using System;
 
-namespace SampSharp.GameMode.Tools
+namespace SampSharp.GameMode.Tools;
+
+/// <summary>
+///     Defines methods to release allocated resources and to check whether this resource has been disposed.
+/// </summary>
+public abstract class Disposable : IDisposable
 {
+    private volatile bool _isDisposed;
+
     /// <summary>
-    ///     Defines methods to release allocated resources and to check whether this resource has been disposed.
+    ///     Gets whether this resource has been disposed.
     /// </summary>
-    public abstract class Disposable : IDisposable
+    public bool IsDisposed
     {
-        private volatile bool _isDisposed;
+        get => _isDisposed;
+        private set => _isDisposed = value;
+    }
 
-        /// <summary>
-        ///     Gets whether this resource has been disposed.
-        /// </summary>
-        public bool IsDisposed
+    /// <summary>
+    ///     Performs tasks associated with freeing, releasing, or resetting unmanaged resources.
+    /// </summary>
+    public void Dispose()
+    {
+        if (IsDisposed)
         {
-            get => _isDisposed;
-            private set => _isDisposed = value;
+            //We've been disposed already. Abort further dispose call.
+            return;
+        }
+        //Dispose all native and managed resources.
+        OnDisposed(true);
+
+        //Remember we've been disposed.
+        IsDisposed = true;
+
+        //Suppress finalization; We already disposed our  resources.
+        GC.SuppressFinalize(this);
+    }
+
+    /// <summary>
+    ///     Finalizes an instance of the <see cref="Disposable" /> class.
+    /// </summary>
+    ~Disposable()
+    {
+        if (IsDisposed)
+        {
+            //We've been disposed already. Abort further dispose call.
+            return;
         }
 
-        /// <summary>
-        ///     Performs tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public void Dispose()
-        {
-            if (IsDisposed)
-            {
-                //We've been disposed already. Abort further dispose call.
-                return;
-            }
-            //Dispose all native and managed resources.
-            OnDisposed(true);
+        OnDisposed(false);
 
-            //Remember we've been disposed.
-            IsDisposed = true;
+        //We don't care to set IsDisposed value; Resource is being collected by GC anyways.
+    }
 
-            //Suppress finalization; We already disposed our  resources.
-            GC.SuppressFinalize(this);
-        }
+    /// <summary>
+    ///     Occurs when this instance has been disposed.
+    /// </summary>
+    public event EventHandler Disposed;
 
-        /// <summary>
-        ///     Finalizes an instance of the <see cref="Disposable" /> class.
-        /// </summary>
-        ~Disposable()
-        {
-            if (IsDisposed)
-            {
-                //We've been disposed already. Abort further dispose call.
-                return;
-            }
-
-            OnDisposed(false);
-
-            //We don't care to set IsDisposed value; Resource is being collected by GC anyways.
-        }
-
-        /// <summary>
-        ///     Occurs when this instance has been disposed.
-        /// </summary>
-        public event EventHandler Disposed;
-
-        /// <summary>
-        ///     Checks whether this instance has been disposed. If it has, it throws an exception.
-        /// </summary>
-        /// <exception cref="ObjectDisposedException">Thrown when this instance has been disposed.</exception>
-        protected void AssertNotDisposed()
-        {
-            if (IsDisposed)
-                throw new ObjectDisposedException(GetType().FullName);
-        }
+    /// <summary>
+    ///     Checks whether this instance has been disposed. If it has, it throws an exception.
+    /// </summary>
+    /// <exception cref="ObjectDisposedException">Thrown when this instance has been disposed.</exception>
+    protected void AssertNotDisposed()
+    {
+        if (IsDisposed)
+            throw new ObjectDisposedException(GetType().FullName);
+    }
 
 
-        /// <summary>
-        ///     Performs tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        /// <param name="disposing">Whether managed resources should be disposed.</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Blocker Code Smell", "S2953:Methods named \"Dispose\" should implement \"IDisposable.Dispose\"", Justification = "By design")]
-        protected abstract void Dispose(bool disposing);
+    /// <summary>
+    ///     Performs tasks associated with freeing, releasing, or resetting unmanaged resources.
+    /// </summary>
+    /// <param name="disposing">Whether managed resources should be disposed.</param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Blocker Code Smell", "S2953:Methods named \"Dispose\" should implement \"IDisposable.Dispose\"", Justification = "By design")]
+    protected abstract void Dispose(bool disposing);
 
-        private void OnDisposed(bool disposing)
-        {
-            Dispose(disposing);
+    private void OnDisposed(bool disposing)
+    {
+        Dispose(disposing);
 
-            Disposed?.Invoke(this, EventArgs.Empty);
-        }
+        Disposed?.Invoke(this, EventArgs.Empty);
     }
 }

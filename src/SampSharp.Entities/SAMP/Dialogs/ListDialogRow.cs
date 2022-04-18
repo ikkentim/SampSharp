@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,33 +15,32 @@
 
 using System;
 
-namespace SampSharp.Entities.SAMP
+namespace SampSharp.Entities.SAMP;
+
+/// <summary>
+/// Represents a row in a <see cref="ListDialog" />
+/// </summary>
+public class ListDialogRow : IDialogRow
 {
     /// <summary>
-    /// Represents a row in a <see cref="ListDialog" />
+    /// Initializes a new instance of the <see cref="ListDialogRow" /> class.
     /// </summary>
-    public class ListDialogRow : IDialogRow
+    /// <param name="text">The text.</param>
+    public ListDialogRow(string text)
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ListDialogRow" /> class.
-        /// </summary>
-        /// <param name="text">The text.</param>
-        public ListDialogRow(string text)
-        {
-            Text = text ?? throw new ArgumentNullException(nameof(text));
-        }
-
-        /// <summary>
-        /// Gets the text.
-        /// </summary>
-        public string Text { get; }
-
-        /// <summary>
-        /// Gets or sets the tag. The tag can be used so associate data with this row which can be used retrieved when the user
-        /// responds to the dialog.
-        /// </summary>
-        public object Tag { get; set; }
-
-        string IDialogRow.RawText => Text;
+        Text = text ?? throw new ArgumentNullException(nameof(text));
     }
+
+    /// <summary>
+    /// Gets the text.
+    /// </summary>
+    public string Text { get; }
+
+    /// <summary>
+    /// Gets or sets the tag. The tag can be used so associate data with this row which can be used retrieved when the user
+    /// responds to the dialog.
+    /// </summary>
+    public object Tag { get; set; }
+
+    string IDialogRow.RawText => Text;
 }

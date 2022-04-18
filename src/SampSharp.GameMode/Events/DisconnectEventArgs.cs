@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2017 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,30 +12,30 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 using System;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.World;
 
-namespace SampSharp.GameMode.Events
+namespace SampSharp.GameMode.Events;
+
+/// <summary>
+///     Provides data for the <see cref="BaseMode.PlayerDisconnected" />, <see cref="BaseMode.PlayerCleanup" />,
+///     <see cref="BasePlayer.Disconnected" /> or <see cref="BasePlayer.Cleanup" /> event.
+/// </summary>
+public class DisconnectEventArgs : EventArgs
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerDisconnected" />, <see cref="BaseMode.PlayerCleanup" />,
-    ///     <see cref="BasePlayer.Disconnected" /> or <see cref="BasePlayer.Cleanup" /> event.
+    ///     Initializes a new instance of the <see cref="DisconnectEventArgs" /> class.
     /// </summary>
-    public class DisconnectEventArgs : EventArgs
+    /// <param name="reason">The reason.</param>
+    public DisconnectEventArgs(DisconnectReason reason)
     {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="DisconnectEventArgs" /> class.
-        /// </summary>
-        /// <param name="reason">The reason.</param>
-        public DisconnectEventArgs(DisconnectReason reason)
-        {
-            Reason = reason;
-        }
-
-        /// <summary>
-        ///     Gets the reason of the disconnection.
-        /// </summary>
-        public DisconnectReason Reason { get; }
+        Reason = reason;
     }
+
+    /// <summary>
+    ///     Gets the reason of the disconnection.
+    /// </summary>
+    public DisconnectReason Reason { get; }
 }

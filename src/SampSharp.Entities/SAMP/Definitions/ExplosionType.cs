@@ -1,5 +1,5 @@
 // SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,94 +13,93 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace SampSharp.Entities.SAMP
+namespace SampSharp.Entities.SAMP;
+
+/// <summary>
+/// Contains all types of explosions with description
+/// </summary>
+public enum ExplosionType
 {
     /// <summary>
-    /// Contains all types of explosions with description
+    /// Size large. Visible. Damage.
     /// </summary>
-    public enum ExplosionType
-    {
-        /// <summary>
-        /// Size large. Visible. Damage.
-        /// </summary>
-        LargeVisibleDamage,
+    LargeVisibleDamage,
 
 
-        /// <summary>
-        /// Size normal. Visible. Creates a fire.
-        /// </summary>
-        NormalVisibleFire,
+    /// <summary>
+    /// Size normal. Visible. Creates a fire.
+    /// </summary>
+    NormalVisibleFire,
 
 
-        /// <summary>
-        /// Size large. Visible. Damage. Creates a fire.
-        /// </summary>
-        LargeVisibleDamageFire,
+    /// <summary>
+    /// Size large. Visible. Damage. Creates a fire.
+    /// </summary>
+    LargeVisibleDamageFire,
 
 
-        /// <summary>
-        /// Size large. Visible. Damage. Sometimes it does not create a fire.
-        /// </summary>
-        LargeVisibleDamageFire2,
+    /// <summary>
+    /// Size large. Visible. Damage. Sometimes it does not create a fire.
+    /// </summary>
+    LargeVisibleDamageFire2,
 
 
-        /// <summary>
-        /// Size normal. Visible. Damage. It represents a vanishing flash. No sound.
-        /// </summary>
-        NormalVisibleDamageFlash,
+    /// <summary>
+    /// Size normal. Visible. Damage. It represents a vanishing flash. No sound.
+    /// </summary>
+    NormalVisibleDamageFlash,
 
 
-        /// <summary>
-        /// Size normal. Visible. Damage. It represents a vanishing flash. No sound.
-        /// </summary>
-        NormalVisibleDamageFlash2,
+    /// <summary>
+    /// Size normal. Visible. Damage. It represents a vanishing flash. No sound.
+    /// </summary>
+    NormalVisibleDamageFlash2,
 
 
-        /// <summary>
-        /// Size very large. Visible. Damage. Additional reddish explosion after-glow.
-        /// </summary>
-        VeryLargeVisibleDamage,
+    /// <summary>
+    /// Size very large. Visible. Damage. Additional reddish explosion after-glow.
+    /// </summary>
+    VeryLargeVisibleDamage,
 
 
-        /// <summary>
-        /// Size huge. Visible. Damage. Additional reddish explosion after-glow.
-        /// </summary>
-        HugeVisibleDamage,
+    /// <summary>
+    /// Size huge. Visible. Damage. Additional reddish explosion after-glow.
+    /// </summary>
+    HugeVisibleDamage,
 
 
-        /// <summary>
-        /// Size normal. Invisible. Damage.
-        /// </summary>
-        NormalInvisibleDamage,
+    /// <summary>
+    /// Size normal. Invisible. Damage.
+    /// </summary>
+    NormalInvisibleDamage,
 
 
-        /// <summary>
-        /// Size normal. Damage. Creates a fire at ground level, otherwise explosion is heard but invisible.
-        /// </summary>
-        NormalInvisibleDamageFire,
+    /// <summary>
+    /// Size normal. Damage. Creates a fire at ground level, otherwise explosion is heard but invisible.
+    /// </summary>
+    NormalInvisibleDamageFire,
 
 
-        /// <summary>
-        /// Size large. Visible. Damage. Compared to the LargeVisibleDamage, the explosion seems great.
-        /// </summary>
-        LargeVisibleDamage2,
+    /// <summary>
+    /// Size large. Visible. Damage. Compared to the LargeVisibleDamage, the explosion seems great.
+    /// </summary>
+    LargeVisibleDamage2,
 
 
-        /// <summary>
-        /// Size small. Visible. Damage.
-        /// </summary>
-        SmallVisibleDamage,
+    /// <summary>
+    /// Size small. Visible. Damage.
+    /// </summary>
+    SmallVisibleDamage,
 
 
-        /// <summary>
-        /// Size very small. Visible. Damage.
-        /// </summary>
-        VerySmallVisibleDamage,
+    /// <summary>
+    /// Size very small. Visible. Damage.
+    /// </summary>
+    VerySmallVisibleDamage,
 
 
-        /// <summary>
-        /// Size large. Invisible. Produces no special effects other than black burn effects on the ground.
-        /// </summary>
-        LargeInvisible
-    }
+    /// <summary>
+    /// Size large. Invisible. Produces no special effects other than black burn effects on the ground.
+    /// </summary>
+    LargeInvisible
 }

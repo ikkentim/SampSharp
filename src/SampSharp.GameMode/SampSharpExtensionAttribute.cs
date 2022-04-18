@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2017 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,39 +18,38 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace SampSharp.GameMode
+namespace SampSharp.GameMode;
+
+/// <summary>
+///     Specifies the extension to load from this assembly.
+/// </summary>
+[AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
+public class SampSharpExtensionAttribute : Attribute
 {
+    private readonly Type[] _loadBeforeAssembliesOfType;
+
     /// <summary>
-    ///     Specifies the extension to load from this assembly.
+    ///     Initializes a new instance of the <see cref="SampSharpExtensionAttribute" /> class.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
-    public class SampSharpExtensionAttribute : Attribute
+    /// <param name="type">The type.</param>
+    /// <param name="loadBeforeAssembliesOfType">
+    ///     Types of assemblies to load before this extension (extensions this extension
+    ///     has references to and requires to load before).
+    /// </param>
+    public SampSharpExtensionAttribute(Type type, params Type[] loadBeforeAssembliesOfType)
     {
-        private readonly Type[] _loadBeforeAssembliesOfType;
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="SampSharpExtensionAttribute" /> class.
-        /// </summary>
-        /// <param name="type">The type.</param>
-        /// <param name="loadBeforeAssembliesOfType">
-        ///     Types of assemblies to load before this extension (extensions this extension
-        ///     has references to and requires to load before).
-        /// </param>
-        public SampSharpExtensionAttribute(Type type, params Type[] loadBeforeAssembliesOfType)
-        {
-            _loadBeforeAssembliesOfType = loadBeforeAssembliesOfType;
-            Type = type;
-        }
-
-        /// <summary>
-        ///     Gets the type of the extension.
-        /// </summary>
-        public Type Type { get; }
-
-        /// <summary>
-        ///     Gets the assemblies to load before this extension.
-        /// </summary>
-        public IEnumerable<Assembly> LoadBeforeAssemblies
-            => _loadBeforeAssembliesOfType?.Where(t => t != null).Select(t => t.GetTypeInfo().Assembly);
+        _loadBeforeAssembliesOfType = loadBeforeAssembliesOfType;
+        Type = type;
     }
+
+    /// <summary>
+    ///     Gets the type of the extension.
+    /// </summary>
+    public Type Type { get; }
+
+    /// <summary>
+    ///     Gets the assemblies to load before this extension.
+    /// </summary>
+    public IEnumerable<Assembly> LoadBeforeAssemblies
+        => _loadBeforeAssembliesOfType?.Where(t => t != null).Select(t => t.GetTypeInfo().Assembly);
 }

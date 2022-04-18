@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2017 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,36 +12,36 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 using System;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.World;
 
-namespace SampSharp.GameMode.Events
+namespace SampSharp.GameMode.Events;
+
+/// <summary>
+///     Provides data for the <see cref="BaseMode.PlayerClickPlayer" /> or <see cref="BasePlayer.ClickPlayer" /> event.
+/// </summary>
+public class ClickPlayerEventArgs : EventArgs
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerClickPlayer" /> or <see cref="BasePlayer.ClickPlayer" /> event.
+    ///     Initializes a new instance of the ClickPlayerEventArgs class.
     /// </summary>
-    public class ClickPlayerEventArgs : EventArgs
+    /// <param name="clickedPlayer">Id of the clicked player.</param>
+    /// <param name="source">PlayerClickSource of the event.</param>
+    public ClickPlayerEventArgs(BasePlayer clickedPlayer, PlayerClickSource source)
     {
-        /// <summary>
-        ///     Initializes a new instance of the ClickPlayerEventArgs class.
-        /// </summary>
-        /// <param name="clickedPlayer">Id of the clicked player.</param>
-        /// <param name="source">PlayerClickSource of the event.</param>
-        public ClickPlayerEventArgs(BasePlayer clickedPlayer, PlayerClickSource source)
-        {
-            ClickedPlayer = clickedPlayer;
-            PlayerClickSource = source;
-        }
-
-        /// <summary>
-        ///     Gets the clicked player.
-        /// </summary>
-        public BasePlayer ClickedPlayer { get; }
-
-        /// <summary>
-        ///     Gets the PlayerClickSource of this event.
-        /// </summary>
-        public PlayerClickSource PlayerClickSource { get; }
+        ClickedPlayer = clickedPlayer;
+        PlayerClickSource = source;
     }
+
+    /// <summary>
+    ///     Gets the clicked player.
+    /// </summary>
+    public BasePlayer ClickedPlayer { get; }
+
+    /// <summary>
+    ///     Gets the PlayerClickSource of this event.
+    /// </summary>
+    public PlayerClickSource PlayerClickSource { get; }
 }

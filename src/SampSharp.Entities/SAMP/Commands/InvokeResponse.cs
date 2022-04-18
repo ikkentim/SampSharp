@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,25 +13,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace SampSharp.Entities.SAMP.Commands
+namespace SampSharp.Entities.SAMP.Commands;
+
+/// <summary>
+/// Contains the types of responses of an invoked command.
+/// </summary>
+public enum InvokeResponse
 {
     /// <summary>
-    /// Contains the types of responses of an invoked command.
+    /// The command executed successfully.
     /// </summary>
-    public enum InvokeResponse
-    {
-        /// <summary>
-        /// The command executed successfully.
-        /// </summary>
-        Success,
-        /// <summary>
-        /// The command could not be found.
-        /// </summary>
-        CommandNotFound,
+    Success,
+    /// <summary>
+    /// The command could not be found.
+    /// </summary>
+    CommandNotFound,
 
-        /// <summary>
-        /// The command was invoked with invalid arguments.
-        /// </summary>
-        InvalidArguments
-    }
+    /// <summary>
+    /// The command was invoked with invalid arguments.
+    /// </summary>
+    InvalidArguments
 }

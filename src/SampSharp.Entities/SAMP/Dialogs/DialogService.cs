@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,78 +16,77 @@
 using System;
 using System.Threading.Tasks;
 
-namespace SampSharp.Entities.SAMP
+namespace SampSharp.Entities.SAMP;
+
+/// <summary>
+/// Provides dialog functionality.
+/// </summary>
+/// <seealso cref="IDialogService" />
+public class DialogService : IDialogService
 {
+    private readonly IEntityManager _entityManager;
+
     /// <summary>
-    /// Provides dialog functionality.
+    /// The dialog ID used by the dialog service.
     /// </summary>
-    /// <seealso cref="IDialogService" />
-    public class DialogService : IDialogService
+    public const int DialogId = 10000;
+
+    /// <summary>
+    /// The dialog ID used by the dialog service to hide the visible dialog.
+    /// </summary>
+    public const int DialogHideId = -1;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DialogService" /> class.
+    /// </summary>
+    public DialogService(IEntityManager entityManager)
     {
-        private readonly IEntityManager _entityManager;
+        _entityManager = entityManager;
+    }
 
-        /// <summary>
-        /// The dialog ID used by the dialog service.
-        /// </summary>
-        public const int DialogId = 10000;
+    /// <inheritdoc />
+    public void Show<TResponse>(EntityId player, IDialog<TResponse> dialog, Action<TResponse> responseHandler)
+        where TResponse : struct
+    {
+        if (!player.IsOfType(SampEntities.PlayerType))
+            throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
 
-        /// <summary>
-        /// The dialog ID used by the dialog service to hide the visible dialog.
-        /// </summary>
-        public const int DialogHideId = -1;
+        if (dialog == null)
+            throw new ArgumentNullException(nameof(dialog));
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DialogService" /> class.
-        /// </summary>
-        public DialogService(IEntityManager entityManager)
+        _entityManager.Destroy<VisibleDialog>(player);
+
+        var native = _entityManager.GetComponent<NativePlayer>(player);
+
+        native.ShowPlayerDialog(DialogId, (int) dialog.Style, dialog.Caption ?? string.Empty,
+            dialog.Content ?? string.Empty, dialog.Button1 ?? string.Empty, dialog.Button2 ?? string.Empty);
+            
+
+        void Handler(DialogResult result)
         {
-            _entityManager = entityManager;
-        }
-
-        /// <inheritdoc />
-        public void Show<TResponse>(EntityId player, IDialog<TResponse> dialog, Action<TResponse> responseHandler)
-            where TResponse : struct
-        {
-            if (!player.IsOfType(SampEntities.PlayerType))
-                throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
-
-            if (dialog == null)
-                throw new ArgumentNullException(nameof(dialog));
-
+            // Destroy the visible dialog component before the dialog handler might replace it with a new dialog.
             _entityManager.Destroy<VisibleDialog>(player);
 
-            var native = _entityManager.GetComponent<NativePlayer>(player);
-
-            native.ShowPlayerDialog(DialogId, (int) dialog.Style, dialog.Caption ?? string.Empty,
-                dialog.Content ?? string.Empty, dialog.Button1 ?? string.Empty, dialog.Button2 ?? string.Empty);
-            
-
-            void Handler(DialogResult result)
-            {
-                // Destroy the visible dialog component before the dialog handler might replace it with a new dialog.
-                _entityManager.Destroy<VisibleDialog>(player);
-
-                var translated = dialog.Translate(result);
-                responseHandler?.Invoke(translated);
-            }
-            
-            _entityManager.AddComponent<VisibleDialog>(player, dialog, (Action<DialogResult>) Handler);
+            var translated = dialog.Translate(result);
+            responseHandler?.Invoke(translated);
         }
+            
+        _entityManager.AddComponent<VisibleDialog>(player, dialog, (Action<DialogResult>) Handler);
+    }
 
 
-        /// <inheritdoc />
-        public Task<TResponse> Show<TResponse>(EntityId player, IDialog<TResponse> dialog) where TResponse : struct
-        {
-            if (!player.IsOfType(SampEntities.PlayerType))
-                throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
+    /// <inheritdoc />
+    public Task<TResponse> Show<TResponse>(EntityId player, IDialog<TResponse> dialog) where TResponse : struct
+    {
+        if (!player.IsOfType(SampEntities.PlayerType))
+            throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
 
-            if (dialog == null) throw new ArgumentNullException(nameof(dialog));
+        if (dialog == null) throw new ArgumentNullException(nameof(dialog));
 
-            var taskCompletionSource = new TaskCompletionSource<TResponse>();
+        var taskCompletionSource = new TaskCompletionSource<TResponse>();
 
-            Show(player, dialog, taskCompletionSource.SetResult);
+        Show(player, dialog, taskCompletionSource.SetResult);
 
-            return taskCompletionSource.Task;
-        }
+        return taskCompletionSource.Task;
     }
 }

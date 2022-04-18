@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,26 +13,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace SampSharp.Entities.SAMP
+namespace SampSharp.Entities.SAMP;
+
+/// <summary>
+/// Contains all object editing responses.
+/// </summary>
+public enum EditObjectResponse
 {
     /// <summary>
-    /// Contains all object editing responses.
+    /// Editing has been canceled.
     /// </summary>
-    public enum EditObjectResponse
-    {
-        /// <summary>
-        /// Editing has been canceled.
-        /// </summary>
-        Cancel = 0,
+    Cancel = 0,
 
-        /// <summary>
-        /// The current is the final edit sate.
-        /// </summary>
-        Final = 1,
+    /// <summary>
+    /// The current is the final edit sate.
+    /// </summary>
+    Final = 1,
 
-        /// <summary>
-        /// The current is a updated edit state.
-        /// </summary>
-        Update = 2
-    }
+    /// <summary>
+    /// The current is a updated edit state.
+    /// </summary>
+    Update = 2
 }

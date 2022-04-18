@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,26 +13,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace SampSharp.Entities.SAMP
+namespace SampSharp.Entities.SAMP;
+
+/// <summary>
+/// Contains all vehicle param values.
+/// </summary>
+public enum VehicleParameterValue
 {
     /// <summary>
-    /// Contains all vehicle param values.
+    /// Value has not been set.
     /// </summary>
-    public enum VehicleParameterValue
-    {
-        /// <summary>
-        /// Value has not been set.
-        /// </summary>
-        Unset = -1,
+    Unset = -1,
 
-        /// <summary>
-        /// Value is off.
-        /// </summary>
-        Off = 0,
+    /// <summary>
+    /// Value is off.
+    /// </summary>
+    Off = 0,
 
-        /// <summary>
-        /// Value is on.
-        /// </summary>
-        On = 1
-    }
+    /// <summary>
+    /// Value is on.
+    /// </summary>
+    On = 1
 }

@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,50 +15,49 @@
 
 using System;
 
-namespace SampSharp.Entities.SAMP
+namespace SampSharp.Entities.SAMP;
+
+/// <summary>
+/// A component which contains the data of the currently visible dialog.
+/// </summary>
+/// <seealso cref="SampSharp.Entities.Component" />
+public class VisibleDialog : Component
 {
     /// <summary>
-    /// A component which contains the data of the currently visible dialog.
+    /// Initializes a new instance of the <see cref="VisibleDialog" /> class.
     /// </summary>
-    /// <seealso cref="SampSharp.Entities.Component" />
-    public class VisibleDialog : Component
+    public VisibleDialog(IDialog dialog, Action<DialogResult> handler)
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="VisibleDialog" /> class.
-        /// </summary>
-        public VisibleDialog(IDialog dialog, Action<DialogResult> handler)
-        {
-            Dialog = dialog ?? throw new ArgumentNullException(nameof(dialog));
-            Handler = handler ?? throw new ArgumentNullException(nameof(handler));
-        }
+        Dialog = dialog ?? throw new ArgumentNullException(nameof(dialog));
+        Handler = handler ?? throw new ArgumentNullException(nameof(handler));
+    }
 
-        /// <summary>
-        /// Gets the visible dialog.
-        /// </summary>
-        public IDialog Dialog { get; }
+    /// <summary>
+    /// Gets the visible dialog.
+    /// </summary>
+    public IDialog Dialog { get; }
 
-        /// <summary>
-        /// Gets the response handler for the dialog.
-        /// </summary>
-        public Action<DialogResult> Handler { get; }
+    /// <summary>
+    /// Gets the response handler for the dialog.
+    /// </summary>
+    public Action<DialogResult> Handler { get; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether a response has been received.
-        /// </summary>
-        public bool ResponseReceived { get; set; }
+    /// <summary>
+    /// Gets or sets a value indicating whether a response has been received.
+    /// </summary>
+    public bool ResponseReceived { get; set; }
 
-        /// <inheritdoc />
-        protected override void OnDestroyComponent()
-        {
-            var component = GetComponent<NativePlayer>();
+    /// <inheritdoc />
+    protected override void OnDestroyComponent()
+    {
+        var component = GetComponent<NativePlayer>();
 
-            if (ResponseReceived)
-                return;
+        if (ResponseReceived)
+            return;
 
-            ResponseReceived = true;
-            Handler(new DialogResult(DialogResponse.RightButtonOrCancel, 0, null));
+        ResponseReceived = true;
+        Handler(new DialogResult(DialogResponse.RightButtonOrCancel, 0, null));
 
-            component?.ShowPlayerDialog(DialogService.DialogHideId, (int) DialogStyle.MessageBox, " ", " ", " ", " ");
-        }
+        component?.ShowPlayerDialog(DialogService.DialogHideId, (int) DialogStyle.MessageBox, " ", " ", " ", " ");
     }
 }

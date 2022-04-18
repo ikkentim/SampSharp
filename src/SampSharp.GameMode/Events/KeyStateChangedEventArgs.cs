@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2017 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,43 +12,43 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 using System;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.World;
 
-namespace SampSharp.GameMode.Events
+namespace SampSharp.GameMode.Events;
+
+/// <summary>
+///     Provides data for the <see cref="BaseMode.PlayerKeyStateChanged" /> or <see cref="BasePlayer.KeyStateChanged" />
+///     event.
+/// </summary>
+public class KeyStateChangedEventArgs : EventArgs
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerKeyStateChanged" /> or <see cref="BasePlayer.KeyStateChanged" />
-    ///     event.
+    ///     Initializes a new instance of the <see cref="KeyStateChangedEventArgs" /> class.
     /// </summary>
-    public class KeyStateChangedEventArgs : EventArgs
+    /// <param name="newKeys">The new keys.</param>
+    /// <param name="oldKeys">The old keys.</param>
+    public KeyStateChangedEventArgs(Keys newKeys, Keys oldKeys)
     {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="KeyStateChangedEventArgs" /> class.
-        /// </summary>
-        /// <param name="newKeys">The new keys.</param>
-        /// <param name="oldKeys">The old keys.</param>
-        public KeyStateChangedEventArgs(Keys newKeys, Keys oldKeys)
-        {
-            NewKeys = newKeys;
-            OldKeys = oldKeys;
-        }
-
-        /// <summary>
-        ///     Gets the new keys.
-        /// </summary>
-        /// <value>
-        ///     The new keys.
-        /// </value>
-        public Keys NewKeys { get; }
-
-        /// <summary>
-        ///     Gets the old keys.
-        /// </summary>
-        /// <value>
-        ///     The old keys.
-        /// </value>
-        public Keys OldKeys { get; }
+        NewKeys = newKeys;
+        OldKeys = oldKeys;
     }
+
+    /// <summary>
+    ///     Gets the new keys.
+    /// </summary>
+    /// <value>
+    ///     The new keys.
+    /// </value>
+    public Keys NewKeys { get; }
+
+    /// <summary>
+    ///     Gets the old keys.
+    /// </summary>
+    /// <value>
+    ///     The old keys.
+    /// </value>
+    public Keys OldKeys { get; }
 }

@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2017 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,20 +15,19 @@
 
 using SampSharp.Core.Natives.NativeObjects;
 
-namespace SampSharp.GameMode.Display
+namespace SampSharp.GameMode.Display;
+
+public abstract partial class Dialog
 {
-    public abstract partial class Dialog
-    {
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        public class DialogInternal : NativeObjectSingleton<DialogInternal>
+    public class DialogInternal : NativeObjectSingleton<DialogInternal>
+    {
+        [NativeMethod]
+        public virtual bool ShowPlayerDialog(int playerid, int dialogid, int style, string caption, string info,
+            string button1, string button2)
         {
-            [NativeMethod]
-            public virtual bool ShowPlayerDialog(int playerid, int dialogid, int style, string caption, string info,
-                string button1, string button2)
-            {
-                throw new NativeNotImplementedException();
-            }
+            throw new NativeNotImplementedException();
         }
-#pragma warning restore CS1591
     }
+#pragma warning restore CS1591
 }

@@ -1,5 +1,5 @@
 // SampSharp
-// Copyright 2018 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,47 +17,47 @@ using System;
 using System.Collections.Concurrent;
 using System.Threading;
 
-namespace SampSharp.Core
+namespace SampSharp.Core;
+
+internal class SampSharpSynchronizationContext : SynchronizationContext
 {
-    internal class SampSharpSynchronizationContext : SynchronizationContext
+    private readonly ConcurrentQueue<SendOrPostCallbackItem> _queue = new();
+
+    public override void Send(SendOrPostCallback d, object state)
     {
-        private readonly ConcurrentQueue<SendOrPostCallbackItem> _queue = new();
+        var item = new SendOrPostCallbackItem(d, state, ExecutionType.Send);
+        _queue.Enqueue(item);
 
-        public override void Send(SendOrPostCallback d, object state)
-        {
-            var item = new SendOrPostCallbackItem(d, state, ExecutionType.Send);
-            _queue.Enqueue(item);
+        item.ExecutionCompleteWaitHandle.WaitOne();
 
-            item.ExecutionCompleteWaitHandle.WaitOne();
-
-            if (item.ExecutedWithException)
-                throw item.Exception;
-        }
+        if (item.ExecutedWithException)
+            throw item.Exception;
+    }
         
-        public override void Post(SendOrPostCallback d, object state)
-        {
-            // Queue the item and don't wait for its execution. 
-            var item = new SendOrPostCallbackItem(d, state, ExecutionType.Post);
-            _queue.Enqueue(item);
-        }
+    public override void Post(SendOrPostCallback d, object state)
+    {
+        // Queue the item and don't wait for its execution. 
+        var item = new SendOrPostCallbackItem(d, state, ExecutionType.Post);
+        _queue.Enqueue(item);
+    }
         
-        public override SynchronizationContext CreateCopy()
-        {
-            // Do not copy
-            return this;
-        }
+    public override SynchronizationContext CreateCopy()
+    {
+        // Do not copy
+        return this;
+    }
         
-        public SendOrPostCallbackItem GetMessage()
-        {
-            _queue.TryDequeue(out var result);
-            return result;
-        }
+    public SendOrPostCallbackItem GetMessage()
+    {
+        _queue.TryDequeue(out var result);
+        return result;
+    }
         
-        internal enum ExecutionType
-        {
-            Post,
-            Send
-        }
+    internal enum ExecutionType
+    {
+        Post,
+        Send
+    }
         
     internal class SendOrPostCallbackItem
     {
@@ -102,6 +102,5 @@ namespace SampSharp.Core
                 _method(_state);
             }
         }
-    }
     }
 }

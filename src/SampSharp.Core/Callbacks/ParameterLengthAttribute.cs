@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2017 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,30 +15,29 @@
 
 using System;
 
-namespace SampSharp.Core.Callbacks
+namespace SampSharp.Core.Callbacks;
+
+/// <summary>
+///     Contains an index property for defining which parameter of a callback contains the length of the parameter this
+///     attribute is attached to.
+/// </summary>
+[AttributeUsage(AttributeTargets.Parameter)]
+public class ParameterLengthAttribute : Attribute
 {
     /// <summary>
-    ///     Contains an index property for defining which parameter of a callback contains the length of the parameter this
-    ///     attribute is attached to.
+    ///     Initializes a new instance of the ParameterLengthAttribute class.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Parameter)]
-    public class ParameterLengthAttribute : Attribute
+    /// <param name="index">
+    ///     The index of the parameter which contains the length of the parameter this attribute is attached
+    ///     to.
+    /// </param>
+    public ParameterLengthAttribute(uint index)
     {
-        /// <summary>
-        ///     Initializes a new instance of the ParameterLengthAttribute class.
-        /// </summary>
-        /// <param name="index">
-        ///     The index of the parameter which contains the length of the parameter this attribute is attached
-        ///     to.
-        /// </param>
-        public ParameterLengthAttribute(uint index)
-        {
-            Index = index;
-        }
-
-        /// <summary>
-        ///     Gets the index of the parameter which contains the length of the parameter this attribute is attached to.
-        /// </summary>
-        public uint Index { get; }
+        Index = index;
     }
+
+    /// <summary>
+    ///     Gets the index of the parameter which contains the length of the parameter this attribute is attached to.
+    /// </summary>
+    public uint Index { get; }
 }

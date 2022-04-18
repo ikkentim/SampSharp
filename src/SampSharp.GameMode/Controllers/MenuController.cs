@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2017 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,39 +12,39 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 using System.Linq;
 using SampSharp.GameMode.Display;
 using SampSharp.GameMode.World;
 
-namespace SampSharp.GameMode.Controllers
+namespace SampSharp.GameMode.Controllers;
+
+/// <summary>
+///     A controller processing all menu actions.
+/// </summary>
+[Controller]
+public class MenuController : IEventListener
 {
     /// <summary>
-    ///     A controller processing all menu actions.
+    ///     Registers the events this PlayerController wants to listen to.
     /// </summary>
-    [Controller]
-    public class MenuController : IEventListener
+    /// <param name="gameMode">The running GameMode.</param>
+    public virtual void RegisterEvents(BaseMode gameMode)
     {
-        /// <summary>
-        ///     Registers the events this PlayerController wants to listen to.
-        /// </summary>
-        /// <param name="gameMode">The running GameMode.</param>
-        public virtual void RegisterEvents(BaseMode gameMode)
+        gameMode.PlayerExitedMenu += (sender, args) =>
         {
-            gameMode.PlayerExitedMenu += (sender, args) =>
-            {
-                if (!(sender is BasePlayer player))
-                    return;
+            if (!(sender is BasePlayer player))
+                return;
 
-                Menu.All.FirstOrDefault(m => m.Viewers.Contains(player))?.OnExit(player, args);
-            };
+            Menu.All.FirstOrDefault(m => m.Viewers.Contains(player))?.OnExit(player, args);
+        };
 
-            gameMode.PlayerSelectedMenuRow += (sender, args) =>
-            {
-                if (!(sender is BasePlayer player))
-                    return;
+        gameMode.PlayerSelectedMenuRow += (sender, args) =>
+        {
+            if (!(sender is BasePlayer player))
+                return;
 
-                Menu.All.FirstOrDefault(m => m.Viewers.Contains(player))?.OnResponse(player, args);
-            };
-        }
+            Menu.All.FirstOrDefault(m => m.Viewers.Contains(player))?.OnResponse(player, args);
+        };
     }
 }

@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,41 +13,40 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace SampSharp.Entities.SAMP
+namespace SampSharp.Entities.SAMP;
+
+/// <summary>
+/// Contains all race checkpoint types.
+/// </summary>
+/// <remarks>
+/// See
+/// <see href="https://www.open.mp/docs/scripting/functions/SetPlayerRaceCheckpoint">https://www.open.mp/docs/scripting/functions/SetPlayerRaceCheckpoint</see>
+/// .
+/// </remarks>
+public enum CheckpointType
 {
     /// <summary>
-    /// Contains all race checkpoint types.
+    /// Normal race checkpoint. (Normal red cylinder)
     /// </summary>
-    /// <remarks>
-    /// See
-    /// <see href="https://www.open.mp/docs/scripting/functions/SetPlayerRaceCheckpoint">https://www.open.mp/docs/scripting/functions/SetPlayerRaceCheckpoint</see>
-    /// .
-    /// </remarks>
-    public enum CheckpointType
-    {
-        /// <summary>
-        /// Normal race checkpoint. (Normal red cylinder)
-        /// </summary>
-        Normal = 0,
+    Normal = 0,
 
-        /// <summary>
-        /// Finish race checkpoint. (Finish flag in red cylinder)
-        /// </summary>
-        Finish = 1,
+    /// <summary>
+    /// Finish race checkpoint. (Finish flag in red cylinder)
+    /// </summary>
+    Finish = 1,
 
-        /// <summary>
-        /// No checkpoint.
-        /// </summary>
-        Nothing = 2,
+    /// <summary>
+    /// No checkpoint.
+    /// </summary>
+    Nothing = 2,
 
-        /// <summary>
-        /// Air race checkpoint. (normal red circle in the air)
-        /// </summary>
-        Air = 3,
+    /// <summary>
+    /// Air race checkpoint. (normal red circle in the air)
+    /// </summary>
+    Air = 3,
 
-        /// <summary>
-        /// Finish air race checkpoint. (Finish flag in red circle in the air)
-        /// </summary>
-        AirFinish = 4
-    }
+    /// <summary>
+    /// Finish air race checkpoint. (Finish flag in red circle in the air)
+    /// </summary>
+    AirFinish = 4
 }

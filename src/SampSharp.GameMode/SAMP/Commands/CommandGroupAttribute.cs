@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2017 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,33 +12,33 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 using System;
 
-namespace SampSharp.GameMode.SAMP.Commands
+namespace SampSharp.GameMode.SAMP.Commands;
+
+/// <summary>
+///     Indicates commands within this class or method are part of a command group.
+/// </summary>
+[AttributeUsage(AttributeTargets.Method | AttributeTargets.Class)]
+public class CommandGroupAttribute : Attribute
 {
     /// <summary>
-    ///     Indicates commands within this class or method are part of a command group.
+    ///     Initializes a new instance of the <see cref="CommandGroupAttribute" /> class.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class)]
-    public class CommandGroupAttribute : Attribute
+    /// <param name="paths">The relative paths of the command group.</param>
+    public CommandGroupAttribute(params string[] paths)
     {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="CommandGroupAttribute" /> class.
-        /// </summary>
-        /// <param name="paths">The relative paths of the command group.</param>
-        public CommandGroupAttribute(params string[] paths)
-        {
-            Paths = paths;
-        }
-
-        /// <summary>
-        /// Gets the relative paths of the command group.
-        /// </summary>
-        public string[] Paths { get; }
-
-        /// <summary>
-        ///     Gets or sets the permission checker type.
-        /// </summary>
-        public Type PermissionChecker { get; set; }
+        Paths = paths;
     }
+
+    /// <summary>
+    /// Gets the relative paths of the command group.
+    /// </summary>
+    public string[] Paths { get; }
+
+    /// <summary>
+    ///     Gets or sets the permission checker type.
+    /// </summary>
+    public Type PermissionChecker { get; set; }
 }

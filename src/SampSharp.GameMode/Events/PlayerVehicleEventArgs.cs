@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2017 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,29 +12,29 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 using SampSharp.GameMode.World;
 
-namespace SampSharp.GameMode.Events
+namespace SampSharp.GameMode.Events;
+
+/// <summary>
+///     Provides data for the <see cref="BaseMode.PlayerExitVehicle" />, <see cref="BasePlayer.ExitVehicle" /> or
+///     <see cref="BaseVehicle.PlayerExit" />
+/// </summary>
+public class PlayerVehicleEventArgs : PlayerEventArgs
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerExitVehicle" />, <see cref="BasePlayer.ExitVehicle" /> or
-    ///     <see cref="BaseVehicle.PlayerExit" />
+    ///     Initializes a new instance of the <see cref="PlayerVehicleEventArgs" /> class.
     /// </summary>
-    public class PlayerVehicleEventArgs : PlayerEventArgs
+    /// <param name="player">The player.</param>
+    /// <param name="vehicle">The vehicle.</param>
+    public PlayerVehicleEventArgs(BasePlayer player, BaseVehicle vehicle) : base(player)
     {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="PlayerVehicleEventArgs" /> class.
-        /// </summary>
-        /// <param name="player">The player.</param>
-        /// <param name="vehicle">The vehicle.</param>
-        public PlayerVehicleEventArgs(BasePlayer player, BaseVehicle vehicle) : base(player)
-        {
-            Vehicle = vehicle;
-        }
-
-        /// <summary>
-        ///     Gets the vehicle.
-        /// </summary>
-        public BaseVehicle Vehicle { get; }
+        Vehicle = vehicle;
     }
+
+    /// <summary>
+    ///     Gets the vehicle.
+    /// </summary>
+    public BaseVehicle Vehicle { get; }
 }

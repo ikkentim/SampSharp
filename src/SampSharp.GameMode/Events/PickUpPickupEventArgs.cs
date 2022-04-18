@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2017 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,35 +12,35 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 using System;
 using SampSharp.GameMode.World;
 
-namespace SampSharp.GameMode.Events
+namespace SampSharp.GameMode.Events;
+
+/// <summary>
+///     Provides data for the <see cref="World.Pickup.PickUp" /> event.
+/// </summary>
+public class PickUpPickupEventArgs : EventArgs
 {
     /// <summary>
-    ///     Provides data for the <see cref="World.Pickup.PickUp" /> event.
+    ///     Initializes a new instance of the <see cref="PickUpPickupEventArgs" /> class.
     /// </summary>
-    public class PickUpPickupEventArgs : EventArgs
+    /// <param name="player">The player.</param>
+    /// <param name="pickup">The pickup.</param>
+    public PickUpPickupEventArgs(BasePlayer player, Pickup pickup)
     {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="PickUpPickupEventArgs" /> class.
-        /// </summary>
-        /// <param name="player">The player.</param>
-        /// <param name="pickup">The pickup.</param>
-        public PickUpPickupEventArgs(BasePlayer player, Pickup pickup)
-        {
-            Player = player;
-            Pickup = pickup;
-        }
-
-        /// <summary>
-        ///     Gets the player.
-        /// </summary>
-        public BasePlayer Player { get; }
-
-        /// <summary>
-        ///     Gets the pickup.
-        /// </summary>
-        public Pickup Pickup { get; }
+        Player = player;
+        Pickup = pickup;
     }
+
+    /// <summary>
+    ///     Gets the player.
+    /// </summary>
+    public BasePlayer Player { get; }
+
+    /// <summary>
+    ///     Gets the pickup.
+    /// </summary>
+    public Pickup Pickup { get; }
 }

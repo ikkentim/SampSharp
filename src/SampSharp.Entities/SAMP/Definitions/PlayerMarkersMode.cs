@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,26 +13,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace SampSharp.Entities.SAMP
+namespace SampSharp.Entities.SAMP;
+
+/// <summary>
+/// Contains all PlayerMarker modes.
+/// </summary>
+public enum PlayerMarkersMode
 {
     /// <summary>
-    /// Contains all PlayerMarker modes.
+    /// No makers.
     /// </summary>
-    public enum PlayerMarkersMode
-    {
-        /// <summary>
-        /// No makers.
-        /// </summary>
-        Off = 0,
+    Off = 0,
 
-        /// <summary>
-        /// All markers.
-        /// </summary>
-        Global = 1,
+    /// <summary>
+    /// All markers.
+    /// </summary>
+    Global = 1,
 
-        /// <summary>
-        /// All markers within the streamed area.
-        /// </summary>
-        Streamed = 2
-    }
+    /// <summary>
+    /// All markers within the streamed area.
+    /// </summary>
+    Streamed = 2
 }

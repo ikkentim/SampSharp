@@ -17,48 +17,47 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
-namespace SampSharp.Core.Natives
+namespace SampSharp.Core.Natives;
+
+/// <summary>
+/// Provides a state for variable arguments handling of native calls.
+/// </summary>
+public class VarArgsState : IDisposable
 {
+    private List<GCHandle> _pinnedHandles;
+
     /// <summary>
-    /// Provides a state for variable arguments handling of native calls.
+    /// Pins a buffer which will be freed once this state is disposed of.
     /// </summary>
-    public class VarArgsState : IDisposable
+    /// <param name="buffer">The buffer to pin.</param>
+    /// <returns>The address at which the buffer has been pinned.</returns>
+    public int PinBuffer(object buffer)
     {
-        private List<GCHandle> _pinnedHandles;
+        _pinnedHandles ??= new List<GCHandle>();
 
-        /// <summary>
-        /// Pins a buffer which will be freed once this state is disposed of.
-        /// </summary>
-        /// <param name="buffer">The buffer to pin.</param>
-        /// <returns>The address at which the buffer has been pinned.</returns>
-        public int PinBuffer(object buffer)
-        {
-            _pinnedHandles ??= new List<GCHandle>();
-
-            var handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
-            _pinnedHandles.Add(handle);
+        var handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+        _pinnedHandles.Add(handle);
                 
-            var ptr = handle.AddrOfPinnedObject();
+        var ptr = handle.AddrOfPinnedObject();
 
-            return ptr.ToInt32();
-        }
+        return ptr.ToInt32();
+    }
 
-        /// <inheritdoc />
-        public void Dispose()
+    /// <inheritdoc />
+    public void Dispose()
+    {
+        if (_pinnedHandles == null)
         {
-            if (_pinnedHandles == null)
-            {
-                return;
-            }
-
-            foreach (var handle in _pinnedHandles)
-            {
-                handle.Free();
-            }
-
-            _pinnedHandles = null;
-
-            GC.SuppressFinalize(this);
+            return;
         }
+
+        foreach (var handle in _pinnedHandles)
+        {
+            handle.Free();
+        }
+
+        _pinnedHandles = null;
+
+        GC.SuppressFinalize(this);
     }
 }

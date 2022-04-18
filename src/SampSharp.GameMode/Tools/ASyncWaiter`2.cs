@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2017 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,84 +12,84 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace SampSharp.GameMode.Tools
+namespace SampSharp.GameMode.Tools;
+
+/// <summary>
+///     Contains methods for awaiting calls.
+/// </summary>
+/// <typeparam name="TKey"></typeparam>
+/// <typeparam name="TArguments"></typeparam>
+public class ASyncWaiter<TKey, TArguments>
 {
+    private readonly Dictionary<TKey, TaskCompletionSource<TArguments>> _completionSources = new();
+
     /// <summary>
-    ///     Contains methods for awaiting calls.
+    ///     Waits for the <see cref="Fire" /> to be called with the specified <paramref name="key" />.
     /// </summary>
-    /// <typeparam name="TKey"></typeparam>
-    /// <typeparam name="TArguments"></typeparam>
-    public class ASyncWaiter<TKey, TArguments>
+    /// <param name="key">The key.</param>
+    /// <returns>The arguments passed to the <see cref="Fire" /> method.</returns>
+    public virtual Task<TArguments> Result(TKey key)
     {
-        private readonly Dictionary<TKey, TaskCompletionSource<TArguments>> _completionSources = new();
+        if (key == null) throw new ArgumentNullException(nameof(key));
 
-        /// <summary>
-        ///     Waits for the <see cref="Fire" /> to be called with the specified <paramref name="key" />.
-        /// </summary>
-        /// <param name="key">The key.</param>
-        /// <returns>The arguments passed to the <see cref="Fire" /> method.</returns>
-        public virtual Task<TArguments> Result(TKey key)
+        var taskCompletionSource = new TaskCompletionSource<TArguments>();
+        _completionSources[key] = taskCompletionSource;
+
+        if (key is Disposable disposable)
+            disposable.Disposed += OnDisposableDisposed;
+
+        return taskCompletionSource.Task;
+    }
+
+    private void OnDisposableDisposed(object sender, EventArgs e)
+    {
+        if (sender is TKey key)
         {
-            if (key == null) throw new ArgumentNullException(nameof(key));
-
-            var taskCompletionSource = new TaskCompletionSource<TArguments>();
-            _completionSources[key] = taskCompletionSource;
-
-            if (key is Disposable disposable)
-                disposable.Disposed += OnDisposableDisposed;
-
-            return taskCompletionSource.Task;
+            Cancel(key);
         }
+    }
 
-        private void OnDisposableDisposed(object sender, EventArgs e)
-        {
-            if (sender is TKey key)
-            {
-                Cancel(key);
-            }
-        }
+    /// <summary>
+    ///     Fires the task with the given <paramref name="key" />.
+    /// </summary>
+    /// <param name="key">The key.</param>
+    /// <param name="arguments">The arguments.</param>
+    public virtual void Fire(TKey key, TArguments arguments)
+    {
+        if (key == null) throw new ArgumentNullException(nameof(key));
+        if (!_completionSources.ContainsKey(key)) return;
 
-        /// <summary>
-        ///     Fires the task with the given <paramref name="key" />.
-        /// </summary>
-        /// <param name="key">The key.</param>
-        /// <param name="arguments">The arguments.</param>
-        public virtual void Fire(TKey key, TArguments arguments)
-        {
-            if (key == null) throw new ArgumentNullException(nameof(key));
-            if (!_completionSources.ContainsKey(key)) return;
+        var task = _completionSources[key];
+        Remove(key);
+        task.SetResult(arguments);
+    }
 
-            var task = _completionSources[key];
-            Remove(key);
-            task.SetResult(arguments);
-        }
+    /// <summary>
+    ///     Cancels the task for the specified <paramref name="key" />.
+    /// </summary>
+    /// <param name="key">The key of the task to cancel.</param>
+    public virtual void Cancel(TKey key)
+    {
+        if (key == null) throw new ArgumentNullException(nameof(key));
+        if (!_completionSources.ContainsKey(key)) return;
 
-        /// <summary>
-        ///     Cancels the task for the specified <paramref name="key" />.
-        /// </summary>
-        /// <param name="key">The key of the task to cancel.</param>
-        public virtual void Cancel(TKey key)
-        {
-            if (key == null) throw new ArgumentNullException(nameof(key));
-            if (!_completionSources.ContainsKey(key)) return;
+        var task = _completionSources[key];
+        Remove(key);
+        task.TrySetCanceled();
+    }
 
-            var task = _completionSources[key];
-            Remove(key);
-            task.TrySetCanceled();
-        }
+    private void Remove(TKey key)
+    {
+        _completionSources.Remove(key);
 
-        private void Remove(TKey key)
-        {
-            _completionSources.Remove(key);
+        if (key is Disposable disposable)
+            disposable.Disposed -= OnDisposableDisposed;
 
-            if (key is Disposable disposable)
-                disposable.Disposed -= OnDisposableDisposed;
-
-            _completionSources.Remove(key);
-        }
+        _completionSources.Remove(key);
     }
 }
