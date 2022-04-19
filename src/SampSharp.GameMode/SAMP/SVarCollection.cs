@@ -37,17 +37,13 @@ public partial class SVarCollection : IEnumerable<object>
         {
             if (varname == null) return null;
 
-            switch ((ServerVarType)SVarCollectionInternal.Instance.GetSVarType(varname))
+            return (ServerVarType)SVarCollectionInternal.Instance.GetSVarType(varname) switch
             {
-                case ServerVarType.Int:
-                    return Get<int>(varname);
-                case ServerVarType.Float:
-                    return Get<float>(varname);
-                case ServerVarType.String:
-                    return Get<string>(varname);
-                default:
-                    return null;
-            }
+                ServerVarType.Int => Get<int>(varname),
+                ServerVarType.Float => Get<float>(varname),
+                ServerVarType.String => Get<string>(varname),
+                _ => null
+            };
         }
         set
         {
