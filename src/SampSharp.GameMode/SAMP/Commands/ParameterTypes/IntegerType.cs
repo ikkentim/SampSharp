@@ -15,6 +15,7 @@
 
 using System.Globalization;
 using System.Linq;
+using static System.StringComparison;
 
 namespace SampSharp.GameMode.SAMP.Commands.ParameterTypes;
 
@@ -52,19 +53,19 @@ public class IntegerType : ICommandParameterType
         }
 
         // Base 16 (hexadecimal) numbers. Can be prefixed with '0x', '#' or post-fixed with 'H' or 'h'.
-        string base16Word = null;
-        if (word.Length > 2 && word.StartsWith("0x"))
-            base16Word = word.Substring(2);
-        else if (word.Length > 1 && word.StartsWith("#"))
-            base16Word = word.Substring(1);
-        else if (word.Length > 1 && word.ToLower()
-                     .EndsWith("h"))
-            base16Word = word.Substring(0, word.Length - 1);
+        var base16Word = word.Length switch
+        {
+            > 2 when word.StartsWith("0x", InvariantCulture) => word[2..],
+            > 1 when word.StartsWith("#", InvariantCulture) => word[1..],
+            > 1 when word.ToLower()
+                .EndsWith("h") => word[..^1],
+            _ => null
+        };
 
         if (base16Word != null && base16Word.ToLower()
                 .All(_base16Characters.Contains) && int.TryParse(base16Word, NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture, out number))
         {
-            commandText = commandText.Substring(word.Length)
+            commandText = commandText[word.Length..]
                 .TrimStart(' ');
             output = number;
             return true;
