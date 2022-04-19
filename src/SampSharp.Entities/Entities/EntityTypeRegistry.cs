@@ -41,7 +41,7 @@ internal static class EntityTypeRegistry
             {
                 name = field.Name;
                 if (name.Length > 4 && name.EndsWith("Type"))
-                    name = name.Substring(0, name.Length - 4);
+                    name = name[..^4];
             }
 
             if (field.GetValue(null) is Guid g)
