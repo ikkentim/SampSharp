@@ -32,7 +32,7 @@ public class PlayerObjectController : Disposable, IEventListener, ITypeProvider
         gameMode.PlayerSelectPlayerObject += (_, args) => args.Object?.OnSelected(args);
         gameMode.PlayerCleanup += (sender, _) =>
         {
-            if (!(sender is BasePlayer player))
+            if (sender is not BasePlayer player)
                 return;
 
             foreach (var obj in PlayerObject.Of(player)
