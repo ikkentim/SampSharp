@@ -40,7 +40,7 @@ internal static class EntityTypeRegistry
             if (string.IsNullOrWhiteSpace(name))
             {
                 name = field.Name;
-                if (name.Length > 4 && name.EndsWith("Type"))
+                if (name.Length > 4 && name.EndsWith("Type", StringComparison.InvariantCulture))
                     name = name[..^4];
             }
 
