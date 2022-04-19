@@ -78,12 +78,11 @@ public class BasePlayerController : Disposable, IEventListener, ITypeProvider
     /// <param name="disposing">Whether managed resources should be disposed.</param>
     protected override void Dispose(bool disposing)
     {
-        if (disposing)
+        if (!disposing) return;
+        
+        foreach (var player in BasePlayer.All)
         {
-            foreach (var player in BasePlayer.All)
-            {
-                player.Dispose();
-            }
+            player.Dispose();
         }
     }
 }
