@@ -32,7 +32,7 @@ public class PlayerObjectController : Disposable, IEventListener, ITypeProvider
         gameMode.PlayerSelectPlayerObject += (_, args) => args.Object?.OnSelected(args);
         gameMode.PlayerCleanup += (sender, _) =>
         {
-            if (!(sender is BasePlayer player))
+            if (sender is not BasePlayer player)
                 return;
 
             foreach (var obj in PlayerObject.Of(player)
@@ -51,12 +51,11 @@ public class PlayerObjectController : Disposable, IEventListener, ITypeProvider
     /// <param name="disposing">Whether managed resources should be disposed.</param>
     protected override void Dispose(bool disposing)
     {
-        if (disposing)
+        if (!disposing) return;
+        
+        foreach (var o in PlayerObject.All)
         {
-            foreach (var o in PlayerObject.All)
-            {
-                o.Dispose();
-            }
+            o.Dispose();
         }
     }
 }

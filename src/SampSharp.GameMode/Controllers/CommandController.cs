@@ -50,7 +50,7 @@ public class CommandController : IEventListener, IGameServiceProvider
         if (CommandsManager == null)
             return;
 
-        if (!(sender is BasePlayer player)) return;
+        if (sender is not BasePlayer player) return;
 
         e.Success = CommandsManager.Process(e.Text, player);
     }

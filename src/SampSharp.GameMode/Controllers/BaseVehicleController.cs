@@ -61,12 +61,11 @@ public class BaseVehicleController : Disposable, IEventListener, ITypeProvider, 
     /// <param name="disposing">Whether managed resources should be disposed.</param>
     protected override void Dispose(bool disposing)
     {
-        if (disposing)
+        if (!disposing) return;
+        
+        foreach (var vehicle in BaseVehicle.All)
         {
-            foreach (var vehicle in BaseVehicle.All)
-            {
-                vehicle.Dispose();
-            }
+            vehicle.Dispose();
         }
     }
 }

@@ -79,12 +79,16 @@ public readonly struct EntityId
     /// <inheritdoc />
     public override string ToString()
     {
-        if (IsEmpty)
-        {
-            return "(Empty)";
-        }
-
-        return $"(Type = {EntityTypeRegistry.GetTypeName(Type)}, Handle = {(IsInvalidHandle ? "Invalid" : Handle.ToString(CultureInfo.InvariantCulture))})";
+        return IsEmpty
+            ? "(Empty)"
+            : $"(Type = {EntityTypeRegistry.GetTypeName(Type)}, Handle = {HumanizeInvalidHandle()})";
+    }
+    
+    private string HumanizeInvalidHandle()
+    {
+        return IsInvalidHandle 
+            ? "Invalid" 
+            : Handle.ToString(CultureInfo.InvariantCulture);
     }
 
     /// <summary>Performs an implicit conversion from <see cref="EntityId" /> to <see cref="int" />. Returns the handle of this value.</summary>

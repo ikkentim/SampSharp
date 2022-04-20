@@ -38,7 +38,7 @@ public class WordType : ICommandParameterType
         var word = text.Split(' ')
             .First();
 
-        commandText = commandText.Substring(word.Length)
+        commandText = commandText[word.Length..]
             .TrimStart(' ');
 
         output = word;
