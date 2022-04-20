@@ -40,8 +40,8 @@ internal static class EntityTypeRegistry
             if (string.IsNullOrWhiteSpace(name))
             {
                 name = field.Name;
-                if (name.Length > 4 && name.EndsWith("Type"))
-                    name = name.Substring(0, name.Length - 4);
+                if (name.Length > 4 && name.EndsWith("Type", StringComparison.InvariantCulture))
+                    name = name[..^4];
             }
 
             if (field.GetValue(null) is Guid g)
