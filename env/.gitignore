@@ -1,26 +1,3 @@
-# Windows
-announce.exe
-samp-npc.exe
-samp-server.exe
-/pawno
-
-# Linux
-announce
-samp-npc
-samp03svr
-
-# Logs
-crashinfo.txt
-server_log.txt
-
-# Build directories
-/gamemode/
-/plugins/
-/scriptfiles/
-/npcmodes/
-/runtime/
-/filterscripts/
-/gamemodes/
-
-# Config file
-server.cfg
+*
+!.gitignore
+!pawn.json
