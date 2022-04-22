@@ -15,12 +15,14 @@
 
 #pragma once
 #include "config.h"
-#include <map>
+#include <memory>
+#include <vector>
 
-class config_win final : public config {
+class config_composite final : public config {
  public:
-    config_win();
+    config_composite(std::vector<std::unique_ptr<config>>& configs);
     bool get_config_string(std::string name, std::string &result) override;
+    bool get_config_bool(std::string name, bool& result) override;
 private:
-    std::map<std::string, std::string> values_;
+    std::vector<std::unique_ptr<config>>& configs_;
 };

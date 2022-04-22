@@ -17,6 +17,8 @@
 #include <sstream>
 #include <sampgdk/sampgdk.h>
 #include "config_cfg.h"
+#include "config_composite.h"
+#include "config_omp.h"
 #include "config_win.h"
 #include "version.h"
 #include "logging.h"
@@ -97,24 +99,45 @@ PLUGIN_EXPORT unsigned int PLUGIN_CALL Supports() {
     return sampgdk::Supports() | SUPPORTS_PROCESS_TICK | SUPPORTS_AMX_NATIVES;
 }
 
+bool is_open_mp(void **ppData) {
+    // open.mp sets plugin data to zero for uninitialized fields. probe a few to make some assumptions.
+    // it might however be a better idea to simply check the name of the current process...
+    for (int i = 0x02; i < 0x10; i++) {
+        if (ppData[i] != nullptr) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
 PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData) {
     if (!sampgdk::Load(ppData)) {
         return false;
     }
-    
+
     pAMXFunctions = ppData[PLUGIN_DATA_AMX_EXPORTS];
     sampsharp_api_setup(ppData);
 
     log_info("v%s, (C)2014-2022 Tim Potze", PLUGIN_VERSION_STR);
-
-#if SAMPSHARP_WINDOWS
-    config_cfg cfg2;
+    
 
     // decorate config with command line arguments
-    config_win cfg(&cfg2);
-#elif SAMPSHARP_LINUX
-    config_cfg cfg;
+    std::vector<std::unique_ptr<config>> configs;
+
+#if SAMPSHARP_WINDOWS
+    configs.push_back(std::make_unique<config_win>());
 #endif
+
+    if(is_open_mp(ppData)) {
+        log_debug("Adding open.mp config reader");
+        
+        configs.push_back(std::make_unique<config_omp>());
+    }
+    
+    configs.push_back(std::make_unique<config_cfg>());
+
+    auto cfg = config_composite(configs);
 
     locator loc(&cfg);
 

@@ -23,7 +23,7 @@
 #if SAMPSHARP_WINDOWS
 #include <Windows.h>
 
-std::string wide_to_string(wchar_t *wc) {
+std::string wide_to_string(const wchar_t *wc) {
     std::wstring wide = wc;
     std::string str(wide.length(), 0);
 
@@ -36,7 +36,7 @@ std::string wide_to_string(wchar_t *wc) {
 
 #endif
 
-config_win::config_win(config* inner) : inner_(inner) {
+config_win::config_win() {
 #if SAMPSHARP_WINDOWS
     int argc;
     wchar_t** argv = ::CommandLineToArgvW(::GetCommandLineW(), &argc);
@@ -70,7 +70,7 @@ bool config_win::get_config_string(std::string name, std::string& result) {
     const auto iterator = values_.find(name);
 
     if (iterator == values_.end()) {
-        return inner_->get_config_string(name, result);
+        return false;
     }
 
     result = iterator->second;
