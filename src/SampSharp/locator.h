@@ -27,17 +27,17 @@ class locator
 public:
     locator(config *cfg);
     /* returns path to libhostfxr. */
-    fs::path get_hostfxr();
+    fs::path get_hostfxr() const;
     /* returns path to libcoreclr. */
-    fs::path get_coreclr();
+    fs::path get_coreclr() const;
     /* returns path to runtimeconfig of gamemode. */
-    fs::path get_gamemode();
+    fs::path get_gamemode() const;
     
 private:
-    bool detect_lib(fs::path &result, const fs::path& search_path, const std::string &lib);
-    bool detect_lib(fs::path &result, const std::string &path_hint, const std::string &lib);
-    bool detect_gamemode(fs::path &result, const std::string &search_name, const fs::path &search_path);
-	bool detect_gamemode(const std::string &dir_hint, const std::string &name, fs::path &result);
+    static bool detect_lib_recursive(fs::path& result, const fs::path& search_path, const std::string& lib);
+    static bool detect_lib(fs::path &result, const std::string &path_hint, const std::string &lib);
+    static bool detect_gamemode_recursive(fs::path& result, const std::string& search_name, const fs::path& search_path);
+    static bool detect_gamemode(const std::string &dir_hint, const std::string &name, fs::path &result);
 
     config *cfg_;
 };

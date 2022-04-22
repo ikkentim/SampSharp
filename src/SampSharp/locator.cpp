@@ -28,7 +28,7 @@
 
 locator::locator(config* cfg) : cfg_(cfg) {}
 
-fs::path locator::get_hostfxr() {
+fs::path locator::get_hostfxr() const {
     std::string hint;
     fs::path result;
 
@@ -40,7 +40,7 @@ fs::path locator::get_hostfxr() {
     return result;
 }
 
-fs::path locator::get_coreclr() {
+fs::path locator::get_coreclr() const {
     std::string hint;
     fs::path result;
     cfg_->get_config_string("runtime", hint);
@@ -50,7 +50,7 @@ fs::path locator::get_coreclr() {
     return result;
 }
 
-fs::path locator::get_gamemode() {
+fs::path locator::get_gamemode() const {
     std::string base, gamemode;
     fs::path result;
     cfg_->get_config_string("gamemode", gamemode);
@@ -61,7 +61,7 @@ fs::path locator::get_gamemode() {
     return result;
 }
 
-bool locator::detect_lib(fs::path& result, const fs::path& search_path, const std::string& lib) {
+bool locator::detect_lib_recursive(fs::path& result, const fs::path& search_path, const std::string& lib) {
     if (!is_directory(search_path)) {
         return false;
     }
@@ -77,7 +77,7 @@ bool locator::detect_lib(fs::path& result, const fs::path& search_path, const st
 
     // Check every subdirectory
     for (const auto& entry : fs::directory_iterator(search_path)) {
-        if (entry.is_directory() && detect_lib(result, entry.path(), lib)) {
+        if (entry.is_directory() && detect_lib_recursive(result, entry.path(), lib)) {
             return true;
         }
     }
@@ -95,14 +95,17 @@ bool locator::detect_lib(fs::path& result, const std::string& path_hint, const s
             return true;
         }
 
-        if (is_directory(hint) && detect_lib(result, fs::path("runtime"), lib)) {
+        if (is_directory(hint) && detect_lib_recursive(result, fs::path("runtime"), lib)) {
             return true;
         }
     }
 
+    const auto runtime = getenv("SAMPSHARP_RUNTIME");
+
     return
-        detect_lib(result, fs::path("runtime"), lib) ||
-        detect_lib(result, fs::path("dotnet"), lib);
+        runtime && strlen(runtime) > 0 && detect_lib_recursive(result, fs::path(runtime), lib) ||
+        detect_lib_recursive(result, fs::path("runtime"), lib) ||
+        detect_lib_recursive(result, fs::path("dotnet"), lib);
 }
 
 bool is_runtime_config(const fs::path& path, const std::string& search_name) {
@@ -113,7 +116,7 @@ bool is_runtime_config(const fs::path& path, const std::string& search_name) {
     return iequals(path.filename().string(), search_name);
 }
 
-bool locator::detect_gamemode(fs::path& result, const std::string& search_name, const fs::path& search_path) {
+bool locator::detect_gamemode_recursive(fs::path& result, const std::string& search_name, const fs::path& search_path) {
     if (!is_directory(search_path)) {
         return false;
     }
@@ -159,13 +162,13 @@ bool locator::detect_gamemode(fs::path& result, const std::string& search_name, 
         }
     }
 
-    if (!best_version.empty() && detect_gamemode(result, search_name, best_version)) {
+    if (!best_version.empty() && detect_gamemode_recursive(result, search_name, best_version)) {
         return true;
     }
 
     // Check every subdirectory
     for (const auto& entry : fs::directory_iterator(search_path)) {
-        if (entry.is_directory() && detect_gamemode(result, search_name, entry.path())) {
+        if (entry.is_directory() && detect_gamemode_recursive(result, search_name, entry.path())) {
             return true;
         }
     }
@@ -179,7 +182,7 @@ bool locator::detect_gamemode(const std::string& dir_hint, const std::string& na
                                  : name + ".runtimeconfig.json";
 
     return
-        (dir_hint.length() > 0 && detect_gamemode(result, search_name, dir_hint)) ||
-        detect_gamemode(result, search_name, "gamemode") ||
-        detect_gamemode(result, search_name, "gamemodes");
+        (dir_hint.length() > 0 && detect_gamemode_recursive(result, search_name, dir_hint)) ||
+        detect_gamemode_recursive(result, search_name, "gamemode") ||
+        detect_gamemode_recursive(result, search_name, "gamemodes");
 }
