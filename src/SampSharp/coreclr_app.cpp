@@ -27,7 +27,7 @@
 #include <string>
 #include "platforms.h"
 #include "logging.h"
-#include <json/json.h>
+#include <json/json.hpp>
 
 #if SAMPSHARP_LINUX
 #  include <dirent.h>
@@ -57,9 +57,6 @@
 #if !defined(PATH_MAX) && defined(MAX_PATH)
 #  define PATH_MAX MAX_PATH
 #endif
-
-#define JSON_IS(obj, type) (obj.JSONType() == json::JSON::Class::type)
-#define JSON_KEY_IS(obj, key, type) (obj.hasKey(key) && JSON_IS(obj[key], type))
 
 #if SAMPSHARP_LINUX
 bool coreclr_app::load_symbol(void *coreclr_lib, const char *symbol,
@@ -487,72 +484,23 @@ void coreclr_app::add_deps_to_tpa(std::string abs_exe_path,
     deps_stream.close();
 
     // Find probing paths
-    json::JSON runtimeconfig = json::JSON::Load(runtimeconfig_json);
+    
+    nlohmann::json runtimeconfig = nlohmann::json::parse(runtimeconfig_json);
     
     std::vector<std::string> probing_paths;
-
-    if(runtimeconfig.hasKey("runtimeOptions") && runtimeconfig["runtimeOptions"].hasKey("additionalProbingPaths")) {
-        json::JSON probes =
-            runtimeconfig["runtimeOptions"]["additionalProbingPaths"];
-
-        if(JSON_IS(probes, Array)) {
-            for(const auto& path_obj : probes.ArrayRange()) {
-                std::string path = path_obj.ToString();
-                
-                if(is_directory(std::filesystem::path(path))) {
-                    probing_paths.push_back(path);
-
-                    log_debug("Probe path found: %s", path.c_str());
-                }
-            }
-        }
-    }
-
-    // Find dependencies
-    json::JSON deps = json::JSON::Load(deps_json);
-
-    if(!JSON_KEY_IS(deps, "runtimeTarget", Object) ||
-        !JSON_KEY_IS(deps, "targets", Object) ||
-        !JSON_KEY_IS(deps, "libraries", Object) ||
-        !JSON_KEY_IS(deps["runtimeTarget"], "name", String)) {
-        return;
-    }
-
-    std::string target_name = deps["runtimeTarget"]["name"].ToString();
-
-    if(!deps["targets"].hasKey(target_name)) {
-        return;
-    }
-
-    json::JSON target = deps["targets"][target_name];
-
-    for(auto obj : target.ObjectRange()) {
-        if(!JSON_IS(obj.second, Object) ||
-            !JSON_KEY_IS(obj.second, "runtime", Object) ||
-            !JSON_KEY_IS(deps["libraries"], obj.first, Object) ||
-            !JSON_KEY_IS(deps["libraries"][obj.first], "type", String) ||
-            deps["libraries"][obj.first]["type"].ToString() != "package" ||
-            !JSON_KEY_IS(deps["libraries"][obj.first], "path", String)
-            ) {
+    
+    auto probes = runtimeconfig["runtimeOptions"]["additionalProbingPaths"];
+    for (auto it = probes.begin(); it != probes.end(); ++it) {
+        if(!it.value().is_string()) {
             continue;
         }
 
-        std::string lib_path = deps["libraries"][obj.first]["path"].ToString();
+        std::string path = it.value().get<std::string>();
         
+        if(is_directory(std::filesystem::path(path))) {
+            probing_paths.push_back(path);
 
-        for(const auto& runtime_obj : obj.second["runtime"].ObjectRange()) {
-            for(const auto& probing_path : probing_paths) {
-                std::filesystem::path path_p = std::filesystem::path(probing_path) / lib_path / runtime_obj.first;
-      
-                if(exists(path_p)) {
-                    std::string path = absolute(path_p).string();
-
-                    log_debug("Found dependency %s", path.c_str());
-
-                    tpa_list.append(path);
-                    tpa_list.append(TPA_DELIMITER);
-                }
-            }
+            log_debug("Probe path found: %s", path.c_str());
         }
     }
 }

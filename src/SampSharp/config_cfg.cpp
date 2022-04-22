@@ -16,6 +16,7 @@
 #include "config_cfg.h"
 
 #include <algorithm>
+#include <filesystem>
 #include <fstream>
 #include <sstream>
 
@@ -31,7 +32,7 @@ static void trim(std::string& s) {
 
 config_cfg::config_cfg() {
     std::ifstream file("server.cfg");
-
+    
     if (file.is_open()) {
         std::string line, name, value;
 

@@ -53,6 +53,12 @@
     <ClCompile Include="config.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="config_composite.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="config_omp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="strutil.h">
@@ -92,6 +98,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="config_win.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="config_composite.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="config_omp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
