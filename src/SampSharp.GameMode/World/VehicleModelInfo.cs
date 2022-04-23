@@ -48,7 +48,7 @@ public readonly partial struct VehicleModelInfo
         new(448, "Pizzaboy", VehicleCategory.Bike, 1), new(449, "Tram", VehicleCategory.Unique, 6),
         new(450, "Article Trailer 2", VehicleCategory.Trailer, 0), new(451, "Turismo", VehicleCategory.Sport, 2),
         new(452, "Speeder", VehicleCategory.Boat, 1), new(453, "Reefer", VehicleCategory.Boat, 1), new(454, "Tropic", VehicleCategory.Boat, 1),
-        new(456, "Flatbed", VehicleCategory.Industrial, 2), new(456, "Yankee", VehicleCategory.Industrial, 2), new(457, "Caddy", VehicleCategory.Unique, 2),
+        new(455, "Flatbed", VehicleCategory.Industrial, 2), new(456, "Yankee", VehicleCategory.Industrial, 2), new(457, "Caddy", VehicleCategory.Unique, 2),
         new(458, "Solair", VehicleCategory.Station, 4), new(459, "Topfun Van (Berkley's RC)", VehicleCategory.Industrial, 4),
         new(460, "Skimmer", VehicleCategory.Airplane, 2), new(461, "PCJ-600", VehicleCategory.Bike, 2), new(462, "Faggio", VehicleCategory.Bike, 2),
         new(463, "Freeway", VehicleCategory.Bike, 2), new(464, "RC Baron", VehicleCategory.RemoteControl, 2),
