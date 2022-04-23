@@ -14,6 +14,7 @@
 // limitations under the License.
 
 using SampSharp.Core;
+using SampSharp.Core.Hosting;
 
 namespace TestMode.GameMode;
 
@@ -21,7 +22,8 @@ internal static class Program
 {
     private static void Main()
     {
-        new GameModeBuilder().ApplyRconFix()
+        new GameModeBuilder()
+            .ApplyRconFix()
             .Use<GameMode>()
             .Run();
     }
