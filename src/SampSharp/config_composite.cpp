@@ -16,7 +16,8 @@
 #include "config_composite.h"
 #include <utility>
 
-config_composite::config_composite(std::vector<std::unique_ptr<config>>& configs) : configs_(std::move(configs)) {
+void config_composite::add_config(config* config) {
+    configs_.push_back(config);
 }
 
 bool config_composite::get_config_string(std::string name, std::string& result) {

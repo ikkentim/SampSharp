@@ -121,33 +121,32 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData) {
 
     log_info("v%s, (C)2014-2022 Tim Potze", PLUGIN_VERSION_STR);
     
-
-    // decorate config with command line arguments
-    std::vector<std::unique_ptr<config>> configs;
+    config_composite config;
 
 #if SAMPSHARP_WINDOWS
-    configs.push_back(std::make_unique<config_win>());
+    // decorate config with command line arguments
+    config_win config_win;
+    config.add_config(&config_win);
 #endif
 
+    config_omp config_omp;
     if(is_open_mp(ppData)) {
         log_debug("Adding open.mp config reader");
-        
-        configs.push_back(std::make_unique<config_omp>());
+        config.add_config(&config_omp);
     }
-    
-    configs.push_back(std::make_unique<config_cfg>());
 
-    auto cfg = config_composite(configs);
+    config_cfg config_cfg;
+    config.add_config(&config_cfg);
 
-    locator loc(&cfg);
+    locator loc(&config);
 
-    if(!validate_config(&cfg)) {
+    if(!validate_config(&config)) {
         return false;
     }
     
     host = new nethost_coreclr();
 
-    if(!host->setup(&loc, &cfg)) {
+    if(!host->setup(&loc, &config)) {
         delete host;
         host = nullptr;
         return false;
