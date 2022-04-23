@@ -15,14 +15,13 @@
 
 #pragma once
 #include "config.h"
-#include <memory>
 #include <vector>
 
 class config_composite final : public config {
  public:
-    config_composite(std::vector<std::unique_ptr<config>>& configs);
+    void add_config(config* config);
     bool get_config_string(std::string name, std::string &result) override;
     bool get_config_bool(std::string name, bool& result) override;
 private:
-    std::vector<std::unique_ptr<config>>& configs_;
+    std::vector<config *> configs_;
 };
