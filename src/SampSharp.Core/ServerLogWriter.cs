@@ -37,7 +37,7 @@ internal class ServerLogWriter : TextWriter
         Write(value);
     }
 
-    public override void WriteLine(string value)
+    public override void WriteLine(string? value)
     {
         Write(value);
     }
@@ -47,22 +47,22 @@ internal class ServerLogWriter : TextWriter
         Write(string.Empty);
     }
 
-    public override void WriteLine(string format, object arg0)
+    public override void WriteLine(string format, object? arg0)
     {
         Write(format, arg0);
     }
 
-    public override void WriteLine(string format, object arg0, object arg1)
+    public override void WriteLine(string format, object? arg0, object? arg1)
     {
         Write(format, arg0, arg1);
     }
 
-    public override void WriteLine(string format, object arg0, object arg1, object arg2)
+    public override void WriteLine(string format, object? arg0, object? arg1, object? arg2)
     {
         Write(format, arg0, arg1, arg2);
     }
 
-    public override void WriteLine(string format, params object[] arg)
+    public override void WriteLine(string format, params object?[] arg)
     {
         Write(format, arg);
     }
@@ -72,7 +72,7 @@ internal class ServerLogWriter : TextWriter
         Write(value);
     }
 
-    public override void WriteLine(char[] buffer)
+    public override void WriteLine(char[]? buffer)
     {
         Write(buffer);
     }
@@ -108,7 +108,7 @@ internal class ServerLogWriter : TextWriter
         Write(value);
     }
 
-    public override void WriteLine(object value)
+    public override void WriteLine(object? value)
     {
         Write(value);
     }
@@ -141,15 +141,20 @@ internal class ServerLogWriter : TextWriter
         }
     }
 
-    public override void Write(string value)
+    public override void Write(string? value)
     {
+        if (value == null)
+        {
+            _gameModeClient.Print(string.Empty);
+            return;
+        }
         foreach (var ln in value.Split('\n'))
         {
             var line = ln.Trim('\r');
             while (line.Length > 512)
             {
-                var block = line.Substring(0, 512);
-                line = line.Substring(512);
+                var block = line[..512];
+                line = line[512..];
                 _gameModeClient.Print(block);
             }
 
@@ -162,39 +167,43 @@ internal class ServerLogWriter : TextWriter
         Write(value.ToString());
     }
 
-    public override void Write(string format, object arg0)
+    public override void Write(string format, object? arg0)
     {
         // ReSharper disable once RedundantStringFormatCall
-        Write(string.Format(format, arg0));
+        Write(string.Format(CultureInfo.InvariantCulture, format, arg0));
     }
 
-    public override void Write(string format, object arg0, object arg1)
+    public override void Write(string format, object? arg0, object? arg1)
     {
         // ReSharper disable once RedundantStringFormatCall
-        Write(string.Format(format, arg0, arg1));
+        Write(string.Format(CultureInfo.InvariantCulture, format, arg0, arg1));
     }
 
-    public override void Write(string format, object arg0, object arg1, object arg2)
+    public override void Write(string format, object? arg0, object? arg1, object? arg2)
     {
         // ReSharper disable once RedundantStringFormatCall
-        Write(string.Format(format, arg0, arg1, arg2));
+        Write(string.Format(CultureInfo.InvariantCulture, format, arg0, arg1, arg2));
     }
 
-    public override void Write(string format, params object[] arg)
+    public override void Write(string format, params object?[] arg)
     {
         // ReSharper disable once RedundantStringFormatCall
-        Write(string.Format(format, arg));
+        Write(string.Format(CultureInfo.InvariantCulture, format, arg));
     }
 
-    public override void Write(char[] buffer)
+    public override void Write(char[]? buffer)
     {
+        if (buffer == null)
+        {
+            Write(string.Empty);
+            return;
+        }
         Write(string.Join(string.Empty, buffer));
     }
 
     public override void Write(char[] buffer, int index, int count)
     {
-        Write(string.Join(string.Empty, buffer)
-            .Substring(index, count));
+        Write(new string(buffer.AsSpan(index, count)));
     }
 
     public override void Write(decimal value)
@@ -214,27 +223,27 @@ internal class ServerLogWriter : TextWriter
 
     public override void Write(int value)
     {
-        Write(value.ToString());
+        Write(value.ToString(CultureInfo.InvariantCulture));
     }
 
     public override void Write(long value)
     {
-        Write(value.ToString());
+        Write(value.ToString(CultureInfo.InvariantCulture));
     }
 
-    public override void Write(object value)
+    public override void Write(object? value)
     {
         Write(value?.ToString() ?? string.Empty);
     }
 
     public override void Write(uint value)
     {
-        Write(value.ToString());
+        Write(value.ToString(CultureInfo.InvariantCulture));
     }
 
     public override void Write(ulong value)
     {
-        Write(value.ToString());
+        Write(value.ToString(CultureInfo.InvariantCulture));
     }
 
     // TODO: Improve Async variants
@@ -248,7 +257,7 @@ internal class ServerLogWriter : TextWriter
         return new Task(() => Write(buffer, index, count));
     }
 
-    public override Task WriteAsync(string value)
+    public override Task WriteAsync(string? value)
     {
         return new Task(() => Write(value));
     }
@@ -268,7 +277,7 @@ internal class ServerLogWriter : TextWriter
         return new Task(() => WriteLine(buffer, index, count));
     }
 
-    public override Task WriteLineAsync(string value)
+    public override Task WriteLineAsync(string? value)
     {
         return new Task(() => WriteLine(value));
     }

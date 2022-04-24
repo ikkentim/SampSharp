@@ -42,7 +42,7 @@ public class NativeMethodAttribute : Attribute
     }
 
     /// <summary>Gets or sets the function name.</summary>
-    public string Function { get; set; }
+    public string? Function { get; set; }
 
     /// <summary>Gets a value indicating whether to ignore identifiers.</summary>
     public bool IgnoreIdentifiers { get; }
@@ -51,8 +51,8 @@ public class NativeMethodAttribute : Attribute
     public int IdentifiersIndex { get; set; }
 
     /// <summary>Gets the lengths of special arguments.</summary>
-    public uint[] Lengths { get; }
+    public uint[]? Lengths { get; }
 
     /// <summary>Gets or sets indices of parameters which should be passed by reference instead of input values.</summary>
-    public int[] ReferenceIndices { get; set; }
+    public int[]? ReferenceIndices { get; set; }
 }

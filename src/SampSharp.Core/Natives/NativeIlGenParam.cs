@@ -21,14 +21,14 @@ namespace SampSharp.Core.Natives;
 /// <summary>Provides information about a native parameter which can be consumed by a proxy factory IL generator.</summary>
 internal class NativeIlGenParam
 {
-    private ParameterInfo _parameter;
-    private PropertyInfo _property;
+    private ParameterInfo? _parameter;
+    private PropertyInfo? _property;
 
     /// <summary>Gets or sets the index of this native parameter.</summary>
     public int Index { get; set; }
 
     /// <summary>Gets or sets the method parameter of this native parameter.</summary>
-    public ParameterInfo Parameter
+    public ParameterInfo? Parameter
     {
         get => _parameter;
         set
@@ -37,14 +37,9 @@ internal class NativeIlGenParam
             {
                 _property = null;
 
-                if (value.ParameterType.IsArray && value.GetCustomAttribute<ParamArrayAttribute>() != null)
-                {
-                    Type = NativeParameterType.VarArgs;
-                }
-                else
-                {
-                    Type = GetParameterType(value.ParameterType);
-                }
+                Type = value.ParameterType.IsArray && value.GetCustomAttribute<ParamArrayAttribute>() != null
+                    ? NativeParameterType.VarArgs
+                    : GetParameterType(value.ParameterType);
             }
 
             _parameter = value;
@@ -52,7 +47,7 @@ internal class NativeIlGenParam
     }
 
     /// <summary>Gets or sets the index property of this native parameter.</summary>
-    public PropertyInfo Property
+    public PropertyInfo? Property
     {
         get => _property;
         set
@@ -68,7 +63,7 @@ internal class NativeIlGenParam
     }
 
     /// <summary>Gets or sets the length parameter of this native parameter.</summary>
-    public NativeIlGenParam LengthParam { get; set; }
+    public NativeIlGenParam? LengthParam { get; set; }
 
     /// <summary>Gets or sets a value indicating whether this native parameter is a length parameter.</summary>
     public bool IsLengthParam { get; set; }
@@ -77,10 +72,10 @@ internal class NativeIlGenParam
     public bool IsReferenceInput { get; set; }
 
     /// <summary>Gets the name of this native parameter.</summary>
-    public string Name => Parameter?.Name ?? Property?.Name;
+    public string? Name => Parameter?.Name ?? Property?.Name;
 
     /// <summary>Gets the type of the method parameter or index property of this native parameter.</summary>
-    public Type InputType => Parameter?.ParameterType ?? Property.PropertyType;
+    public Type InputType => Parameter?.ParameterType ?? Property?.PropertyType ?? throw new InvalidOperationException("Bad state");
 
     /// <summary>Gets the type of this native parameter.</summary>
     public NativeParameterType Type { get; private set; }

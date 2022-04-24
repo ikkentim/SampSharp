@@ -52,7 +52,7 @@ internal static class IlGeneratorExtensions
     /// <param name="methodName">The name of the method to call</param>
     public static void EmitCall(this ILGenerator ilGenerator, OpCode opCode, Type type, string methodName)
     {
-        ilGenerator.EmitCall(opCode, type.GetMethod(methodName));
+        ilGenerator.EmitCall(opCode, type.GetMethod(methodName)!);
     }
 
     /// <summary>Emits the call to the specified <paramref name="methodName" /> in the specified <paramref name="type" />.</summary>
@@ -62,7 +62,7 @@ internal static class IlGeneratorExtensions
     /// <param name="types">The parameter types of the method.</param>
     public static void EmitCall(this ILGenerator ilGenerator, Type type, string methodName, params Type[] types)
     {
-        ilGenerator.EmitCall(type.GetMethod(methodName, types));
+        ilGenerator.EmitCall(type.GetMethod(methodName, types)!);
     }
 
     /// <summary>Emits the call to the specified <paramref name="methodName" /> in the specified <paramref name="type" />.</summary>
@@ -71,7 +71,7 @@ internal static class IlGeneratorExtensions
     /// <param name="methodName">The name of the method to call</param>
     public static void EmitCall(this ILGenerator ilGenerator, Type type, string methodName)
     {
-        ilGenerator.EmitCall(type.GetMethod(methodName));
+        ilGenerator.EmitCall(type.GetMethod(methodName)!);
     }
 
     /// <summary>Emits the call to the getter of the specified <paramref name="property" />.</summary>
@@ -81,7 +81,7 @@ internal static class IlGeneratorExtensions
     /// <param name="property">An expression of property. e.g. <code>(string x) => x.Length</code>.</param>
     public static void EmitPropertyGetterCall<T>(this ILGenerator ilGenerator, OpCode opCode, Expression<Func<T, object>> property)
     {
-        ilGenerator.EmitCall(opCode, ((PropertyInfo)((MemberExpression)((UnaryExpression)property.Body).Operand).Member).GetMethod);
+        ilGenerator.EmitCall(opCode, ((PropertyInfo)((MemberExpression)((UnaryExpression)property.Body).Operand).Member).GetMethod!);
     }
 
     /// <summary>Emits the a bitwise conversion from <typeparamref name="TFrom" /> to <typeparamref name="TTo" />. Only int, float, bool are supported.</summary>
@@ -91,7 +91,7 @@ internal static class IlGeneratorExtensions
     /// <exception cref="InvalidOperationException">Thrown when unsupported type is supplied.</exception>
     public static void EmitConvert<TFrom, TTo>(this ILGenerator ilGenerator)
     {
-        string methodName = null;
+        string? methodName = null;
         if (typeof(TTo) == typeof(int))
         {
             methodName = nameof(ValueConverter.ToInt32);
@@ -171,7 +171,7 @@ internal static class IlGeneratorExtensions
     public static void EmitThrowOnOutOfRangeLength(this ILGenerator ilGenerator, NativeIlGenParam param)
     {
         // if ($param <= 0)
-        ilGenerator.Emit(OpCodes.Ldarg, param.Parameter);
+        ilGenerator.Emit(OpCodes.Ldarg, param.Parameter!);
         ilGenerator.Emit(OpCodes.Ldc_I4_0);
         ilGenerator.Emit(OpCodes.Cgt);
         ilGenerator.Emit(OpCodes.Ldc_I4_0);
@@ -180,7 +180,7 @@ internal static class IlGeneratorExtensions
         ilGenerator.Emit(OpCodes.Brfalse, falseLabel);
 
         // throw new ArgumentOutOfRangeException($paramName);
-        ilGenerator.Emit(OpCodes.Ldstr, param.Name);
+        ilGenerator.Emit(OpCodes.Ldstr, param.Name!);
         ilGenerator.Emit(OpCodes.Newobj, typeof(ArgumentOutOfRangeException).GetConstructor(new[] { typeof(string) })!);
         ilGenerator.Emit(OpCodes.Throw);
         ilGenerator.MarkLabel(falseLabel);

@@ -29,14 +29,14 @@ public class GameModeNotRunningException : Exception
 
     /// <summary>Initializes a new instance of the <see cref="GameModeNotRunningException" /> class.</summary>
     /// <param name="message">The message that describes the error.</param>
-    public GameModeNotRunningException(string message) : base(message)
+    public GameModeNotRunningException(string? message) : base(message)
     {
     }
 
     /// <summary>Initializes a new instance of the <see cref="GameModeNotRunningException" /> class.</summary>
     /// <param name="message">The message.</param>
     /// <param name="innerException">The inner exception.</param>
-    public GameModeNotRunningException(string message, Exception innerException) : base(message, innerException)
+    public GameModeNotRunningException(string? message, Exception? innerException) : base(message, innerException)
     {
     }
 

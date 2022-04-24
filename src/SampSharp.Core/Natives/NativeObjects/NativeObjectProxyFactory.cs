@@ -29,7 +29,7 @@ public static class NativeObjectProxyFactory
     /// <returns>The proxy instance.</returns>
     public static T CreateInstance<T>(params object[] arguments) where T : class
     {
-        return CreateInstance(typeof(T), arguments) as T;
+        return (T)CreateInstance(typeof(T), arguments);
     }
 
     /// <summary>Creates a proxy instance of the specified <paramref name="type" />.</summary>

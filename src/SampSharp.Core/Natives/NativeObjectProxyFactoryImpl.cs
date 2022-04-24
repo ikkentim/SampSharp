@@ -69,10 +69,12 @@ internal class NativeObjectProxyFactoryImpl : INativeObjectProxyFactory
 
     private object CreateProxyInstance(KnownType proxyType, object[] arguments)
     {
-        return proxyType.IsGenerated
-            ? Activator.CreateInstance(proxyType.Type, new object[] { _gameModeClient.SynchronizationProvider }.Concat(arguments)
-                .ToArray())
-            : Activator.CreateInstance(proxyType.Type, arguments);
+        var (type, isGenerated) = proxyType;
+
+        return isGenerated
+            ? Activator.CreateInstance(type, new object[] { _gameModeClient.SynchronizationProvider }.Concat(arguments)
+                .ToArray())!
+            : Activator.CreateInstance(type, arguments)!;
     }
 
     private KnownType GenerateProxyType(Type type)
@@ -209,12 +211,12 @@ internal class NativeObjectProxyFactoryImpl : INativeObjectProxyFactory
         if (argsCount == 0)
             argsCount = 1;
 
-        NativeIlGenParam varArgsParam = null;
+        NativeIlGenParam? varArgsParam = null;
 
         if (context.HasVarArgs)
         {
             varArgsParam = context.Parameters.Last(x => x.Type == NativeParameterType.VarArgs);
-            if (varArgsParam.Parameter.ParameterType != typeof(object[]))
+            if (varArgsParam.Parameter!.ParameterType != typeof(object[]))
             {
                 throw new InvalidOperationException("Variable arguments array in native method must be of type object[]");
             }
@@ -229,7 +231,7 @@ internal class NativeObjectProxyFactoryImpl : INativeObjectProxyFactory
         if (varArgsParam != null)
         {
             // (varArgs * cell.size) + ((argsCount * cell.size))
-            ilGenerator.Emit(OpCodes.Ldarg, varArgsParam.Parameter);
+            ilGenerator.Emit(OpCodes.Ldarg, varArgsParam.Parameter!);
             ilGenerator.Emit(OpCodes.Ldlen);
             ilGenerator.Emit(OpCodes.Conv_I4);
             ilGenerator.Emit(OpCodes.Ldc_I4, AmxCell.Size);
@@ -260,7 +262,7 @@ internal class NativeObjectProxyFactoryImpl : INativeObjectProxyFactory
 
                 // (varArgs * cell.size) + ((valueCount * cell.size))
                 // For every vararg value, reserve 2 cells (the argument pointer and the value itself)
-                ilGenerator.Emit(OpCodes.Ldarg, varArgsParam.Parameter);
+                ilGenerator.Emit(OpCodes.Ldarg, varArgsParam.Parameter!);
                 ilGenerator.Emit(OpCodes.Ldlen);
                 ilGenerator.Emit(OpCodes.Conv_I4);
                 ilGenerator.Emit(OpCodes.Ldc_I4, AmxCell.Size);
@@ -306,7 +308,7 @@ internal class NativeObjectProxyFactoryImpl : INativeObjectProxyFactory
             {
                 // NativeUtils.AppendVarArgsFormat(format, varArgs);
                 var param = context.Parameters.Last(x => x.Type == NativeParameterType.VarArgs);
-                ilGenerator.Emit(OpCodes.Ldarg, param.Parameter);
+                ilGenerator.Emit(OpCodes.Ldarg, param.Parameter!);
                 ilGenerator.EmitCall(OpCodes.Call, typeof(NativeUtils), nameof(NativeUtils.AppendVarArgsFormat));
             }
         }
@@ -374,11 +376,11 @@ internal class NativeObjectProxyFactoryImpl : INativeObjectProxyFactory
                     ilGenerator.Emit(OpCodes.Ldc_I4, valueIndex * AmxCell.Size);
                     ilGenerator.Emit(OpCodes.Add);
                     ilGenerator.Emit(OpCodes.Ldarg_0);
-                    ilGenerator.EmitCall(param.Property.GetMethod);
+                    ilGenerator.EmitCall(param.Property.GetMethod!);
                     EmitConvertToInt(ilGenerator, param.Type);
                     ilGenerator.Emit(OpCodes.Stind_I4);
                 }
-                else if (!param.Parameter.IsOut)
+                else if (!param.Parameter!.IsOut)
                 {
                     // values[valueIndex] = argI
                     ilGenerator.Emit(OpCodes.Ldloc_1);
@@ -401,7 +403,7 @@ internal class NativeObjectProxyFactoryImpl : INativeObjectProxyFactory
                 var strLen = ilGenerator.DeclareLocal(typeof(int));
 
                 // int byteCount = NativeUtils.GetByteCount(textString);
-                ilGenerator.Emit(OpCodes.Ldarg, param.Parameter);
+                ilGenerator.Emit(OpCodes.Ldarg, param.Parameter!);
                 ilGenerator.EmitCall(typeof(NativeUtils), nameof(NativeUtils.GetByteCount));
                 ilGenerator.Emit(OpCodes.Stloc, strLen);
 
@@ -409,7 +411,7 @@ internal class NativeObjectProxyFactoryImpl : INativeObjectProxyFactory
                 var strBufferSpan = ilGenerator.EmitSpanAlloc(strLen);
 
                 // NativeUtils.GetBytes(textString, strBuffer);
-                ilGenerator.Emit(OpCodes.Ldarg, param.Parameter);
+                ilGenerator.Emit(OpCodes.Ldarg, param.Parameter!);
                 ilGenerator.Emit(OpCodes.Ldloc, strBufferSpan);
                 ilGenerator.EmitCall(typeof(NativeUtils), nameof(NativeUtils.GetBytes));
 
@@ -421,10 +423,10 @@ internal class NativeObjectProxyFactoryImpl : INativeObjectProxyFactory
             }
             else if (param.Type == NativeParameterType.StringReference)
             {
-                ilGenerator.EmitThrowOnOutOfRangeLength(param.LengthParam);
+                ilGenerator.EmitThrowOnOutOfRangeLength(param.LengthParam!);
 
                 // var strBuf = stackalloc/new byte[...]
-                var strBuf = ilGenerator.EmitSpanAlloc(param.LengthParam.Parameter, AmxCell.Size);
+                var strBuf = ilGenerator.EmitSpanAlloc(param.LengthParam!.Parameter!, AmxCell.Size);
                 paramBuffers[i] = strBuf;
 
                 // args[i] = NativeUtils.BytePointerToInt(strBufPtr);
@@ -440,15 +442,15 @@ internal class NativeObjectProxyFactoryImpl : INativeObjectProxyFactory
                     throw new InvalidOperationException("Unsupported identifier property type");
                 }
 
-                ilGenerator.EmitThrowOnOutOfRangeLength(param.LengthParam);
+                ilGenerator.EmitThrowOnOutOfRangeLength(param.LengthParam!);
 
                 // var arraySpan = NativeUtils.ArrayToIntSpan(array/null,len)
                 var arraySpan = ilGenerator.DeclareLocal(typeof(Span<int>));
-                if (param.Parameter.IsOut)
+                if (param.Parameter!.IsOut)
                     ilGenerator.Emit(OpCodes.Ldnull);
                 else
                     ilGenerator.Emit(OpCodes.Ldarg, param.Parameter);
-                ilGenerator.Emit(OpCodes.Ldarg, param.LengthParam.Parameter);
+                ilGenerator.Emit(OpCodes.Ldarg, param.LengthParam!.Parameter!);
                 ilGenerator.EmitCall(typeof(NativeUtils), nameof(NativeUtils.ArrayToIntSpan));
                 ilGenerator.Emit(OpCodes.Stloc, arraySpan);
 
@@ -474,7 +476,7 @@ internal class NativeObjectProxyFactoryImpl : INativeObjectProxyFactory
                 // NativeUtils.SetVarArgsValues(args, values, varArgs, i, valueIndex, vContext);
                 ilGenerator.Emit(OpCodes.Ldloc_0);
                 ilGenerator.Emit(OpCodes.Ldloc_1);
-                ilGenerator.Emit(OpCodes.Ldarg, param.Parameter);
+                ilGenerator.Emit(OpCodes.Ldarg, param.Parameter!);
                 ilGenerator.Emit(OpCodes.Ldc_I4, i);
                 ilGenerator.Emit(OpCodes.Ldc_I4, valueIndex);
                 ilGenerator.Emit(OpCodes.Ldloc, vContext);
@@ -498,7 +500,7 @@ internal class NativeObjectProxyFactoryImpl : INativeObjectProxyFactory
             {
                 if (param.Type.HasFlag(NativeParameterType.Reference))
                 {
-                    ilGenerator.Emit(OpCodes.Ldarg, param.Parameter);
+                    ilGenerator.Emit(OpCodes.Ldarg, param.Parameter!);
                     ilGenerator.Emit(OpCodes.Ldloc_1);
                     ilGenerator.Emit(OpCodes.Ldc_I4, valueIndex * AmxCell.Size);
                     ilGenerator.Emit(OpCodes.Add);
@@ -527,8 +529,8 @@ internal class NativeObjectProxyFactoryImpl : INativeObjectProxyFactory
             else if (param.Type.HasFlag(NativeParameterType.Array | NativeParameterType.Reference))
             {
                 // argI = NativeUtils.IntSpanToArray<int>((Array)null, span);
-                ilGenerator.Emit(OpCodes.Ldarg, param.Parameter);
-                if (param.Parameter.IsOut)
+                ilGenerator.Emit(OpCodes.Ldarg, param.Parameter!);
+                if (param.Parameter!.IsOut)
                     ilGenerator.Emit(OpCodes.Ldnull);
                 else
                     ilGenerator.Emit(OpCodes.Ldarg, param.Parameter);
@@ -545,7 +547,7 @@ internal class NativeObjectProxyFactoryImpl : INativeObjectProxyFactory
             else if (param.Type == NativeParameterType.StringReference)
             {
                 // paramStr = NativeUtils.GetString(strBuf);
-                ilGenerator.Emit(OpCodes.Ldarg, param.Parameter);
+                ilGenerator.Emit(OpCodes.Ldarg, param.Parameter!);
                 ilGenerator.Emit(OpCodes.Ldloc, paramBuffers[i]);
                 ilGenerator.EmitCall(OpCodes.Call, typeof(NativeUtils).GetMethod(nameof(NativeUtils.GetString))!, null);
                 ilGenerator.Emit(OpCodes.Stind_Ref);
@@ -613,17 +615,17 @@ internal class NativeObjectProxyFactoryImpl : INativeObjectProxyFactory
                     formatStringBuilder.Append('s');
                     break;
                 case NativeParameterType.StringReference:
-                    formatStringBuilder.Append(CultureInfo.InvariantCulture, $"S[*{param.LengthParam.Index}]");
+                    formatStringBuilder.Append(CultureInfo.InvariantCulture, $"S[*{param.LengthParam!.Index}]");
                     break;
                 case NativeParameterType.Int32Array:
                 case NativeParameterType.SingleArray:
                 case NativeParameterType.BoolArray:
-                    formatStringBuilder.Append(CultureInfo.InvariantCulture, $"a[*{param.LengthParam.Index}]");
+                    formatStringBuilder.Append(CultureInfo.InvariantCulture, $"a[*{param.LengthParam!.Index}]");
                     break;
                 case NativeParameterType.Int32ArrayReference:
                 case NativeParameterType.SingleArrayReference:
                 case NativeParameterType.BoolArrayReference:
-                    formatStringBuilder.Append(CultureInfo.InvariantCulture, $"A[*{param.LengthParam.Index}]");
+                    formatStringBuilder.Append(CultureInfo.InvariantCulture, $"A[*{param.LengthParam!.Index}]");
                     break;
                 case NativeParameterType.VarArgs:
                     // format apended at runtime
@@ -639,25 +641,27 @@ internal class NativeObjectProxyFactoryImpl : INativeObjectProxyFactory
     private static bool WrapMethod(Type type, NativeMethodAttribute attr, MethodInfo method, string[] objectIdentifiers, TypeBuilder typeBuilder,
         FieldInfo syncField)
     {
-        // Determine the details about the native.
+        var identifiers = attr.IgnoreIdentifiers
+            ? Array.Empty<string>()
+            : objectIdentifiers;
+
         var name = attr.Function ?? method.Name;
         var idIndex = Math.Max(0, attr.IdentifiersIndex);
+        var lengths = attr.Lengths ?? Array.Empty<uint>();
 
-        var result = CreateMethodBuilder(name, type, attr.Lengths ?? Array.Empty<uint>(), typeBuilder, method, attr.IgnoreIdentifiers
-            ? Array.Empty<string>()
-            : objectIdentifiers, idIndex, syncField, attr.ReferenceIndices);
+        var result = CreateMethodBuilder(name, type, lengths, typeBuilder, method, identifiers, idIndex, syncField, attr.ReferenceIndices);
         return result != null;
     }
 
     private static bool WrapProperty(Type type, NativePropertyAttribute propertyAttribute, string[] objectIdentifiers, TypeBuilder typeBuilder,
-        PropertyInfo property, MethodInfo get, MethodInfo set, FieldInfo syncField)
+        PropertyInfo property, MethodInfo? get, MethodInfo? set, FieldInfo syncField)
     {
         var identifiers = propertyAttribute.IgnoreIdentifiers
             ? Array.Empty<string>()
             : objectIdentifiers;
 
-        MethodBuilder getMethodBuilder = null;
-        MethodBuilder setMethodBuilder = null;
+        MethodBuilder? getMethodBuilder = null;
+        MethodBuilder? setMethodBuilder = null;
 
         if (get != null)
         {
@@ -688,14 +692,14 @@ internal class NativeObjectProxyFactoryImpl : INativeObjectProxyFactory
         return true;
     }
 
-    private static MethodBuilder CreateMethodBuilder(string nativeName, Type proxyType, uint[] nativeArgumentLengths, TypeBuilder typeBuilder,
-        MethodInfo method, string[] identifierPropertyNames, int idIndex, FieldInfo syncField, int[] referenceIndices)
+    private static MethodBuilder? CreateMethodBuilder(string nativeName, Type proxyType, uint[] nativeArgumentLengths, TypeBuilder typeBuilder,
+        MethodInfo method, string[] identifierPropertyNames, int idIndex, FieldInfo syncField, int[]? referenceIndices)
     {
         return CreateMethodBuilder(typeBuilder,
             CreateContext(nativeName, proxyType, nativeArgumentLengths, method, identifierPropertyNames, idIndex, syncField, referenceIndices));
     }
 
-    private static MethodBuilder CreateMethodBuilder(TypeBuilder typeBuilder, NativeIlGenContext context)
+    private static MethodBuilder? CreateMethodBuilder(TypeBuilder typeBuilder, NativeIlGenContext context)
     {
         var native = Interop.FastNativeFind(context.NativeName);
 
@@ -712,10 +716,9 @@ internal class NativeObjectProxyFactoryImpl : INativeObjectProxyFactory
     }
 
     private static NativeIlGenContext CreateContext(string nativeName, Type proxyType, uint[] nativeArgumentLengths, MethodInfo method,
-        string[] identifierPropertyNames, int idIndex, FieldInfo syncField, int[] referenceIndices)
+        string[] identifierPropertyNames, int idIndex, FieldInfo syncField, int[]? referenceIndices)
     {
         var methodParameters = method.GetParameters();
-        identifierPropertyNames ??= Array.Empty<string>();
 
         // Seed parameters array with indices
         var parameters = new NativeIlGenParam[methodParameters.Length + identifierPropertyNames.Length];
@@ -790,16 +793,9 @@ internal class NativeObjectProxyFactoryImpl : INativeObjectProxyFactory
             ? MethodAttributes.Public
             : MethodAttributes.Family) | MethodAttributes.ReuseSlot | MethodAttributes.Virtual | MethodAttributes.HideBySig;
 
-        return new NativeIlGenContext
-        {
-            NativeName = nativeName,
-            BaseMethod = method,
-            SynchronizationProviderField = syncField,
-            Parameters = parameters,
-            MethodParameterTypes = methodParameterTypes,
-            MethodOverrideAttributes = methodOverrideAttributes,
-            HasVarArgs = parameters.Any(x => x.Type == NativeParameterType.VarArgs)
-        };
+        var hasVarArgs = parameters.Any(x => x.Type == NativeParameterType.VarArgs);
+
+        return new NativeIlGenContext(nativeName, method, parameters, syncField, methodParameterTypes, methodOverrideAttributes, hasVarArgs);
     }
 
     private sealed record KnownType(Type Type, bool IsGenerated);

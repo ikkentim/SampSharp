@@ -14,7 +14,6 @@
 // limitations under the License.
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Text;
 using SampSharp.Core.Hosting;
@@ -45,7 +44,7 @@ internal static class NativeUtils
     /// <returns>The number of bytes of the input string including a nul terminator.</returns>
     public static int GetByteCount(string input)
     {
-        var enc = InternalStorage.RunningClient.Encoding ?? Encoding.ASCII;
+        var enc = InternalStorage.RunningClient.Encoding;
         return enc.GetByteCount(input) + 1;
     }
 
@@ -54,7 +53,7 @@ internal static class NativeUtils
     /// <param name="output">The buffer to store the bytes in.</param>
     public static void GetBytes(string input, Span<byte> output)
     {
-        var enc = InternalStorage.RunningClient.Encoding ?? Encoding.ASCII;
+        var enc = InternalStorage.RunningClient.Encoding;
         enc.GetBytes(input.AsSpan(), output);
         output[^1] = 0;
     }
@@ -64,7 +63,7 @@ internal static class NativeUtils
     /// <returns>The converted string excluding nul terminators.</returns>
     public static string GetString(Span<byte> bytes)
     {
-        var enc = InternalStorage.RunningClient.Encoding ?? Encoding.ASCII;
+        var enc = InternalStorage.RunningClient.Encoding;
 
         return enc.GetString(bytes)
             .TrimEnd('\0');
@@ -88,9 +87,7 @@ internal static class NativeUtils
     /// <param name="array">The array to convert.</param>
     /// <param name="length">The length of the data to convert.</param>
     /// <returns>The span of integers.</returns>
-    [SuppressMessage("Major Code Smell", "S1871:Two branches in a conditional structure should not have exactly the same implementation",
-        Justification = "False message")]
-    public static Span<int> ArrayToIntSpan(Array array, int length)
+    public static Span<int> ArrayToIntSpan(Array? array, int length)
     {
         if (array == null)
             return new int[length];
@@ -103,17 +100,17 @@ internal static class NativeUtils
         Span<int> result;
         switch (array)
         {
-            case int[] a:
-                return new Span<int>(a, 0, length);
-            case float[] a:
+            case int[] intValue:
+                return new Span<int>(intValue, 0, length);
+            case float[] floatValue:
                 result = new int[length];
                 for (var i = 0; i < length; i++)
-                    result[i] = ValueConverter.ToInt32(a[i]);
+                    result[i] = ValueConverter.ToInt32(floatValue[i]);
                 return result;
-            case bool[] a:
+            case bool[] boolValue:
                 result = new int[length];
                 for (var i = 0; i < length; i++)
-                    result[i] = ValueConverter.ToInt32(a[i]);
+                    result[i] = ValueConverter.ToInt32(boolValue[i]);
                 return result;
             default:
                 throw new InvalidOperationException("Unsupported array type");
@@ -125,7 +122,7 @@ internal static class NativeUtils
     /// <param name="array">The array to store the result in or <c>null</c> if a new array should be allocated.</param>
     /// <param name="span">The span of integers to convert.</param>
     /// <returns>The converted array.</returns>
-    public static T[] IntSpanToArray<T>(Array array, Span<int> span)
+    public static T[] IntSpanToArray<T>(Array? array, Span<int> span)
     {
         array ??= new T[span.Length];
 
@@ -243,19 +240,19 @@ internal static class NativeUtils
 
         foreach (var value in varArgs)
         {
-            if (value is Array array)
+            switch (value)
             {
-                sb.AppendFormat(CultureInfo.InvariantCulture, "a[{0}]", array.Length);
-            }
-            else if (value is string)
-            {
-                sb.Append('s');
-            }
-            else
-            {
-                // "In Pawn variadic functions always take their variable arguments (those represented by "...") by reference. This
-                // means that for such functions you have to use the 'r' specifier where you would normally use 'b', 'i' 'd' or 'f'."
-                sb.Append('r');
+                case Array array:
+                    sb.AppendFormat(CultureInfo.InvariantCulture, "a[{0}]", array.Length);
+                    break;
+                case string:
+                    sb.Append('s');
+                    break;
+                default:
+                    // "In Pawn variadic functions always take their variable arguments (those represented by "...") by reference. This
+                    // means that for such functions you have to use the 'r' specifier where you would normally use 'b', 'i' 'd' or 'f'."
+                    sb.Append('r');
+                    break;
             }
         }
 

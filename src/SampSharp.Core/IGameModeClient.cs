@@ -36,7 +36,7 @@ public interface IGameModeClient
     string ServerPath { get; }
 
     /// <summary>Occurs when an exception is unhandled during the execution of a callback or tick.</summary>
-    event EventHandler<UnhandledExceptionEventArgs> UnhandledException;
+    event EventHandler<UnhandledExceptionEventArgs>? UnhandledException;
 
     /// <summary>
     /// Registers a callback with the specified <paramref name="name" />. When the callback is called, the specified <paramref name="methodInfo" /> will be
@@ -48,7 +48,7 @@ public interface IGameModeClient
     /// <param name="methodInfo">The method information of the method to invoke when the callback is called.</param>
     /// <param name="parameterTypes">The types of the parameters the callback handler expects.</param>
     /// <param name="lengthIndices">The indices at which the lengths are provides for parameters which require lengths.</param>
-    void RegisterCallback(string name, object target, MethodInfo methodInfo, Type[] parameterTypes, uint?[] lengthIndices = null);
+    void RegisterCallback(string name, object target, MethodInfo methodInfo, Type[]? parameterTypes, uint?[]? lengthIndices = null);
 
     /// <summary>
     /// Registers a callback with the specified <paramref name="name" />. When the callback is called, the specified <paramref name="methodInfo" /> will be

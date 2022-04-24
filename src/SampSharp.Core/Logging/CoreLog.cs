@@ -15,6 +15,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 
 namespace SampSharp.Core.Logging;
@@ -32,12 +33,12 @@ public static class CoreLog
     internal static CoreLogLevel LogLevel { get; set; }
 
     /// <summary>Gets or sets the output stream writer.</summary>
-    internal static TextWriter TextWriter { get; set; }
+    internal static TextWriter? TextWriter { get; set; }
 
     private static string GetLevelName(CoreLogLevel level)
     {
         return level.ToString()
-            .ToUpper();
+            .ToUpper(CultureInfo.InvariantCulture);
     }
 
     /// <summary>Gets a value indicating whether the specified log level is logged</summary>
@@ -56,7 +57,7 @@ public static class CoreLog
     public static void Log(CoreLogLevel level, string message)
     {
         var tw = TextWriter ?? Console.Out;
-        if (tw != null && (LogLevel >= level || level == CoreLogLevel.Initialisation))
+        if (LogLevel >= level || level == CoreLogLevel.Initialisation)
         {
             tw.WriteLine(level == CoreLogLevel.Initialisation
                 ? message
@@ -71,10 +72,10 @@ public static class CoreLog
     [Conditional("DEBUG")]
     public static void LogDebug(string format, params object[] args)
     {
-        var tw = TextWriter;
-        if (tw != null && LogLevel >= CoreLogLevel.Debug)
+        var tw = TextWriter ?? Console.Out;
+        if (LogLevel >= CoreLogLevel.Debug)
         {
-            tw.WriteLine($"[SampSharp:{GetLevelName(CoreLogLevel.Debug)}] {string.Format(format, args)}");
+            tw.WriteLine($"[SampSharp:{GetLevelName(CoreLogLevel.Debug)}] {string.Format(CultureInfo.InvariantCulture, format, args)}");
         }
     }
 
@@ -85,10 +86,10 @@ public static class CoreLog
     [Conditional("DEBUG")]
     public static void LogVerbose(string format, params object[] args)
     {
-        var tw = TextWriter;
-        if (tw != null && LogLevel >= CoreLogLevel.Verbose)
+        var tw = TextWriter ?? Console.Out;
+        if (LogLevel >= CoreLogLevel.Verbose)
         {
-            tw.WriteLine($"[SampSharp:{GetLevelName(CoreLogLevel.Verbose)}] {string.Format(format, args)}");
+            tw.WriteLine($"[SampSharp:{GetLevelName(CoreLogLevel.Verbose)}] {string.Format(CultureInfo.InvariantCulture, format, args)}");
         }
     }
 }

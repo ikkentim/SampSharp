@@ -35,5 +35,5 @@ public class CallbackAttribute : Attribute
     }
 
     /// <summary>Gets or sets the name of the callback.</summary>
-    public string Name { get; set; }
+    public string? Name { get; set; }
 }

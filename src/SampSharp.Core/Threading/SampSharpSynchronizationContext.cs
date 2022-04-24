@@ -23,18 +23,18 @@ internal class SampSharpSynchronizationContext : SynchronizationContext
 {
     private readonly ConcurrentQueue<SendOrPostCallbackItem> _queue = new();
 
-    public override void Send(SendOrPostCallback d, object state)
+    public override void Send(SendOrPostCallback d, object? state)
     {
         var item = new SendOrPostCallbackItem(d, state, ExecutionType.Send);
         _queue.Enqueue(item);
 
         item.ExecutionCompleteWaitHandle.WaitOne();
 
-        if (item.ExecutedWithException)
+        if (item.Exception != null)
             throw item.Exception;
     }
 
-    public override void Post(SendOrPostCallback d, object state)
+    public override void Post(SendOrPostCallback d, object? state)
     {
         // Queue the item and don't wait for its execution. 
         var item = new SendOrPostCallbackItem(d, state, ExecutionType.Post);
@@ -47,7 +47,7 @@ internal class SampSharpSynchronizationContext : SynchronizationContext
         return this;
     }
 
-    public SendOrPostCallbackItem GetMessage()
+    public SendOrPostCallbackItem? GetMessage()
     {
         _queue.TryDequeue(out var result);
         return result;
@@ -64,19 +64,17 @@ internal class SampSharpSynchronizationContext : SynchronizationContext
         private readonly ManualResetEvent _asyncWaitHandle = new(false);
         private readonly ExecutionType _executionType;
         private readonly SendOrPostCallback _method;
-        private readonly object _state;
+        private readonly object? _state;
 
-        internal SendOrPostCallbackItem(SendOrPostCallback callback, object state, ExecutionType type)
+        internal SendOrPostCallbackItem(SendOrPostCallback callback, object? state, ExecutionType type)
         {
             _method = callback;
             _state = state;
             _executionType = type;
         }
 
-        public Exception Exception { get; private set; }
-
-        public bool ExecutedWithException => Exception != null;
-
+        public Exception? Exception { get; private set; }
+        
         public WaitHandle ExecutionCompleteWaitHandle => _asyncWaitHandle;
 
         public void Execute()
