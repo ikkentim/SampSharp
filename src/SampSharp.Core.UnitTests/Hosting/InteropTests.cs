@@ -14,6 +14,7 @@
 // limitations under the License.
 
 using System.Runtime.InteropServices;
+using System.Text;
 using Moq;
 using SampSharp.Core.Hosting;
 using SampSharp.Core.UnitTests.TestHelpers;
@@ -51,7 +52,7 @@ public unsafe class InteropTests
             PluginData = &pluginData
         };
 
-        using var gmScope = new GameModeClientScope(Mock.Of<IGameModeClient>());
+        using var gmScope = new GameModeClientScope(Mock.Of<IGameModeClient>(x => x.Encoding == Encoding.ASCII));
         using var apiScope = new ApiScope(&api);
 
         // act
