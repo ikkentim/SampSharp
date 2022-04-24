@@ -21,11 +21,12 @@ public class GameModeClientScope : IDisposable
 {
     public GameModeClientScope(IGameModeClient client)
     {
-        InternalStorage.RunningClient = client;
+        InternalStorage.SetRunningClient(client);
     }
 
     public void Dispose()
     {
-        InternalStorage.RunningClient = null;
+        InternalStorage.SetRunningClient(null);
+        GC.SuppressFinalize(this);
     }
 }

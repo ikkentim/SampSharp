@@ -22,7 +22,7 @@ internal static class InternalStorage
 
     public static IGameModeClient RunningClient => _runningClient ?? throw new GameModeNotRunningException();
 
-    public static void SetRunningClient(IGameModeClient client)
+    public static void SetRunningClient(IGameModeClient? client)
     {
         _runningClient = client;
     }

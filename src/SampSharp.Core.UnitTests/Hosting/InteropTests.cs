@@ -24,8 +24,8 @@ namespace SampSharp.Core.UnitTests.Hosting;
 
 public unsafe class InteropTests
 {
-    private static string _printfFormat;
-    private static string _printfMessage;
+    private static string? _printfFormat;
+    private static string? _printfMessage;
 
     [UnmanagedCallersOnly]
     static void PrintfUnmanaged(byte* format, byte* message)

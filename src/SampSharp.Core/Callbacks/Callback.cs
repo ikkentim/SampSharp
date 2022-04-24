@@ -25,12 +25,12 @@ namespace SampSharp.Core.Callbacks;
 
 internal class Callback
 {
-    private readonly object _target;
+    private readonly object? _target;
     private readonly object?[] _parametersBuffer;
     private readonly FastMethodInfo _fastMethod;
     private readonly object[]? _wrapBuffer;
 
-    public Callback(ICallbackParameter[] parameters, object target, MethodInfo method, bool wrapped)
+    public Callback(ICallbackParameter[] parameters, object? target, MethodInfo method, bool wrapped)
     {
         Parameters = parameters;
         _parametersBuffer = new object[parameters.Length];
@@ -93,7 +93,7 @@ internal class Callback
         return null;
     }
 
-    public static Callback For(object target, MethodInfo method, Type[]? parameterTypes = null, uint?[]? lengthIndices = null)
+    public static Callback For(object? target, MethodInfo method, Type[]? parameterTypes = null, uint?[]? lengthIndices = null)
     {
         var wrapped = false;
         var methodParameters = method.GetParameters();
@@ -200,9 +200,9 @@ internal class Callback
 
     public class FastMethodInfo
     {
-        private delegate object? ReturnValueDelegate(object instance, object?[] arguments);
+        private delegate object? ReturnValueDelegate(object? instance, object?[] arguments);
 
-        private delegate void VoidDelegate(object instance, object?[] arguments);
+        private delegate void VoidDelegate(object? instance, object?[] arguments);
 
         public FastMethodInfo(MethodInfo methodInfo)
         {
@@ -236,7 +236,7 @@ internal class Callback
 
         private ReturnValueDelegate Delegate { get; }
 
-        public object? Invoke(object instance, object?[] arguments)
+        public object? Invoke(object? instance, object?[] arguments)
         {
             return Delegate(instance, arguments);
         }
