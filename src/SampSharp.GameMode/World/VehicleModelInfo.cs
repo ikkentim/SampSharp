@@ -14,6 +14,8 @@
 // limitations under the License.
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using SampSharp.GameMode.Definitions;
 
 // ReSharper disable StringLiteralTypo
@@ -22,7 +24,7 @@ namespace SampSharp.GameMode.World;
 /// <summary>Contains vehicle category infos.</summary>
 public readonly partial struct VehicleModelInfo
 {
-    private static readonly VehicleModelInfo[] VehicleModelInfos =
+    private static readonly VehicleModelInfo[] _vehicleModelInfos =
     {
         new(400, "Landstalker", VehicleCategory.OffRoad, 4), new(401, "Bravura", VehicleCategory.Saloon, 2), new(402, "Buffalo", VehicleCategory.Sport, 2),
         new(403, "Linerunner", VehicleCategory.Industrial, 2), new(404, "Perenniel", VehicleCategory.Station, 4),
@@ -164,7 +166,7 @@ public readonly partial struct VehicleModelInfo
             throw new ArgumentOutOfRangeException(nameof(vehicle), "vehicle's model is non-existant");
         }
 
-        return VehicleModelInfos[model - 400];
+        return _vehicleModelInfos[model - 400];
     }
 
     /// <summary>Returns an instance of <see cref="VehicleModelInfo" /> containing information about the given <see cref="VehicleModelType" />.</summary>
@@ -177,6 +179,19 @@ public readonly partial struct VehicleModelInfo
             throw new ArgumentOutOfRangeException(nameof(model), "model is non-existant");
         }
 
-        return VehicleModelInfos[(int)model - 400];
+        return _vehicleModelInfos[(int)model - 400];
+    }
+    
+    /// <summary>Returns an IEnumerable of <see cref="VehicleModelInfo" /> containing information about on all vehicles.</summary>
+    /// <param name="category">The category to find the vehicles.</param>
+    /// <returns>An IEnumerable of <see cref="VehicleModelInfo" /> containing information about on all vehicles.</returns>
+    public static IEnumerable<VehicleModelInfo> GetAllVehicles(VehicleCategory category)
+    {
+        if ((int)category < 1 || (int)category > 16)
+        {
+            throw new ArgumentOutOfRangeException(nameof(category), "category is non-existant");
+        }
+
+        return _vehicleModelInfos.Where(modelInfo => modelInfo.Category == category);
     }
 }
