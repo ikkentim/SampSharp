@@ -21,8 +21,8 @@ namespace SampSharp.Core;
 /// <summary>Represents a configuration build for running a SampSharp game mode.</summary>
 public sealed class GameModeBuilder
 {
-    private IGameModeProvider _gameModeProvider;
-    private Encoding _encoding;
+    private IGameModeProvider? _gameModeProvider;
+    private Encoding? _encoding;
 
     private GameModeRunnerFactory _create;
     private GameModeRunnerRun _run;
@@ -30,8 +30,8 @@ public sealed class GameModeBuilder
     /// <summary>Initializes a new instance of the <see cref="GameModeBuilder" /> class.</summary>
     public GameModeBuilder()
     {
-        _create = Build;
-        _run = InnerRun;
+        _create = DefaultBuild;
+        _run = DefaultRun;
     }
 
     /// <summary>Use the specified <paramref name="encoding" /> when en/decoding text messages sent to/from the server.</summary>
@@ -90,16 +90,16 @@ public sealed class GameModeBuilder
         _run(runner);
     }
 
-    private void InnerRun(IGameModeRunner runner)
+    private static void DefaultRun(IGameModeRunner runner)
     {
         runner.Run();
     }
 
-    private IGameModeRunner Build()
+    private IGameModeRunner DefaultBuild()
     {
         if (_gameModeProvider == null)
             throw new GameModeBuilderException("No game mode provider has been specified.");
 
-        return new HostedGameModeClient(_gameModeProvider, _encoding);
+        return new HostedGameModeClient(_gameModeProvider, _encoding ?? Encoding.ASCII);
     }
 }

@@ -19,26 +19,27 @@ using System.Reflection;
 namespace SampSharp.Core.Natives;
 
 /// <summary>Provides information about a native which can be consumed by a proxy factory IL generator.</summary>
-internal class NativeIlGenContext
+internal record NativeIlGenContext(string NativeName, MethodInfo BaseMethod, NativeIlGenParam[] Parameters, FieldInfo SynchronizationProviderField,
+    Type[] MethodParameterTypes, MethodAttributes MethodOverrideAttributes, bool HasVarArgs)
 {
     /// <summary>Gets or sets the name of the native to be called.</summary>
-    public string NativeName { get; set; }
+    public string NativeName { get; } = NativeName;
 
     /// <summary>Gets or sets the base method of the proxy type to by overridden.</summary>
-    public MethodInfo BaseMethod { get; set; }
+    public MethodInfo BaseMethod { get; } = BaseMethod;
 
     /// <summary>Gets or sets the parameters of the native.</summary>
-    public NativeIlGenParam[] Parameters { get; set; }
+    public NativeIlGenParam[] Parameters { get; } = Parameters;
 
     /// <summary>Gets or sets the synchronization provider field.</summary>
-    public FieldInfo SynchronizationProviderField { get; set; }
+    public FieldInfo SynchronizationProviderField { get; } = SynchronizationProviderField;
 
     /// <summary>Gets or sets the base method parameter types.</summary>
-    public Type[] MethodParameterTypes { get; set; }
+    public Type[] MethodParameterTypes { get; } = MethodParameterTypes;
 
     /// <summary>Gets or sets the method attributes to be used to override the base method implementation.</summary>
-    public MethodAttributes MethodOverrideAttributes { get; set; }
+    public MethodAttributes MethodOverrideAttributes { get; } = MethodOverrideAttributes;
 
     /// <summary>Gets or sets a value indicating whether this native has variable arguments.</summary>
-    public bool HasVarArgs { get; set; }
+    public bool HasVarArgs { get; } = HasVarArgs;
 }

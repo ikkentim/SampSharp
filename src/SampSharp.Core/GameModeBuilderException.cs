@@ -29,14 +29,14 @@ public class GameModeBuilderException : Exception
 
     /// <summary>Initializes a new instance of the <see cref="GameModeBuilderException" /> class.</summary>
     /// <param name="message">The message that describes the error.</param>
-    public GameModeBuilderException(string message) : base(message)
+    public GameModeBuilderException(string? message) : base(message)
     {
     }
 
     /// <summary>Initializes a new instance of the <see cref="GameModeBuilderException" /> class.</summary>
     /// <param name="message">The message.</param>
     /// <param name="innerException">The inner exception.</param>
-    public GameModeBuilderException(string message, Exception innerException) : base(message, innerException)
+    public GameModeBuilderException(string? message, Exception? innerException) : base(message, innerException)
     {
     }
 

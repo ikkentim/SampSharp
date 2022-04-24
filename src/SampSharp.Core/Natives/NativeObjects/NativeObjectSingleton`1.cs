@@ -19,11 +19,9 @@ namespace SampSharp.Core.Natives.NativeObjects;
 /// <typeparam name="T">The native object type.</typeparam>
 public abstract class NativeObjectSingleton<T> where T : NativeObjectSingleton<T>
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S2743:Static fields should not be used in generic types",
-        Justification = "By design")]
-    private static T _instance;
+    private static T? _instance;
 
     /// <summary>Gets the singleton instance of native object <typeparamref name="T" />.</summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1000:Do not declare static members on generic types", Justification = "By design")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1000:Do not declare static members on generic types", Justification = "Factory pattern")]
     public static T Instance => _instance ??= NativeObjectProxyFactory.CreateInstance<T>();
 }

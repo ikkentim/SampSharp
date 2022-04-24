@@ -113,7 +113,7 @@ public static unsafe class Interop
     {
         var client = InternalStorage.RunningClient as HostedGameModeClient;
 
-        var nameStr = Marshal.PtrToStringAnsi((IntPtr)name);
+        var nameStr = Marshal.PtrToStringAnsi((IntPtr)name)!;
         client?.PublicCall(amx, nameStr, parameters, retval);
     }
 

@@ -171,7 +171,7 @@ public sealed class CodePageEncoding : Encoding
 
             var spl = ln.Split(new[] { ' ', '\t' });
 
-            string from = null, to = null;
+            string? from = null, to = null;
             foreach (var p in spl)
             {
                 if (p.StartsWith("#", StringComparison.InvariantCulture))

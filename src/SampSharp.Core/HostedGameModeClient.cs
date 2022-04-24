@@ -30,7 +30,7 @@ namespace SampSharp.Core;
 internal sealed class HostedGameModeClient : IGameModeClient, IGameModeRunner, ISynchronizationProvider
 {
     private readonly Dictionary<string, Callback> _newCallbacks = new();
-    private SampSharpSynchronizationContext _synchronizationContext;
+    private SampSharpSynchronizationContext? _synchronizationContext;
     private readonly IGameModeProvider _gameModeProvider;
     private int _mainThread;
     private int _rconThread = int.MinValue;
@@ -62,14 +62,14 @@ internal sealed class HostedGameModeClient : IGameModeClient, IGameModeRunner, I
 
     public string ServerPath { get; }
 
-    public event EventHandler<UnhandledExceptionEventArgs> UnhandledException;
+    public event EventHandler<UnhandledExceptionEventArgs>? UnhandledException;
 
     public void RegisterCallback(string name, object target, MethodInfo methodInfo)
     {
         RegisterCallback(name, target, methodInfo, null);
     }
 
-    public void RegisterCallback(string name, object target, MethodInfo methodInfo, Type[] parameterTypes, uint?[] lengthIndices = null)
+    public void RegisterCallback(string name, object target, MethodInfo methodInfo, Type[]? parameterTypes, uint?[]? lengthIndices = null)
     {
         if (name == null) throw new ArgumentNullException(nameof(name));
         if (methodInfo == null) throw new ArgumentNullException(nameof(methodInfo));
@@ -100,7 +100,7 @@ internal sealed class HostedGameModeClient : IGameModeClient, IGameModeRunner, I
         if (IsOnMainThread)
             Interop.Print(text);
         else
-            _synchronizationContext.Send(_ => Interop.Print(text), null);
+            _synchronizationContext!.Send(_ => Interop.Print(text), null);
     }
 
     public bool Run()
@@ -149,7 +149,12 @@ internal sealed class HostedGameModeClient : IGameModeClient, IGameModeRunner, I
 
     void ISynchronizationProvider.Invoke(Action action)
     {
-        _synchronizationContext.Send(_ => action(), null);
+        if (!_running)
+        {
+            throw new GameModeNotRunningException();
+        }
+
+        _synchronizationContext!.Send(_ => action(), null);
     }
 
     private void OnUnhandledException(UnhandledExceptionEventArgs e)
@@ -166,7 +171,7 @@ internal sealed class HostedGameModeClient : IGameModeClient, IGameModeRunner, I
 
         while (true)
         {
-            var message = _synchronizationContext.GetMessage();
+            var message = _synchronizationContext!.GetMessage();
 
             if (message == null)
             {

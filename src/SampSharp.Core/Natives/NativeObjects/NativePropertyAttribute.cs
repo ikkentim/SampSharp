@@ -34,16 +34,16 @@ public class NativePropertyAttribute : Attribute
     }
 
     /// <summary>Gets or sets the set function.</summary>
-    public string SetFunction { get; set; }
+    public string? SetFunction { get; set; }
 
     /// <summary>Gets or sets the set lengths.</summary>
-    public uint[] SetLengths { get; set; }
+    public uint[]? SetLengths { get; set; }
 
     /// <summary>Gets or sets the get function.</summary>
-    public string GetFunction { get; set; }
+    public string? GetFunction { get; set; }
 
     /// <summary>Gets or sets the get lengths.</summary>
-    public uint[] GetLengths { get; set; }
+    public uint[]? GetLengths { get; set; }
 
     /// <summary>Gets a value indicating whether to ignore identifiers.</summary>
     public bool IgnoreIdentifiers { get; }

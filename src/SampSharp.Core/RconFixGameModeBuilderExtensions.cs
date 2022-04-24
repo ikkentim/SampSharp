@@ -14,7 +14,6 @@
 // limitations under the License.
 
 using System.IO;
-using SampSharp.Core.Natives;
 using SampSharp.Core.Natives.NativeObjects;
 
 namespace SampSharp.Core;
@@ -43,13 +42,15 @@ public static class RconFixGameModeBuilderExtensions
     /// <summary>Applies a fix which makes sure custom RCON commands are available. The fix consists of a filterscript being loaded which implements OnRconCommand.</summary>
     /// <param name="builder">The game mode builder.</param>
     /// <returns>The updated game mode configuration builder.</returns>
-    public static GameModeBuilder ApplyRconFix(this GameModeBuilder builder) =>
-        builder.AddRunAction((runner, next) =>
+    public static GameModeBuilder ApplyRconFix(this GameModeBuilder builder)
+    {
+        return builder.AddRunAction((runner, next) =>
         {
             next(runner);
 
             ApplyRconFix(runner.Client);
         });
+    }
 
     private static void ApplyRconFix(IGameModeClient cli)
     {
@@ -73,6 +74,9 @@ public static class RconFixGameModeBuilderExtensions
         /// <summary>Sends an rcon command.</summary>
         /// <param name="command">The rcon command to send.</param>
         [NativeMethod]
-        public virtual void SendRconCommand(string command) => throw new NativeNotImplementedException();
+        public virtual void SendRconCommand(string command)
+        {
+            throw new NativeNotImplementedException();
+        }
     }
 }

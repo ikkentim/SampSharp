@@ -20,16 +20,14 @@ namespace SampSharp.Core.Callbacks;
 
 internal class CallbackParameterIntArray : ICallbackArrayParameter
 {
-    private readonly int _lengthOffset;
-
     public CallbackParameterIntArray(int lengthOffset)
     {
-        _lengthOffset = lengthOffset;
+        LengthOffset = lengthOffset;
     }
 
-    public int LengthOffset => _lengthOffset;
+    public int LengthOffset { get; }
 
-    public unsafe object GetValue(IntPtr amx, IntPtr parameter)
+    public unsafe object? GetValue(IntPtr amx, IntPtr parameter)
     {
         AmxCell* physAddr;
         Interop.Api->PluginData->AmxExports->GetAddr((Amx*)amx, *(int*)parameter, &physAddr);
@@ -39,7 +37,7 @@ internal class CallbackParameterIntArray : ICallbackArrayParameter
             return null;
         }
 
-        var len = *(int*)IntPtr.Add(parameter, _lengthOffset * AmxCell.Size);
+        var len = *(int*)IntPtr.Add(parameter, LengthOffset * AmxCell.Size);
 
         var result = new int[len];
         new Span<int>(physAddr, len).CopyTo(new Span<int>(result));

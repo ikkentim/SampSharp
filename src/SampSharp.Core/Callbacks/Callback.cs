@@ -25,15 +25,14 @@ namespace SampSharp.Core.Callbacks;
 
 internal class Callback
 {
-    private readonly ICallbackParameter[] _parameters;
     private readonly object _target;
-    private readonly object[] _parametersBuffer;
+    private readonly object?[] _parametersBuffer;
     private readonly FastMethodInfo _fastMethod;
-    private readonly object[] _wrapBuffer;
+    private readonly object[]? _wrapBuffer;
 
     public Callback(ICallbackParameter[] parameters, object target, MethodInfo method, bool wrapped)
     {
-        _parameters = parameters;
+        Parameters = parameters;
         _parametersBuffer = new object[parameters.Length];
         _target = target;
         _fastMethod = new FastMethodInfo(method);
@@ -41,7 +40,7 @@ internal class Callback
         if (wrapped) _wrapBuffer = new object[] { _parametersBuffer };
     }
 
-    public ICallbackParameter[] Parameters => _parameters;
+    public ICallbackParameter[] Parameters { get; }
 
     private static bool IsSupportedParameterType(Type type)
     {
@@ -49,7 +48,7 @@ internal class Callback
                type == typeof(bool[]) || type == typeof(string);
     }
 
-    private static ICallbackParameter ParameterForType1(Type type)
+    private static ICallbackParameter? ParameterForType1(Type type)
     {
         if (type == typeof(int))
         {
@@ -74,7 +73,7 @@ internal class Callback
         return null;
     }
 
-    private static ICallbackParameter ParameterForType2(Type type, int offset)
+    private static ICallbackParameter? ParameterForType2(Type type, int offset)
     {
         if (type == typeof(int[]))
         {
@@ -94,7 +93,7 @@ internal class Callback
         return null;
     }
 
-    public static Callback For(object target, MethodInfo method, Type[] parameterTypes = null, uint?[] lengthIndices = null)
+    public static Callback For(object target, MethodInfo method, Type[]? parameterTypes = null, uint?[]? lengthIndices = null)
     {
         var wrapped = false;
         var methodParameters = method.GetParameters();
@@ -150,7 +149,7 @@ internal class Callback
         return new Callback(parameters, target, method, wrapped);
     }
 
-    private static void GetParameter(Type[] parameterTypes, uint?[] lengthIndices, int index, ICallbackParameter[] parameters, bool wrapped,
+    private static void GetParameter(Type[] parameterTypes, uint?[]? lengthIndices, int index, ICallbackParameter[] parameters, bool wrapped,
         ParameterInfo[] methodParameters)
     {
         if (!IsSupportedParameterType(parameterTypes[index]))
@@ -201,9 +200,9 @@ internal class Callback
 
     public class FastMethodInfo
     {
-        private delegate object ReturnValueDelegate(object instance, object[] arguments);
+        private delegate object? ReturnValueDelegate(object instance, object?[] arguments);
 
-        private delegate void VoidDelegate(object instance, object[] arguments);
+        private delegate void VoidDelegate(object instance, object?[] arguments);
 
         public FastMethodInfo(MethodInfo methodInfo)
         {
@@ -237,7 +236,7 @@ internal class Callback
 
         private ReturnValueDelegate Delegate { get; }
 
-        public object Invoke(object instance, object[] arguments)
+        public object? Invoke(object instance, object?[] arguments)
         {
             return Delegate(instance, arguments);
         }
@@ -247,9 +246,9 @@ internal class Callback
     {
         var paramCount = *(int*)parameters.ToPointer() / AmxCell.Size;
 
-        if (paramCount != _parameters.Length)
+        if (paramCount != Parameters.Length)
         {
-            CoreLog.Log(CoreLogLevel.Error, $"Callback parameter mismatch. Expected {_parameters.Length} but received {paramCount} parameters.");
+            CoreLog.Log(CoreLogLevel.Error, $"Callback parameter mismatch. Expected {Parameters.Length} but received {paramCount} parameters.");
             return;
         }
 
@@ -257,7 +256,7 @@ internal class Callback
 
         for (var i = 0; i < paramCount; i++)
         {
-            var param = _parameters[i];
+            var param = Parameters[i];
             args[i] = param.GetValue(amx, IntPtr.Add(parameters, AmxCell.Size * (i + 1)));
         }
 
@@ -280,7 +279,7 @@ internal class Callback
         }
     }
 
-    private static unsafe int ObjectToInt(object obj)
+    private static unsafe int ObjectToInt(object? obj)
     {
         return obj switch
         {

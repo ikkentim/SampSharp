@@ -22,7 +22,7 @@ namespace SampSharp.Core.Natives;
 /// <summary>Provides a state for variable arguments handling of native calls.</summary>
 internal class VarArgsState : IDisposable
 {
-    private List<GCHandle> _pinnedHandles;
+    private List<GCHandle>? _pinnedHandles;
 
     /// <summary>Pins a buffer which will be freed once this state is disposed of.</summary>
     /// <param name="buffer">The buffer to pin.</param>

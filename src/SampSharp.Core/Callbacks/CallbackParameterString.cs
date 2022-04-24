@@ -23,7 +23,7 @@ internal class CallbackParameterString : ICallbackParameter
 {
     public static readonly CallbackParameterString Instance = new();
 
-    public unsafe object GetValue(IntPtr amx, IntPtr parameter)
+    public unsafe object? GetValue(IntPtr amx, IntPtr parameter)
     {
         AmxCell* physAddr;
         Interop.Api->PluginData->AmxExports->GetAddr((Amx*)amx, *(int*)parameter, &physAddr);

@@ -5,6 +5,7 @@
     <Title>SampSharp Server Core</Title>
     <Description>The core library of SampSharp which manages the communication with the SA-MP server.</Description>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
