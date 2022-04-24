@@ -64,12 +64,12 @@ internal sealed class HostedGameModeClient : IGameModeClient, IGameModeRunner, I
 
     public event EventHandler<UnhandledExceptionEventArgs>? UnhandledException;
 
-    public void RegisterCallback(string name, object target, MethodInfo methodInfo)
+    public void RegisterCallback(string name, object? target, MethodInfo methodInfo)
     {
         RegisterCallback(name, target, methodInfo, null);
     }
 
-    public void RegisterCallback(string name, object target, MethodInfo methodInfo, Type[]? parameterTypes, uint?[]? lengthIndices = null)
+    public void RegisterCallback(string name, object? target, MethodInfo methodInfo, Type[]? parameterTypes, uint?[]? lengthIndices = null)
     {
         if (name == null) throw new ArgumentNullException(nameof(name));
         if (methodInfo == null) throw new ArgumentNullException(nameof(methodInfo));

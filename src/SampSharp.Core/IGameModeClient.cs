@@ -48,7 +48,7 @@ public interface IGameModeClient
     /// <param name="methodInfo">The method information of the method to invoke when the callback is called.</param>
     /// <param name="parameterTypes">The types of the parameters the callback handler expects.</param>
     /// <param name="lengthIndices">The indices at which the lengths are provides for parameters which require lengths.</param>
-    void RegisterCallback(string name, object target, MethodInfo methodInfo, Type[]? parameterTypes, uint?[]? lengthIndices = null);
+    void RegisterCallback(string name, object? target, MethodInfo methodInfo, Type[]? parameterTypes, uint?[]? lengthIndices = null);
 
     /// <summary>
     /// Registers a callback with the specified <paramref name="name" />. When the callback is called, the specified <paramref name="methodInfo" /> will be
@@ -57,7 +57,7 @@ public interface IGameModeClient
     /// <param name="name">The name af the callback to register.</param>
     /// <param name="target">The target on which to invoke the method.</param>
     /// <param name="methodInfo">The method information of the method to invoke when the callback is called.</param>
-    void RegisterCallback(string name, object target, MethodInfo methodInfo);
+    void RegisterCallback(string name, object? target, MethodInfo methodInfo);
 
     /// <summary>Prints the specified text to the server console.</summary>
     /// <param name="text">The text to print to the server console.</param>

@@ -26,7 +26,7 @@ public class EncodingGameModeBuilderExtensionsTests
     public void UseEncodingCodePage_should_load_correct_codepage()
     {
         // arrange
-        IGameModeRunner activeRunner = null;
+        IGameModeRunner? activeRunner = null;
         var sut = new GameModeBuilder();
         sut.Use(Mock.Of<IGameModeProvider>());
         sut.AddBuildAction(next =>
