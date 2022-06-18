@@ -105,7 +105,7 @@ public partial class Actor : IdentifiedPool<Actor>, IWorldObject
     /// <summary>Gets the size of the actors pool.</summary>
     public static int PoolSize => ActorInternal.Instance.GetActorPoolSize();
 
-    /// <summary>Gets the position of this <see cref="Actor" />.</summary>
+    /// <summary>Gets or sets the position of this <see cref="Actor" />.</summary>
     public Vector3 Position
     {
         get
