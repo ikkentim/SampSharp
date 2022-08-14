@@ -11,7 +11,7 @@ SampSharp
 
 SampSharp is a plugin and library that allows you to write San Andreas: Multiplayer(SA-MP) gamemodes in C#. SampSharp's aim is to allow you to enjoy all features of object-oriented programming and .NET. SampSharp uses the .NET runtime which allows the plugin to run on both Windows and Linux server. For information about installing and building SampSharp, check the documentation. If you have any questions, feel free to join our Discord chat or file an issue.
 
-Documation
+Documentation
 ----------
 The SampSharp .NET packages provided are available on NuGet.org and contains all API documentation. Additional documentation is available on https://sampsharp.net/ and https://api.sampsharp.net/
 
