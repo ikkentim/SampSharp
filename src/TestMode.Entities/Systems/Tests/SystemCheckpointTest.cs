@@ -13,9 +13,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace SampSharp.Entities;
+using SampSharp.Entities;
+using SampSharp.Entities.SAMP;
+using SampSharp.Entities.SAMP.Commands;
 
-/// <summary>Represents a marker interface for systems. All systems must implement this interface.</summary>
-public interface ISystem
+namespace TestMode.Entities.Systems.Tests;
+
+public class SystemCheckpointTest : ISystem
 {
+    [PlayerCommand]
+    public void CheckpointCommand(Player sender)
+    {
+        sender.SetCheckpoint(sender.Position, 3);
+    }
+    
+    [Event]
+    public void OnPlayerEnterCheckpoint(Player sender)
+    {
+        sender.SendClientMessage("You've entered a checkpoint");
+    }
+
+    [Event]
+    public void OnPlayerLeaveCheckpoint(Player sender)
+    {
+        sender.SendClientMessage("You've left a checkpoint");
+    }
 }
