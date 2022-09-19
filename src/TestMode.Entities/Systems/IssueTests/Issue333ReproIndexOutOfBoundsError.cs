@@ -38,7 +38,7 @@ public class Issue333ReproIndexOutOfBoundsError : ISystem
                 Button2 = "Exit"
             };
 
-            var result = await dialogService.Show(player.Entity, dialog2);
+            var result = await dialogService.ShowAsync(player.Entity, dialog2);
 
             player.SendClientMessage($"You entered {result.InputText}");
         });
