@@ -67,7 +67,13 @@ public class DialogService : IDialogService
 
 
     /// <inheritdoc />
-    public Task<TResponse> Show<TResponse>(EntityId player, IDialog<TResponse> dialog) where TResponse : struct
+    Task<TResponse> IDialogService.Show<TResponse>(EntityId player, IDialog<TResponse> dialog) where TResponse : struct
+    {
+        return ShowAsync(player, dialog);
+    }
+    
+    /// <inheritdoc />
+    public Task<TResponse> ShowAsync<TResponse>(EntityId player, IDialog<TResponse> dialog) where TResponse : struct
     {
         if (!player.IsOfType(SampEntities.PlayerType))
             throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);

@@ -67,7 +67,7 @@ public class SystemDialogsTest : ISystem
 
         await Task.Delay(2000);
 
-        var task = dialogService.Show(player.Entity, new MessageDialog("Hello", "Hello, world! x2 " + DateTime.Now, "Left", "right"));
+        var task = dialogService.ShowAsync(player.Entity, new MessageDialog("Hello", "Hello, world! x2 " + DateTime.Now, "Left", "right"));
         player.PlaySound(1083);
 
         var r2 = await task;
