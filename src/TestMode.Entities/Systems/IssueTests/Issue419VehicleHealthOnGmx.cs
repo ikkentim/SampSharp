@@ -22,12 +22,19 @@ namespace TestMode.Entities.Systems.IssueTests;
 public class Issue419VehicleHealthOnGmx : ISystem
 {
     [Event]
+    public void OnGameModeInit(IWorldService worldService)
+    {
+        worldService.CreateVehicle(VehicleModelType.BMX, Vector3.One, 0, -1, -1);
+    }
+
+    [Event]
     public void OnGameModeExit(IEntityManager entityManager)
     {
         var vehicles = entityManager.GetComponents<Vehicle>();
         foreach (var vehicle in vehicles)
         {
-            Console.WriteLine(vehicle.Health);  // always return 0?
+            
+            Console.WriteLine($"{vehicle.Model}: {vehicle.Health}");  // always return 0?
         }
     }
 }
