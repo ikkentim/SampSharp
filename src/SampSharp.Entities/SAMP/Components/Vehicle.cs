@@ -618,6 +618,11 @@ public sealed class Vehicle : Component
     public void SetWindowsParameters(VehicleParameterValue driver, VehicleParameterValue passenger, VehicleParameterValue backLeft,
         VehicleParameterValue backRight)
     {
+        if (driver != VehicleParameterValue.Unset) driver = (VehicleParameterValue)(driver == VehicleParameterValue.On ? 0 : 1);
+        if (passenger != VehicleParameterValue.Unset) passenger = (VehicleParameterValue)(passenger == VehicleParameterValue.On ? 0 : 1);
+        if (backLeft != VehicleParameterValue.Unset) backLeft = (VehicleParameterValue)(backLeft == VehicleParameterValue.On ? 0 : 1);
+        if (backRight != VehicleParameterValue.Unset) backRight = (VehicleParameterValue)(backRight == VehicleParameterValue.On ? 0 : 1);
+
         GetComponent<NativeVehicle>()
             .SetVehicleParamsCarWindows((int)driver, (int)passenger, (int)backLeft, (int)backRight);
     }
@@ -632,6 +637,12 @@ public sealed class Vehicle : Component
     {
         GetComponent<NativeVehicle>()
             .GetVehicleParamsCarWindows(out var tmpDriver, out var tmpPassenger, out var tmpBackLeft, out var tmpBackRight);
+
+        if (tmpDriver != -1) tmpDriver = (tmpDriver == 0 ? 1 : 0);
+        if (tmpPassenger != -1) tmpPassenger = (tmpPassenger == 0 ? 1 : 0);
+        if (tmpBackLeft != -1) tmpBackLeft = (tmpBackLeft == 0 ? 1 : 0);
+        if (tmpBackRight != -1) tmpBackRight = (tmpBackRight == 0 ? 1 : 0);
+
 
         driver = (VehicleParameterValue)tmpDriver;
         passenger = (VehicleParameterValue)tmpPassenger;
