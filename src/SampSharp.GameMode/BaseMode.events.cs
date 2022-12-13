@@ -837,7 +837,7 @@ public abstract partial class BaseMode
     /// <summary>Raises the <see cref="VehicleSirenStateChange" /> event.</summary>
     /// <param name="vehicle">The vehicle.</param>
     /// <param name="e">The <see cref="SirenStateEventArgs" /> instance containing the event data.</param>
-    protected void OnVehicleSirenStateChange(BaseVehicle vehicle, SirenStateEventArgs e)
+    protected virtual void OnVehicleSirenStateChange(BaseVehicle vehicle, SirenStateEventArgs e)
     {
         VehicleSirenStateChange?.Invoke(vehicle, e);
     }
@@ -845,7 +845,7 @@ public abstract partial class BaseMode
     /// <summary>Raises the <see cref="ActorStreamIn" /> event.</summary>
     /// <param name="actor">The actor.</param>
     /// <param name="e">The <see cref="PlayerEventArgs" /> instance containing the event data.</param>
-    protected void OnActorStreamIn(Actor actor, PlayerEventArgs e)
+    protected virtual void OnActorStreamIn(Actor actor, PlayerEventArgs e)
     {
         ActorStreamIn?.Invoke(actor, e);
     }
@@ -853,7 +853,7 @@ public abstract partial class BaseMode
     /// <summary>Raises the <see cref="ActorStreamOut" /> event.</summary>
     /// <param name="actor">The actor.</param>
     /// <param name="e">The <see cref="PlayerEventArgs" /> instance containing the event data.</param>
-    protected void OnActorStreamOut(Actor actor, PlayerEventArgs e)
+    protected virtual void OnActorStreamOut(Actor actor, PlayerEventArgs e)
     {
         ActorStreamOut?.Invoke(actor, e);
     }
@@ -861,7 +861,7 @@ public abstract partial class BaseMode
     /// <summary>Raises the <see cref="PlayerGiveDamageActor" /> event.</summary>
     /// <param name="actor">The actor.</param>
     /// <param name="e">The <see cref="DamageEventArgs" /> instance containing the event data.</param>
-    protected void OnPlayerGiveDamageActor(Actor actor, DamageEventArgs e)
+    protected virtual void OnPlayerGiveDamageActor(Actor actor, DamageEventArgs e)
     {
         PlayerGiveDamageActor?.Invoke(actor, e);
     }
