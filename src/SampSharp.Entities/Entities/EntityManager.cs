@@ -169,6 +169,21 @@ public class EntityManager : IEntityManager
     }
 
     /// <inheritdoc />
+    public void AddComponent<T>(EntityId entity, T component) where T : notnull, Component
+    {
+        if (!_entities.TryGetValue(entity, out var entityEntry))
+            throw new EntityNotFoundException(nameof(entity));
+
+        component.Entity = entity;
+        component.Manager = this;
+
+        entityEntry.Components.Add(component);
+        _components.Add(component);
+
+        component.InitializeComponent();
+    }
+
+    /// <inheritdoc />
     public EntityId GetParent(EntityId entity)
     {
         if (!_entities.TryGetValue(entity, out var entityEntry))

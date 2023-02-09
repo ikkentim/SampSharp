@@ -58,6 +58,14 @@ public abstract class Component
         return Manager.AddComponent<T>(Entity);
     }
 
+    /// <summary>Adds a component of the specified type <typeparamref name="T" /> to the entity.</summary>
+    /// <typeparam name="T">The type of the component to add.</typeparam>
+	/// <param name="component">The instance of component to be added.</param>
+    public void AddComponent<T>(T component) where T : notnull, Component
+    {
+        Manager.AddComponent(Entity, component);
+    }
+
     /// <summary>Destroys the components of the specified type <typeparamref name="T" /> attached to the entity.</summary>
     /// <typeparam name="T">The type of the components to destroy.</typeparam>
     public void DestroyComponents<T>() where T : Component

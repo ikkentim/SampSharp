@@ -41,6 +41,12 @@ public interface IEntityManager
     /// <returns>The created component.</returns>
     T AddComponent<T>(EntityId entity) where T : Component;
 
+    /// <summary>Adds a component of the specified type <typeparamref name="T" /> to the specified <paramref name="entity" />.</summary>
+    /// <typeparam name="T">The type of the component to add.</typeparam>
+    /// <param name="entity">The entity to add the component to.</param>
+    /// <param name="component">The instance of component to be added.</param>
+    void AddComponent<T>(EntityId entity, T component) where T : notnull, Component;
+
     /// <summary>Destroys the specified <paramref name="component" />.</summary>
     /// <param name="component">The component to destroy.</param>
     void Destroy(Component component);
