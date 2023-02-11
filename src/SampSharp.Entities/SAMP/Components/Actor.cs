@@ -18,14 +18,15 @@ using System;
 namespace SampSharp.Entities.SAMP;
 
 /// <summary>Represents a component which provides the data and functionality of an actor.</summary>
-public sealed class Actor : Component
+public class Actor : Component
 {
-    private Actor()
+    /// <summary>Constructs an instance of Actor, should be used internally.</summary>
+    protected Actor()
     {
     }
 
     /// <summary>Gets the facing angle of this actor.</summary>
-    public float FacingAngle
+    public virtual float FacingAngle
     {
         get
         {
@@ -38,7 +39,7 @@ public sealed class Actor : Component
     }
 
     /// <summary>Gets the health of this actor.</summary>
-    public float Health
+    public virtual float Health
     {
         get
         {
@@ -51,7 +52,7 @@ public sealed class Actor : Component
     }
 
     /// <summary>Gets or sets a value indicating whether this actor is invulnerable.</summary>
-    public bool IsInvulnerable
+    public virtual bool IsInvulnerable
     {
         get => GetComponent<NativeActor>()
             .IsActorInvulnerable();
@@ -60,7 +61,7 @@ public sealed class Actor : Component
     }
 
     /// <summary>Gets or sets the virtual world of this actor.</summary>
-    public int VirtualWorld
+    public virtual int VirtualWorld
     {
         get => GetComponent<NativeActor>()
             .GetActorVirtualWorld();
@@ -69,7 +70,7 @@ public sealed class Actor : Component
     }
 
     /// <summary>Gets the position of this actor.</summary>
-    public Vector3 Position
+    public virtual Vector3 Position
     {
         get
         {
@@ -84,7 +85,7 @@ public sealed class Actor : Component
     /// <summary>Determines whether this actor is streamed in for the specified <paramref name="player" />.</summary>
     /// <param name="player">The player.</param>
     /// <returns>True if streamed in; False otherwise.</returns>
-    public bool IsStreamedIn(EntityId player)
+    public virtual bool IsStreamedIn(EntityId player)
     {
         return player.IsOfType(SampEntities.PlayerType) && GetComponent<NativeActor>()
             .IsActorStreamedIn(player);
@@ -100,7 +101,7 @@ public sealed class Actor : Component
     /// <param name="freeze">if set to <c>true</c> freeze this Actor at the end of the animation.</param>
     /// <param name="time">The amount of time (in milliseconds) to play the animation.</param>
     /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="library" /> or <paramref name="name" /> is null.</exception>
-    public void ApplyAnimation(string library, string name, float fDelta, bool loop, bool lockX, bool lockY, bool freeze, int time)
+    public virtual void ApplyAnimation(string library, string name, float fDelta, bool loop, bool lockX, bool lockY, bool freeze, int time)
     {
         if (library == null) throw new ArgumentNullException(nameof(library));
         if (name == null) throw new ArgumentNullException(nameof(name));
@@ -109,7 +110,7 @@ public sealed class Actor : Component
     }
 
     /// <summary>Clear any animations applied to this actor.</summary>
-    public void ClearAnimations()
+    public virtual void ClearAnimations()
     {
         GetComponent<NativeActor>()
             .ClearActorAnimations();

@@ -16,13 +16,14 @@
 namespace SampSharp.Entities.SAMP;
 
 /// <summary>Represents a component which provides the data and functionality of a 3D text label.</summary>
-public sealed class TextLabel : Component
+public class TextLabel : Component
 {
     private EntityId _attachedEntity;
     private string _text;
     private Color _color;
 
-    private TextLabel(string text, Color color, Vector3 position, float drawDistance, int virtualWorld, bool testLos)
+    /// <summary>Constructs an instance of TextLabel, should be used internally.</summary>
+    protected TextLabel(string text, Color color, Vector3 position, float drawDistance, int virtualWorld, bool testLos)
     {
         _text = text;
         _color = color;
@@ -33,7 +34,7 @@ public sealed class TextLabel : Component
     }
 
     /// <summary>Gets or sets the color of this text label.</summary>
-    public Color Color
+    public virtual Color Color
     {
         get => _color;
         set
@@ -45,7 +46,7 @@ public sealed class TextLabel : Component
     }
 
     /// <summary>Gets or sets the text of this text label.</summary>
-    public string Text
+    public virtual string Text
     {
         get => _text;
         set
@@ -57,22 +58,22 @@ public sealed class TextLabel : Component
     }
 
     /// <summary>Gets the position of this text label.</summary>
-    public Vector3 Position { get; }
+    public virtual Vector3 Position { get; }
 
     /// <summary>Gets the draw distance of this text label.</summary>
-    public float DrawDistance { get; }
+    public virtual float DrawDistance { get; }
 
     /// <summary>Gets the virtual world of this text label.</summary>
-    public int VirtualWorld { get; }
+    public virtual int VirtualWorld { get; }
 
     /// <summary>Gets a value indicating whether to test the line of sight.</summary>
-    public bool TestLos { get; }
+    public virtual bool TestLos { get; }
 
     /// <summary>Gets or sets the offset at which this text label is attached to an entity.</summary>
-    public Vector3 AttachOffset { get; set; }
+    public virtual Vector3 AttachOffset { get; set; }
 
     /// <summary>Gets or sets the attached entity (player or vehicle).</summary>
-    public EntityId AttachedEntity
+    public virtual EntityId AttachedEntity
     {
         get => _attachedEntity;
         set

@@ -16,7 +16,7 @@
 namespace SampSharp.Entities.SAMP;
 
 /// <summary>Represents a component which provides the data and functionality of a per-player textdraw.</summary>
-public sealed class PlayerTextDraw : Component
+public class PlayerTextDraw : Component
 {
     private TextDrawAlignment _alignment = TextDrawAlignment.Left;
     private Color _backColor = Color.Black;
@@ -33,14 +33,15 @@ public sealed class PlayerTextDraw : Component
     private Vector2 _textSize;
     private bool _useBox;
 
-    private PlayerTextDraw(Vector2 position, string text)
+    /// <summary>Constructs an instance of PlayerTextDraw, should be used internally.</summary>
+    protected PlayerTextDraw(Vector2 position, string text)
     {
         Position = position;
         _text = text;
     }
 
     /// <summary>Gets or sets the size of the letters of this textdraw.</summary>
-    public Vector2 LetterSize
+    public virtual Vector2 LetterSize
     {
         get => _letterSize;
         set
@@ -52,7 +53,7 @@ public sealed class PlayerTextDraw : Component
     }
 
     /// <summary>Gets or sets the size of this textdraw box and click-able area.</summary>
-    public Vector2 TextSize
+    public virtual Vector2 TextSize
     {
         get => _textSize;
         set
@@ -64,7 +65,7 @@ public sealed class PlayerTextDraw : Component
     }
 
     /// <summary>Gets or sets the alignment of this textdraw.</summary>
-    public TextDrawAlignment Alignment
+    public virtual TextDrawAlignment Alignment
     {
         get => _alignment;
         set
@@ -76,7 +77,7 @@ public sealed class PlayerTextDraw : Component
     }
 
     /// <summary>Gets or sets the color of the text of this textdraw.</summary>
-    public Color ForeColor
+    public virtual Color ForeColor
     {
         get => _foreColor;
         set
@@ -88,7 +89,7 @@ public sealed class PlayerTextDraw : Component
     }
 
     /// <summary>Gets or sets a value indicating whether a box is used for this textdraw.</summary>
-    public bool UseBox
+    public virtual bool UseBox
     {
         get => _useBox;
         set
@@ -100,7 +101,7 @@ public sealed class PlayerTextDraw : Component
     }
 
     /// <summary>Gets or sets the color of the box of this textdraw.</summary>
-    public Color BoxColor
+    public virtual Color BoxColor
     {
         get => _boxColor;
         set
@@ -112,7 +113,7 @@ public sealed class PlayerTextDraw : Component
     }
 
     /// <summary>Gets or sets the shadow size of this textdraw.</summary>
-    public int Shadow
+    public virtual int Shadow
     {
         get => _shadow;
         set
@@ -124,7 +125,7 @@ public sealed class PlayerTextDraw : Component
     }
 
     /// <summary>Gets or sets the outline size of this textdraw.</summary>
-    public int Outline
+    public virtual int Outline
     {
         get => _outline;
         set
@@ -136,7 +137,7 @@ public sealed class PlayerTextDraw : Component
     }
 
     /// <summary>Gets or sets the background color of this textdraw.</summary>
-    public Color BackColor
+    public virtual Color BackColor
     {
         get => _backColor;
         set
@@ -148,7 +149,7 @@ public sealed class PlayerTextDraw : Component
     }
 
     /// <summary>Gets or sets the font of this textdraw.</summary>
-    public TextDrawFont Font
+    public virtual TextDrawFont Font
     {
         get => _font;
         set
@@ -160,7 +161,7 @@ public sealed class PlayerTextDraw : Component
     }
 
     /// <summary>Gets or sets a value indicating whether the font of this textdraw is rendered as a monospaced font.</summary>
-    public bool Proportional
+    public virtual bool Proportional
     {
         get => _proportional;
         set
@@ -172,7 +173,7 @@ public sealed class PlayerTextDraw : Component
     }
 
     /// <summary>Gets or sets a value indicating whether this textdraw is selectable by the player.</summary>
-    public bool Selectable
+    public virtual bool Selectable
     {
         get => _selectable;
         set
@@ -184,7 +185,7 @@ public sealed class PlayerTextDraw : Component
     }
 
     /// <summary>Gets or sets the text of this textdraw.</summary>
-    public string Text
+    public virtual string Text
     {
         get => _text;
         set
@@ -198,7 +199,7 @@ public sealed class PlayerTextDraw : Component
     }
 
     /// <summary>Gets or sets the preview model of this textdraw.</summary>
-    public int PreviewModel
+    public virtual int PreviewModel
     {
         get => _previewModel;
         set
@@ -210,13 +211,13 @@ public sealed class PlayerTextDraw : Component
     }
 
     /// <summary>Gets the position of this textdraw.</summary>
-    public Vector2 Position { get; }
+    public virtual Vector2 Position { get; }
 
 
     /// <summary>Sets the preview object rotation and zoom of this textdraw.</summary>
     /// <param name="rotation">The rotation of the preview object.</param>
     /// <param name="zoom">The zoom of the preview object.</param>
-    public void SetPreviewRotation(Vector3 rotation, float zoom = 1.0f)
+    public virtual void SetPreviewRotation(Vector3 rotation, float zoom = 1.0f)
     {
         GetComponent<NativePlayerTextDraw>()
             .PlayerTextDrawSetPreviewRot(rotation.X, rotation.Y, rotation.Z, zoom);
@@ -225,21 +226,21 @@ public sealed class PlayerTextDraw : Component
     /// <summary>Sets the color of the preview vehicle of this textdraw.</summary>
     /// <param name="color1">The primary color of the vehicle.</param>
     /// <param name="color2">The secondary color of the vehicle.</param>
-    public void SetPreviewVehicleColor(int color1, int color2)
+    public virtual void SetPreviewVehicleColor(int color1, int color2)
     {
         GetComponent<NativePlayerTextDraw>()
             .PlayerTextDrawSetPreviewVehCol(color1, color2);
     }
 
     /// <summary>Shows this textdraw for the player.</summary>
-    public void Show()
+    public virtual void Show()
     {
         GetComponent<NativePlayerTextDraw>()
             .PlayerTextDrawShow();
     }
 
     /// <summary>Hides this textdraw for the player.</summary>
-    public void Hide()
+    public virtual void Hide()
     {
         GetComponent<NativePlayerTextDraw>()
             .PlayerTextDrawHide();

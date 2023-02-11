@@ -23,16 +23,17 @@ using SampSharp.Entities.Annotations;
 namespace SampSharp.Entities.SAMP;
 
 /// <summary>Represents a component which provides the data and functionality of a player.</summary>
-public sealed class Player : Component
+public class Player : Component
 {
     private VariableCollection _variableCollection;
 
-    private Player()
+    /// <summary>Constructs an instance of Player, should be used internally.</summary>
+    protected Player()
     {
     }
 
     /// <summary>Gets or sets the name of this player.</summary>
-    public string Name
+    public virtual string Name
     {
         get
         {
@@ -45,7 +46,7 @@ public sealed class Player : Component
     }
 
     /// <summary>Gets or sets the facing angle of this player.</summary>
-    public float Angle
+    public virtual float Angle
     {
         get
         {
@@ -58,7 +59,7 @@ public sealed class Player : Component
     }
 
     /// <summary>Gets or sets the interior of this player.</summary>
-    public int Interior
+    public virtual int Interior
     {
         get => GetComponent<NativePlayer>()
             .GetPlayerInterior();
@@ -67,7 +68,7 @@ public sealed class Player : Component
     }
 
     /// <summary>Gets or sets the virtual world of this player.</summary>
-    public int VirtualWorld
+    public virtual int VirtualWorld
     {
         get => GetComponent<NativePlayer>()
             .GetPlayerVirtualWorld();
@@ -76,7 +77,7 @@ public sealed class Player : Component
     }
 
     /// <summary>Gets or sets the health of this player.</summary>
-    public float Health
+    public virtual float Health
     {
         get
         {
@@ -89,7 +90,7 @@ public sealed class Player : Component
     }
 
     /// <summary>Gets or sets the armor of this player.</summary>
-    public float Armour
+    public virtual float Armour
     {
         get
         {
@@ -102,19 +103,19 @@ public sealed class Player : Component
     }
 
     /// <summary>Gets the ammo of the Weapon this player is currently holding.</summary>
-    public int WeaponAmmo => GetComponent<NativePlayer>()
+    public virtual int WeaponAmmo => GetComponent<NativePlayer>()
         .GetPlayerAmmo();
 
     /// <summary>Gets the WeaponState of the Weapon this player is currently holding.</summary>
-    public WeaponState WeaponState => (WeaponState)GetComponent<NativePlayer>()
+    public virtual WeaponState WeaponState => (WeaponState)GetComponent<NativePlayer>()
         .GetPlayerWeaponState();
 
     /// <summary>Gets the Weapon this player is currently holding.</summary>
-    public Weapon Weapon => (Weapon)GetComponent<NativePlayer>()
+    public virtual Weapon Weapon => (Weapon)GetComponent<NativePlayer>()
         .GetPlayerWeapon();
 
     /// <summary>Gets the Player this player is aiming at.</summary>
-    public EntityId TargetPlayer
+    public virtual EntityId TargetPlayer
     {
         get
         {
@@ -127,7 +128,7 @@ public sealed class Player : Component
     }
 
     /// <summary>Gets or sets the team this player is in.</summary>
-    public int Team
+    public virtual int Team
     {
         get => GetComponent<NativePlayer>()
             .GetPlayerTeam();
@@ -136,7 +137,7 @@ public sealed class Player : Component
     }
 
     /// <summary>Gets or sets the score of this player.</summary>
-    public int Score
+    public virtual int Score
     {
         get => GetComponent<NativePlayer>()
             .GetPlayerScore();
@@ -145,7 +146,7 @@ public sealed class Player : Component
     }
 
     /// <summary>Gets or sets the drunkenness level of this player.</summary>
-    public int DrunkLevel
+    public virtual int DrunkLevel
     {
         get => GetComponent<NativePlayer>()
             .GetPlayerDrunkLevel();
@@ -154,7 +155,7 @@ public sealed class Player : Component
     }
 
     /// <summary>Gets or sets the Color of this player.</summary>
-    public Color Color
+    public virtual Color Color
     {
         get => new(GetComponent<NativePlayer>()
             .GetPlayerColor());
@@ -163,7 +164,7 @@ public sealed class Player : Component
     }
 
     /// <summary>Gets or sets the skin of this player.</summary>
-    public int Skin
+    public virtual int Skin
     {
         get => GetComponent<NativePlayer>()
             .GetPlayerSkin();
@@ -172,7 +173,7 @@ public sealed class Player : Component
     }
 
     /// <summary>Gets or sets the money of this player.</summary>
-    public int Money
+    public virtual int Money
     {
         get => GetComponent<NativePlayer>()
             .GetPlayerMoney();
@@ -186,11 +187,11 @@ public sealed class Player : Component
     }
 
     /// <summary>Gets the state of this player.</summary>
-    public PlayerState State => (PlayerState)GetComponent<NativePlayer>()
+    public virtual PlayerState State => (PlayerState)GetComponent<NativePlayer>()
         .GetPlayerState();
 
     /// <summary>Gets the IP of this player.</summary>
-    public string Ip
+    public virtual string Ip
     {
         get
         {
@@ -201,11 +202,11 @@ public sealed class Player : Component
     }
 
     /// <summary>Gets the ping of this player.</summary>
-    public int Ping => GetComponent<NativePlayer>()
+    public virtual int Ping => GetComponent<NativePlayer>()
         .GetPlayerPing();
 
     /// <summary>Gets or sets the wanted level of this player.</summary>
-    public int WantedLevel
+    public virtual int WantedLevel
     {
         get => GetComponent<NativePlayer>()
             .GetPlayerWantedLevel();
@@ -214,7 +215,7 @@ public sealed class Player : Component
     }
 
     /// <summary>Gets or sets the FightStyle of this player.</summary>
-    public FightStyle FightStyle
+    public virtual FightStyle FightStyle
     {
         get => (FightStyle)GetComponent<NativePlayer>()
             .GetPlayerFightingStyle();
@@ -223,7 +224,7 @@ public sealed class Player : Component
     }
 
     /// <summary>Gets or sets the velocity of this player.</summary>
-    public Vector3 Velocity
+    public virtual Vector3 Velocity
     {
         get
         {
@@ -236,15 +237,15 @@ public sealed class Player : Component
     }
 
     /// <summary>Gets the vehicle seat this player sits on.</summary>
-    public int VehicleSeat => GetComponent<NativePlayer>()
+    public virtual int VehicleSeat => GetComponent<NativePlayer>()
         .GetPlayerVehicleSeat();
 
     /// <summary>Gets the index of the animation this player is playing.</summary>
-    public int AnimationIndex => GetComponent<NativePlayer>()
+    public virtual int AnimationIndex => GetComponent<NativePlayer>()
         .GetPlayerAnimationIndex();
 
     /// <summary>Gets or sets the SpecialAction of this player.</summary>
-    public SpecialAction SpecialAction
+    public virtual SpecialAction SpecialAction
     {
         get => (SpecialAction)GetComponent<NativePlayer>()
             .GetPlayerSpecialAction();
@@ -253,7 +254,7 @@ public sealed class Player : Component
     }
 
     /// <summary>Gets or sets the position of the camera of this player.</summary>
-    public Vector3 CameraPosition
+    public virtual Vector3 CameraPosition
     {
         get
         {
@@ -266,7 +267,7 @@ public sealed class Player : Component
     }
 
     /// <summary>Gets the front Vector3 of this player's camera.</summary>
-    public Vector3 CameraFrontVector
+    public virtual Vector3 CameraFrontVector
     {
         get
         {
@@ -277,11 +278,11 @@ public sealed class Player : Component
     }
 
     /// <summary>Gets the mode of this player's camera.</summary>
-    public CameraMode CameraMode => (CameraMode)GetComponent<NativePlayer>()
+    public virtual CameraMode CameraMode => (CameraMode)GetComponent<NativePlayer>()
         .GetPlayerCameraMode();
 
     /// <summary>Gets the Actor this player is aiming at.</summary>
-    public EntityId TargetActor
+    public virtual EntityId TargetActor
     {
         get
         {
@@ -294,7 +295,7 @@ public sealed class Player : Component
     }
 
     /// <summary>Gets the GlobalObject the camera of this player is pointing at.</summary>
-    public EntityId CameraTargetGlobalObject
+    public virtual EntityId CameraTargetGlobalObject
     {
         get
         {
@@ -307,7 +308,7 @@ public sealed class Player : Component
     }
 
     /// <summary>Gets the PlayerObject the camera of this player is pointing at.</summary>
-    public EntityId CameraTargetPlayerObject
+    public virtual EntityId CameraTargetPlayerObject
     {
         get
         {
@@ -320,7 +321,7 @@ public sealed class Player : Component
     }
 
     /// <summary>Gets the GtaVehicle the camera of this player is pointing at.</summary>
-    public EntityId CameraTargetVehicle
+    public virtual EntityId CameraTargetVehicle
     {
         get
         {
@@ -333,7 +334,7 @@ public sealed class Player : Component
     }
 
     /// <summary>Gets the GtaPlayer the camera of this player is pointing at.</summary>
-    public EntityId CameraTargetPlayer
+    public virtual EntityId CameraTargetPlayer
     {
         get
         {
@@ -346,7 +347,7 @@ public sealed class Player : Component
     }
 
     /// <summary>Gets the GtaPlayer the camera of this player is pointing at.</summary>
-    public EntityId CameraTargetActor
+    public virtual EntityId CameraTargetActor
     {
         get
         {
@@ -359,7 +360,7 @@ public sealed class Player : Component
     }
 
     /// <summary>Gets the entity (player, player object, object, vehicle or actor) the camera of this player is pointing at.</summary>
-    public EntityId CameraTargetEntity
+    public virtual EntityId CameraTargetEntity
     {
         get
         {
@@ -393,19 +394,19 @@ public sealed class Player : Component
     }
 
     /// <summary>Gets whether this player is currently in any vehicle.</summary>
-    public bool InAnyVehicle => GetComponent<NativePlayer>()
+    public virtual bool InAnyVehicle => GetComponent<NativePlayer>()
         .IsPlayerInAnyVehicle();
 
     /// <summary>Gets whether this player is in his checkpoint.</summary>
-    public bool InCheckpoint => GetComponent<NativePlayer>()
+    public virtual bool InCheckpoint => GetComponent<NativePlayer>()
         .IsPlayerInCheckpoint();
 
     /// <summary>Gets whether this player is in his race-checkpoint.</summary>
-    public bool InRaceCheckpoint => GetComponent<NativePlayer>()
+    public virtual bool InRaceCheckpoint => GetComponent<NativePlayer>()
         .IsPlayerInRaceCheckpoint();
 
     /// <summary>Gets the entity (object or vehicle) that this player is surfing.</summary>
-    public EntityId SurfingEntity
+    public virtual EntityId SurfingEntity
     {
         get
         {
@@ -435,7 +436,7 @@ public sealed class Player : Component
     }
 
     /// <summary>Gets the Vehicle this player is currently in.</summary>
-    public EntityId Vehicle
+    public virtual EntityId Vehicle
     {
         get
         {
@@ -448,7 +449,7 @@ public sealed class Player : Component
     }
 
     /// <summary>Gets the Vehicle this player is currently in.</summary>
-    public EntityId Menu
+    public virtual EntityId Menu
     {
         get
         {
@@ -462,14 +463,14 @@ public sealed class Player : Component
 
     /// <summary>Gets or sets the rotation of this player.</summary>
     /// <remarks>Only the Z angle can be set!</remarks>
-    public Vector3 Rotation
+    public virtual Vector3 Rotation
     {
         get => new(0, 0, Angle);
         set => Angle = value.Z;
     }
 
     /// <summary>Gets or sets the position of this player.</summary>
-    public Vector3 Position
+    public virtual Vector3 Position
     {
         get
         {
@@ -482,7 +483,7 @@ public sealed class Player : Component
     }
 
     /// <summary>Gets the PVar variable collection for this player.</summary>
-    public VariableCollection Variables
+    public virtual VariableCollection Variables
     {
         get
         {
@@ -497,20 +498,20 @@ public sealed class Player : Component
     }
 
     /// <summary>Gets whether this player is an actual player or an NPC.</summary>
-    public bool IsNpc => GetComponent<NativePlayer>()
+    public virtual bool IsNpc => GetComponent<NativePlayer>()
         .IsPlayerNPC();
 
     /// <summary>Gets whether this player is logged into RCON.</summary>
-    public bool IsAdmin => GetComponent<NativePlayer>()
+    public virtual bool IsAdmin => GetComponent<NativePlayer>()
         .IsPlayerAdmin();
 
     /// <summary>Gets a value indicating whether this player is alive.</summary>
-    public bool IsAlive => !new[] { PlayerState.None, PlayerState.Spectating, PlayerState.Wasted }.Contains(State);
+    public virtual bool IsAlive => !new[] { PlayerState.None, PlayerState.Spectating, PlayerState.Wasted }.Contains(State);
 
 
     /// <summary>Gets this player's network stats and saves them into a string.</summary>
     [Obsolete("Use the properties ConnectionStatus, BytesReceived, BytesSent and others instead")]
-    public string NetworkStats
+    public virtual string NetworkStats
     {
         get
         {
@@ -521,7 +522,7 @@ public sealed class Player : Component
     }
 
     /// <summary>Gets the end point (IP and port) of this player.</summary>
-    public IPEndPoint EndPoint
+    public virtual IPEndPoint EndPoint
     {
         get
         {
@@ -546,7 +547,7 @@ public sealed class Player : Component
     }
 
     /// <summary>Gets this player's game version.</summary>
-    public string Version
+    public virtual string Version
     {
         get
         {
@@ -557,7 +558,7 @@ public sealed class Player : Component
     }
 
     /// <summary>Gets this player's global computer identifier string.</summary>
-    public string Gpci
+    public virtual string Gpci
     {
         get
         {
@@ -568,30 +569,30 @@ public sealed class Player : Component
     }
 
     /// <summary>Gets a value indicating whether this player is selecting a textdraw.</summary>
-    public bool IsSelectingTextDraw { get; private set; }
+    public virtual bool IsSelectingTextDraw { get; private set; }
 
     /// <summary>Gets the amount of time (in milliseconds) that a player has been connected to the server for.</summary>
-    public int ConnectedTime => GetComponent<NativePlayer>()
+    public virtual int ConnectedTime => GetComponent<NativePlayer>()
         .GetConnectedTime();
 
     /// <summary>Gets the number of messages the server has received from the player.</summary>
-    public int MessagesReceived => GetComponent<NativePlayer>()
+    public virtual int MessagesReceived => GetComponent<NativePlayer>()
         .GetMessagesReceived();
 
     /// <summary>Gets the number of messages the player has received in the last second.</summary>
-    public int MessagesReceivedPerSecond => GetComponent<NativePlayer>()
+    public virtual int MessagesReceivedPerSecond => GetComponent<NativePlayer>()
         .GetMessagesReceivedPerSecond();
 
     /// <summary>Gets the number of messages the server has sent to the player.</summary>
-    public int MessagesSent => GetComponent<NativePlayer>()
+    public virtual int MessagesSent => GetComponent<NativePlayer>()
         .GetMessagesSent();
 
     /// <summary>Get the amount of information (in bytes) that the server has sent to the player.</summary>
-    public int BytesReceived => GetComponent<NativePlayer>()
+    public virtual int BytesReceived => GetComponent<NativePlayer>()
         .GetBytesReceived();
 
     /// <summary>Get the amount of information (in bytes) that the server has received from the player.</summary>
-    public int BytesSent => GetComponent<NativePlayer>()
+    public virtual int BytesSent => GetComponent<NativePlayer>()
         .GetBytesSent();
 
     /// <summary>Gets the packet loss percentage of a player. Packet loss means data the player is sending to the server is being lost (or vice-versa).</summary>
@@ -600,20 +601,20 @@ public sealed class Player : Component
     /// used as a packet loss kicker.
     /// </remarks>
     [Obsolete("This value is unreliable. See remarks for details.")]
-    public float PacketLossPercent => GetComponent<NativePlayer>()
+    public virtual float PacketLossPercent => GetComponent<NativePlayer>()
         .GetPacketLossPercent();
 
     /// <summary>Get a player's connection status.</summary>
-    public ConnectionStatus ConnectionStatus =>
+    public virtual ConnectionStatus ConnectionStatus =>
         (ConnectionStatus)GetComponent<NativePlayer>()
             .GetConnectionStatus();
 
     /// <summary>Gets the aspect ratio of this player's camera.</summary>
-    public float AspectCameraRatio => GetComponent<NativePlayer>()
+    public virtual float AspectCameraRatio => GetComponent<NativePlayer>()
         .GetPlayerCameraAspectRatio();
 
     /// <summary>Gets the game camera zoom level for this player.</summary>
-    public float CameraZoom => GetComponent<NativePlayer>()
+    public virtual float CameraZoom => GetComponent<NativePlayer>()
         .GetPlayerCameraZoom();
 
     /// <summary>
@@ -630,7 +631,7 @@ public sealed class Player : Component
     /// <param name="weapon2Ammo">The amount of ammunition for the second spawn-weapon.</param>
     /// <param name="weapon3">The third spawn-weapon for the player.</param>
     /// <param name="weapon3Ammo">The amount of ammunition for the third spawn-weapon.</param>
-    public void SetSpawnInfo(int team, int skin, Vector3 position, float rotation, Weapon weapon1 = Weapon.None, int weapon1Ammo = 0,
+    public virtual void SetSpawnInfo(int team, int skin, Vector3 position, float rotation, Weapon weapon1 = Weapon.None, int weapon1Ammo = 0,
         Weapon weapon2 = Weapon.None, int weapon2Ammo = 0, Weapon weapon3 = Weapon.None, int weapon3Ammo = 0)
     {
         GetComponent<NativePlayer>()
@@ -639,14 +640,14 @@ public sealed class Player : Component
     }
 
     /// <summary>(Re)Spawns a player.</summary>
-    public void Spawn()
+    public virtual void Spawn()
     {
         GetComponent<NativePlayer>()
             .SpawnPlayer();
     }
 
     /// <summary>Restore the camera to a place behind the player, after using a function like <see cref="CameraPosition" />.</summary>
-    public void PutCameraBehindPlayer()
+    public virtual void PutCameraBehindPlayer()
     {
         GetComponent<NativePlayer>()
             .SetCameraBehindPlayer();
@@ -654,7 +655,7 @@ public sealed class Player : Component
 
     /// <summary>This sets this player's position then adjusts the Player's z-coordinate to the nearest solid ground under the position.</summary>
     /// <param name="position">The position to move this player to.</param>
-    public void SetPositionFindZ(Vector3 position)
+    public virtual void SetPositionFindZ(Vector3 position)
     {
         GetComponent<NativePlayer>()
             .SetPlayerPosFindZ(position.X, position.Y, position.Z);
@@ -664,7 +665,7 @@ public sealed class Player : Component
     /// <param name="range">The furthest distance the player can be from the point to be in range.</param>
     /// <param name="point">The point to check the range to.</param>
     /// <returns>True if this player is in range of the point, otherwise False.</returns>
-    public bool IsInRangeOfPoint(float range, Vector3 point)
+    public virtual bool IsInRangeOfPoint(float range, Vector3 point)
     {
         return GetComponent<NativePlayer>()
             .IsPlayerInRangeOfPoint(range, point.X, point.Y, point.Z);
@@ -673,7 +674,7 @@ public sealed class Player : Component
     /// <summary>Calculate the distance between this player and a map coordinate.</summary>
     /// <param name="point">The point to calculate the distance from.</param>
     /// <returns>The distance between the player and the point as a float.</returns>
-    public float GetDistanceFromPoint(Vector3 point)
+    public virtual float GetDistanceFromPoint(Vector3 point)
     {
         return GetComponent<NativePlayer>()
             .GetPlayerDistanceFromPoint(point.X, point.Y, point.Z);
@@ -684,7 +685,7 @@ public sealed class Player : Component
     /// <remarks>Players stream out if they are more than 150 meters away (see server.cfg - stream_distance)</remarks>
     /// <param name="player">The player to check is streamed in.</param>
     /// <returns>True if the other Player is streamed in for this player, False if not.</returns>
-    public bool IsPlayerStreamedIn(EntityId player)
+    public virtual bool IsPlayerStreamedIn(EntityId player)
     {
         return player.IsOfType(SampEntities.PlayerType) && GetComponent<NativePlayer>()
             .IsPlayerStreamedIn(player);
@@ -693,7 +694,7 @@ public sealed class Player : Component
     /// <summary>Set the ammo of this player's weapon.</summary>
     /// <param name="weapon">The weapon to set the ammo of.</param>
     /// <param name="ammo">The amount of ammo to set.</param>
-    public void SetAmmo(Weapon weapon, int ammo)
+    public virtual void SetAmmo(Weapon weapon, int ammo)
     {
         GetComponent<NativePlayer>()
             .SetPlayerAmmo((int)weapon, ammo);
@@ -702,7 +703,7 @@ public sealed class Player : Component
     /// <summary>Give this player a <see cref="Weapon" /> with a specified amount of ammo.</summary>
     /// <param name="weapon">The Weapon to give to this player.</param>
     /// <param name="ammo">The amount of ammo to give to this player.</param>
-    public void GiveWeapon(Weapon weapon, int ammo)
+    public virtual void GiveWeapon(Weapon weapon, int ammo)
     {
         GetComponent<NativePlayer>()
             .GivePlayerWeapon((int)weapon, ammo);
@@ -710,7 +711,7 @@ public sealed class Player : Component
 
 
     /// <summary>Removes all weapons from this player.</summary>
-    public void ResetWeapons()
+    public virtual void ResetWeapons()
     {
         GetComponent<NativePlayer>()
             .ResetPlayerWeapons();
@@ -718,7 +719,7 @@ public sealed class Player : Component
 
     /// <summary>Sets the armed weapon of this player.</summary>
     /// <param name="weapon">The weapon that the player should be armed with.</param>
-    public void SetArmedWeapon(Weapon weapon)
+    public virtual void SetArmedWeapon(Weapon weapon)
     {
         GetComponent<NativePlayer>()
             .SetPlayerArmedWeapon((int)weapon);
@@ -728,7 +729,7 @@ public sealed class Player : Component
     /// <param name="slot">The weapon slot to get data for (0-12).</param>
     /// <param name="weapon">The variable in which to store the weapon, passed by reference.</param>
     /// <param name="ammo">The variable in which to store the ammo, passed by reference.</param>
-    public void GetWeaponData(int slot, out Weapon weapon, out int ammo)
+    public virtual void GetWeaponData(int slot, out Weapon weapon, out int ammo)
     {
         GetComponent<NativePlayer>()
             .GetPlayerWeaponData(slot, out var weaponId, out ammo);
@@ -737,14 +738,14 @@ public sealed class Player : Component
 
     /// <summary>Give money to this player.</summary>
     /// <param name="money">The amount of money to give this player. Use a minus value to take money.</param>
-    public void GiveMoney(int money)
+    public virtual void GiveMoney(int money)
     {
         GetComponent<NativePlayer>()
             .GivePlayerMoney(money);
     }
 
     /// <summary>Reset this player's money to $0.</summary>
-    public void ResetMoney()
+    public virtual void ResetMoney()
     {
         GetComponent<NativePlayer>()
             .ResetPlayerMoney();
@@ -758,7 +759,7 @@ public sealed class Player : Component
     /// <param name="keys">A set of bits containing this player's key states</param>
     /// <param name="upDown">Up or Down value, passed by reference.</param>
     /// <param name="leftRight">Left or Right value, passed by reference.</param>
-    public void GetKeys(out Keys keys, out int upDown, out int leftRight)
+    public virtual void GetKeys(out Keys keys, out int upDown, out int leftRight)
     {
         GetComponent<NativePlayer>()
             .GetPlayerKeys(out var keysDown, out upDown, out leftRight);
@@ -768,7 +769,7 @@ public sealed class Player : Component
     /// <summary>Sets the clock of this player to a specific value. This also changes the daytime. (night/day etc.)</summary>
     /// <param name="hour">Hour to set (0-23).</param>
     /// <param name="minutes">Minutes to set (0-59).</param>
-    public void SetTime(int hour, int minutes)
+    public virtual void SetTime(int hour, int minutes)
     {
         GetComponent<NativePlayer>()
             .SetPlayerTime(hour, minutes);
@@ -777,7 +778,7 @@ public sealed class Player : Component
     /// <summary>Get this player's current game time. Set by <see cref="IServerService.SetWorldTime" />, or by <see cref="ToggleClock" />.</summary>
     /// <param name="hour">The variable to store the hour in, passed by reference.</param>
     /// <param name="minutes">The variable to store the minutes in, passed by reference.</param>
-    public void GetTime(out int hour, out int minutes)
+    public virtual void GetTime(out int hour, out int minutes)
     {
         GetComponent<NativePlayer>()
             .GetPlayerTime(out hour, out minutes);
@@ -786,7 +787,7 @@ public sealed class Player : Component
     /// <summary>Show/Hide the in-game clock (top right corner) for this player.</summary>
     /// <remarks>Time is not synced with other players!</remarks>
     /// <param name="toggle">True to show, False to hide.</param>
-    public void ToggleClock(bool toggle)
+    public virtual void ToggleClock(bool toggle)
     {
         GetComponent<NativePlayer>()
             .TogglePlayerClock(toggle);
@@ -797,7 +798,7 @@ public sealed class Player : Component
     /// otherwise will change instantly.
     /// </summary>
     /// <param name="weather">The weather to set.</param>
-    public void SetWeather(int weather)
+    public virtual void SetWeather(int weather)
     {
         GetComponent<NativePlayer>()
             .SetPlayerWeather(weather);
@@ -805,7 +806,7 @@ public sealed class Player : Component
 
     /// <summary>Forces this player to go back to class selection.</summary>
     /// <remarks>The player will not return to class selection until they re-spawn. This can be achieved with <see cref="ToggleSpectating" /></remarks>
-    public void ForceClassSelection()
+    public virtual void ForceClassSelection()
     {
         GetComponent<NativePlayer>()
             .ForceClassSelection();
@@ -813,7 +814,7 @@ public sealed class Player : Component
 
     /// <summary>Display the cursor and allow this player to select a text draw.</summary>
     /// <param name="hoverColor">The color of the text draw when hovering over with mouse.</param>
-    public void SelectTextDraw(Color hoverColor)
+    public virtual void SelectTextDraw(Color hoverColor)
     {
         IsSelectingTextDraw = true;
         GetComponent<NativePlayer>()
@@ -821,7 +822,7 @@ public sealed class Player : Component
     }
 
     /// <summary>Cancel text draw selection with the mouse for this player.</summary>
-    public void CancelSelectTextDraw()
+    public virtual void CancelSelectTextDraw()
     {
         IsSelectingTextDraw = false;
         GetComponent<NativePlayer>()
@@ -831,7 +832,7 @@ public sealed class Player : Component
     /// <summary>This function plays a crime report for this player - just like in single-player when CJ commits a crime.</summary>
     /// <param name="suspect">The suspect player which will be described in the crime report.</param>
     /// <param name="crime">The crime ID, which will be reported as a 10-code (i.e. 10-16 if 16 was passed as the crime ID).</param>
-    public void PlayCrimeReport(EntityId suspect, int crime)
+    public virtual void PlayCrimeReport(EntityId suspect, int crime)
     {
         if (!suspect.IsOfType(SampEntities.PlayerType))
             throw new InvalidEntityArgumentException(nameof(suspect), SampEntities.PlayerType);
@@ -844,7 +845,7 @@ public sealed class Player : Component
     /// <param name="url">The url to play. Valid formats are mp3 and ogg/vorbis. A link to a .pls (playlist) file will play that playlist.</param>
     /// <param name="position">The position at which to play the audio.</param>
     /// <param name="distance">The distance over which the audio will be heard.</param>
-    public void PlayAudioStream(string url, Vector3 position, float distance)
+    public virtual void PlayAudioStream(string url, Vector3 position, float distance)
     {
         GetComponent<NativePlayer>()
             .PlayAudioStreamForPlayer(url, position.X, position.Y, position.Z, distance, true);
@@ -852,7 +853,7 @@ public sealed class Player : Component
 
     /// <summary>Play an 'audio stream' for this player. Normal audio files also work (e.g. MP3).</summary>
     /// <param name="url">The url to play. Valid formats are mp3 and ogg/vorbis. A link to a .pls (playlist) file will play that playlist.</param>
-    public void PlayAudioStream(string url)
+    public virtual void PlayAudioStream(string url)
     {
         GetComponent<NativePlayer>()
             .PlayAudioStreamForPlayer(url, 0, 0, 0, 0, false);
@@ -860,7 +861,7 @@ public sealed class Player : Component
 
     /// <summary>Allows you to disable collisions between vehicles for a player.</summary>
     /// <param name="disable">if set to <c>true</c> disables the collision between vehicles.</param>
-    public void DisableRemoteVehicleCollisions(bool disable)
+    public virtual void DisableRemoteVehicleCollisions(bool disable)
     {
         GetComponent<NativePlayer>()
             .DisableRemoteVehicleCollisions(disable);
@@ -868,14 +869,14 @@ public sealed class Player : Component
 
     /// <summary>Toggles camera targeting functions for a player.</summary>
     /// <param name="enable">if set to <c>true</c> the functionality is enabled.</param>
-    public void EnablePlayerCameraTarget(bool enable)
+    public virtual void EnablePlayerCameraTarget(bool enable)
     {
         GetComponent<NativePlayer>()
             .EnablePlayerCameraTarget(enable);
     }
 
     /// <summary>Stops the current audio stream for this player.</summary>
-    public void StopAudioStream()
+    public virtual void StopAudioStream()
     {
         GetComponent<NativePlayer>()
             .StopAudioStreamForPlayer();
@@ -883,7 +884,7 @@ public sealed class Player : Component
 
     /// <summary>Loads or unloads an interior script for this player. (for example the Ammunation menu)</summary>
     /// <param name="shopName">The name of the shop, see <see cref="ShopName" /> for shop names.</param>
-    public void SetShopName(string shopName)
+    public virtual void SetShopName(string shopName)
     {
         GetComponent<NativePlayer>()
             .SetPlayerShopName(shopName);
@@ -893,7 +894,7 @@ public sealed class Player : Component
     /// <remarks>The skill parameter is NOT the weapon ID, it is the skill type.</remarks>
     /// <param name="skill">The <see cref="WeaponSkill" /> you want to set the skill of.</param>
     /// <param name="level">The skill level to set for that weapon, ranging from 0 to 999. (A level out of range will max it out)</param>
-    public void SetSkillLevel(WeaponSkill skill, int level)
+    public virtual void SetSkillLevel(WeaponSkill skill, int level)
     {
         GetComponent<NativePlayer>()
             .SetPlayerSkillLevel((int)skill, level);
@@ -909,7 +910,7 @@ public sealed class Player : Component
     /// <param name="materialColor1">The first object color to set.</param>
     /// <param name="materialColor2">The second object color to set.</param>
     /// <returns>True on success, False otherwise.</returns>
-    public bool SetAttachedObject(int index, int modelId, Bone bone, Vector3 offset, Vector3 rotation, Vector3 scale, Color materialColor1,
+    public virtual bool SetAttachedObject(int index, int modelId, Bone bone, Vector3 offset, Vector3 rotation, Vector3 scale, Color materialColor1,
         Color materialColor2)
     {
         return GetComponent<NativePlayer>()
@@ -920,7 +921,7 @@ public sealed class Player : Component
     /// <summary>Remove an attached object from this player.</summary>
     /// <param name="index">The index of the object to remove (set with <see cref="SetAttachedObject" />).</param>
     /// <returns>True on success, False otherwise.</returns>
-    public bool RemoveAttachedObject(int index)
+    public virtual bool RemoveAttachedObject(int index)
     {
         return GetComponent<NativePlayer>()
             .RemovePlayerAttachedObject(index);
@@ -929,7 +930,7 @@ public sealed class Player : Component
     /// <summary>Check if this player has an object attached in the specified index (slot).</summary>
     /// <param name="index">The index (slot) to check.</param>
     /// <returns>True if the slot is used, False otherwise.</returns>
-    public bool IsAttachedObjectSlotUsed(int index)
+    public virtual bool IsAttachedObjectSlotUsed(int index)
     {
         return GetComponent<NativePlayer>()
             .IsPlayerAttachedObjectSlotUsed(index);
@@ -938,7 +939,7 @@ public sealed class Player : Component
     /// <summary>Enter edition mode for an attached object.</summary>
     /// <param name="index">The index (slot) of the attached object to edit.</param>
     /// <returns>True on success, False otherwise.</returns>
-    public bool DoEditAttachedObject(int index)
+    public virtual bool DoEditAttachedObject(int index)
     {
         return GetComponent<NativePlayer>()
             .EditAttachedObject(index);
@@ -949,7 +950,7 @@ public sealed class Player : Component
     /// <param name="color">The text color.</param>
     /// <param name="drawDistance">The distance from where players are able to see the chat bubble.</param>
     /// <param name="expireTime">The time in milliseconds the bubble should be displayed for.</param>
-    public void SetChatBubble(string text, Color color, float drawDistance, int expireTime)
+    public virtual void SetChatBubble(string text, Color color, float drawDistance, int expireTime)
     {
         GetComponent<NativePlayer>()
             .SetPlayerChatBubble(text, color.ToInteger(ColorFormat.RGBA), drawDistance, expireTime);
@@ -958,7 +959,7 @@ public sealed class Player : Component
     /// <summary>Puts this player in a vehicle.</summary>
     /// <param name="vehicle">The vehicle for the player to be put in.</param>
     /// <param name="seatId">The ID of the seat to put the player in.</param>
-    public void PutInVehicle(EntityId vehicle, int seatId)
+    public virtual void PutInVehicle(EntityId vehicle, int seatId)
     {
         if (!vehicle.IsOfType(SampEntities.VehicleType))
             throw new InvalidEntityArgumentException(nameof(vehicle), SampEntities.VehicleType);
@@ -969,7 +970,7 @@ public sealed class Player : Component
 
     /// <summary>Puts this player in a vehicle as driver.</summary>
     /// <param name="vehicle">The vehicle for the player to be put in.</param>
-    public void PutInVehicle(EntityId vehicle)
+    public virtual void PutInVehicle(EntityId vehicle)
     {
         if (!vehicle.IsOfType(SampEntities.VehicleType))
             throw new InvalidEntityArgumentException(nameof(vehicle), SampEntities.VehicleType);
@@ -982,7 +983,7 @@ public sealed class Player : Component
     /// The exiting animation is not synced for other players. This function will not work when used in the OnPlayerEnterVehicle event, because the player
     /// isn't in the vehicle when the callback is called. Use the OnPlayerStateChanged event instead.
     /// </remarks>
-    public void RemoveFromVehicle()
+    public virtual void RemoveFromVehicle()
     {
         GetComponent<NativePlayer>()
             .RemovePlayerFromVehicle();
@@ -990,7 +991,7 @@ public sealed class Player : Component
 
     /// <summary>Toggles whether this player can control themselves, basically freezes them.</summary>
     /// <param name="toggle">False to freeze the player or True to unfreeze them.</param>
-    public void ToggleControllable(bool toggle)
+    public virtual void ToggleControllable(bool toggle)
     {
         GetComponent<NativePlayer>()
             .TogglePlayerControllable(toggle);
@@ -999,7 +1000,7 @@ public sealed class Player : Component
     /// <summary>Plays the specified sound for this player at a specific point.</summary>
     /// <param name="soundId">The sound to play.</param>
     /// <param name="point">Point for the sound to play at.</param>
-    public void PlaySound(int soundId, Vector3 point)
+    public virtual void PlaySound(int soundId, Vector3 point)
     {
         GetComponent<NativePlayer>()
             .PlayerPlaySound(soundId, point.X, point.Y, point.Z);
@@ -1007,7 +1008,7 @@ public sealed class Player : Component
 
     /// <summary>Plays the specified sound for this player.</summary>
     /// <param name="soundId">The sound to play.</param>
-    public void PlaySound(int soundId)
+    public virtual void PlaySound(int soundId)
     {
         GetComponent<NativePlayer>()
             .PlayerPlaySound(soundId, 0, 0, 0);
@@ -1034,7 +1035,7 @@ public sealed class Player : Component
     /// <param name="freeze">Will freeze the player in position after the animation finishes.</param>
     /// <param name="time">Timer in milliseconds. For a never ending loop it should be 0.</param>
     /// <param name="forceSync">Set to <c>true</c> to force the player to sync animation with other players in all instances</param>
-    public void ApplyAnimation(string animationLibrary, string animationName, float fDelta, bool loop, bool lockX, bool lockY, bool freeze, int time,
+    public virtual void ApplyAnimation(string animationLibrary, string animationName, float fDelta, bool loop, bool lockX, bool lockY, bool freeze, int time,
         bool forceSync)
     {
         GetComponent<NativePlayer>()
@@ -1056,7 +1057,7 @@ public sealed class Player : Component
     /// </param>
     /// <param name="freeze">Will freeze the player in position after the animation finishes.</param>
     /// <param name="time">Timer in milliseconds. For a never ending loop it should be 0.</param>
-    public void ApplyAnimation(string animationLibrary, string animationName, float fDelta, bool loop, bool lockX, bool lockY, bool freeze, int time)
+    public virtual void ApplyAnimation(string animationLibrary, string animationName, float fDelta, bool loop, bool lockX, bool lockY, bool freeze, int time)
     {
         GetComponent<NativePlayer>()
             .ApplyAnimation(animationLibrary, animationName, fDelta, loop, lockX, lockY, freeze, time, false);
@@ -1064,14 +1065,14 @@ public sealed class Player : Component
 
     /// <summary>Clears all animations for this player.</summary>
     /// <param name="forceSync">Specifies whether the animation should be shown to streamed in players.</param>
-    public void ClearAnimations(bool forceSync)
+    public virtual void ClearAnimations(bool forceSync)
     {
         GetComponent<NativePlayer>()
             .ClearAnimations(forceSync);
     }
 
     /// <summary>Clears all animations for this player.</summary>
-    public void ClearAnimations()
+    public virtual void ClearAnimations()
     {
         GetComponent<NativePlayer>()
             .ClearAnimations(false);
@@ -1081,7 +1082,7 @@ public sealed class Player : Component
     /// <param name="animationLibrary">String variable that stores the animation library.</param>
     /// <param name="animationName">String variable that stores the animation name.</param>
     /// <returns>True on success, False otherwise.</returns>
-    public bool GetAnimationName(out string animationLibrary, out string animationName)
+    public virtual bool GetAnimationName(out string animationLibrary, out string animationName)
     {
         return GetComponent<NativePlayer>()
             .GetAnimationName(AnimationIndex, out animationLibrary, 64, out animationName, 64);
@@ -1094,14 +1095,14 @@ public sealed class Player : Component
     /// </remarks>
     /// <param name="point">The point to set the checkpoint at.</param>
     /// <param name="size">The size of the checkpoint.</param>
-    public void SetCheckpoint(Vector3 point, float size)
+    public virtual void SetCheckpoint(Vector3 point, float size)
     {
         GetComponent<NativePlayer>()
             .SetPlayerCheckpoint(point.X, point.Y, point.Z, size);
     }
 
     /// <summary>Disable any initialized checkpoints for this player.</summary>
-    public void DisableCheckpoint()
+    public virtual void DisableCheckpoint()
     {
         GetComponent<NativePlayer>()
             .DisablePlayerCheckpoint();
@@ -1112,14 +1113,14 @@ public sealed class Player : Component
     /// <param name="point">The point to set the checkpoint at.</param>
     /// <param name="nextPosition">Coordinates of the next point, for the arrow facing direction.</param>
     /// <param name="size">Length (diameter) of the checkpoint</param>
-    public void SetRaceCheckpoint(CheckpointType type, Vector3 point, Vector3 nextPosition, float size)
+    public virtual void SetRaceCheckpoint(CheckpointType type, Vector3 point, Vector3 nextPosition, float size)
     {
         GetComponent<NativePlayer>()
             .SetPlayerRaceCheckpoint((int)type, point.X, point.Y, point.Z, nextPosition.X, nextPosition.Y, nextPosition.Z, size);
     }
 
     /// <summary>Disable any initialized race checkpoints for this player.</summary>
-    public void DisableRaceCheckpoint()
+    public virtual void DisableRaceCheckpoint()
     {
         GetComponent<NativePlayer>()
             .DisablePlayerRaceCheckpoint();
@@ -1131,7 +1132,7 @@ public sealed class Player : Component
     /// <param name="xMin">The minimum X coordinate the player can go to.</param>
     /// <param name="yMax">The maximum Y coordinate the player can go to.</param>
     /// <param name="yMin">The minimum Y coordinate the player can go to.</param>
-    public void SetWorldBounds(float xMax, float xMin, float yMax, float yMin)
+    public virtual void SetWorldBounds(float xMax, float xMin, float yMax, float yMin)
     {
         GetComponent<NativePlayer>()
             .SetPlayerWorldBounds(xMax, xMin, yMax, yMin);
@@ -1140,7 +1141,7 @@ public sealed class Player : Component
     /// <summary>Change the color of this player's name tag and radar blip for another Player.</summary>
     /// <param name="player">The player whose color will be changed.</param>
     /// <param name="color">New color.</param>
-    public void SetPlayerMarker(EntityId player, Color color)
+    public virtual void SetPlayerMarker(EntityId player, Color color)
     {
         if (!player.IsOfType(SampEntities.PlayerType))
             throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
@@ -1156,7 +1157,7 @@ public sealed class Player : Component
     /// <remarks><see cref="IServerService.ShowNameTags" /> must be set to <c>true</c> to be able to show name tags with <see cref="ShowNameTagForPlayer" />.</remarks>
     /// <param name="player">The player whose name tag will be shown or hidden.</param>
     /// <param name="show">True to show name tag, False to hide name tag.</param>
-    public void ShowNameTagForPlayer(EntityId player, bool show)
+    public virtual void ShowNameTagForPlayer(EntityId player, bool show)
     {
         if (!player.IsOfType(SampEntities.PlayerType))
             throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
@@ -1168,7 +1169,7 @@ public sealed class Player : Component
     /// <summary>Set the direction this player's camera looks at. To be used in combination with <see cref="CameraPosition" />.</summary>
     /// <param name="point">The coordinates for this player's camera to look at.</param>
     /// <param name="cut">The style the camera-position changes.</param>
-    public void SetCameraLookAt(Vector3 point, CameraCut cut)
+    public virtual void SetCameraLookAt(Vector3 point, CameraCut cut)
     {
         GetComponent<NativePlayer>()
             .SetPlayerCameraLookAt(point.X, point.Y, point.Z, (int)cut);
@@ -1176,7 +1177,7 @@ public sealed class Player : Component
 
     /// <summary>Set the direction this player's camera looks at. To be used in combination with <see cref="CameraPosition" />.</summary>
     /// <param name="point">The coordinates for this player's camera to look at.</param>
-    public void SetCameraLookAt(Vector3 point)
+    public virtual void SetCameraLookAt(Vector3 point)
     {
         SetCameraLookAt(point, CameraCut.Cut);
     }
@@ -1186,7 +1187,7 @@ public sealed class Player : Component
     /// <param name="to">The position the camera should move to.</param>
     /// <param name="time">Time in milliseconds.</param>
     /// <param name="cut">The jump cut to use. Defaults to CameraCut.Cut. Set to CameraCut. Move for a smooth movement.</param>
-    public void InterpolateCameraPosition(Vector3 from, Vector3 to, int time, CameraCut cut)
+    public virtual void InterpolateCameraPosition(Vector3 from, Vector3 to, int time, CameraCut cut)
     {
         GetComponent<NativePlayer>()
             .InterpolateCameraPos(from.X, from.Y, from.Z, to.X, to.Y, to.Z, time, (int)cut);
@@ -1197,7 +1198,7 @@ public sealed class Player : Component
     /// <param name="to">The position the camera should move to.</param>
     /// <param name="time">Time in milliseconds to complete interpolation.</param>
     /// <param name="cut">The jump cut to use. Defaults to CameraCut.Cut (pointless). Set to CameraCut.Move for interpolation.</param>
-    public void InterpolateCameraLookAt(Vector3 from, Vector3 to, int time, CameraCut cut)
+    public virtual void InterpolateCameraLookAt(Vector3 from, Vector3 to, int time, CameraCut cut)
     {
         GetComponent<NativePlayer>()
             .InterpolateCameraLookAt(from.X, from.Y, from.Z, to.X, to.Y, to.Z, time, (int)cut);
@@ -1206,7 +1207,7 @@ public sealed class Player : Component
     /// <summary>Checks if this player is in a specific vehicle.</summary>
     /// <param name="vehicle">The vehicle.</param>
     /// <returns>True if player is in the vehicle; False otherwise.</returns>
-    public bool IsInVehicle(EntityId vehicle)
+    public virtual bool IsInVehicle(EntityId vehicle)
     {
         return vehicle.IsOfType(SampEntities.VehicleType) && GetComponent<NativePlayer>()
             .IsPlayerInVehicle(vehicle);
@@ -1214,7 +1215,7 @@ public sealed class Player : Component
 
     /// <summary>Toggle stunt bonuses for this player.</summary>
     /// <param name="enable">True to enable stunt bonuses, False to disable them.</param>
-    public void EnableStuntBonus(bool enable)
+    public virtual void EnableStuntBonus(bool enable)
     {
         GetComponent<NativePlayer>()
             .EnableStuntBonusForPlayer(enable);
@@ -1223,7 +1224,7 @@ public sealed class Player : Component
     /// <summary>Toggle this player's spectate mode.</summary>
     /// <remarks>When the spectating is turned off, OnPlayerSpawn will automatically be called.</remarks>
     /// <param name="toggle">True to enable spectating and False to disable.</param>
-    public void ToggleSpectating(bool toggle)
+    public virtual void ToggleSpectating(bool toggle)
     {
         GetComponent<NativePlayer>()
             .TogglePlayerSpectating(toggle);
@@ -1233,7 +1234,7 @@ public sealed class Player : Component
     /// <remarks>Order is CRITICAL! Ensure that you use <see cref="ToggleSpectating" /> before <see cref="SpectatePlayer(EntityId,SpectateMode)" />.</remarks>
     /// <param name="targetPlayer">The Player that should be spectated.</param>
     /// <param name="mode">The mode to spectate with.</param>
-    public void SpectatePlayer(EntityId targetPlayer, SpectateMode mode)
+    public virtual void SpectatePlayer(EntityId targetPlayer, SpectateMode mode)
     {
         if (!targetPlayer.IsOfType(SampEntities.PlayerType))
             throw new InvalidEntityArgumentException(nameof(targetPlayer), SampEntities.PlayerType);
@@ -1245,7 +1246,7 @@ public sealed class Player : Component
     /// <summary>Makes this player spectate (watch) another player.</summary>
     /// <remarks>Order is CRITICAL! Ensure that you use <see cref="ToggleSpectating" /> before <see cref="SpectatePlayer(EntityId,SpectateMode)" />.</remarks>
     /// <param name="targetPlayer">The Player that should be spectated.</param>
-    public void SpectatePlayer(EntityId targetPlayer)
+    public virtual void SpectatePlayer(EntityId targetPlayer)
     {
         if (!targetPlayer.IsOfType(SampEntities.PlayerType))
             throw new InvalidEntityArgumentException(nameof(targetPlayer), SampEntities.PlayerType);
@@ -1257,7 +1258,7 @@ public sealed class Player : Component
     /// <remarks>Order is CRITICAL! Ensure that you use <see cref="ToggleSpectating" /> before <see cref="SpectateVehicle(EntityId,SpectateMode)" />.</remarks>
     /// <param name="targetVehicle">The vehicle to spectate.</param>
     /// <param name="mode">Spectate mode.</param>
-    public void SpectateVehicle(EntityId targetVehicle, SpectateMode mode)
+    public virtual void SpectateVehicle(EntityId targetVehicle, SpectateMode mode)
     {
         if (!targetVehicle.IsOfType(SampEntities.VehicleType))
             throw new InvalidEntityArgumentException(nameof(targetVehicle), SampEntities.VehicleType);
@@ -1269,7 +1270,7 @@ public sealed class Player : Component
     /// <summary>Sets this player to spectate another vehicle, i.e. see what its driver sees.</summary>
     /// <remarks>Order is CRITICAL! Ensure that you use <see cref="ToggleSpectating" /> before <see cref="SpectateVehicle(EntityId,SpectateMode)" />.</remarks>
     /// <param name="targetVehicle">The vehicle to spectate.</param>
-    public void SpectateVehicle(EntityId targetVehicle)
+    public virtual void SpectateVehicle(EntityId targetVehicle)
     {
         if (!targetVehicle.IsOfType(SampEntities.VehicleType))
             throw new InvalidEntityArgumentException(nameof(targetVehicle), SampEntities.VehicleType);
@@ -1283,14 +1284,14 @@ public sealed class Player : Component
     /// Name of the file which will hold the recorded data. It will be saved in the scriptfiles folder, with an automatically added .rec
     /// extension.
     /// </param>
-    public void StartRecordingPlayerData(PlayerRecordingType recordingType, string recordingName)
+    public virtual void StartRecordingPlayerData(PlayerRecordingType recordingType, string recordingName)
     {
         GetComponent<NativePlayer>()
             .StartRecordingPlayerData((int)recordingType, recordingName);
     }
 
     /// <summary>Stops all the recordings that had been started with <see cref="StartRecordingPlayerData" /> for this player.</summary>
-    public void StopRecordingPlayerData()
+    public virtual void StopRecordingPlayerData()
     {
         GetComponent<NativePlayer>()
             .StopRecordingPlayerData();
@@ -1299,7 +1300,7 @@ public sealed class Player : Component
     /// <summary>Retrieves the start and end (hit) position of the last bullet a player fired.</summary>
     /// <param name="origin">The origin.</param>
     /// <param name="hitPosition">The hit position.</param>
-    public void GetLastShot(out Vector3 origin, out Vector3 hitPosition)
+    public virtual void GetLastShot(out Vector3 origin, out Vector3 hitPosition)
     {
         GetComponent<NativePlayer>()
             .GetPlayerLastShotVectors(out var ox, out var oy, out var oz, out var hx, out var hy, out var hz);
@@ -1314,7 +1315,7 @@ public sealed class Player : Component
     /// </summary>
     /// <param name="color">The color of the message.</param>
     /// <param name="message">The text that will be displayed.</param>
-    public void SendClientMessage(Color color, string message)
+    public virtual void SendClientMessage(Color color, string message)
     {
         if (message.Length > 144)
         {
@@ -1337,7 +1338,7 @@ public sealed class Player : Component
     /// <param name="messageFormat">The composite format string of the text that will be displayed (max 144 characters).</param>
     /// <param name="args">An object array that contains zero or more objects to format.</param>
     [StringFormatMethod("messageFormat")]
-    public void SendClientMessage(Color color, string messageFormat, params object[] args)
+    public virtual void SendClientMessage(Color color, string messageFormat, params object[] args)
     {
         SendClientMessage(color, string.Format(messageFormat, args));
     }
@@ -1347,7 +1348,7 @@ public sealed class Player : Component
     /// used.
     /// </summary>
     /// <param name="message">The text that will be displayed.</param>
-    public void SendClientMessage(string message)
+    public virtual void SendClientMessage(string message)
     {
         SendClientMessage(Color.White, message);
     }
@@ -1359,13 +1360,13 @@ public sealed class Player : Component
     /// <param name="messageFormat">The composite format string of the text that will be displayed (max 144 characters).</param>
     /// <param name="args">An object array that contains zero or more objects to format.</param>
     [StringFormatMethod("messageFormat")]
-    public void SendClientMessage(string messageFormat, params object[] args)
+    public virtual void SendClientMessage(string messageFormat, params object[] args)
     {
         SendClientMessage(Color.White, string.Format(messageFormat, args));
     }
 
     /// <summary>Kicks this player from the server. They will have to quit the game and re-connect if they wish to continue playing.</summary>
-    public void Kick()
+    public virtual void Kick()
     {
         GetComponent<NativePlayer>()
             .Kick();
@@ -1375,7 +1376,7 @@ public sealed class Player : Component
     /// Ban this player. The ban will be IP-based, and be saved in the samp.ban file in the server's root directory. <see cref="Ban(string)" /> allows you to
     /// ban with a reason, while you can ban and unban IPs using the RCON banip and unbanip commands.
     /// </summary>
-    public void Ban()
+    public virtual void Ban()
     {
         GetComponent<NativePlayer>()
             .Ban();
@@ -1383,7 +1384,7 @@ public sealed class Player : Component
 
     /// <summary>Ban this player with a reason.</summary>
     /// <param name="reason">The reason for the ban.</param>
-    public void Ban(string reason)
+    public virtual void Ban(string reason)
     {
         GetComponent<NativePlayer>()
             .BanEx(reason);
@@ -1395,7 +1396,7 @@ public sealed class Player : Component
     /// </summary>
     /// <param name="sender">The player which has sent the message.</param>
     /// <param name="message">The message that will be sent.</param>
-    public void SendPlayerMessageToPlayer(EntityId sender, string message)
+    public virtual void SendPlayerMessageToPlayer(EntityId sender, string message)
     {
         if (!sender.IsOfType(SampEntities.PlayerType))
             throw new InvalidEntityArgumentException(nameof(sender), SampEntities.PlayerType);
@@ -1408,7 +1409,7 @@ public sealed class Player : Component
     /// <param name="text">The text to be displayed.</param>
     /// <param name="time">The duration of the text being shown in milliseconds.</param>
     /// <param name="style">The style of text to be displayed.</param>
-    public void GameText(string text, int time, int style)
+    public virtual void GameText(string text, int time, int style)
     {
         GetComponent<NativePlayer>()
             .GameTextForPlayer(text, time, style);
@@ -1421,7 +1422,7 @@ public sealed class Player : Component
     /// <param name="position">The position of the explosion.</param>
     /// <param name="type">The explosion type.</param>
     /// <param name="radius">The radius of the explosion.</param>
-    public void CreateExplosion(Vector3 position, ExplosionType type, float radius)
+    public virtual void CreateExplosion(Vector3 position, ExplosionType type, float radius)
     {
         GetComponent<NativePlayer>()
             .CreateExplosionForPlayer(position.X, position.Y, position.Z, (int)type, radius);
@@ -1431,7 +1432,7 @@ public sealed class Player : Component
     /// <param name="killer">The player that killer the <paramref name="player" />.</param>
     /// <param name="player">The player that has been killed.</param>
     /// <param name="weapon">The reason for this player's death.</param>
-    public void SendDeathMessage(EntityId killer, EntityId player, Weapon weapon)
+    public virtual void SendDeathMessage(EntityId killer, EntityId player, Weapon weapon)
     {
         if (killer && !killer.IsOfType(SampEntities.PlayerType))
             throw new InvalidEntityArgumentException(nameof(killer), SampEntities.PlayerType);
@@ -1445,7 +1446,7 @@ public sealed class Player : Component
 
     /// <summary>Attaches a player's camera to an object.</summary>
     /// <param name="object">The object to attach the camera to.</param>
-    public void AttachCameraToObject(EntityId @object)
+    public virtual void AttachCameraToObject(EntityId @object)
     {
         if (!@object.IsOfAnyType(SampEntities.ObjectType, SampEntities.PlayerObjectType))
             throw new InvalidEntityArgumentException(nameof(@object), SampEntities.ObjectType, SampEntities.PlayerObjectType);
@@ -1467,7 +1468,7 @@ public sealed class Player : Component
 
     /// <summary>Lets this player edit the specified <paramref name="object" />.</summary>
     /// <param name="object">The object to edit.</param>
-    public void Edit(EntityId @object)
+    public virtual void Edit(EntityId @object)
     {
         if (!@object.IsOfAnyType(SampEntities.ObjectType, SampEntities.PlayerObjectType))
             throw new InvalidEntityArgumentException(nameof(@object), SampEntities.ObjectType, SampEntities.PlayerObjectType);
@@ -1482,14 +1483,14 @@ public sealed class Player : Component
     }
 
     /// <summary>Cancels object editing mode for this player.</summary>
-    public void CancelEdit()
+    public virtual void CancelEdit()
     {
         GetComponent<NativePlayer>()
             .CancelEdit();
     }
 
     /// <summary>Lets this player select an object.</summary>
-    public void Select()
+    public virtual void Select()
     {
         GetComponent<NativePlayer>()
             .SelectObject();
@@ -1499,7 +1500,7 @@ public sealed class Player : Component
     /// <param name="modelId">The model identifier.</param>
     /// <param name="position">The position at which to remove the model.</param>
     /// <param name="radius">The radius in which to remove the model.</param>
-    public void RemoveBuilding(int modelId, Vector3 position, float radius)
+    public virtual void RemoveBuilding(int modelId, Vector3 position, float radius)
     {
         GetComponent<NativePlayer>()
             .RemoveBuildingForPlayer(modelId, position.X, position.Y, position.Z, radius);
@@ -1511,7 +1512,7 @@ public sealed class Player : Component
     /// <param name="type">The type of the marker.</param>
     /// <param name="color">The color of the marker.</param>
     /// <param name="style">The style of the marker.</param>
-    public void SetMapIcon(int iconId, Vector3 position, MapIcon type, Color color, MapIconType style)
+    public virtual void SetMapIcon(int iconId, Vector3 position, MapIcon type, Color color, MapIconType style)
     {
         GetComponent<NativePlayer>()
             .SetPlayerMapIcon(iconId, position.X, position.Y, position.Z, (int)type, color, (int)style);
@@ -1519,7 +1520,7 @@ public sealed class Player : Component
 
     /// <summary>Removes a map icon that was set earlier for this player.</summary>
     /// <param name="iconId">The player's icon identifier.</param>
-    public void RemoveMapIcon(int iconId)
+    public virtual void RemoveMapIcon(int iconId)
     {
         GetComponent<NativePlayer>()
             .RemovePlayerMapIcon(iconId);
