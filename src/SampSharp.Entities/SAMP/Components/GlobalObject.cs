@@ -18,15 +18,16 @@ using System;
 namespace SampSharp.Entities.SAMP;
 
 /// <summary>Represents a component which provides the data and functionality of an object.</summary>
-public sealed class GlobalObject : Component
+public class GlobalObject : Component
 {
-    private GlobalObject(float drawDistance)
+    /// <summary>Constructs an instance of GlobalObject, should be used internally.</summary>
+    protected GlobalObject(float drawDistance)
     {
         DrawDistance = drawDistance;
     }
 
     /// <summary>Gets the rotation of this object.</summary>
-    public Vector3 Rotation
+    public virtual Vector3 Rotation
     {
         get
         {
@@ -39,7 +40,7 @@ public sealed class GlobalObject : Component
     }
 
     /// <summary>Gets the position of this object.</summary>
-    public Vector3 Position
+    public virtual Vector3 Position
     {
         get
         {
@@ -52,15 +53,15 @@ public sealed class GlobalObject : Component
     }
 
     /// <summary>Gets whether this object is moving.</summary>
-    public bool IsMoving => GetComponent<NativeObject>()
+    public virtual bool IsMoving => GetComponent<NativeObject>()
         .IsObjectMoving();
 
     /// <summary>Gets the model of this object.</summary>
-    public int ModelId => GetComponent<NativeObject>()
+    public virtual int ModelId => GetComponent<NativeObject>()
         .GetObjectModel();
 
     /// <summary>Gets the draw distance of this object.</summary>
-    public float DrawDistance { get; }
+    public virtual float DrawDistance { get; }
 
     /// <inheritdoc />
     protected override void OnDestroyComponent()
@@ -74,7 +75,7 @@ public sealed class GlobalObject : Component
     /// <param name="speed">The speed at which to move this object.</param>
     /// <param name="rotation">The rotation to which to move this object.</param>
     /// <returns>The time it will take for the object to move in milliseconds.</returns>
-    public int Move(Vector3 position, float speed, Vector3 rotation)
+    public virtual int Move(Vector3 position, float speed, Vector3 rotation)
     {
         return GetComponent<NativeObject>()
             .MoveObject(position.X, position.Y, position.Z, speed, rotation.X, rotation.Y, rotation.Z);
@@ -84,14 +85,14 @@ public sealed class GlobalObject : Component
     /// <param name="position">The position to which to move this object.</param>
     /// <param name="speed">The speed at which to move this object.</param>
     /// <returns>The time it will take for the object to move in milliseconds.</returns>
-    public int Move(Vector3 position, float speed)
+    public virtual int Move(Vector3 position, float speed)
     {
         return GetComponent<NativeObject>()
             .MoveObject(position.X, position.Y, position.Z, speed, -1000, -1000, -1000);
     }
 
     /// <summary>Stop this object from moving any further.</summary>
-    public void Stop()
+    public virtual void Stop()
     {
         GetComponent<NativeObject>()
             .StopObject();
@@ -106,7 +107,7 @@ public sealed class GlobalObject : Component
     /// <param name="txdName">The name of the txd file which contains the replacement texture (use "none" if not required).</param>
     /// <param name="textureName">The name of the texture to use as the replacement (use "none" if not required).</param>
     /// <param name="materialColor">The object color to set (use default(Color) to keep the existing material color).</param>
-    public void SetMaterial(int materialIndex, int modelId, string txdName, string textureName, Color materialColor)
+    public virtual void SetMaterial(int materialIndex, int modelId, string txdName, string textureName, Color materialColor)
     {
         GetComponent<NativeObject>()
             .SetObjectMaterial(materialIndex, modelId, txdName, textureName, materialColor.ToInteger(ColorFormat.ARGB));
@@ -122,7 +123,7 @@ public sealed class GlobalObject : Component
     /// <param name="foreColor">The color of the text.</param>
     /// <param name="backColor">The background color of the text.</param>
     /// <param name="textAlignment">The alignment of the text.</param>
-    public void SetMaterialText(int materialIndex, string text, ObjectMaterialSize materialSize, string fontface, int fontSize, bool bold, Color foreColor,
+    public virtual void SetMaterialText(int materialIndex, string text, ObjectMaterialSize materialSize, string fontface, int fontSize, bool bold, Color foreColor,
         Color backColor, ObjectMaterialTextAlign textAlignment)
     {
         GetComponent<NativeObject>()
@@ -131,7 +132,7 @@ public sealed class GlobalObject : Component
     }
 
     /// <summary>Disable collisions between players' cameras and this <see cref="GlobalObject" />.</summary>
-    public void DisableCameraCollisions()
+    public virtual void DisableCameraCollisions()
     {
         GetComponent<NativeObject>()
             .SetObjectNoCameraCol();
@@ -142,7 +143,7 @@ public sealed class GlobalObject : Component
     /// <param name="offset">The offset.</param>
     /// <param name="rotation">The rotation.</param>
     /// <param name="syncRotation">if set to <c>true</c> synchronize rotation with objects attached to.</param>
-    public void AttachTo(EntityId target, Vector3 offset, Vector3 rotation, bool syncRotation = false)
+    public virtual void AttachTo(EntityId target, Vector3 offset, Vector3 rotation, bool syncRotation = false)
     {
         if (!target.IsOfAnyType(SampEntities.PlayerType, SampEntities.VehicleType, SampEntities.ObjectType))
             throw new InvalidEntityArgumentException(nameof(target), SampEntities.PlayerType, SampEntities.VehicleType, SampEntities.ObjectType);

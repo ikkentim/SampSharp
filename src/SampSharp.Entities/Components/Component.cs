@@ -24,19 +24,19 @@ public abstract class Component
     protected internal IEntityManager Manager { get; internal set; }
 
     /// <summary>Gets the parent entity of the entity to which this component has been attached.</summary>
-    public EntityId Parent => Manager.GetParent(Entity);
+    public virtual EntityId Parent => Manager.GetParent(Entity);
 
     /// <summary>Gets the entity to which this component has been attached.</summary>
-    public EntityId Entity { get; internal set; }
+    public virtual EntityId Entity { get; internal set; }
 
     /// <summary>Gets a value indicating whether this component is alive (has not been destroyed).</summary>
-    public bool IsComponentAlive { get; private set; } = true;
+    public virtual bool IsComponentAlive { get; private set; } = true;
 
     /// <summary>Gets a component of the specified type <typeparamref name="T" /> attached to the entity.</summary>
     /// <typeparam name="T">The type of the component to find.</typeparam>
     /// <returns>The found component or <c>null</c> if no component of the specified type could be found.</returns>
     [Pure]
-    public T GetComponent<T>() where T : Component
+    public virtual T GetComponent<T>() where T : Component
     {
         return Manager.GetComponent<T>(Entity);
     }
@@ -45,7 +45,7 @@ public abstract class Component
     /// <typeparam name="T">The type of the component to add.</typeparam>
     /// <param name="args">The arguments of the constructor of the component.</param>
     /// <returns>The created component.</returns>
-    public T AddComponent<T>(params object[] args) where T : Component
+    public virtual T AddComponent<T>(params object[] args) where T : Component
     {
         return Manager.AddComponent<T>(Entity, args);
     }
@@ -53,26 +53,26 @@ public abstract class Component
     /// <summary>Adds a component of the specified type <typeparamref name="T" /> to the entity.</summary>
     /// <typeparam name="T">The type of the component to add.</typeparam>
     /// <returns>The created component.</returns>
-    public T AddComponent<T>() where T : Component
+    public virtual T AddComponent<T>() where T : Component
     {
         return Manager.AddComponent<T>(Entity);
     }
 
     /// <summary>Destroys the components of the specified type <typeparamref name="T" /> attached to the entity.</summary>
     /// <typeparam name="T">The type of the components to destroy.</typeparam>
-    public void DestroyComponents<T>() where T : Component
+    public virtual void DestroyComponents<T>() where T : Component
     {
         Manager.Destroy<T>(Entity);
     }
 
     /// <summary>Destroys the entity.</summary>
-    public void DestroyEntity()
+    public virtual void DestroyEntity()
     {
         Manager.Destroy(Entity);
     }
 
     /// <summary>Destroys this component.</summary>
-    public void Destroy()
+    public virtual void Destroy()
     {
         Manager.Destroy(this);
     }
@@ -81,7 +81,7 @@ public abstract class Component
     /// <typeparam name="T">The type of the components to find.</typeparam>
     /// <returns>A collection of the found components.</returns>
     [Pure]
-    public T[] GetComponents<T>() where T : Component
+    public virtual T[] GetComponents<T>() where T : Component
     {
         return Manager.GetComponents<T>(Entity);
     }
@@ -90,7 +90,7 @@ public abstract class Component
     /// <typeparam name="T">The type of the component to find.</typeparam>
     /// <returns>The found component or <c>null</c> if no component of the specified type could be found.</returns>
     [Pure]
-    public T GetComponentInChildren<T>() where T : Component
+    public virtual T GetComponentInChildren<T>() where T : Component
     {
         return Manager.GetComponentInChildren<T>(Entity);
     }
@@ -99,7 +99,7 @@ public abstract class Component
     /// <typeparam name="T">The type of the components to find.</typeparam>
     /// <returns>A collection of the found components.</returns>
     [Pure]
-    public T[] GetComponentsInChildren<T>() where T : Component
+    public virtual T[] GetComponentsInChildren<T>() where T : Component
     {
         return Manager.GetComponentsInChildren<T>(Entity);
     }
@@ -108,7 +108,7 @@ public abstract class Component
     /// <typeparam name="T">The type of the component to find.</typeparam>
     /// <returns>The found component or <c>null</c> if no component of the specified type could be found.</returns>
     [Pure]
-    public T GetComponentInParent<T>() where T : Component
+    public virtual T GetComponentInParent<T>() where T : Component
     {
         return Manager.GetComponentInParent<T>(Entity);
     }
@@ -117,7 +117,7 @@ public abstract class Component
     /// <typeparam name="T">The type of the components to find.</typeparam>
     /// <returns>A collection of the found components.</returns>
     [Pure]
-    public T[] GetComponentsInParent<T>() where T : Component
+    public virtual T[] GetComponentsInParent<T>() where T : Component
     {
         return Manager.GetComponentsInParent<T>(Entity);
     }
