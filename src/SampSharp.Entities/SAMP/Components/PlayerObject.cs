@@ -16,16 +16,17 @@
 namespace SampSharp.Entities.SAMP;
 
 /// <summary>Represents a component which provides the data and functionality of a player object.</summary>
-public sealed class PlayerObject : Component
+public class PlayerObject : Component
 {
-    private PlayerObject(float drawDistance)
+    /// <summary>Constructs an instance of PlayerObject, should be used internally.</summary>
+    protected PlayerObject(float drawDistance)
     {
         DrawDistance = drawDistance;
     }
 
 
     /// <summary>Gets the rotation of this player object.</summary>
-    public Vector3 Rotation
+    public virtual Vector3 Rotation
     {
         get
         {
@@ -38,7 +39,7 @@ public sealed class PlayerObject : Component
     }
 
     /// <summary>Gets the position of this player object.</summary>
-    public Vector3 Position
+    public virtual Vector3 Position
     {
         get
         {
@@ -51,19 +52,19 @@ public sealed class PlayerObject : Component
     }
 
     /// <summary>Gets whether this player object is moving.</summary>
-    public bool IsMoving => GetComponent<NativePlayerObject>()
+    public virtual bool IsMoving => GetComponent<NativePlayerObject>()
         .IsPlayerObjectMoving();
 
     /// <summary>Gets whether this player object is valid.</summary>
-    public bool IsValid => GetComponent<NativePlayerObject>()
+    public virtual bool IsValid => GetComponent<NativePlayerObject>()
         .IsValidPlayerObject();
 
     /// <summary>Gets the model of this player object.</summary>
-    public int ModelId => GetComponent<NativePlayerObject>()
+    public virtual int ModelId => GetComponent<NativePlayerObject>()
         .GetPlayerObjectModel();
 
     /// <summary>Gets the draw distance of this player object.</summary>
-    public float DrawDistance { get; }
+    public virtual float DrawDistance { get; }
 
     /// <inheritdoc />
     protected override void OnDestroyComponent()
@@ -79,7 +80,7 @@ public sealed class PlayerObject : Component
     /// <param name="speed">The speed at which to move this player object.</param>
     /// <param name="rotation">The rotation to which to move this player object.</param>
     /// <returns>The time it will take for the object to move in milliseconds.</returns>
-    public int Move(Vector3 position, float speed, Vector3 rotation)
+    public virtual int Move(Vector3 position, float speed, Vector3 rotation)
     {
         return GetComponent<NativePlayerObject>()
             .MovePlayerObject(position.X, position.Y, position.Z, speed, rotation.X, rotation.Y, rotation.Z);
@@ -89,14 +90,14 @@ public sealed class PlayerObject : Component
     /// <param name="position">The position to which to move this player object.</param>
     /// <param name="speed">The speed at which to move this player object.</param>
     /// <returns>The time it will take for the object to move in milliseconds.</returns>
-    public int Move(Vector3 position, float speed)
+    public virtual int Move(Vector3 position, float speed)
     {
         return GetComponent<NativePlayerObject>()
             .MovePlayerObject(position.X, position.Y, position.Z, speed, -1000, -1000, -1000);
     }
 
     /// <summary>Stop this player object from moving any further.</summary>
-    public void Stop()
+    public virtual void Stop()
     {
         GetComponent<NativePlayerObject>()
             .StopPlayerObject();
@@ -111,7 +112,7 @@ public sealed class PlayerObject : Component
     /// <param name="txdName">The name of the txd file which contains the replacement texture (use "none" if not required).</param>
     /// <param name="textureName">The name of the texture to use as the replacement (use "none" if not required).</param>
     /// <param name="materialColor">The object color to set (use default(Color) to keep the existing material color).</param>
-    public void SetMaterial(int materialIndex, int modelId, string txdName, string textureName, Color materialColor)
+    public virtual void SetMaterial(int materialIndex, int modelId, string txdName, string textureName, Color materialColor)
     {
         GetComponent<NativePlayerObject>()
             .SetPlayerObjectMaterial(materialIndex, modelId, txdName, textureName, materialColor.ToInteger(ColorFormat.ARGB));
@@ -127,7 +128,7 @@ public sealed class PlayerObject : Component
     /// <param name="foreColor">The color of the text.</param>
     /// <param name="backColor">The background color of the text.</param>
     /// <param name="textAlignment">The alignment of the text.</param>
-    public void SetMaterialText(int materialIndex, string text, ObjectMaterialSize materialSize, string fontface, int fontSize, bool bold, Color foreColor,
+    public virtual void SetMaterialText(int materialIndex, string text, ObjectMaterialSize materialSize, string fontface, int fontSize, bool bold, Color foreColor,
         Color backColor, ObjectMaterialTextAlign textAlignment)
     {
         GetComponent<NativePlayerObject>()
@@ -136,7 +137,7 @@ public sealed class PlayerObject : Component
     }
 
     /// <summary>Disable collisions between players' cameras and this player object.</summary>
-    public void DisableCameraCollisions()
+    public virtual void DisableCameraCollisions()
     {
         GetComponent<NativePlayerObject>()
             .SetPlayerObjectNoCameraCol();
@@ -146,7 +147,7 @@ public sealed class PlayerObject : Component
     /// <param name="target">The player.</param>
     /// <param name="offset">The offset.</param>
     /// <param name="rotation">The rotation.</param>
-    public void AttachTo(EntityId target, Vector3 offset, Vector3 rotation)
+    public virtual void AttachTo(EntityId target, Vector3 offset, Vector3 rotation)
     {
         if (!target.IsOfAnyType(SampEntities.PlayerType, SampEntities.VehicleType))
             throw new InvalidEntityArgumentException(nameof(target), SampEntities.PlayerType, SampEntities.VehicleType);

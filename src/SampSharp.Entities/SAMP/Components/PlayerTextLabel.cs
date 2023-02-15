@@ -16,9 +16,10 @@
 namespace SampSharp.Entities.SAMP;
 
 /// <summary>Represents a component which provides the data and functionality of a player 3D text label.</summary>
-public sealed class PlayerTextLabel : Component
+public class PlayerTextLabel : Component
 {
-    private PlayerTextLabel(string text, Color color, Vector3 position, float drawDistance, int virtualWorld, bool testLos, EntityId attachedEntity)
+    /// <summary>Constructs an instance of PlayerTextLabel, should be used internally.</summary>
+    protected PlayerTextLabel(string text, Color color, Vector3 position, float drawDistance, int virtualWorld, bool testLos, EntityId attachedEntity)
     {
         Text = text;
         Color = color;
@@ -30,25 +31,25 @@ public sealed class PlayerTextLabel : Component
     }
 
     /// <summary>Gets the color of this player text label.</summary>
-    public Color Color { get; }
+    public virtual Color Color { get; }
 
     /// <summary>Gets the text of this player text label.</summary>
-    public string Text { get; }
+    public virtual string Text { get; }
 
     /// <summary>Gets the position of this player text label.</summary>
-    public Vector3 Position { get; }
+    public virtual Vector3 Position { get; }
 
     /// <summary>Gets the draw distance.</summary>
-    public float DrawDistance { get; }
+    public virtual float DrawDistance { get; }
 
     /// <summary>Gets the virtual world.</summary>
-    public int VirtualWorld { get; }
+    public virtual int VirtualWorld { get; }
 
     /// <summary>Gets a value indicating whether to test the line of sight.</summary>
-    public bool TestLos { get; }
+    public virtual bool TestLos { get; }
 
     /// <summary>Gets the attached entity.</summary>
-    public EntityId AttachedEntity { get; }
+    public virtual EntityId AttachedEntity { get; }
 
     /// <inheritdoc />
     protected override void OnDestroyComponent()

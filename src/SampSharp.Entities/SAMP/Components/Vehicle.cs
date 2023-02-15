@@ -18,14 +18,15 @@ using System;
 namespace SampSharp.Entities.SAMP;
 
 /// <summary>Represents a component which provides the data and functionality of a vehicle.</summary>
-public sealed class Vehicle : Component
+public class Vehicle : Component
 {
-    private Vehicle()
+    /// <summary>Constructs an instance of Vehicle, should be used internally.</summary>
+    protected Vehicle()
     {
     }
 
     /// <summary>Gets or sets the Z angle of this vehicle.</summary>
-    public float Angle
+    public virtual float Angle
     {
         get
         {
@@ -38,16 +39,16 @@ public sealed class Vehicle : Component
     }
 
     /// <summary>Gets the model ID of this vehicle.</summary>
-    public VehicleModelType Model => (VehicleModelType)GetComponent<NativeVehicle>()
+    public virtual VehicleModelType Model => (VehicleModelType)GetComponent<NativeVehicle>()
         .GetVehicleModel();
 
     /// <summary>Gets whether this vehicle has a trailer attached to it.</summary>
-    public bool HasTrailer => GetComponent<NativeVehicle>()
+    public virtual bool HasTrailer => GetComponent<NativeVehicle>()
         .IsTrailerAttachedToVehicle();
 
     /// <summary>Gets or sets the the trailer attached to this vehicle.</summary>
     /// <returns>The trailer attached.</returns>
-    public EntityId Trailer
+    public virtual EntityId Trailer
     {
         get
         {
@@ -69,7 +70,7 @@ public sealed class Vehicle : Component
     }
 
     /// <summary>Gets or sets the velocity at which this vehicle is moving.</summary>
-    public Vector3 Velocity
+    public virtual Vector3 Velocity
     {
         get
         {
@@ -82,7 +83,7 @@ public sealed class Vehicle : Component
     }
 
     /// <summary>Gets or sets the virtual world of this vehicle.</summary>
-    public int VirtualWorld
+    public virtual int VirtualWorld
     {
         get => GetComponent<NativeVehicle>()
             .GetVehicleVirtualWorld();
@@ -91,7 +92,7 @@ public sealed class Vehicle : Component
     }
 
     /// <summary>Gets or sets this vehicle's engine status. If True, the engine is running.</summary>
-    public bool Engine
+    public virtual bool Engine
     {
         get
         {
@@ -108,7 +109,7 @@ public sealed class Vehicle : Component
     }
 
     /// <summary>Gets or sets this vehicle's lights' state. If True the lights are on.</summary>
-    public bool Lights
+    public virtual bool Lights
     {
         get
         {
@@ -125,7 +126,7 @@ public sealed class Vehicle : Component
     }
 
     /// <summary>Gets or sets this vehicle's alarm state. If True the alarm is (or was) sounding.</summary>
-    public bool Alarm
+    public virtual bool Alarm
     {
         get
         {
@@ -142,7 +143,7 @@ public sealed class Vehicle : Component
     }
 
     /// <summary>Gets or sets the lock status of the doors of this vehicle. If True the doors are locked.</summary>
-    public bool Doors
+    public virtual bool Doors
     {
         get
         {
@@ -159,7 +160,7 @@ public sealed class Vehicle : Component
     }
 
     /// <summary>Gets or sets the bonnet/hood status of this vehicle. If True, it's open.</summary>
-    public bool Bonnet
+    public virtual bool Bonnet
     {
         get
         {
@@ -176,7 +177,7 @@ public sealed class Vehicle : Component
     }
 
     /// <summary>Gets or sets the boot/trunk status of this vehicle. True means it is open.</summary>
-    public bool Boot
+    public virtual bool Boot
     {
         get
         {
@@ -193,7 +194,7 @@ public sealed class Vehicle : Component
     }
 
     /// <summary>Gets or sets the objective status of this vehicle. True means the objective is on.</summary>
-    public bool Objective
+    public virtual bool Objective
     {
         get
         {
@@ -210,7 +211,7 @@ public sealed class Vehicle : Component
     }
 
     /// <summary>Gets or sets a value indicating whether the driver door is open.</summary>
-    public bool IsDriverDoorOpen
+    public virtual bool IsDriverDoorOpen
     {
         get
         {
@@ -227,7 +228,7 @@ public sealed class Vehicle : Component
     }
 
     /// <summary>Gets or sets a value indicating whether the passenger door is open.</summary>
-    public bool IsPassengerDoorOpen
+    public virtual bool IsPassengerDoorOpen
     {
         get
         {
@@ -244,7 +245,7 @@ public sealed class Vehicle : Component
     }
 
     /// <summary>Gets or sets a value indicating whether the driver door is open.</summary>
-    public bool IsBackLeftDoorOpen
+    public virtual bool IsBackLeftDoorOpen
     {
         get
         {
@@ -261,7 +262,7 @@ public sealed class Vehicle : Component
     }
 
     /// <summary>Gets or sets a value indicating whether the driver door is open.</summary>
-    public bool IsBackRightDoorOpen
+    public virtual bool IsBackRightDoorOpen
     {
         get
         {
@@ -278,7 +279,7 @@ public sealed class Vehicle : Component
     }
 
     /// <summary>Gets or sets a value indicating whether the driver window is closed.</summary>
-    public bool IsDriverWindowClosed
+    public virtual bool IsDriverWindowClosed
     {
         get
         {
@@ -295,7 +296,7 @@ public sealed class Vehicle : Component
     }
 
     /// <summary>Gets or sets a value indicating whether the passenger window is closed.</summary>
-    public bool IsPassengerWindowClosed
+    public virtual bool IsPassengerWindowClosed
     {
         get
         {
@@ -312,7 +313,7 @@ public sealed class Vehicle : Component
     }
 
     /// <summary>Gets or sets a value indicating whether the driver window is closed.</summary>
-    public bool IsBackLeftWindowClosed
+    public virtual bool IsBackLeftWindowClosed
     {
         get
         {
@@ -329,7 +330,7 @@ public sealed class Vehicle : Component
     }
 
     /// <summary>Gets or sets a value indicating whether the driver window is closed.</summary>
-    public bool IsBackRightWindowClosed
+    public virtual bool IsBackRightWindowClosed
     {
         get
         {
@@ -346,12 +347,12 @@ public sealed class Vehicle : Component
     }
 
     /// <summary>Gets a value indicating whether this Vehicle's siren is on.</summary>
-    public bool IsSirenOn => GetComponent<NativeVehicle>()
+    public virtual bool IsSirenOn => GetComponent<NativeVehicle>()
         .GetVehicleParamsSirenState() == 1;
 
     /// <summary>Gets or sets the rotation of this vehicle.</summary>
     /// <remarks>Only the Z angle can be set!</remarks>
-    public Vector3 Rotation
+    public virtual Vector3 Rotation
     {
         get => new(0, 0, Angle);
         set => GetComponent<NativeVehicle>()
@@ -359,7 +360,7 @@ public sealed class Vehicle : Component
     }
 
     /// <summary>Gets or sets the health of this vehicle.</summary>
-    public float Health
+    public virtual float Health
     {
         get
         {
@@ -372,7 +373,7 @@ public sealed class Vehicle : Component
     }
 
     /// <summary>Gets or sets the position of this vehicle.</summary>
-    public Vector3 Position
+    public virtual Vector3 Position
     {
         get
         {
@@ -385,7 +386,7 @@ public sealed class Vehicle : Component
     }
 
     /// <summary>Gets this vehicle's rotation on all axis as a quaternion.</summary>
-    public Quaternion RotationQuaternion
+    public virtual Quaternion RotationQuaternion
     {
         get
         {
@@ -401,7 +402,7 @@ public sealed class Vehicle : Component
     /// </summary>
     /// <param name="point">The point.</param>
     /// <returns>A float containing the distance from the point specified in the coordinates.</returns>
-    public float GetDistanceFromPoint(Vector3 point)
+    public virtual float GetDistanceFromPoint(Vector3 point)
     {
         return GetComponent<NativeVehicle>()
             .GetVehicleDistanceFromPoint(point.X, point.Y, point.Z);
@@ -410,7 +411,7 @@ public sealed class Vehicle : Component
     /// <summary>Checks if this vehicle is streamed in for the specified <paramref name="player" />.</summary>
     /// <param name="player">The player to check.</param>
     /// <returns><c>true</c> if this vehicle is streamed in for the specified vehicle; <c>false</c> otherwise.</returns>
-    public bool IsStreamedIn(EntityId player)
+    public virtual bool IsStreamedIn(EntityId player)
     {
         if (!player.IsOfType(SampEntities.PlayerType))
             throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
@@ -423,7 +424,7 @@ public sealed class Vehicle : Component
     /// <param name="player">The player to set this vehicle's parameters for.</param>
     /// <param name="objective">False to disable the objective or True to show it.</param>
     /// <param name="doorsLocked">False to unlock the doors or True to lock them.</param>
-    public void SetParametersForPlayer(EntityId player, bool objective, bool doorsLocked)
+    public virtual void SetParametersForPlayer(EntityId player, bool objective, bool doorsLocked)
     {
         if (!player.IsOfType(SampEntities.PlayerType))
             throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
@@ -440,7 +441,7 @@ public sealed class Vehicle : Component
     /// <param name="bonnet">Toggle the bonnet to be open or closed.</param>
     /// <param name="boot">Toggle the boot to be open or closed.</param>
     /// <param name="objective">Toggle the objective status for the vehicle on or off.</param>
-    public void SetParameters(bool engine, bool lights, bool alarm, bool doors, bool bonnet, bool boot, bool objective)
+    public virtual void SetParameters(bool engine, bool lights, bool alarm, bool doors, bool bonnet, bool boot, bool objective)
     {
         GetComponent<NativeVehicle>()
             .SetVehicleParamsEx(engine
@@ -468,7 +469,7 @@ public sealed class Vehicle : Component
     /// <param name="bonnet">Toggle the bonnet to be open or closed.</param>
     /// <param name="boot">Toggle the boot to be open or closed.</param>
     /// <param name="objective">Toggle the objective status for the vehicle on or off.</param>
-    public void SetParameters(VehicleParameterValue engine, VehicleParameterValue lights, VehicleParameterValue alarm, VehicleParameterValue doors,
+    public virtual void SetParameters(VehicleParameterValue engine, VehicleParameterValue lights, VehicleParameterValue alarm, VehicleParameterValue doors,
         VehicleParameterValue bonnet, VehicleParameterValue boot, VehicleParameterValue objective)
     {
         GetComponent<NativeVehicle>()
@@ -483,7 +484,7 @@ public sealed class Vehicle : Component
     /// <param name="bonnet">Get the bonnet/hood status. If on it is open.</param>
     /// <param name="boot">Get the boot/trunk status. If on it is open.</param>
     /// <param name="objective">Get the objective status. If on the objective is on.</param>
-    public void GetParameters(out VehicleParameterValue engine, out VehicleParameterValue lights, out VehicleParameterValue alarm,
+    public virtual void GetParameters(out VehicleParameterValue engine, out VehicleParameterValue lights, out VehicleParameterValue alarm,
         out VehicleParameterValue doors, out VehicleParameterValue bonnet, out VehicleParameterValue boot, out VehicleParameterValue objective)
     {
         GetComponent<NativeVehicle>()
@@ -507,7 +508,7 @@ public sealed class Vehicle : Component
     /// <param name="bonnet">Get the bonnet/hood status. If true it is open.</param>
     /// <param name="boot">Get the boot/trunk status. If true it is open.</param>
     /// <param name="objective">Get the objective status. If true the objective is on.</param>
-    public void GetParameters(out bool engine, out bool lights, out bool alarm, out bool doors, out bool bonnet, out bool boot, out bool objective)
+    public virtual void GetParameters(out bool engine, out bool lights, out bool alarm, out bool doors, out bool bonnet, out bool boot, out bool objective)
     {
         GetParameters(out var tmpEngine, out var tmpLights, out var tmpAlarm, out var tmpDoors, out var tmpBonnet, out var tmpBoot,
             out VehicleParameterValue tmpObjective);
@@ -533,7 +534,7 @@ public sealed class Vehicle : Component
     /// <param name="passenger">if set to <c>true</c> the passenger side door is open.</param>
     /// <param name="backLeft">if set to <c>true</c> the back-left door is open.</param>
     /// <param name="backRight">if set to <c>true</c> the back-right door is open.</param>
-    public void SetDoorsParameters(bool driver, bool passenger, bool backLeft, bool backRight)
+    public virtual void SetDoorsParameters(bool driver, bool passenger, bool backLeft, bool backRight)
     {
         GetComponent<NativeVehicle>()
             .SetVehicleParamsCarDoors(driver
@@ -552,7 +553,7 @@ public sealed class Vehicle : Component
     /// <param name="passenger">if on the passenger side door is open.</param>
     /// <param name="backLeft">if on the back-left door is open.</param>
     /// <param name="backRight">if on the back-right door is open.</param>
-    public void SetDoorsParameters(VehicleParameterValue driver, VehicleParameterValue passenger, VehicleParameterValue backLeft,
+    public virtual void SetDoorsParameters(VehicleParameterValue driver, VehicleParameterValue passenger, VehicleParameterValue backLeft,
         VehicleParameterValue backRight)
     {
         GetComponent<NativeVehicle>()
@@ -564,7 +565,7 @@ public sealed class Vehicle : Component
     /// <param name="passenger">if on the passenger side door is open.</param>
     /// <param name="backLeft">if on the back-left door is open.</param>
     /// <param name="backRight">if on the back-right door is open.</param>
-    public void GetDoorsParameters(out VehicleParameterValue driver, out VehicleParameterValue passenger, out VehicleParameterValue backLeft,
+    public virtual void GetDoorsParameters(out VehicleParameterValue driver, out VehicleParameterValue passenger, out VehicleParameterValue backLeft,
         out VehicleParameterValue backRight)
     {
         GetComponent<NativeVehicle>()
@@ -581,7 +582,7 @@ public sealed class Vehicle : Component
     /// <param name="passenger">if true the passenger side door is open.</param>
     /// <param name="backLeft">if true the back-left door is open.</param>
     /// <param name="backRight">if true the back-right door is open.</param>
-    public void GetDoorsParameters(out bool driver, out bool passenger, out bool backLeft, out bool backRight)
+    public virtual void GetDoorsParameters(out bool driver, out bool passenger, out bool backLeft, out bool backRight)
     {
         GetDoorsParameters(out var tmpDriver, out var tmpPassenger, out var tmpBackLeft, out VehicleParameterValue tmpBackRight);
 
@@ -596,7 +597,7 @@ public sealed class Vehicle : Component
     /// <param name="passenger">if set to <c>true</c> the passenger side window is closed.</param>
     /// <param name="backLeft">if set to <c>true</c> the back-left window is closed.</param>
     /// <param name="backRight">if set to <c>true</c> the back-right window is closed.</param>
-    public void SetWindowsParameters(bool driver, bool passenger, bool backLeft, bool backRight)
+    public virtual void SetWindowsParameters(bool driver, bool passenger, bool backLeft, bool backRight)
     {
         GetComponent<NativeVehicle>()
             .SetVehicleParamsCarWindows(driver
@@ -615,7 +616,7 @@ public sealed class Vehicle : Component
     /// <param name="passenger">if on the passenger side window is closed.</param>
     /// <param name="backLeft">if on the back-left window is closed.</param>
     /// <param name="backRight">if on the back-right window is closed.</param>
-    public void SetWindowsParameters(VehicleParameterValue driver, VehicleParameterValue passenger, VehicleParameterValue backLeft,
+    public virtual void SetWindowsParameters(VehicleParameterValue driver, VehicleParameterValue passenger, VehicleParameterValue backLeft,
         VehicleParameterValue backRight)
     {
         GetComponent<NativeVehicle>()
@@ -627,7 +628,7 @@ public sealed class Vehicle : Component
     /// <param name="passenger">if on the passenger side window is closed.</param>
     /// <param name="backLeft">if on the back-left window is closed.</param>
     /// <param name="backRight">if on the back-right window is closed.</param>
-    public void GetWindowsParameters(out VehicleParameterValue driver, out VehicleParameterValue passenger, out VehicleParameterValue backLeft,
+    public virtual void GetWindowsParameters(out VehicleParameterValue driver, out VehicleParameterValue passenger, out VehicleParameterValue backLeft,
         out VehicleParameterValue backRight)
     {
         GetComponent<NativeVehicle>()
@@ -644,7 +645,7 @@ public sealed class Vehicle : Component
     /// <param name="passenger">if true the passenger side window is closed.</param>
     /// <param name="backLeft">if true the back-left window is closed.</param>
     /// <param name="backRight">if true the back-right window is closed.</param>
-    public void GetWindowsParameters(out bool driver, out bool passenger, out bool backLeft, out bool backRight)
+    public virtual void GetWindowsParameters(out bool driver, out bool passenger, out bool backLeft, out bool backRight)
     {
         GetWindowsParameters(out var tmpDriver, out var tmpPassenger, out var tmpBackLeft, out VehicleParameterValue tmpBackRight);
 
@@ -655,7 +656,7 @@ public sealed class Vehicle : Component
     }
 
     /// <summary>Sets this vehicle back to the position at where it was created.</summary>
-    public void Respawn()
+    public virtual void Respawn()
     {
         GetComponent<NativeVehicle>()
             .SetVehicleToRespawn();
@@ -663,7 +664,7 @@ public sealed class Vehicle : Component
 
     /// <summary>Links this vehicle to the interior. This can be used for example for an arena/stadium.</summary>
     /// <param name="interiorId">Interior ID.</param>
-    public void LinkToInterior(int interiorId)
+    public virtual void LinkToInterior(int interiorId)
     {
         GetComponent<NativeVehicle>()
             .LinkVehicleToInterior(interiorId);
@@ -671,7 +672,7 @@ public sealed class Vehicle : Component
 
     /// <summary>Adds a 'component' (often referred to as a 'mod' (modification)) to this Vehicle.</summary>
     /// <param name="componentId">The ID of the component to add to the vehicle.</param>
-    public void AddComponent(int componentId)
+    public virtual void AddComponent(int componentId)
     {
         GetComponent<NativeVehicle>()
             .AddVehicleComponent(componentId);
@@ -679,7 +680,7 @@ public sealed class Vehicle : Component
 
     /// <summary>Remove a component from the vehicle.</summary>
     /// <param name="componentId">ID of the component to remove.</param>
-    public void RemoveComponent(int componentId)
+    public virtual void RemoveComponent(int componentId)
     {
         GetComponent<NativeVehicle>()
             .RemoveVehicleComponent(componentId);
@@ -688,7 +689,7 @@ public sealed class Vehicle : Component
     /// <summary>Change this vehicle's primary and secondary colors.</summary>
     /// <param name="color1">The new vehicle's primary Color ID.</param>
     /// <param name="color2">The new vehicle's secondary Color ID.</param>
-    public void ChangeColor(int color1, int color2)
+    public virtual void ChangeColor(int color1, int color2)
     {
         GetComponent<NativeVehicle>()
             .ChangeVehicleColor(color1, color2);
@@ -696,7 +697,7 @@ public sealed class Vehicle : Component
 
     /// <summary>Change this vehicle's paintjob (for plain colors see <see cref="ChangeColor" />).</summary>
     /// <param name="paintjobId">The ID of the paintjob to apply. Use 3 to remove a paintjob.</param>
-    public void ChangePaintjob(int paintjobId)
+    public virtual void ChangePaintjob(int paintjobId)
     {
         GetComponent<NativeVehicle>()
             .ChangeVehiclePaintjob(paintjobId);
@@ -704,7 +705,7 @@ public sealed class Vehicle : Component
 
     /// <summary>Set this vehicle's numberplate, which supports color embedding.</summary>
     /// <param name="numberplate">The text that should be displayed on the numberplate. Color Embedding> is supported.</param>
-    public void SetNumberPlate(string numberplate)
+    public virtual void SetNumberPlate(string numberplate)
     {
         if (numberplate == null) throw new ArgumentNullException(nameof(numberplate));
 
@@ -715,14 +716,14 @@ public sealed class Vehicle : Component
     /// <summary>Retrieves the installed component ID from this vehicle in a specific slot.</summary>
     /// <param name="slot">The component slot to check for components.</param>
     /// <returns>The ID of the component installed in the specified slot.</returns>
-    public int GetComponentInSlot(CarModType slot)
+    public virtual int GetComponentInSlot(CarModType slot)
     {
         return GetComponent<NativeVehicle>()
             .GetVehicleComponentInSlot((int)slot);
     }
 
     /// <summary>Fully repairs this vehicle, including visual damage (bumps, dents, scratches, popped tires etc.).</summary>
-    public void Repair()
+    public virtual void Repair()
     {
         GetComponent<NativeVehicle>()
             .RepairVehicle();
@@ -730,7 +731,7 @@ public sealed class Vehicle : Component
 
     /// <summary>Sets the angular velocity of this vehicle.</summary>
     /// <param name="velocity">The amount of velocity in the angular directions.</param>
-    public void SetAngularVelocity(Vector3 velocity)
+    public virtual void SetAngularVelocity(Vector3 velocity)
     {
         GetComponent<NativeVehicle>()
             .SetVehicleAngularVelocity(velocity.X, velocity.Y, velocity.Z);
@@ -741,7 +742,7 @@ public sealed class Vehicle : Component
     /// <param name="doors">A variable to store the door damage data in, passed by reference.</param>
     /// <param name="lights">A variable to store the light damage data in, passed by reference.</param>
     /// <param name="tires">A variable to store the tire damage data in, passed by reference.</param>
-    public void GetDamageStatus(out int panels, out int doors, out int lights, out int tires)
+    public virtual void GetDamageStatus(out int panels, out int doors, out int lights, out int tires)
     {
         GetComponent<NativeVehicle>()
             .GetVehicleDamageStatus(out panels, out doors, out lights, out tires);
@@ -752,7 +753,7 @@ public sealed class Vehicle : Component
     /// <param name="doors">A set of bits containing the door damage status.</param>
     /// <param name="lights">A set of bits containing the light damage status.</param>
     /// <param name="tires">A set of bits containing the tire damage status.</param>
-    public void UpdateDamageStatus(int panels, int doors, int lights, int tires)
+    public virtual void UpdateDamageStatus(int panels, int doors, int lights, int tires)
     {
         GetComponent<NativeVehicle>()
             .UpdateVehicleDamageStatus(panels, doors, lights, tires);

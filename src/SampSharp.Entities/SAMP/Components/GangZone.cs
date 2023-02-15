@@ -16,9 +16,10 @@
 namespace SampSharp.Entities.SAMP;
 
 /// <summary>Represents a component which provides the data and functionality of a gang zone.</summary>
-public sealed class GangZone : Component
+public class GangZone : Component
 {
-    private GangZone(float minX, float minY, float maxX, float maxY)
+    /// <summary>Constructs an instance of GangZone, should be used internally.</summary>
+    protected GangZone(float minX, float minY, float maxX, float maxY)
     {
         MinX = minX;
         MaxX = maxX;
@@ -27,22 +28,22 @@ public sealed class GangZone : Component
     }
 
     /// <summary>Gets the minimum x value for this <see cref="GangZone" />.</summary>
-    public float MinX { get; }
+    public virtual float MinX { get; }
 
     /// <summary>Gets the minimum y value for this <see cref="GangZone" />.</summary>
-    public float MinY { get; }
+    public virtual float MinY { get; }
 
     /// <summary>Gets the maximum x value for this <see cref="GangZone" />.</summary>
-    public float MaxX { get; }
+    public virtual float MaxX { get; }
 
     /// <summary>Gets the maximum y value for this <see cref="GangZone" />.</summary>
-    public float MaxY { get; }
+    public virtual float MaxY { get; }
 
     /// <summary>Gets or sets the color of this <see cref="GangZone" />.</summary>
-    public Color Color { get; set; }
+    public virtual Color Color { get; set; }
 
     /// <summary>Shows this <see cref="GangZone" />.</summary>
-    public void Show()
+    public virtual void Show()
     {
         GetComponent<NativeGangZone>()
             .GangZoneShowForAll(Color);
@@ -50,7 +51,7 @@ public sealed class GangZone : Component
 
     /// <summary>Shows this <see cref="GangZone" /> to the specified <paramref name="player" />.</summary>
     /// <param name="player">The player.</param>
-    public void Show(EntityId player)
+    public virtual void Show(EntityId player)
     {
         if (!player.IsOfType(SampEntities.PlayerType))
             throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
@@ -60,7 +61,7 @@ public sealed class GangZone : Component
     }
 
     /// <summary>Hides this <see cref="GangZone" />.</summary>
-    public void Hide()
+    public virtual void Hide()
     {
         GetComponent<NativeGangZone>()
             .GangZoneHideForAll();
@@ -68,7 +69,7 @@ public sealed class GangZone : Component
 
     /// <summary>Hides this <see cref="GangZone" /> for the specified <paramref name="player" />.</summary>
     /// <param name="player">The player.</param>
-    public void Hide(EntityId player)
+    public virtual void Hide(EntityId player)
     {
         if (!player.IsOfType(SampEntities.PlayerType))
             throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
@@ -79,7 +80,7 @@ public sealed class GangZone : Component
 
     /// <summary>Flashes this <see cref="GangZone" />.</summary>
     /// <param name="color">The color.</param>
-    public void Flash(Color color)
+    public virtual void Flash(Color color)
     {
         GetComponent<NativeGangZone>()
             .GangZoneFlashForAll(color);
@@ -87,7 +88,7 @@ public sealed class GangZone : Component
 
     /// <summary>Flashes this <see cref="GangZone" /> for the specified <paramref name="player" />.</summary>
     /// <param name="player">The player.</param>
-    public void Flash(EntityId player)
+    public virtual void Flash(EntityId player)
     {
         if (!player.IsOfType(SampEntities.PlayerType))
             throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
@@ -98,7 +99,7 @@ public sealed class GangZone : Component
     /// <summary>Flashes this <see cref="GangZone" /> for the specified <paramref name="player" />.</summary>
     /// <param name="player">The player.</param>
     /// <param name="color">The color.</param>
-    public void Flash(EntityId player, Color color)
+    public virtual void Flash(EntityId player, Color color)
     {
         if (!player.IsOfType(SampEntities.PlayerType))
             throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
@@ -108,7 +109,7 @@ public sealed class GangZone : Component
     }
 
     /// <summary>Stops this <see cref="GangZone" /> from flash.</summary>
-    public void StopFlash()
+    public virtual void StopFlash()
     {
         GetComponent<NativeGangZone>()
             .GangZoneStopFlashForAll();
@@ -116,7 +117,7 @@ public sealed class GangZone : Component
 
     /// <summary>Stops this <see cref="GangZone" /> from flash for the specified player.</summary>
     /// <param name="player">The player.</param>
-    public void StopFlash(EntityId player)
+    public virtual void StopFlash(EntityId player)
     {
         if (!player.IsOfType(SampEntities.PlayerType))
             throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
