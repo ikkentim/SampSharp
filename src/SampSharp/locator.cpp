@@ -18,6 +18,10 @@
 #include "strutil.h"
 #include <regex>
 
+#ifndef strlen
+#include <cstring>
+#endif
+
 #if SAMPSHARP_WINDOWS
 #define HOSTFXR_LIB "hostfxr.dll"
 #  define CORECLR_LIB "coreclr.dll"
