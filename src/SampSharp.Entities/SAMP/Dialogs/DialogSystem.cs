@@ -24,6 +24,7 @@ public class DialogSystem : ISystem
     {
         player.ResponseReceived = true;
         player.Handler(new DialogResult(DialogResponse.Disconnected, 0, null));
+        player.Destroy();
     }
 
     [Event]
