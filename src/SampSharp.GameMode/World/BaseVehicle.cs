@@ -770,7 +770,13 @@ public partial class BaseVehicle : IdentifiedPool<BaseVehicle>, IWorldObject
     {
         AssertNotDisposed();
 
-        VehicleInternal.Instance.SetVehicleParamsCarWindows(Id, (int)driver, (int)passenger, (int)backleft, (int)backright);
+        if (driver != VehicleParameterValue.Unset) driver = (VehicleParameterValue)(driver == VehicleParameterValue.On ? 0 : 1);
+        if (passenger != VehicleParameterValue.Unset) passenger = (VehicleParameterValue)(passenger == VehicleParameterValue.On ? 0 : 1);
+        if (backleft != VehicleParameterValue.Unset) backleft = (VehicleParameterValue)(backleft == VehicleParameterValue.On ? 0 : 1);
+        if (backright != VehicleParameterValue.Unset) backright = (VehicleParameterValue)(backright == VehicleParameterValue.On ? 0 : 1);
+
+
+        VehicleInternal.Instance.SetVehicleParamsCarWindows(Id,(int)driver,(int)passenger,(int)backleft,(int)backright);
     }
 
     /// <summary>Gets the windows parameters.</summary>
@@ -784,8 +790,15 @@ public partial class BaseVehicle : IdentifiedPool<BaseVehicle>, IWorldObject
         AssertNotDisposed();
         VehicleInternal.Instance.GetVehicleParamsCarWindows(Id, out var tmpDriver, out var tmpPassenger, out var tmpBackleft, out var tmpBackright);
 
-        driver = (VehicleParameterValue)tmpDriver;
-        passenger = (VehicleParameterValue)tmpPassenger;
+        if (tmpDriver != -1) tmpDriver = (tmpDriver == 0 ? 1 : 0);
+        if (tmpPassenger != -1) tmpPassenger = (tmpPassenger == 0 ? 1 : 0);
+        if (tmpBackleft != -1) tmpBackleft = (tmpBackleft == 0 ? 1 : 0);
+        if (tmpBackright != -1) tmpBackright = (tmpBackright == 0 ? 1 : 0);
+
+
+
+        driver = (VehicleParameterValue) tmpDriver;
+        passenger = (VehicleParameterValue)tmpPassenger; 
         backleft = (VehicleParameterValue)tmpBackleft;
         backright = (VehicleParameterValue)tmpBackright;
     }
