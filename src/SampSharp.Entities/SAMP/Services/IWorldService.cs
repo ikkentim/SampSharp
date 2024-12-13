@@ -211,6 +211,15 @@ public interface IWorldService
     /// <param name="style">The style of text to be displayed.</param>
     void GameText(string text, int time, int style);
 
+    /// <summary>
+    /// Stop showing a gametext style for all players.
+    /// </summary>
+    /// <param name="style">The style of text to hide.</param>
+    /// <remarks>
+    /// This function was added in <c>omp v1.1.0.2612</c> and will not work in earlier versions!
+    /// </remarks>
+    void HideGameText(int style);
+
     /// <summary>Creates an explosion for all players.</summary>
     /// <param name="position">The position of the explosion.</param>
     /// <param name="type">The explosion type.</param>
