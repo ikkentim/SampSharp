@@ -33,10 +33,15 @@ internal class PlayerDisconnectMiddleware
 
         context.Arguments[0] = entity;
 
-        var result = _next(context);
+        try
+        {
+            var result = _next(context);
 
-        entityManager.Destroy(entity);
-
-        return result;
+            return result;
+        }
+        finally
+        {
+            entityManager.Destroy(entity);
+        }
     }
 }
