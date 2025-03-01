@@ -14,7 +14,6 @@
 // limitations under the License.
 
 using System;
-using System.Text;
 using SampSharp.Core.Hosting;
 
 namespace SampSharp.Core.Callbacks;
@@ -51,6 +50,6 @@ internal class CallbackParameterString : ICallbackParameter
             buf = buf[..^1];
         }
 
-        return Encoding.ASCII.GetString(buf);
+        return InternalStorage.RunningClient.Encoding.GetString(buf);
     }
 }
