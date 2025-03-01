@@ -64,7 +64,7 @@ public class TimerSystem : ITickingSystem, ITimerService
         {
             IsActive = true,
             IntervalTicks = interval.Ticks,
-            NextTick = Stopwatch.GetTimestamp() + interval.Ticks
+            NextTick = DateTime.UtcNow.Ticks + interval.Ticks
         };
 
         var reference = new TimerReference(invoker, null, null);
@@ -79,7 +79,7 @@ public class TimerSystem : ITickingSystem, ITimerService
     [Event]
     internal void OnGameModeInit()
     {
-        _lastTick = Stopwatch.GetTimestamp();
+        _lastTick = DateTime.UtcNow.Ticks;
 
         CreateTimersFromAssemblies(_lastTick);
 
@@ -92,7 +92,7 @@ public class TimerSystem : ITickingSystem, ITimerService
         if (!_didInitialize || _timers.Count == 0)
             return;
 
-        var timestamp = Stopwatch.GetTimestamp();
+        var timestamp = DateTime.UtcNow.Ticks;
 
         // Don't user foreach for performance reasons
         // ReSharper disable once ForCanBeConvertedToForeach
