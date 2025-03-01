@@ -1,3 +1,7 @@
+### 0.11.0
+- Added `VehicleModelInfo.VehicleModelInfo`
+- Fixed missing Flatbed in `VehicleModelInfo` (#407)
+
 ### 0.10.0
 - Added `BasePlayer.CancelEdit` (#362)
 - Added `BasePlayer.SetMapIcon` and `BasePlayer.RemoveMapIcon` (#364)

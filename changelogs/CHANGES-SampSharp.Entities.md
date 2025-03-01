@@ -1,3 +1,9 @@
+### 0.11.0
+- Added `AddComponent` method that takes an instance as parameter (#427)
+- Fixed issues related to open dialogs when a player disconnects (#434)
+- Fixed an issue where player entity may stay alive when an exception is thrown in `OnPlayerDisconnect` event
+- Fixed an issue where an error may occur when `OnDialogResponse` is called without an active dialog (#443)
+
 ### 0.10.0
 - Added support for  player names as command arguments (#354)
 - Added timers (#326)

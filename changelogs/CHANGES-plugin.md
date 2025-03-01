@@ -1,6 +1,8 @@
 ### 0.11.0
 - Added interop API (#399, #401)
+- Added non-standard implementation of reading open.mp config.json
 - Removed callback registration (#399, #401)
+- Removed multi-process mode
 
 ### 0.10.0
 - Added automatic coreclr and gamemode detection
