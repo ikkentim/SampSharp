@@ -32,7 +32,7 @@ jobs:
         run: msbuild.exe SampSharp.Plugin.sln -p:Configuration="Release"
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4.6.1
         with:
           name: plugin-bin
           path: bin/
