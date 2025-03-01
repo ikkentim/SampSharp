@@ -35,9 +35,12 @@ public class DialogSystem : ISystem
             return; // Prevent dialog hacks
 
         player.ResponseReceived = true;
-        player.Handler(new DialogResult(response == 1
-            ? DialogResponse.LeftButton
+        player.Handler(new DialogResult(response == 1 
+            ? DialogResponse.LeftButton 
             : DialogResponse.RightButtonOrCancel, listItem, inputText));
+
+        if (!player.IsComponentAlive) 
+            return;
 
         player.Destroy();
     }
