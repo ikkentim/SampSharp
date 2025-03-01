@@ -751,6 +751,12 @@ public class NativePlayer : BaseNativeComponent
     }
 
     [NativeMethod]
+    public virtual void HideGameTextForPlayer(int style)
+    {
+        throw new NativeNotImplementedException();
+    }
+
+    [NativeMethod]
     public virtual bool Kick()
     {
         throw new NativeNotImplementedException();
