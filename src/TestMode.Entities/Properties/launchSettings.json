@@ -2,8 +2,8 @@
   "profiles": {
     "samp-server": {
       "commandName": "Executable",
-      "executablePath": ".\\samp-server.exe",
-      "commandLineArgs": "--gamemode TestMode.Entities",
+      "executablePath": ".\\omp-server.exe",
+      "commandLineArgs": "-c sampsharp.gamemode=TestMode.Entities",
       "workingDirectory": "..\\..\\env\\"
     }
   }
