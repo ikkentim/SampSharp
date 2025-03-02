@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2022 Tim Potze
+// Copyright 2025 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,19 +13,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using SampSharp.Core;
 using SampSharp.Entities;
+using SampSharp.Entities.SAMP;
+using SampSharp.Entities.SAMP.Commands;
 
-namespace TestMode.Entities;
+namespace TestMode.Entities.Systems.IssueTests;
 
-internal static class Program
+public class Issue450DialogClosingCausesError : ISystem
 {
-    private static void Main()
+    [PlayerCommand("show-dialog")]
+    public void ShowDialog(Player player, IDialogService dialogService)
     {
-        new GameModeBuilder()
-            .UseEcs<TestStartup>()
-            .UseEncodingCodePage("cp1250")
-            .RedirectConsoleOutput()
-            .Run();
+        var dialog1 = new MessageDialog("Dialog", "Dialog 1", "Next");
+        dialogService.Show(player, dialog1, _ => player.SendClientMessage("box 1 closed"));
     }
 }

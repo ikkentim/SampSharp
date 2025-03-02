@@ -287,6 +287,12 @@ public sealed class CodePageEncoding : Encoding
     public override int GetCharCount(byte[] bytes, int index, int count)
     {
         if (bytes == null) throw new ArgumentNullException(nameof(bytes));
+
+        if (count == 0)
+        {
+            return 0;
+        }
+
         if (index < 0 || index >= bytes.Length) throw new ArgumentOutOfRangeException(nameof(index));
         if (count < 0 || index + count > bytes.Length) throw new ArgumentOutOfRangeException(nameof(count));
 
