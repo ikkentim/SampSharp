@@ -28,7 +28,7 @@ public abstract class CommandServiceBase
     private readonly IEntityManager _entityManager;
     private readonly int _prefixParameters;
 
-    private readonly Dictionary<string, List<CommandData>> _commands = new();
+    private readonly Dictionary<string, List<CommandData>> _commands = new(StringComparer.OrdinalIgnoreCase);
 
     /// <summary>Initializes a new instance of the <see cref="CommandServiceBase" /> class.</summary>
     protected CommandServiceBase(IEntityManager entityManager, int prefixParameters)
