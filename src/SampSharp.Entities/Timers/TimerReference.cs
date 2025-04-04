@@ -30,7 +30,7 @@ public class TimerReference
     }
 
     /// <summary>Gets the time span until the next tick of this timer.</summary>
-    public TimeSpan NextTick => new(Info.NextTick - Stopwatch.GetTimestamp());
+    public TimeSpan NextTick => new(Info.NextTick - DateTime.UtcNow.Ticks);
 
     internal TimerInfo Info { get; set; }
 
