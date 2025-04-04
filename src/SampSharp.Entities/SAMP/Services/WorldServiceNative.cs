@@ -139,6 +139,12 @@ public class WorldServiceNative
     }
 
     [NativeMethod]
+    public virtual void HideGameTextForAll(int style)
+    {
+        throw new NativeNotImplementedException();
+    }
+
+    [NativeMethod]
     public virtual bool CreateExplosion(float x, float y, float z, int type, float radius)
     {
         throw new NativeNotImplementedException();

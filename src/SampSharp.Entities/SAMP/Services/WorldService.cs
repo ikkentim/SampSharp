@@ -324,6 +324,12 @@ public class WorldService : IWorldService
     }
 
     /// <inheritdoc />
+    public void HideGameText(int style)
+    {
+        _native.HideGameTextForAll(style);
+    }
+
+    /// <inheritdoc />
     public void CreateExplosion(Vector3 position, ExplosionType type, float radius)
     {
         _native.CreateExplosion(position.X, position.Y, position.Z, (int)type, radius);
