@@ -1416,6 +1416,19 @@ public class Player : Component
     }
 
     /// <summary>
+    /// Stop showing a gametext style to a player.
+    /// </summary>
+    /// <param name="style">The style of text to hide.</param>
+    /// <remarks>
+    /// This function was added in <c>omp v1.1.0.2612</c> and will not work in earlier versions!
+    /// </remarks>
+    public virtual void HideGameText(int style)
+    {
+        GetComponent<NativePlayer>()
+            .HideGameTextForPlayer(style);
+    }
+
+    /// <summary>
     /// Creates an explosion for this player. Only this player will see explosion and feel its effects. This is useful when you want to isolate explosions
     /// from other players or to make them only appear in specific virtual worlds.
     /// </summary>
