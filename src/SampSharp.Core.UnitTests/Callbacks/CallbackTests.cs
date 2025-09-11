@@ -196,7 +196,7 @@ public class CallbackTests
         // act
         fixed (int* argsPtr = args)
         {
-            sut.Invoke(IntPtr.Zero, (IntPtr)argsPtr, (IntPtr)(&retval));
+            sut.Invoke(IntPtr.Zero, (IntPtr)argsPtr, (IntPtr)(&retval), "callbackname");
         }
 
         // assert
@@ -228,7 +228,7 @@ public class CallbackTests
         // act
         fixed (int* argsPtr = args)
         {
-            sut.Invoke(IntPtr.Zero, (IntPtr)argsPtr, (IntPtr)(&retval));
+            sut.Invoke(IntPtr.Zero, (IntPtr)argsPtr, (IntPtr)(&retval), "callbackname");
         }
 
         // assert

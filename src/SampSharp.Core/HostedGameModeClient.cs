@@ -215,7 +215,7 @@ internal sealed class HostedGameModeClient : IGameModeClient, IGameModeRunner, I
 
             if (_newCallbacks.TryGetValue(name, out var callback))
             {
-                callback.Invoke(amx, parameters, retval);
+                callback.Invoke(amx, parameters, retval, name);
             }
         }
         catch (Exception e)

@@ -242,16 +242,15 @@ internal class Callback
         }
     }
 
-    public unsafe void Invoke(IntPtr amx, IntPtr parameters, IntPtr retval)
+    public unsafe void Invoke(IntPtr amx, IntPtr parameters, IntPtr retval, string name)
     {
         var paramCount = *(int*)parameters.ToPointer() / AmxCell.Size;
 
         if (paramCount != Parameters.Length)
         {
-            CoreLog.Log(CoreLogLevel.Error, $"Callback parameter mismatch. Expected {Parameters.Length} but received {paramCount} parameters.");
+            CoreLog.Log(CoreLogLevel.Error, $"Callback {name} parameter mismatch. Expected {Parameters.Length} but received {paramCount} parameters.");
             return;
         }
-
         var args = _parametersBuffer;
 
         for (var i = 0; i < paramCount; i++)
