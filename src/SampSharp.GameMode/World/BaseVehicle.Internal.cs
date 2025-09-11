@@ -156,6 +156,12 @@ public partial class BaseVehicle
         }
 
         [NativeMethod]
+        public virtual bool GetVehicleColor(int vehicleid, out int colour1, out int colour2)
+        {
+            throw new NativeNotImplementedException();
+        }
+
+        [NativeMethod]
         public virtual bool ChangeVehiclePaintjob(int vehicleid, int paintjobid)
         {
             throw new NativeNotImplementedException();
@@ -253,6 +259,24 @@ public partial class BaseVehicle
 
         [NativeMethod]
         public virtual bool UpdateVehicleDamageStatus(int vehicleid, int panels, int doors, int lights, int tires)
+        {
+            throw new NativeNotImplementedException();
+        }
+
+        [NativeMethod]
+        public virtual int GetVehicleLandingGearState(int vehicleid)
+        {
+            throw new NativeNotImplementedException();
+        }
+
+        [NativeMethod]
+        public virtual int GetVehicleHydraReactorAngle(int vehicleid)
+        {
+            throw new NativeNotImplementedException();
+        }
+
+        [NativeMethod]
+        public virtual bool SetVehicleBeenOccupied(int vehicleid, bool occupied)
         {
             throw new NativeNotImplementedException();
         }

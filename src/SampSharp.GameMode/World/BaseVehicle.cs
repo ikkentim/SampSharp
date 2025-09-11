@@ -408,6 +408,24 @@ public partial class BaseVehicle : IdentifiedPool<BaseVehicle>, IWorldObject
         set => VehicleInternal.Instance.SetVehiclePos(Id, value.X, value.Y, value.Z);
     }
 
+    /// <summary>Gets the status of the airplane gear</summary>
+    public virtual bool IsGearUp
+    {
+        get
+        {
+            return VehicleInternal.Instance.GetVehicleLandingGearState(Id) == 1;
+        }
+    }
+
+    /// <summary>Gets the Hydra reactor angle</summary>
+    public virtual int HydraReactorAngle
+    {
+        get
+        {
+            return VehicleInternal.Instance.GetVehicleHydraReactorAngle(Id);
+        }
+    }
+
     /// <summary>Occurs when the <see cref="OnSpawn" /> is being called. This callback is called when <see cref="BaseVehicle" /> spawns.</summary>
     public event EventHandler<EventArgs> Spawn;
 
@@ -851,6 +869,16 @@ public partial class BaseVehicle : IdentifiedPool<BaseVehicle>, IWorldObject
         VehicleInternal.Instance.ChangeVehicleColor(Id, color1, color2);
     }
 
+    /// <summary>Gets this <see cref="BaseVehicle" />'s colours.</summary>
+    /// <param name="color1">The vehicle's primary Color ID.</param>
+    /// <param name="color2">The vehicle's secondary Color ID.</param>
+    public virtual void GetColor(out int color1, out int color2)
+    {
+        AssertNotDisposed();
+
+        VehicleInternal.Instance.GetVehicleColor(Id, out color1, out color2);
+    }
+
     /// <summary>Change this <see cref="BaseVehicle" />'s paintjob (for plain colors see <see cref="ChangeColor" />).</summary>
     /// <param name="paintjobid">The ID of the Paintjob to apply. Use 3 to remove a paintjob.</param>
     public virtual void ChangePaintjob(int paintjobid)
@@ -864,7 +892,7 @@ public partial class BaseVehicle : IdentifiedPool<BaseVehicle>, IWorldObject
     /// <param name="numberplate">The text that should be displayed on the numberplate. Color Embedding> is supported.</param>
     public virtual void SetNumberPlate(string numberplate)
     {
-        if (numberplate == null) throw new ArgumentNullException(nameof(numberplate));
+        ArgumentNullException.ThrowIfNull(numberplate);
 
         AssertNotDisposed();
 
@@ -928,6 +956,13 @@ public partial class BaseVehicle : IdentifiedPool<BaseVehicle>, IWorldObject
         AssertNotDisposed();
 
         VehicleInternal.Instance.UpdateVehicleDamageStatus(Id, panels, doors, lights, tires);
+    }
+
+    public virtual bool SetBeenOccupied(bool wasOccupied)
+    {
+        AssertNotDisposed();
+
+        return VehicleInternal.Instance.SetVehicleBeenOccupied(Id, wasOccupied);
     }
 
     /// <summary>Retrieve information about a specific vehicle model such as the size or position of seats.</summary>
