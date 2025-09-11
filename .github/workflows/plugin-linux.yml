@@ -37,7 +37,7 @@ jobs:
         run: make
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: plugin-bin
           path: bin/
