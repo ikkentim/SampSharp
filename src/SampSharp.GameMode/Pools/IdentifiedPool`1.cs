@@ -102,7 +102,7 @@ public abstract class IdentifiedPool<TInstance> : Disposable, IIdentifiable wher
     /// <exception cref="System.ArgumentException">type must be of type TInstance;type</exception>
     public static void Register(Type type)
     {
-        if (type == null) throw new ArgumentNullException(nameof(type));
+        ArgumentNullException.ThrowIfNull(type);
         if (!typeof(TInstance).GetTypeInfo()
                 .IsAssignableFrom(type))
             throw new ArgumentException("type must be of type " + typeof(TInstance), nameof(type));

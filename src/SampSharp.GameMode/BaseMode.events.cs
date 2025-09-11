@@ -14,6 +14,7 @@
 // limitations under the License.
 
 using System;
+using SampSharp.Core.Logging;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Display;
 using SampSharp.GameMode.Events;
@@ -389,6 +390,58 @@ public abstract partial class BaseMode
 
     /// <summary>Occurs when the <see cref="OnTick(EventArgs)" /> callback is being called. This callback is called every tick(50 times per second).</summary>
     public event EventHandler<EventArgs> Tick;
+
+
+    /// <summary>Occurs when the <see cref="OnNPCCreate(Npc, EventArgs)" /> is being called. This callback is called when a NPC connects to the server.</summary>
+    public event EventHandler<EventArgs> NPCCreated;
+
+    /// <summary>Occurs when the <see cref="OnNPCDestroy(Npc, EventArgs)" /> is being called. This callback is called when a NPC disconnects from the server.</summary>
+    public event EventHandler<EventArgs> NPCDestroyed;
+
+    /// <summary>Occurs when the <see cref="OnNPCSpawn(Npc, SpawnEventArgs)" /> is being called. This callback is called when a NPC spawns.</summary>
+    public event EventHandler<SpawnEventArgs> NPCSpawned;
+
+    /// <summary>Occurs when the <see cref="OnNPCRespawn(Npc, SpawnEventArgs)" /> is being called. This callback is called when a NPC respawns.</summary>
+    public event EventHandler<SpawnEventArgs> NPCRespawned;
+
+    /// <summary>Occurs when the <see cref="OnNPCDeath(Npc, DeathEventArgs)" /> is being called. This callback is triggered when the NPC dies.</summary>
+    public event EventHandler<DeathEventArgs> NPCDied;
+
+    /// <summary>Occurs when the <see cref="OnNPCFinishMove(Npc, EventArgs)" /> is being called. This callback is triggered when the NPC reached it's destination.</summary>
+    public event EventHandler<EventArgs> NPCFinishedMove;
+
+    /// <summary>Occurs when the <see cref="OnNPCWeaponStateChange(Npc, WeaponStateChangeEventArgs)" /> is being called..</summary>
+    public event EventHandler<WeaponStateChangeEventArgs> NPCWeaponStateChanged;
+
+    /// <summary>Occurs when the <see cref="OnNPCTakeDamage(Npc, DamageEventArgs)" /> is being called. This callback is triggered when the NPC takes damage.</summary>
+    public event EventHandler<DamageEventArgs> NPCTakeDamage;
+
+    /// <summary>Occurs when the <see cref="OnNPCGiveDamage(Npc, DamageEventArgs)" /> is being called. This callback is triggered when the NPC gives damage.</summary>
+    public event EventHandler<DamageEventArgs> NPCGiveDamage;
+
+    /// <summary>Occurs when the <see cref="OnNPCPlaybackStart(Npc, NpcPlaybackEventArgs)" /> is being called. This callback is triggered when the playback starts..</summary>
+    public event EventHandler<NpcPlaybackEventArgs> NPCPlaybackStarted;
+
+    /// <summary>Occurs when the <see cref="OnNPCPlaybackEnd(Npc, NpcPlaybackEventArgs)" /> is being called. This callback is triggered when the playback ends..</summary>
+    public event EventHandler<NpcPlaybackEventArgs> NPCPlaybackEnded;
+
+    /// <summary>Occurs when the <see cref="OnNPCWeaponShot(Npc, WeaponShotEventArgs)" /> is being called. This callback is triggered when the NPC shots with a weapon.</summary>
+    public event EventHandler<WeaponShotEventArgs> NPCWeaponShot;
+
+    /// <summary>Occurs when the <see cref="OnNPCFinishNodePoint(Npc, NpcFinishNodePointEventArgs)" /> is being called.</summary>
+    public event EventHandler<NpcFinishNodePointEventArgs> NPCFinishNodePoint;
+
+    /// <summary>Occurs when the <see cref="OnNPCFinishNode(Npc, NpcFinishNodeEventArgs)" /> is being called.</summary>
+    public event EventHandler<NpcFinishNodeEventArgs> NPCFinishNode;
+
+    /// <summary>Occurs when the <see cref="OnNPCChangeNode(Npc, NpcChangeNodeEventArgs)" /> is being called.</summary>
+    public event EventHandler<NpcChangeNodeEventArgs> NPCChangeNode;
+
+    /// <summary>Occurs when the <see cref="OnNPCFinishMovePath(Npc, NpcFinishMovePathEventArgs)" /> is being called.</summary>
+    public event EventHandler<NpcFinishMovePathEventArgs> NPCFinishMovePath;
+
+    /// <summary>Occurs when the <see cref="OnNPCFinishMovePathPoint(Npc, NpcFinishMovePathPointEventArgs)" /> is being called.</summary>
+    public event EventHandler<NpcFinishMovePathPointEventArgs> NPCFinishMovePathPoint;
 
     /// <summary>Raises the <see cref="Initialized" /> event.</summary>
     /// <param name="e">An <see cref="EventArgs" /> that contains the event data. </param>
@@ -871,5 +924,142 @@ public abstract partial class BaseMode
     protected virtual void OnTick(EventArgs e)
     {
         Tick?.Invoke(this, e);
+    }
+
+
+    /// <summary>Raises the <see cref="NPCCreated" /> event.</summary>
+    /// <param name="npc">The NPC triggering the event.</param>
+    /// <param name="e">An <see cref="EventArgs" /> that contains the event data. </param>
+    protected virtual void OnNPCCreate(Npc npc, EventArgs e)
+    {
+        NPCCreated?.Invoke(npc, e);
+    }
+
+    /// <summary>Raises the <see cref="NPCDestroyed" /> event.</summary>
+    /// <param name="npc">The NPC triggering the event.</param>
+    /// <param name="e">An <see cref="EventArgs" /> that contains the event data. </param>
+    protected virtual void OnNPCDestroy(Npc npc, EventArgs e)
+    {
+        NPCDestroyed?.Invoke(npc, e);
+    }
+
+    /// <summary>Raises the <see cref="NPCSpawned" /> event.</summary>
+    /// <param name="npc">The NPC triggering the event.</param>
+    /// <param name="e">A <see cref="SpawnEventArgs" /> that contains the event data. </param>
+    protected virtual void OnNPCSpawn(Npc npc, SpawnEventArgs e)
+    {
+        NPCSpawned?.Invoke(npc, e);
+    }
+
+    /// <summary>Raises the <see cref="NPCRespawned" /> event.</summary>
+    /// <param name="npc">The NPC triggering the event.</param>
+    /// <param name="e">A <see cref="SpawnEventArgs" /> that contains the event data. </param>
+    protected virtual void OnNPCRespawn(Npc npc, SpawnEventArgs e)
+    {
+        NPCRespawned?.Invoke(npc, e);
+    }
+
+    /// <summary>Raises the <see cref="NPCDied" /> event.</summary>
+    /// <param name="npc">The NPC triggering the event.</param>
+    /// <param name="e">A <see cref="DeathEventArgs" /> that contains the event data. </param>
+    protected virtual void OnNPCDeath(Npc npc, DeathEventArgs e)
+    {
+        NPCDied?.Invoke(npc, e);
+    }
+
+    /// <summary>Raises the <see cref="NPCFinishedMove" /> event.</summary>
+    /// <param name="npc">The NPC triggering the event.</param>
+    /// <param name="e">An <see cref="EventArgs" /> that contains the event data. </param>
+    protected virtual void OnNPCFinishMove(Npc npc, EventArgs e)
+    {
+        NPCFinishedMove?.Invoke(npc, e);
+    }
+
+    /// <summary>Raises the <see cref="NPCWeaponStateChanged" /> event.</summary>
+    /// <param name="npc">The NPC triggering the event.</param>
+    /// <param name="e">A <see cref="WeaponStateChangeEventArgs" /> that contains the event data. </param>
+    protected virtual void OnNPCWeaponStateChange(Npc npc, WeaponStateChangeEventArgs e)
+    {
+        NPCWeaponStateChanged?.Invoke(npc, e);
+    }
+
+    /// <summary>Raises the <see cref="NPCWeaponStateChanged" /> event.</summary>
+    /// <param name="npc">The NPC triggering the event.</param>
+    /// <param name="e">A <see cref="DamageEventArgs" /> that contains the event data. </param>
+    protected virtual void OnNPCTakeDamage(Npc npc, DamageEventArgs e)
+    {
+        NPCTakeDamage?.Invoke(npc, e);
+    }
+
+    /// <summary>Raises the <see cref="NPCWeaponStateChanged" /> event.</summary>
+    /// <param name="npc">The NPC triggering the event.</param>
+    /// <param name="e">A <see cref="DamageEventArgs" /> that contains the event data. </param>
+    protected virtual void OnNPCGiveDamage(Npc npc, DamageEventArgs e)
+    {
+        NPCGiveDamage?.Invoke(npc, e);
+    }
+
+    /// <summary>Raises the <see cref="NPCPlaybackStarted" /> event.</summary>
+    /// <param name="npc">The NPC triggering the event.</param>
+    /// <param name="e">A <see cref="NpcPlaybackEventArgs" /> that contains the event data. </param>
+    protected virtual void OnNPCPlaybackStart(Npc npc, NpcPlaybackEventArgs e)
+    {
+        NPCPlaybackStarted?.Invoke(npc, e);
+    }
+
+    /// <summary>Raises the <see cref="NPCPlaybackEnded" /> event.</summary>
+    /// <param name="npc">The NPC triggering the event.</param>
+    /// <param name="e">A <see cref="NpcPlaybackEventArgs" /> that contains the event data. </param>
+    protected virtual void OnNPCPlaybackEnd(Npc npc, NpcPlaybackEventArgs e)
+    {
+        NPCPlaybackEnded?.Invoke(npc, e);
+    }
+
+    /// <summary>Raises the <see cref="NPCWeaponShot" /> event.</summary>
+    /// <param name="npc">The NPC triggering the event.</param>
+    /// <param name="e">A <see cref="WeaponShotEventArgs" /> that contains the event data. </param>
+    protected virtual void OnNPCWeaponShot(Npc npc, WeaponShotEventArgs e)
+    {
+        NPCWeaponShot?.Invoke(npc, e);
+    }
+
+    /// <summary>Raises the <see cref="NPCFinishNodePoint" /> event.</summary>
+    /// <param name="npc">The NPC triggering the event.</param>
+    /// <param name="e">A <see cref="NpcFinishNodePointEventArgs" /> that contains the event data. </param>
+    protected virtual void OnNPCFinishNodePoint(Npc npc, NpcFinishNodePointEventArgs e)
+    {
+        NPCFinishNodePoint?.Invoke(npc, e);
+    }
+
+    /// <summary>Raises the <see cref="NPCFinishNode" /> event.</summary>
+    /// <param name="npc">The NPC triggering the event.</param>
+    /// <param name="e">A <see cref="NpcFinishNodeEventArgs" /> that contains the event data. </param>
+    protected virtual void OnNPCFinishNode(Npc npc, NpcFinishNodeEventArgs e)
+    {
+        NPCFinishNode?.Invoke(npc, e);
+    }
+
+    /// <summary>Raises the <see cref="NPCChangeNode" /> event.</summary>
+    /// <param name="npc">The NPC triggering the event.</param>
+    /// <param name="e">A <see cref="NpcChangeNodeEventArgs" /> that contains the event data. </param>
+    protected virtual void OnNPCChangeNode(Npc npc, NpcChangeNodeEventArgs e)
+    {
+        NPCChangeNode?.Invoke(npc, e);
+    }
+
+    /// <summary>Raises the <see cref="NPCFinishMovePath" /> event.</summary>
+    /// <param name="npc">The NPC triggering the event.</param>
+    /// <param name="e">A <see cref="NpcFinishMovePathEventArgs" /> that contains the event data. </param>
+    protected virtual void OnNPCFinishMovePath(Npc npc, NpcFinishMovePathEventArgs e)
+    {
+        NPCFinishMovePath?.Invoke(npc, e);
+    }
+
+    /// <summary>Raises the <see cref="NPCFinishMovePathPoint" /> event.</summary>
+    /// <param name="npc">The NPC triggering the event.</param>
+    /// <param name="e">A <see cref="NpcFinishMovePathPointEventArgs" /> that contains the event data. </param>
+    protected virtual void OnNPCFinishMovePathPoint(Npc npc, NpcFinishMovePathPointEventArgs e)
+    {
+        NPCFinishMovePathPoint?.Invoke(npc, e);
     }
 }

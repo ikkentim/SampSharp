@@ -14,7 +14,9 @@
 // limitations under the License.
 
 using System;
+using System.Xml.Linq;
 using SampSharp.Core.Callbacks;
+using SampSharp.Core.Logging;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Display;
 using SampSharp.GameMode.Events;
@@ -687,6 +689,159 @@ public abstract partial class BaseMode
 
         OnPlayerGiveDamageActor(actor, new DamageEventArgs(BasePlayer.FindOrCreate(playerid), amount, (Weapon)weaponid, (BodyPart)bodypart));
 
+        return true;
+    }
+
+
+    [Callback]
+    internal bool OnNPCCreate(int npcid)
+    {
+        var npc = Npc.Find(npcid);
+
+        if (npc == null)
+        {
+            return true;           
+        }
+
+        OnNPCCreate(npc, EventArgs.Empty);
+        return true;
+    }
+
+    [Callback]
+    internal bool OnNPCDestroy(int npcid)
+    {
+        var npc = Npc.Find(npcid);
+
+        if (npc == null)
+        {
+            return true;
+        }
+
+        OnNPCDestroy(npc, EventArgs.Empty);
+        return true;
+    }
+
+    [Callback]
+    internal bool OnNPCSpawn(int npcid)
+    {
+        var args = new SpawnEventArgs();
+
+        OnNPCSpawn(Npc.FindOrCreate(npcid), args);
+
+        return !args.ReturnToClassSelection;
+    }
+
+    [Callback]
+    internal bool OnNPCRespawn(int npcid)
+    {
+        var args = new SpawnEventArgs();
+
+        OnNPCRespawn(Npc.FindOrCreate(npcid), args);
+
+        return true;
+    }
+
+    [Callback]
+    internal bool OnNPCDeath(int npcid, int killerid, int reason)
+    {
+        OnNPCDeath(Npc.FindOrCreate(npcid), new DeathEventArgs(killerid == BasePlayer.InvalidId
+            ? null
+            : BasePlayer.FindOrCreate(killerid), (Weapon)reason));
+        return true;
+    }
+
+    [Callback]
+    internal bool OnNPCFinishMove(int npcid)
+    {
+        OnNPCFinishMove(Npc.FindOrCreate(npcid), EventArgs.Empty);
+        return true;
+    }
+
+    [Callback]
+    internal bool OnNPCWeaponStateChange(int npcid, int newState, int oldState)
+    {
+        var args = new WeaponStateChangeEventArgs((WeaponState)oldState, (WeaponState)newState);
+        OnNPCWeaponStateChange(Npc.FindOrCreate(npcid), args);
+        return true;
+    }
+
+    [Callback]
+    internal bool OnNPCTakeDamage(int npcid, int damagerid, float damage, int weapon, int bodypart)
+    {
+        var args = new DamageEventArgs(BasePlayer.FindOrCreate(damagerid), damage, (Weapon)weapon, (BodyPart)bodypart);
+        OnNPCTakeDamage(Npc.FindOrCreate(npcid), args);
+        return true;
+    }
+
+    [Callback]
+    internal bool OnNPCGiveDamage(int npcid, int damagerid, float damage, int weapon, int bodypart)
+    {
+        var args = new DamageEventArgs(BasePlayer.FindOrCreate(damagerid), damage, (Weapon)weapon, (BodyPart)bodypart);
+        OnNPCGiveDamage(Npc.FindOrCreate(npcid), args);
+        return true;
+    }
+
+    [Callback]
+    internal bool OnNPCPlaybackStart(int npcid, int recordid)
+    {
+        var args = new NpcPlaybackEventArgs(recordid);
+        OnNPCPlaybackStart(Npc.FindOrCreate(npcid), args);
+        return true;
+    }
+
+    [Callback]
+    internal bool OnNPCPlaybackEnd(int npcid, int recordid)
+    {
+        var args = new NpcPlaybackEventArgs(recordid);
+        OnNPCPlaybackEnd(Npc.FindOrCreate(npcid), args);
+        return true;
+    }
+
+    [Callback]
+    internal bool OnNPCWeaponShot(int npcid, int weaponid, int hittype, int hitid, float x, float y, float z)
+    {
+        var args = new WeaponShotEventArgs((Weapon)weaponid, (BulletHitType)hittype, hitid, new Vector3(x, y, z));
+        OnNPCWeaponShot(Npc.FindOrCreate(npcid), args);
+        return true;
+    }
+
+    [Callback]
+    internal bool OnNPCFinishNodePoint(int npcid, int nodeid, int pointid)
+    {
+        var args = new NpcFinishNodePointEventArgs(nodeid, pointid);
+        OnNPCFinishNodePoint(Npc.FindOrCreate(npcid), args);
+        return true;
+    }
+
+    [Callback]
+    internal bool OnNPCFinishNode(int npcid, int nodeid)
+    {
+        var args = new NpcFinishNodeEventArgs(nodeid);
+        OnNPCFinishNode(Npc.FindOrCreate(npcid), args);
+        return true;
+    }
+
+    [Callback]
+    internal bool OnNPCChangeNode(int npcid, int newnodeid, int oldnodeid)
+    {
+        var args = new NpcChangeNodeEventArgs(newnodeid, oldnodeid);
+        OnNPCChangeNode(Npc.FindOrCreate(npcid), args);
+        return true;
+    }
+
+    [Callback]
+    internal bool OnNPCFinishMovePath(int npcid, int pathid)
+    {
+        var args = new NpcFinishMovePathEventArgs(pathid);
+        OnNPCFinishMovePath(Npc.FindOrCreate(npcid), args);
+        return true;
+    }
+
+    [Callback]
+    internal bool OnNPCFinishMovePathPoint(int npcid, int pathid, int pointid)
+    {
+        var args = new NpcFinishMovePathPointEventArgs(pathid, pointid);
+        OnNPCFinishMovePathPoint(Npc.FindOrCreate(npcid), args);
         return true;
     }
 }

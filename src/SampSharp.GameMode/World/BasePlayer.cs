@@ -525,7 +525,7 @@ public partial class BasePlayer : IdentifiedPool<BasePlayer>, IWorldObject
     /// <summary>Occurs when the <see cref="OnSpawned" /> is being called. This callback is called when a player spawns.</summary>
     public event EventHandler<SpawnEventArgs> Spawned;
 
-    /// <summary>Occurs when the <see cref="OnDeath" /> is being called. This callback is triggered when the game mode starts.</summary>
+    /// <summary>Occurs when the <see cref="OnDeath" /> is being called. This callback is triggered when the player dies.</summary>
     public event EventHandler<DeathEventArgs> Died;
 
     /// <summary>Occurs when the <see cref="OnText" /> is being called. Called when a player sends a chat message.</summary>
