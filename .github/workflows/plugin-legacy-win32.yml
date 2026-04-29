@@ -33,7 +33,7 @@ jobs:
         uses: lukka/get-cmake@latest
 
       - name: Build legacy plugin
-        run: .\build.cmd legacy-plugin
+        run: .\build.cmd legacy-plugin publish
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4

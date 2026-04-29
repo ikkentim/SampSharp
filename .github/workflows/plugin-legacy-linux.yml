@@ -35,7 +35,7 @@ jobs:
           sudo apt-get install -y gcc g++ cmake gcc-multilib g++-multilib
 
       - name: Build legacy plugin
-        run: ./build.sh legacy-plugin
+        run: ./build.sh legacy-plugin publish
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
