@@ -13,19 +13,50 @@ SampSharp is a plugin and library that allows you to write San Andreas: Multipla
 
 Documentation
 ----------
-The SampSharp .NET packages provided are available on NuGet.org and contains all API documentation. Additional documentation is available on https://sampsharp.net/ and https://api.sampsharp.net/
+The SampSharp .NET packages provided are available on [NuGet.org](https://www.nuget.org/packages/SampSharp.Core/) and contain all API documentation.
+
+For general documentation and guides, see [https://sampsharp.net](https://sampsharp.net)
 
 Examples
 --------
-Some example gamemodes are available here:
-- [GrandLarc (GM)](https://github.com/SampSharp/sample-gm-grandlarc) - SA-MP default gamemode "grandlarc" ported to C# using SampSharp.GameMode
-- [GrandLarc (ECS)](https://github.com/SampSharp/sample-ecs-grandlarc) - SA-MP default gamemode "grandlarc" ported to C# using SampSharp.Entities
-- [RiverShell (GM)](https://github.com/SampSharp/sample-gm-rivershell) - SA-MP default gamemode "rivershell" ported to C# using SampSharp.GameMode
+Example gamemodes and sample projects are available at [https://github.com/sampsharp/samples](https://github.com/sampsharp/samples)
 
-Building SampSharp
-------------------
-In order to build the .NET libraries you can simply open and build `SampSharp.sln` using Visual Studio 2022, or you can build it from the command line using dotnet (version 6 or newer) `dotnet publish SampSharp.sln --configuration Release`.
+Building for Developers
+-----------------------
 
-To build the plugin on Windows, build `SampSharp.Plugin.sln` with Visual Studio 2022. You'll need to have the "Desktop development with C++" workload installed using Visal Studio Installer.
+### Building SampSharp (New)
 
-To build the plugin on Linux you'll at least need to have the packages `make gcc g++ gcc-multilib g++-multilib` installed. Run `make` to build the plugin.
+> TODO: New SampSharp code structure not yet in place. Check back soon.
+
+### Building Legacy SampSharp
+
+The legacy SampSharp code (v1) is located in the `src/legacy/` directory. Use the build scripts in the root to build components:
+
+**On Windows:**
+```
+.\build.cmd legacy-plugin           # Build x86 plugin
+.\build.cmd legacy-plugin publish   # Build and publish plugin
+.\build.cmd legacy-libraries        # Build C# libraries
+.\build.cmd legacy-libraries publish # Build and pack NuGet packages
+.\build.cmd clean                   # Clean build directory
+```
+
+**On Linux:**
+```
+./build.sh legacy-plugin            # Build x86 plugin
+./build.sh legacy-plugin publish    # Build and publish plugin
+./build.sh legacy-libraries         # Build C# libraries
+./build.sh legacy-libraries publish # Build and pack NuGet packages
+./build.sh clean                    # Clean build directory
+```
+
+Artifacts are placed in `build/artifacts/` and `build/bin/`:
+- Plugin binaries: `build/artifacts/sampsharp-legacy/`
+- NuGet packages: `build/artifacts/packages/`
+- C# libraries: `build/bin/SampSharp.*/Release/net6.0/`
+
+**Requirements:**
+- **.NET SDK 6.0** (for building C# libraries)
+- **CMake 3.19+** (for building the x86 plugin)
+- **Visual Studio 2026 with C++ workload** (Windows)
+- **gcc/g++ with 32-bit support** (Linux: `gcc-multilib g++-multilib`)
