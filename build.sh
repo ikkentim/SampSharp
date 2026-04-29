@@ -24,7 +24,11 @@ build_legacy_libraries() {
     
     echo ""
     echo "Building C# libraries..."
-    dotnet build SampSharp.sln -c Release
+    if [ -n "$CiVersion" ]; then
+        dotnet build SampSharp.sln -c Release "/p:CiVersion=$CiVersion"
+    else
+        dotnet build SampSharp.sln -c Release
+    fi
 }
 
 pack_legacy_libraries() {
@@ -33,7 +37,11 @@ pack_legacy_libraries() {
     
     echo ""
     echo "Packing C# libraries..."
-    dotnet pack SampSharp.sln -c Release
+    if [ -n "$CiVersion" ]; then
+        dotnet pack SampSharp.sln -c Release "/p:CiVersion=$CiVersion"
+    else
+        dotnet pack SampSharp.sln -c Release
+    fi
     
     echo ""
     echo "NuGet packages created in: $SCRIPTDIR/build/artifacts/packages"

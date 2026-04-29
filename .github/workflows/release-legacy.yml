@@ -98,6 +98,8 @@ jobs:
 
       - name: Pack NuGet packages
         run: ./build.sh legacy-libraries publish
+        env:
+          CiVersion: ${{ env.VERSION }}
 
       - name: Publish to NuGet
         run: |
