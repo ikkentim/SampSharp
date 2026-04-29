@@ -6,6 +6,39 @@
 
 set -e
 
+show_usage() {
+    echo ""
+    echo "Usage:"
+    echo "  build.sh legacy-plugin            - Build legacy x86 plugin"
+    echo "  build.sh legacy-plugin publish    - Build and publish legacy x86 plugin"
+    echo "  build.sh legacy-libraries         - Build legacy C# libraries"
+    echo "  build.sh legacy-libraries publish - Build and pack legacy C# libraries"
+    echo "  build.sh component                - Build component x64 plugin (not implemented)"
+    echo "  build.sh component-libraries      - Build component C# libraries (not implemented)"
+    echo "  build.sh clean                    - Delete build directory contents"
+}
+
+build_legacy_libraries() {
+    local SCRIPTDIR="$1"
+    cd "$SCRIPTDIR/src/legacy"
+    
+    echo ""
+    echo "Building C# libraries..."
+    dotnet build SampSharp.sln -c Release
+}
+
+pack_legacy_libraries() {
+    local SCRIPTDIR="$1"
+    cd "$SCRIPTDIR/src/legacy"
+    
+    echo ""
+    echo "Packing C# libraries..."
+    dotnet pack SampSharp.sln -c Release
+    
+    echo ""
+    echo "NuGet packages created in: $SCRIPTDIR/build/artifacts/packages"
+}
+
 TARGET="${1}"
 ACTION="${2}"
 SCRIPTDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -31,9 +64,9 @@ case "$TARGET" in
         ;;
     legacy-libraries)
         if [ -z "$ACTION" ]; then
-            build_legacy_libraries
+            build_legacy_libraries "$SCRIPTDIR"
         elif [ "$ACTION" = "publish" ]; then
-            pack_legacy_libraries
+            pack_legacy_libraries "$SCRIPTDIR"
         else
             show_usage
             exit 1
@@ -60,34 +93,3 @@ esac
 
 echo "Build complete."
 exit 0
-
-show_usage() {
-    echo ""
-    echo "Usage:"
-    echo "  build.sh legacy-plugin            - Build legacy x86 plugin"
-    echo "  build.sh legacy-plugin publish    - Build and publish legacy x86 plugin"
-    echo "  build.sh legacy-libraries         - Build legacy C# libraries"
-    echo "  build.sh legacy-libraries publish - Build and pack legacy C# libraries"
-    echo "  build.sh component                - Build component x64 plugin (not implemented)"
-    echo "  build.sh component-libraries      - Build component C# libraries (not implemented)"
-    echo "  build.sh clean                    - Delete build directory contents"
-}
-
-build_legacy_libraries() {
-    cd "$SCRIPTDIR/src/legacy"
-    
-    echo ""
-    echo "Building C# libraries..."
-    dotnet build SampSharp.sln -c Release
-}
-
-pack_legacy_libraries() {
-    cd "$SCRIPTDIR/src/legacy"
-    
-    echo ""
-    echo "Packing C# libraries..."
-    dotnet pack SampSharp.sln -c Release
-    
-    echo ""
-    echo "NuGet packages created in: $SCRIPTDIR/build/artifacts/packages"
-}
