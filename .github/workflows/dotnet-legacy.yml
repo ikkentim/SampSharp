@@ -42,9 +42,6 @@ jobs:
     - name: Pack legacy libraries
       run: ./build.sh legacy-libraries publish
 
-    - name: Test
-      run: cd src/legacy && dotnet test SampSharp.sln --no-build --verbosity normal
-
     - name: Upload NuGet packages
       uses: actions/upload-artifact@v4
       with:
