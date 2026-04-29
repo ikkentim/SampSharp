@@ -34,7 +34,7 @@ Building for Developers
 
 ### Building Legacy SampSharp
 
-The legacy SampSharp code (v1) is located in the `src/legacy/` directory. Use the build scripts in the root to build components:
+The legacy SampSharp code (v0.x) is located in the `src/legacy/` directory. Use the build scripts in the root to build components:
 
 **On Windows:**
 ```
@@ -54,10 +54,7 @@ The legacy SampSharp code (v1) is located in the `src/legacy/` directory. Use th
 ./build.sh clean                    # Clean build directory
 ```
 
-Artifacts are placed in `build/artifacts/` and `build/bin/`:
-- Plugin binaries: `build/artifacts/sampsharp-legacy/`
-- NuGet packages: `build/artifacts/packages/`
-- C# libraries: `build/bin/SampSharp.*/Release/net6.0/`
+Artifacts are placed in `build/artifacts/`.
 
 **Requirements:**
 - **.NET SDK 6.0** (for building C# libraries)
