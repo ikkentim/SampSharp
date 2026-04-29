@@ -14,7 +14,7 @@
     <Name>Documentation</Name>
     <!-- SHFB properties -->
     <FrameworkVersion>.NET Core/.NET Standard/.NET 5.0+</FrameworkVersion>
-    <OutputPath>Help\content\</OutputPath>
+    <OutputPath>..\..\Help\content\</OutputPath>
     <HtmlHelpName>Documentation</HtmlHelpName>
     <Language>en-US</Language>
     <BuildAssemblerVerbosity>OnlyWarningsAndErrors</BuildAssemblerVerbosity>
@@ -25,12 +25,12 @@
     <CppCommentsFixup>False</CppCommentsFixup>
     <CleanIntermediates>True</CleanIntermediates>
     <DocumentationSources>
-      <DocumentationSource sourceFile="bin\Release\netstandard2.1\SampSharp.Core.dll" />
-      <DocumentationSource sourceFile="bin\Release\netstandard2.1\SampSharp.Core.xml" />
-      <DocumentationSource sourceFile="bin\Release\netstandard2.1\SampSharp.Entities.dll" />
-      <DocumentationSource sourceFile="bin\Release\netstandard2.1\SampSharp.Entities.xml" />
-      <DocumentationSource sourceFile="bin\Release\netstandard2.1\SampSharp.GameMode.dll" />
-      <DocumentationSource sourceFile="bin\Release\netstandard2.1\SampSharp.GameMode.xml" />
+      <DocumentationSource sourceFile="..\..\build\bin\SampSharp.Core\Release\SampSharp.Core.dll" />
+      <DocumentationSource sourceFile="..\..\build\bin\SampSharp.Core\Release\SampSharp.Core.xml" />
+      <DocumentationSource sourceFile="..\..\build\bin\SampSharp.Entities\Release\SampSharp.Entities.dll" />
+      <DocumentationSource sourceFile="..\..\build\bin\SampSharp.Entities\Release\SampSharp.Entities.xml" />
+      <DocumentationSource sourceFile="..\..\build\bin\SampSharp.GameMode\Release\SampSharp.GameMode.dll" />
+      <DocumentationSource sourceFile="..\..\build\bin\SampSharp.GameMode\Release\SampSharp.GameMode.xml" />
     </DocumentationSources>
     <MaximumGroupParts>2</MaximumGroupParts>
     <NamespaceGrouping>False</NamespaceGrouping>
