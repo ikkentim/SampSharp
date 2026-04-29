@@ -5,13 +5,17 @@ name: CI - Component x64 Linux (Coming Soon)
 
 on:
   push:
-    branches: [ develop ]
+    branches:
+      - master
+      - release/1.*
     paths:
       - .github/workflows/component-linux.yml
       - src/sampsharp-component/**
   
   pull_request:
-    branches: [ develop ]
+    branches:
+      - master
+      - release/1.*
     paths:
       - src/sampsharp-component/**
 

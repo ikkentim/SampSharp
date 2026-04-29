@@ -2,7 +2,9 @@ name: CI - Plugin Legacy (Linux)
 
 on:
   push:
-    branches: [ master ]
+    branches:
+      - master
+      - release/0.*
     paths:
       - .github/workflows/plugin-legacy-linux.yml
       - src/legacy/SampSharp/**
@@ -11,7 +13,9 @@ on:
       - '0.*'
     
   pull_request:
-    branches: [ master ]
+    branches:
+      - master
+      - release/0.*
     paths:
       - .github/workflows/plugin-legacy-linux.yml
       - src/legacy/SampSharp/**

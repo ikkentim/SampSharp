@@ -2,7 +2,9 @@ name: CI - Plugin Legacy (Windows)
 
 on:
   push:
-    branches: [ master ]
+    branches:
+      - master
+      - release/0.*
     paths:
       - .github/workflows/plugin-legacy-win32.yml
       - src/legacy/SampSharp/**
@@ -11,7 +13,9 @@ on:
       - '0.*'
     
   pull_request:
-    branches: [ master ]
+    branches:
+      - master
+      - release/0.*
     paths:
       - .github/workflows/plugin-legacy-win32.yml
       - src/legacy/SampSharp/**

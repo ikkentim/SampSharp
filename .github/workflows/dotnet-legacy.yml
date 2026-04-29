@@ -2,7 +2,9 @@ name: CI - Legacy Libraries
 
 on:
   push:
-    branches: [ master ]
+    branches:
+      - master
+      - release/0.*
     paths:
       - .github/workflows/dotnet-legacy.yml
       - src/legacy/**
@@ -11,7 +13,9 @@ on:
       - build.sh
 
   pull_request:
-    branches: [ master ]
+    branches:
+      - master
+      - release/0.*
     paths:
       - .github/workflows/dotnet-legacy.yml
       - src/legacy/**
