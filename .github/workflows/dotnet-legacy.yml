@@ -1,0 +1,38 @@
+name: CI - Legacy Libraries
+
+on:
+  push:
+    branches: [ master ]
+    paths:
+      - .github/workflows/dotnet-legacy.yml
+      - src/legacy/**
+      - '!src/legacy/SampSharp/**'
+      - build.cmd
+      - build.sh
+
+  pull_request:
+    branches: [ master ]
+    paths:
+      - .github/workflows/dotnet-legacy.yml
+      - src/legacy/**
+      - '!src/legacy/SampSharp/**'
+      - build.cmd
+      - build.sh
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '6.0.x'
+
+    - name: Build legacy libraries
+      run: ./build.sh legacy-libraries
+
+    - name: Test
+      run: cd src/legacy && dotnet test SampSharp.sln --no-build --verbosity normal

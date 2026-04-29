@@ -1,0 +1,22 @@
+name: CI - Component x64 Linux (Coming Soon)
+
+# TODO: Update this workflow when component (x64) code is in src/sampsharp-component/
+# For now, this is a placeholder.
+
+on:
+  push:
+    branches: [ develop ]
+    paths:
+      - .github/workflows/component-linux.yml
+      - src/sampsharp-component/**
+  
+  pull_request:
+    branches: [ develop ]
+    paths:
+      - src/sampsharp-component/**
+
+jobs:
+  placeholder:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "New component (x64) build on Linux - not yet implemented"

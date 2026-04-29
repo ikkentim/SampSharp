@@ -1,36 +1,15 @@
-name: release
+name: Release - New SampSharp (Coming Soon)
+
+# TODO: Update this workflow when new SampSharp code is ready for release
+# For now, this is a placeholder.
 
 on:
   push:
     tags:
-    - "*"
+      - '1.*'
   
 jobs:
-  build:
+  placeholder:
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v2
-
-    - name: Set VERSION variable from tag
-      run: echo "VERSION=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
-
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 6.0.x
-
-    - name: Restore dependencies
-      run: dotnet restore SampSharp.sln
-
-    - name: Test
-      run: dotnet test SampSharp.sln /p:CiVersion=${VERSION} --no-restore
-
-    - name: Build
-      run: dotnet build SampSharp.sln /p:CiVersion=${VERSION} --configuration Release --no-restore
-
-    - name: Pack
-      run: dotnet pack SampSharp.sln --configuration Release --no-build --output bin
-
-    - name: Push
-      run: dotnet nuget push bin/*.nupkg --source="https://api.nuget.org/v3/index.json" --api-key ${{secrets.NUGET_API_KEY}} --skip-duplicate
+      - run: echo "New SampSharp release workflow - not yet implemented"

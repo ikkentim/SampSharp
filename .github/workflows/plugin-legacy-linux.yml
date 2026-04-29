@@ -1,0 +1,39 @@
+name: CI - Plugin Legacy (Linux)
+
+on:
+  push:
+    branches: [ master ]
+    paths:
+      - .github/workflows/plugin-legacy-linux.yml
+      - src/legacy/SampSharp/**
+      - build.sh
+    tags:
+      - '0.*'
+    
+  pull_request:
+    branches: [ master ]
+    paths:
+      - .github/workflows/plugin-legacy-linux.yml
+      - src/legacy/SampSharp/**
+      - build.sh
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y gcc g++ cmake gcc-multilib g++-multilib
+
+      - name: Build legacy plugin
+        run: ./build.sh legacy-plugin
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: sampsharp-legacy-plugin-linux
+          path: build/artifacts/sampsharp-legacy/
