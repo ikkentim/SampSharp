@@ -88,10 +88,10 @@ echo   build.cmd legacy-plugin           - Build legacy x86 plugin
 echo   build.cmd legacy-plugin publish   - Build and publish legacy x86 plugin
 echo   build.cmd legacy-libraries        - Build legacy C# libraries
 echo   build.cmd legacy-libraries publish - Build and pack legacy C# libraries
-echo   build.cmd component               - Build component x64 plugin
-echo   build.cmd component publish       - Build and publish component x64 plugin
-echo   build.cmd component-libraries        - Build component C# libraries
-echo   build.cmd component-libraries publish - Build and pack component C# libraries
+echo   build.cmd component               - Build open.mp component
+echo   build.cmd component publish       - Build and publish open.mp component
+echo   build.cmd component-libraries        - Build C# libraries
+echo   build.cmd component-libraries publish - Build and pack C# libraries
 echo   build.cmd clean                   - Delete build directory contents
 exit /b 1
 

@@ -13,10 +13,10 @@ show_usage() {
     echo "  build.sh legacy-plugin publish    - Build and publish legacy x86 plugin"
     echo "  build.sh legacy-libraries         - Build legacy C# libraries"
     echo "  build.sh legacy-libraries publish - Build and pack legacy C# libraries"
-    echo "  build.sh component                - Build component x64 plugin"
-    echo "  build.sh component publish        - Build and publish component x64 plugin"
-    echo "  build.sh component-libraries      - Build component C# libraries"
-    echo "  build.sh component-libraries publish - Build and pack component C# libraries"
+    echo "  build.sh component                - Build open.mp component"
+    echo "  build.sh component publish        - Build and publish open.mp component"
+    echo "  build.sh component-libraries      - Build C# libraries"
+    echo "  build.sh component-libraries publish - Build and pack C# libraries"
     echo "  build.sh clean                    - Delete build directory contents"
 }
 
