@@ -13,9 +13,40 @@ show_usage() {
     echo "  build.sh legacy-plugin publish    - Build and publish legacy x86 plugin"
     echo "  build.sh legacy-libraries         - Build legacy C# libraries"
     echo "  build.sh legacy-libraries publish - Build and pack legacy C# libraries"
-    echo "  build.sh component                - Build component x64 plugin (not implemented)"
-    echo "  build.sh component-libraries      - Build component C# libraries (not implemented)"
+    echo "  build.sh component                - Build open.mp component"
+    echo "  build.sh component publish        - Build and publish open.mp component"
+    echo "  build.sh component-libraries      - Build C# libraries"
+    echo "  build.sh component-libraries publish - Build and pack C# libraries"
     echo "  build.sh clean                    - Delete build directory contents"
+}
+
+build_component_libraries() {
+    local SCRIPTDIR="$1"
+    cd "$SCRIPTDIR"
+
+    echo ""
+    echo "Building C# libraries..."
+    if [ -n "$CiVersion" ]; then
+        dotnet build SampSharp.sln -c Release "/p:CiVersion=$CiVersion"
+    else
+        dotnet build SampSharp.sln -c Release
+    fi
+}
+
+pack_component_libraries() {
+    local SCRIPTDIR="$1"
+    cd "$SCRIPTDIR"
+
+    echo ""
+    echo "Packing C# libraries..."
+    if [ -n "$CiVersion" ]; then
+        dotnet pack SampSharp.sln -c Release "/p:CiVersion=$CiVersion"
+    else
+        dotnet pack SampSharp.sln -c Release
+    fi
+
+    echo ""
+    echo "NuGet packages created in: $SCRIPTDIR/build/artifacts/packages"
 }
 
 build_legacy_libraries() {
@@ -81,10 +112,27 @@ case "$TARGET" in
         fi
         ;;
     component)
-        echo "Component x64 plugin build not yet implemented."
+        if [ -z "$ACTION" ]; then
+            echo "Building open.mp component..."
+            "$SCRIPTDIR/src/sampsharp-component/build.sh"
+        elif [ "$ACTION" = "publish" ]; then
+            echo "Building and publishing open.mp component..."
+            "$SCRIPTDIR/src/sampsharp-component/build.sh"
+            "$SCRIPTDIR/src/sampsharp-component/publish.sh"
+        else
+            show_usage
+            exit 1
+        fi
         ;;
     component-libraries)
-        echo "Component C# libraries not yet implemented."
+        if [ -z "$ACTION" ]; then
+            build_component_libraries "$SCRIPTDIR"
+        elif [ "$ACTION" = "publish" ]; then
+            pack_component_libraries "$SCRIPTDIR"
+        else
+            show_usage
+            exit 1
+        fi
         ;;
     clean)
         echo "Cleaning build directory..."

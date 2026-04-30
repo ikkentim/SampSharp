@@ -1,0 +1,43 @@
+name: CI - Component x64 (Windows)
+
+on:
+  push:
+    branches:
+      - master
+      - release/1.*
+    paths:
+      - .github/workflows/component-win64.yml
+      - src/sampsharp-component/**
+      - external/**
+      - build.cmd
+  
+  pull_request:
+    branches:
+      - master
+      - release/1.*
+    paths:
+      - .github/workflows/component-win64.yml
+      - src/sampsharp-component/**
+      - external/**
+      - build.cmd
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Setup CMake
+        uses: lukka/get-cmake@latest
+
+      - name: Build component
+        run: .\build.cmd component publish
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: sampsharp-component-windows
+          path: build/artifacts/sampsharp-component/

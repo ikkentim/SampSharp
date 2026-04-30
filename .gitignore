@@ -1,7 +1,10 @@
 # Build and output
+[Bb]in/
+[Oo]bj/
 build/
-bin/
-obj/
+build_*/
+publish/
+PublishProfiles/
 *.log
 
 # IDE
@@ -11,9 +14,7 @@ obj/
 *.user
 *.suo
 *.sln.DotSettings.user
-
-# Publishing
-PublishProfiles/
+launchSettings.json
 
 # OS
 .DS_Store

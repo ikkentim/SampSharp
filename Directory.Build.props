@@ -1,0 +1,91 @@
+<Project>
+    <PropertyGroup>
+        <IsTestProject>$(MSBuildProjectName.Contains('.UnitTests'))</IsTestProject>
+        <IsTestMode>$(MSBuildProjectName.Contains('TestMode.'))</IsTestMode>
+        <IsDeliverable Condition="'$(IsTestMode)' != 'True' and '$(IsTestProject)' != 'True' and '$(MSBuildProjectExtension)' == '.csproj'">True</IsDeliverable>
+    </PropertyGroup>
+
+    <!-- Building -->
+    <PropertyGroup>
+        <BaseOutputPath>$(MSBuildThisFileDirectory)build/bin/$(MSBuildProjectName)/</BaseOutputPath>
+        <BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)build/obj/$(MSBuildProjectName)/</BaseIntermediateOutputPath>
+        <PackageOutputPath>$(MSBuildThisFileDirectory)build/artifacts/packages</PackageOutputPath>
+    </PropertyGroup>
+
+    <!-- Packaging -->
+    <PropertyGroup>
+        <Company>Tim Potze</Company>
+        <Authors>Tim Potze</Authors>
+        <Copyright>Copyright (c) Tim Potze 2014-$([System.DateTime]::UtcNow.ToString(yyyy))</Copyright>
+        <NeutralLanguage>en-GB</NeutralLanguage>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(IsDeliverable)' == 'True'">
+        <PackageProjectUrl>https://github.com/ikkentim/SampSharp</PackageProjectUrl>
+        <PackageIcon>sampsharp.png</PackageIcon>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageTags>gta samp sampsharp</PackageTags>
+        <PackageId>$(AssemblyName)</PackageId>
+        <Product>$(AssemblyName)</Product>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    </PropertyGroup>
+
+    <ItemGroup Condition="'$(IsDeliverable)' == 'True'">
+        <None Include="$(MSBuildThisFileDirectory)\art\sampsharp.png" Pack="true" PackagePath="\" />
+    </ItemGroup>
+
+    <!-- Versioning -->
+    <PropertyGroup Label="Versioning">
+        <VersionPrefix>0.0.0</VersionPrefix>
+        <VersionSuffix>local</VersionSuffix>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(CiVersion)' != ''" Label="Versioning CI">
+        <VersionPrefix>$(CiVersion.Split('-', 2)[0])</VersionPrefix>
+        <VersionSuffix></VersionSuffix>
+        <VersionSuffix Condition="$(CiVersion.Contains('-'))">$(CiVersion.Split('-', 2)[1])</VersionSuffix>
+    </PropertyGroup>
+
+    <!-- Analyzers -->
+    <PropertyGroup Condition="'$(IsDeliverable)' == 'True'">
+        <!-- Enable .NET built-in analyzers, which check for performance, security, and style issues. -->
+        <EnableNETAnalyzers>true</EnableNETAnalyzers>
+        <AnalysisLevel>latest</AnalysisLevel>
+
+        <!-- What -->
+        <AnalysisMode>Minimum</AnalysisMode><!-- TODO: switch to AllEnabledByDefault -->
+        <EnforceCodeStyleInBuild>false</EnforceCodeStyleInBuild>
+
+        <!-- Severity -->
+        <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+        <CodeAnalysisTreatWarningsAsErrors>false</CodeAnalysisTreatWarningsAsErrors>
+
+        <!-- When -->
+        <RunAnalyzersDuringBuild>true</RunAnalyzersDuringBuild>
+        <RunAnalyzersDuringLiveAnalysis>true</RunAnalyzersDuringLiveAnalysis>
+        
+    </PropertyGroup>
+
+    <!-- Analyzer helpers -->
+    <ItemGroup Condition="'$(IsDeliverable)' == 'True'">
+        <Compile Include="$(MSBuildThisFileDirectory)external/jetbrains/Annotations.cs" Link="_external\Annotations.cs" />
+    </ItemGroup>
+
+    <!-- Symbols / source linking  -->
+    <PropertyGroup Condition="'$(IsDeliverable)' == 'True'">
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    </PropertyGroup>
+
+    <ItemGroup Condition="'$(IsDeliverable)' == 'True'">
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
+    </ItemGroup>
+
+    <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+        <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+    </PropertyGroup>
+</Project>

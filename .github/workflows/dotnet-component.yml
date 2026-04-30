@@ -1,0 +1,50 @@
+name: CI - Component Libraries
+
+on:
+  push:
+    branches:
+      - master
+      - release/1.*
+    paths:
+      - .github/workflows/dotnet-component.yml
+      - src/SampSharp.*/**
+      - src/TestMode.*/**
+      - SampSharp.sln
+      - Directory.Build.props
+      - build.sh
+
+  pull_request:
+    branches:
+      - master
+      - release/1.*
+    paths:
+      - .github/workflows/dotnet-component.yml
+      - src/SampSharp.*/**
+      - src/TestMode.*/**
+      - SampSharp.sln
+      - Directory.Build.props
+      - build.sh
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '10.0.x'
+
+    - name: Build component libraries
+      run: ./build.sh component-libraries
+
+    - name: Pack component libraries
+      run: ./build.sh component-libraries publish
+
+    - name: Upload NuGet packages
+      uses: actions/upload-artifact@v4
+      with:
+        name: sampsharp-component-nuget-packages
+        path: build/artifacts/packages/

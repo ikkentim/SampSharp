@@ -1,7 +1,4 @@
-name: CI - Component x64 Linux (Coming Soon)
-
-# TODO: Update this workflow when component (x64) code is in src/sampsharp-component/
-# For now, this is a placeholder.
+name: CI - Component x64 (Linux)
 
 on:
   push:
@@ -11,16 +8,38 @@ on:
     paths:
       - .github/workflows/component-linux.yml
       - src/sampsharp-component/**
+      - external/**
+      - build.sh
   
   pull_request:
     branches:
       - master
       - release/1.*
     paths:
+      - .github/workflows/component-linux.yml
       - src/sampsharp-component/**
+      - external/**
+      - build.sh
 
 jobs:
-  placeholder:
+  build:
     runs-on: ubuntu-latest
+
     steps:
-      - run: echo "New component (x64) build on Linux - not yet implemented"
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y gcc g++ cmake
+
+      - name: Build component
+        run: ./build.sh component publish
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: sampsharp-component-linux
+          path: build/artifacts/sampsharp-component/
