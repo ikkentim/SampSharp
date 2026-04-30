@@ -9,7 +9,7 @@ jobs:
   build-windows:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
 
@@ -20,15 +20,16 @@ jobs:
         run: .\build.cmd component publish
 
       - name: Upload Windows component
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: component-windows
           path: build/artifacts/sampsharp-component/
+          if-no-files-found: error
 
   build-linux:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
 
@@ -41,33 +42,34 @@ jobs:
         run: ./build.sh component publish
 
       - name: Upload Linux component
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: component-linux
           path: build/artifacts/sampsharp-component/
+          if-no-files-found: error
 
   release:
     needs: [build-windows, build-linux]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Set VERSION
         run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: '10.0.x'
 
       - name: Download Windows component
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: component-windows
           path: ./component-windows
 
       - name: Download Linux component
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: component-linux
           path: ./component-linux
@@ -80,25 +82,12 @@ jobs:
           zip -r SampSharp-${{ env.VERSION }}.zip SampSharp-${{ env.VERSION }}/
 
       - name: Create Release
-        uses: actions/create-release@v1
-        id: create_release
+        uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ github.ref }}
-          release_name: SampSharp ${{ env.VERSION }}
+          name: SampSharp ${{ env.VERSION }}
           draft: true
           prerelease: ${{ contains(env.VERSION, 'alpha') || contains(env.VERSION, 'beta') }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload component package
-        uses: actions/upload-release-asset@v1
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: SampSharp-${{ env.VERSION }}.zip
-          asset_name: SampSharp-${{ env.VERSION }}.zip
-          asset_content_type: application/zip
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          files: SampSharp-${{ env.VERSION }}.zip
 
       - name: Pack NuGet packages
         run: ./build.sh component-libraries publish

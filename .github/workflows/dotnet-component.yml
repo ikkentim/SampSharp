@@ -30,10 +30,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
 
     - name: Setup .NET
-      uses: actions/setup-dotnet@v4
+      uses: actions/setup-dotnet@v5
       with:
         dotnet-version: '10.0.x'
 
@@ -44,7 +44,8 @@ jobs:
       run: ./build.sh component-libraries publish
 
     - name: Upload NuGet packages
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: sampsharp-component-nuget-packages
         path: build/artifacts/packages/
+        if-no-files-found: error

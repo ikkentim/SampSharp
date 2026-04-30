@@ -26,7 +26,7 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Setup CMake
         uses: lukka/get-cmake@latest
@@ -35,7 +35,8 @@ jobs:
         run: .\build.cmd legacy-plugin publish
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: sampsharp-legacy-plugin-windows
           path: build/artifacts/sampsharp-legacy/
+          if-no-files-found: error

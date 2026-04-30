@@ -26,7 +26,7 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
 
@@ -37,7 +37,8 @@ jobs:
         run: .\build.cmd component publish
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: sampsharp-component-windows
           path: build/artifacts/sampsharp-component/
+          if-no-files-found: error
