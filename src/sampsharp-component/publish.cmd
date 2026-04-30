@@ -5,7 +5,7 @@ setlocal enabledelayedexpansion
 
 pushd "%~dp0"
 
-cd /d "..\..\.."
+cd /d "..\.."
 set "ROOTDIR=%CD%"
 set "BUILDDIR=%ROOTDIR%\build\cmake\component"
 set "ARTIFACTDIR=%ROOTDIR%\build\artifacts\sampsharp-component"
