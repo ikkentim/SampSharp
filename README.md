@@ -1,9 +1,6 @@
 SampSharp
 =========
 
-[![GitHub Action: dotnet](https://github.com/ikkentim/sampsharp/workflows/dotnet/badge.svg)](https://github.com/ikkentim/SampSharp/actions?query=workflow%3Adotnet)
-[![GitHub Action: Plugin (Linux)](https://github.com/ikkentim/sampsharp/workflows/Plugin%20(Linux)/badge.svg)](https://github.com/ikkentim/SampSharp/actions?query=workflow%3A%22Plugin+%28Linux%29%22)
-[![GitHub Action: Plugin (win32)](https://github.com/ikkentim/sampsharp/workflows/Plugin%20(win32)/badge.svg)](https://github.com/ikkentim/SampSharp/actions?query=workflow%3A%22Plugin+%28win32%29%22)
 [![GitHub Releases](https://img.shields.io/github/release/ikkentim/sampsharp.svg)](https://github.com/ikkentim/sampsharp/releases)
 [![GitHub Issues](https://img.shields.io/github/issues/ikkentim/sampsharp.svg)](https://github.com/ikkentim/sampsharp/issues)
 
