@@ -7,7 +7,6 @@ on:
   push:
     branches:
       - master
-      - legacy-sampsharp-migration
       - release/1.*
     paths:
       - .github/workflows/component-win.yml

@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - master
-      - legacy-sampsharp-migration
       - release/0.*
     paths:
       - .github/workflows/plugin-legacy-win32.yml
