@@ -25,9 +25,35 @@ Example gamemodes and sample projects are available at [https://github.com/samps
 Building for Developers
 -----------------------
 
-### Building SampSharp (New)
+### Building SampSharp
 
-> TODO: New SampSharp code structure not yet in place. Check back soon.
+Use the build scripts in the root to build components:
+
+**On Windows:**
+```
+.\build.cmd component                  # Build open.mp component
+.\build.cmd component publish          # Build and publish open.mp component
+.\build.cmd component-libraries        # Build C# libraries
+.\build.cmd component-libraries publish # Build and pack C# libraries
+.\build.cmd clean                      # Clean build directory
+```
+
+**On Linux:**
+```
+./build.sh component                   # Build open.mp component
+./build.sh component publish           # Build and publish open.mp component
+./build.sh component-libraries         # Build C# libraries
+./build.sh component-libraries publish # Build and pack C# libraries
+./build.sh clean                       # Clean build directory
+```
+
+Artifacts are placed in `build/artifacts/`.
+
+**Requirements:**
+- **.NET SDK 10** (for building C# libraries)
+- **CMake 3.19+** (for building the open.mp component)
+- **Visual Studio 2026 with C++ workload** (Windows)
+- **gcc/g++ and cmake** (Linux: `gcc g++ cmake`)
 
 ### Building Legacy SampSharp
 
@@ -57,4 +83,4 @@ Artifacts are placed in `build/artifacts/`.
 - **.NET SDK 6.0** (for building C# libraries)
 - **CMake 3.19+** (for building the x86 plugin)
 - **Visual Studio 2026 with C++ workload** (Windows)
-- **gcc/g++ with 32-bit support** (Linux: `gcc-multilib g++-multilib`)
+- **gcc/g++ with 32-bit support** (Linux: `gcc-multilib g++-multilib cmake`)
