@@ -1,27 +1,12 @@
-# Build and output
-build/
-bin/
-obj/
-*.log
-
-# IDE
 .vs/
+
+[Bb]in/
+[Oo]bj/
+build/
+build_*/
+publish/
+
 .vscode/
-.idea/
+
 *.user
-*.suo
-*.sln.DotSettings.user
-
-# Publishing
-PublishProfiles/
-
-# OS
-.DS_Store
-Thumbs.db
-desktop.ini
-
-# Temporary
-*~
-*.tmp
-*.swp
-*.swo
+launchSettings.json
