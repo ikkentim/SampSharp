@@ -9,7 +9,7 @@ jobs:
   build-windows:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
 
@@ -20,7 +20,7 @@ jobs:
         run: .\build.cmd component publish
 
       - name: Upload Windows component
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: component-windows
           path: build/artifacts/sampsharp-component/
@@ -29,7 +29,7 @@ jobs:
   build-linux:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
 
@@ -42,7 +42,7 @@ jobs:
         run: ./build.sh component publish
 
       - name: Upload Linux component
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: component-linux
           path: build/artifacts/sampsharp-component/
@@ -52,24 +52,24 @@ jobs:
     needs: [build-windows, build-linux]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Set VERSION
         run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: '10.0.x'
 
       - name: Download Windows component
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: component-windows
           path: ./component-windows
 
       - name: Download Linux component
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: component-linux
           path: ./component-linux

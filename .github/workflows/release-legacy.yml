@@ -9,7 +9,7 @@ jobs:
   build-windows:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Setup CMake
         uses: lukka/get-cmake@latest
@@ -18,7 +18,7 @@ jobs:
         run: .\build.cmd legacy-plugin
 
       - name: Upload Windows plugin
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: plugin-windows
           path: build/artifacts/sampsharp-legacy/
@@ -27,7 +27,7 @@ jobs:
   build-linux:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Install dependencies
         run: |
@@ -38,7 +38,7 @@ jobs:
         run: ./build.sh legacy-plugin
 
       - name: Upload Linux plugin
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: plugin-linux
           path: build/artifacts/sampsharp-legacy/
@@ -48,24 +48,24 @@ jobs:
     needs: [build-windows, build-linux]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Set VERSION
         run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: '6.0.x'
 
       - name: Download Windows plugin
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: plugin-windows
           path: ./plugin-windows
 
       - name: Download Linux plugin
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: plugin-linux
           path: ./plugin-linux
