@@ -99,7 +99,7 @@ exit /b 1
 cd /d "%SCRIPTDIR%src\legacy"
 echo.
 echo Building C# libraries...
-dotnet build SampSharp.slnx -c Release
+dotnet build SampSharp.Legacy.slnx -c Release
 if errorlevel 1 exit /b 1
 exit /b 0
 
@@ -107,7 +107,7 @@ exit /b 0
 cd /d "%SCRIPTDIR%src\legacy"
 echo.
 echo Packing C# libraries...
-dotnet pack SampSharp.slnx -c Release
+dotnet pack SampSharp.Legacy.slnx -c Release
 if errorlevel 1 exit /b 1
 echo.
 echo NuGet packages created in: %SCRIPTDIR%build\artifacts\packages
