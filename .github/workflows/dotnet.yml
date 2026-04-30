@@ -1,7 +1,4 @@
-name: CI - New SampSharp (Coming Soon)
-
-# TODO: Update this workflow when new SampSharp code is in src/sampsharp/
-# For now, this is a placeholder.
+name: CI - Component Libraries
 
 on:
   push:
@@ -10,17 +7,44 @@ on:
       - release/1.*
     paths:
       - .github/workflows/dotnet.yml
-      - src/sampsharp/**
-  
+      - src/SampSharp.*/**
+      - src/TestMode.*/**
+      - SampSharp.sln
+      - Directory.Build.props
+      - build.sh
+
   pull_request:
     branches:
       - master
       - release/1.*
     paths:
-      - src/sampsharp/**
+      - .github/workflows/dotnet.yml
+      - src/SampSharp.*/**
+      - src/TestMode.*/**
+      - SampSharp.sln
+      - Directory.Build.props
+      - build.sh
 
 jobs:
-  placeholder:
+  build:
     runs-on: ubuntu-latest
+
     steps:
-      - run: echo "New SampSharp build workflow - not yet implemented"
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Build component libraries
+      run: ./build.sh component-libraries
+
+    - name: Pack component libraries
+      run: ./build.sh component-libraries publish
+
+    - name: Upload NuGet packages
+      uses: actions/upload-artifact@v4
+      with:
+        name: sampsharp-component-nuget-packages
+        path: build/artifacts/packages/

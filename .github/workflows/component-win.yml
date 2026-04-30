@@ -1,7 +1,4 @@
-name: CI - Component x64 (Coming Soon)
-
-# TODO: Update this workflow when component (x64) code is in src/sampsharp-component/
-# For now, this is a placeholder.
+name: CI - Component x64 (Windows)
 
 on:
   push:
@@ -11,16 +8,36 @@ on:
     paths:
       - .github/workflows/component-win.yml
       - src/sampsharp-component/**
+      - external/**
+      - build.cmd
   
   pull_request:
     branches:
       - master
       - release/1.*
     paths:
+      - .github/workflows/component-win.yml
       - src/sampsharp-component/**
+      - external/**
+      - build.cmd
 
 jobs:
-  placeholder:
+  build:
     runs-on: windows-latest
+
     steps:
-      - run: echo "New component (x64) build on Windows - not yet implemented"
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Setup CMake
+        uses: lukka/get-cmake@latest
+
+      - name: Build component
+        run: .\build.cmd component publish
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: sampsharp-component-windows
+          path: build/artifacts/sampsharp-component/
