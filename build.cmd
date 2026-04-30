@@ -40,11 +40,11 @@ if /i "%TARGET%"=="legacy-libraries" (
 
 if /i "%TARGET%"=="component" (
     if "%ACTION%"=="" (
-        echo Building component x64 plugin...
+        echo Building open.mp component...
         call "%SCRIPTDIR%src\sampsharp-component\build.cmd"
         goto end
     ) else if /i "%ACTION%"=="publish" (
-        echo Building and publishing component x64 plugin...
+        echo Building and publishing open.mp component...
         call "%SCRIPTDIR%src\sampsharp-component\build.cmd"
         if errorlevel 1 exit /b 1
         call "%SCRIPTDIR%src\sampsharp-component\publish.cmd"
@@ -56,11 +56,11 @@ if /i "%TARGET%"=="component" (
 
 if /i "%TARGET%"=="component-libraries" (
     if "%ACTION%"=="" (
-        echo Building component C# libraries...
+        echo Building C# libraries...
         call :build_component_libraries
         goto end
     ) else if /i "%ACTION%"=="publish" (
-        echo Building and packing component C# libraries...
+        echo Building and packing C# libraries...
         call :pack_component_libraries
         goto end
     ) else (
@@ -116,7 +116,7 @@ exit /b 0
 :build_component_libraries
 cd /d "%SCRIPTDIR%"
 echo.
-echo Building component C# libraries...
+echo Building C# libraries...
 dotnet build SampSharp.sln -c Release
 if errorlevel 1 exit /b 1
 exit /b 0
@@ -124,7 +124,7 @@ exit /b 0
 :pack_component_libraries
 cd /d "%SCRIPTDIR%"
 echo.
-echo Packing component C# libraries...
+echo Packing C# libraries...
 dotnet pack SampSharp.sln -c Release
 if errorlevel 1 exit /b 1
 echo.

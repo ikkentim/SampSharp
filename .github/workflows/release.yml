@@ -1,15 +1,115 @@
-name: Release - New SampSharp (Coming Soon)
-
-# TODO: Update this workflow when new SampSharp code is ready for release
-# For now, this is a placeholder.
+name: Release - SampSharp
 
 on:
   push:
     tags:
       - '1.*'
-  
+
 jobs:
-  placeholder:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Setup CMake
+        uses: lukka/get-cmake@latest
+
+      - name: Build open.mp component
+        run: .\build.cmd component publish
+
+      - name: Upload Windows component
+        uses: actions/upload-artifact@v4
+        with:
+          name: component-windows
+          path: build/artifacts/sampsharp-component/
+
+  build-linux:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "New SampSharp release workflow - not yet implemented"
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y gcc g++ cmake
+
+      - name: Build open.mp component
+        run: ./build.sh component publish
+
+      - name: Upload Linux component
+        uses: actions/upload-artifact@v4
+        with:
+          name: component-linux
+          path: build/artifacts/sampsharp-component/
+
+  release:
+    needs: [build-windows, build-linux]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set VERSION
+        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Download Windows component
+        uses: actions/download-artifact@v4
+        with:
+          name: component-windows
+          path: ./component-windows
+
+      - name: Download Linux component
+        uses: actions/download-artifact@v4
+        with:
+          name: component-linux
+          path: ./component-linux
+
+      - name: Create release package
+        run: |
+          mkdir -p SampSharp-${{ env.VERSION }}/components
+          cp component-windows/SampSharp.dll SampSharp-${{ env.VERSION }}/components/
+          cp component-linux/SampSharp.so SampSharp-${{ env.VERSION }}/components/SampSharp.so
+          zip -r SampSharp-${{ env.VERSION }}.zip SampSharp-${{ env.VERSION }}/
+
+      - name: Create Release
+        uses: actions/create-release@v1
+        id: create_release
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: SampSharp ${{ env.VERSION }}
+          draft: true
+          prerelease: ${{ contains(env.VERSION, 'alpha') || contains(env.VERSION, 'beta') }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload component package
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: SampSharp-${{ env.VERSION }}.zip
+          asset_name: SampSharp-${{ env.VERSION }}.zip
+          asset_content_type: application/zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Pack NuGet packages
+        run: ./build.sh component-libraries publish
+        env:
+          CiVersion: ${{ env.VERSION }}
+
+      - name: Publish to NuGet
+        run: |
+          for nupkg in build/artifacts/packages/*.nupkg; do
+            dotnet nuget push "$nupkg" \
+              --source https://api.nuget.org/v3/index.json \
+              --api-key ${{ secrets.NUGET_API_KEY }} \
+              --skip-duplicate
+          done

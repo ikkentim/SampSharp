@@ -25,7 +25,7 @@ build_component_libraries() {
     cd "$SCRIPTDIR"
 
     echo ""
-    echo "Building component C# libraries..."
+    echo "Building C# libraries..."
     if [ -n "$CiVersion" ]; then
         dotnet build SampSharp.sln -c Release "/p:CiVersion=$CiVersion"
     else
@@ -38,7 +38,7 @@ pack_component_libraries() {
     cd "$SCRIPTDIR"
 
     echo ""
-    echo "Packing component C# libraries..."
+    echo "Packing C# libraries..."
     if [ -n "$CiVersion" ]; then
         dotnet pack SampSharp.sln -c Release "/p:CiVersion=$CiVersion"
     else
@@ -113,10 +113,10 @@ case "$TARGET" in
         ;;
     component)
         if [ -z "$ACTION" ]; then
-            echo "Building component x64 plugin..."
+            echo "Building open.mp component..."
             "$SCRIPTDIR/src/sampsharp-component/build.sh"
         elif [ "$ACTION" = "publish" ]; then
-            echo "Building and publishing component x64 plugin..."
+            echo "Building and publishing open.mp component..."
             "$SCRIPTDIR/src/sampsharp-component/build.sh"
             "$SCRIPTDIR/src/sampsharp-component/publish.sh"
         else

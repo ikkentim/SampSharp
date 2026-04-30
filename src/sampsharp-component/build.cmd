@@ -11,7 +11,7 @@ set "BUILDDIR=%ROOTDIR%\build\cmake\component"
 
 popd
 
-echo Building SampSharp component (x64)...
+echo Building open.mp component...
 echo Root: %ROOTDIR%
 echo Build: %BUILDDIR%
 echo.
@@ -27,4 +27,4 @@ cmake --build "%BUILDDIR%" --config RelWithDebInfo
 if errorlevel 1 exit /b 1
 
 echo.
-echo Component build complete. Output: %BUILDDIR%\artifacts
+echo Open.mp component build complete. Output: %BUILDDIR%\artifacts

@@ -7,7 +7,7 @@ SRCDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOTDIR="$(cd "$SRCDIR/../../.." && pwd)"
 BUILDDIR="$ROOTDIR/build/cmake/component"
 
-echo "Building SampSharp component (x64)..."
+echo "Building open.mp component..."
 echo "Root: $ROOTDIR"
 echo "Build: $BUILDDIR"
 echo
@@ -21,4 +21,4 @@ cmake -S "$SRCDIR" -B "$BUILDDIR"
 cmake --build "$BUILDDIR" --config RelWithDebInfo
 
 echo
-echo "Component build complete. Output: $BUILDDIR/artifacts"
+echo "Open.mp component build complete. Output: $BUILDDIR/artifacts"
