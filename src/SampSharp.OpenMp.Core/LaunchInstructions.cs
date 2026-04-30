@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using System.Xml.Linq;
 
 namespace SampSharp.OpenMp.Core;
 
@@ -156,13 +157,25 @@ internal static partial class LaunchInstructions
             }
 
             // does this dir contain a .sln file? read it and find the project root
-            var sln = dir.GetFiles("*.sln");
-            var result = sln.Select(GetProjectDirFromSolution).FirstOrDefault(x => x != null);
+            var result = dir.GetFiles("*.sln")
+                .Select(GetProjectDirFromSolution)
+                .FirstOrDefault(x => x != null);
+
             if (result != null)
             {
                 return result;
             }
 
+            // does this dir contain a .slnx file? read it and find the project root
+            result = dir.GetFiles("*.slnx")
+                .Select(GetProjectDirFromSolutionEx)
+                .FirstOrDefault(x => x != null);
+            if (result != null)
+            {
+                return result;
+            }
+
+            // move up a directory and try again
             dir = dir.Parent;
             if (dir == null)
             {
@@ -204,6 +217,32 @@ internal static partial class LaunchInstructions
         {
             var best = matches.OrderBy(x => x.Length).First();
             var file = new DirectoryInfo(Path.GetDirectoryName(Path.Combine(sln.Directory!.FullName, best))!);
+            return file;
+        }
+
+        return null;
+    }
+
+    private static DirectoryInfo? GetProjectDirFromSolutionEx(FileInfo slnx)
+    {
+        var asmName = Assembly.GetEntryAssembly()?.GetName().Name;
+
+        if (asmName == null)
+        {
+            return null;
+        }
+
+        var doc = XDocument.Load(slnx.FullName);
+
+        var matches = doc.Descendants("Project")
+            .Where(e => (string?)e.Attribute("Path") is { } path && path.Contains(asmName))
+            .Select(e => (string)e.Attribute("Path")!)
+            .ToList();
+
+        if (matches.Count > 0)
+        {
+            var best = matches.OrderBy(x => x.Length).First();
+            var file = new DirectoryInfo(Path.GetDirectoryName(Path.Combine(slnx.Directory!.FullName, best))!);
             return file;
         }
 
