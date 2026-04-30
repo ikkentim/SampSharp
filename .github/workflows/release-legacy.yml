@@ -1,0 +1,111 @@
+name: Release - Legacy SampSharp
+
+on:
+  push:
+    tags:
+      - '0.*'
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup CMake
+        uses: lukka/get-cmake@latest
+
+      - name: Build legacy plugin
+        run: .\build.cmd legacy-plugin
+
+      - name: Upload Windows plugin
+        uses: actions/upload-artifact@v4
+        with:
+          name: plugin-windows
+          path: build/artifacts/sampsharp-legacy/
+
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y gcc g++ cmake gcc-multilib g++-multilib
+
+      - name: Build legacy plugin
+        run: ./build.sh legacy-plugin
+
+      - name: Upload Linux plugin
+        uses: actions/upload-artifact@v4
+        with:
+          name: plugin-linux
+          path: build/artifacts/sampsharp-legacy/
+
+  release:
+    needs: [build-windows, build-linux]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set VERSION
+        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '6.0.x'
+
+      - name: Download Windows plugin
+        uses: actions/download-artifact@v4
+        with:
+          name: plugin-windows
+          path: ./plugin-windows
+
+      - name: Download Linux plugin
+        uses: actions/download-artifact@v4
+        with:
+          name: plugin-linux
+          path: ./plugin-linux
+
+      - name: Create release package
+        run: |
+          mkdir -p SampSharp-${{ env.VERSION }}/plugins
+          cp plugin-windows/SampSharp.dll SampSharp-${{ env.VERSION }}/plugins/
+          cp plugin-linux/SampSharp.so SampSharp-${{ env.VERSION }}/plugins/libSampSharp.so
+          zip -r SampSharp-${{ env.VERSION }}.zip SampSharp-${{ env.VERSION }}/
+
+      - name: Create Release
+        uses: actions/create-release@v1
+        id: create_release
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Legacy SampSharp ${{ env.VERSION }}
+          draft: true
+          prerelease: ${{ contains(env.VERSION, 'alpha') || contains(env.VERSION, 'beta') }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload plugin package
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: SampSharp-${{ env.VERSION }}.zip
+          asset_name: SampSharp-${{ env.VERSION }}.zip
+          asset_content_type: application/zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Pack NuGet packages
+        run: ./build.sh legacy-libraries publish
+        env:
+          CiVersion: ${{ env.VERSION }}
+
+      - name: Publish to NuGet
+        run: |
+          for nupkg in build/artifacts/packages/*.nupkg; do
+            dotnet nuget push "$nupkg" \
+              --source https://api.nuget.org/v3/index.json \
+              --api-key ${{ secrets.NUGET_API_KEY }} \
+              --skip-duplicate
+          done

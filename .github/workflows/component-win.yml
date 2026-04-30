@@ -1,0 +1,26 @@
+name: CI - Component x64 (Coming Soon)
+
+# TODO: Update this workflow when component (x64) code is in src/sampsharp-component/
+# For now, this is a placeholder.
+
+on:
+  push:
+    branches:
+      - master
+      - release/1.*
+    paths:
+      - .github/workflows/component-win.yml
+      - src/sampsharp-component/**
+  
+  pull_request:
+    branches:
+      - master
+      - release/1.*
+    paths:
+      - src/sampsharp-component/**
+
+jobs:
+  placeholder:
+    runs-on: windows-latest
+    steps:
+      - run: echo "New component (x64) build on Windows - not yet implemented"

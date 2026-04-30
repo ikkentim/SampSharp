@@ -1,4 +1,7 @@
 <Project>
+  <!-- Legacy version of Directory.Build.props for legacy projects -->
+  <!-- This file stops the search for parent Directory.Build.props files -->
+  
   <!-- Detect project kind -->
   <PropertyGroup>
     <IsTestProject>$(MSBuildProjectName.Contains('.UnitTests'))</IsTestProject>
@@ -11,14 +14,20 @@
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
+  <!-- Output paths -->
+  <PropertyGroup>
+    <BaseOutputPath>$(MSBuildThisFileDirectory)..\..\build\bin\$(MSBuildProjectName)\</BaseOutputPath>
+    <BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)..\..\build\obj\$(MSBuildProjectName)\</BaseIntermediateOutputPath>
+    <PackageOutputPath>$(MSBuildThisFileDirectory)..\..\build\artifacts\packages</PackageOutputPath>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(IsLibrary)' == 'True'">
-    <OutputPath>..\..\bin\$(MSBuildProjectName)\$(Configuration)\</OutputPath>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IsPackable>true</IsPackable>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(IsTestMode)' == 'True'">
-    <OutputPath>..\..\env\gamemode\$(MSBuildProjectName)</OutputPath>
+    <OutputPath>$(MSBuildThisFileDirectory)..\..\env\gamemode\$(MSBuildProjectName)</OutputPath>
   </PropertyGroup>
 
   <!-- Configuration for packages -->
@@ -40,7 +49,7 @@
   </PropertyGroup>
 
   <ItemGroup Condition="'$(IsLibrary)' == 'True'">
-    <None Include="$(MSBuildThisFileDirectory)\art\sampsharp.png" Pack="true" PackagePath="\" />
+    <None Include="$(MSBuildThisFileDirectory)..\..\art\sampsharp.png" Pack="true" PackagePath="\" />
   </ItemGroup>
 
   <PropertyGroup Label="Versioning">

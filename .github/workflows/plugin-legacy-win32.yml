@@ -1,0 +1,41 @@
+name: CI - Plugin Legacy (Windows)
+
+on:
+  push:
+    branches:
+      - master
+      - release/0.*
+    paths:
+      - .github/workflows/plugin-legacy-win32.yml
+      - src/legacy/SampSharp/**
+      - build.cmd
+    tags:
+      - '0.*'
+    
+  pull_request:
+    branches:
+      - master
+      - release/0.*
+    paths:
+      - .github/workflows/plugin-legacy-win32.yml
+      - src/legacy/SampSharp/**
+      - build.cmd
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup CMake
+        uses: lukka/get-cmake@latest
+
+      - name: Build legacy plugin
+        run: .\build.cmd legacy-plugin publish
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: sampsharp-legacy-plugin-windows
+          path: build/artifacts/sampsharp-legacy/

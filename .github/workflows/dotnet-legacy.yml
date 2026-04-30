@@ -1,0 +1,48 @@
+name: CI - Legacy Libraries
+
+on:
+  push:
+    branches:
+      - master
+      - release/0.*
+    paths:
+      - .github/workflows/dotnet-legacy.yml
+      - src/legacy/**
+      - '!src/legacy/SampSharp/**'
+      - build.cmd
+      - build.sh
+
+  pull_request:
+    branches:
+      - master
+      - release/0.*
+    paths:
+      - .github/workflows/dotnet-legacy.yml
+      - src/legacy/**
+      - '!src/legacy/SampSharp/**'
+      - build.cmd
+      - build.sh
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '6.0.x'
+
+    - name: Build legacy libraries
+      run: ./build.sh legacy-libraries
+
+    - name: Pack legacy libraries
+      run: ./build.sh legacy-libraries publish
+
+    - name: Upload NuGet packages
+      uses: actions/upload-artifact@v4
+      with:
+        name: sampsharp-legacy-nuget-packages
+        path: build/artifacts/packages/
