@@ -41,3 +41,4 @@ jobs:
         with:
           name: sampsharp-component-windows
           path: build/artifacts/sampsharp-component/
+          if-no-files-found: error

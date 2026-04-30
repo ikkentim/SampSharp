@@ -43,3 +43,4 @@ jobs:
         with:
           name: sampsharp-component-linux
           path: build/artifacts/sampsharp-component/
+          if-no-files-found: error

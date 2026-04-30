@@ -22,6 +22,7 @@ jobs:
         with:
           name: plugin-windows
           path: build/artifacts/sampsharp-legacy/
+          if-no-files-found: error
 
   build-linux:
     runs-on: ubuntu-latest
@@ -41,6 +42,7 @@ jobs:
         with:
           name: plugin-linux
           path: build/artifacts/sampsharp-legacy/
+          if-no-files-found: error
 
   release:
     needs: [build-windows, build-linux]
@@ -76,25 +78,12 @@ jobs:
           zip -r SampSharp-${{ env.VERSION }}.zip SampSharp-${{ env.VERSION }}/
 
       - name: Create Release
-        uses: actions/create-release@v1
-        id: create_release
+        uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Legacy SampSharp ${{ env.VERSION }}
+          name: Legacy SampSharp ${{ env.VERSION }}
           draft: true
           prerelease: ${{ contains(env.VERSION, 'alpha') || contains(env.VERSION, 'beta') }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload plugin package
-        uses: actions/upload-release-asset@v1
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: SampSharp-${{ env.VERSION }}.zip
-          asset_name: SampSharp-${{ env.VERSION }}.zip
-          asset_content_type: application/zip
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          files: SampSharp-${{ env.VERSION }}.zip
 
       - name: Pack NuGet packages
         run: ./build.sh legacy-libraries publish

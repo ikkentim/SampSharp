@@ -41,3 +41,4 @@ jobs:
         with:
           name: sampsharp-legacy-plugin-linux
           path: build/artifacts/sampsharp-legacy/
+          if-no-files-found: error

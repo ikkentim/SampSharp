@@ -46,3 +46,4 @@ jobs:
       with:
         name: sampsharp-legacy-nuget-packages
         path: build/artifacts/packages/
+        if-no-files-found: error

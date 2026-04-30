@@ -39,3 +39,4 @@ jobs:
         with:
           name: sampsharp-legacy-plugin-windows
           path: build/artifacts/sampsharp-legacy/
+          if-no-files-found: error

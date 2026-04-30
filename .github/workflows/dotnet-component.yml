@@ -48,3 +48,4 @@ jobs:
       with:
         name: sampsharp-component-nuget-packages
         path: build/artifacts/packages/
+        if-no-files-found: error
