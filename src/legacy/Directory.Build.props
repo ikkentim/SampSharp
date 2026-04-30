@@ -76,7 +76,7 @@
   </PropertyGroup>
 
   <ItemGroup Condition="'$(IsTestProject)' != 'True' and '$(MSBuildProjectExtension)' == '.csproj'">
-      <PackageReference Include="SonarAnalyzer.CSharp" Version="8.37.0.45539">
+      <PackageReference Include="SonarAnalyzer.CSharp">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
       </PackageReference>
@@ -93,7 +93,7 @@
   </PropertyGroup>
 
   <ItemGroup Condition="'$(IsLibrary)' == 'True'">
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">

@@ -16,8 +16,4 @@
         <ProjectReference Include="..\SampSharp.SourceGenerator\SampSharp.SourceGenerator.csproj" PrivateAssets="None" />
     </ItemGroup>
 
-    <ItemGroup>
-      <PackageReference Update="Microsoft.SourceLink.GitHub" Version="10.0.203" />
-    </ItemGroup>
-
 </Project>
