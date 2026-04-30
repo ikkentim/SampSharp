@@ -3,8 +3,8 @@ REM Build script for SampSharp component (x64) on Windows
 
 pushd "%~dp0"
 
-REM Navigate to root (3 levels up)
-cd /d "..\..\.."
+REM Navigate to root (2 levels up from src/sampsharp-component)
+cd /d "..\.."
 set "ROOTDIR=%CD%"
 set "SRCDIR=%ROOTDIR%\src\sampsharp-component"
 set "BUILDDIR=%ROOTDIR%\build\cmake\component"

@@ -4,7 +4,7 @@
 set -e
 
 SRCDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-ROOTDIR="$(cd "$SRCDIR/../../.." && pwd)"
+ROOTDIR="$(cd "$SRCDIR/../.." && pwd)"
 BUILDDIR="$ROOTDIR/build/cmake/component"
 
 echo "Building open.mp component..."

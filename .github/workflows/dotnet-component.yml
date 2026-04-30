@@ -6,7 +6,7 @@ on:
       - master
       - release/1.*
     paths:
-      - .github/workflows/dotnet.yml
+      - .github/workflows/dotnet-component.yml
       - src/SampSharp.*/**
       - src/TestMode.*/**
       - SampSharp.sln
@@ -18,7 +18,7 @@ on:
       - master
       - release/1.*
     paths:
-      - .github/workflows/dotnet.yml
+      - .github/workflows/dotnet-component.yml
       - src/SampSharp.*/**
       - src/TestMode.*/**
       - SampSharp.sln

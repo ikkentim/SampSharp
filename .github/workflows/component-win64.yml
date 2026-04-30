@@ -6,7 +6,7 @@ on:
       - master
       - release/1.*
     paths:
-      - .github/workflows/component-win.yml
+      - .github/workflows/component-win64.yml
       - src/sampsharp-component/**
       - external/**
       - build.cmd
@@ -16,7 +16,7 @@ on:
       - master
       - release/1.*
     paths:
-      - .github/workflows/component-win.yml
+      - .github/workflows/component-win64.yml
       - src/sampsharp-component/**
       - external/**
       - build.cmd
