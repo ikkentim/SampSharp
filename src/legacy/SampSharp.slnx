@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/build/">
+    <File Path="Directory.Build.props" />
+  </Folder>
+  <Project Path="SampSharp.Core.UnitTests/SampSharp.Core.UnitTests.csproj" />
+  <Project Path="SampSharp.Core/SampSharp.Core.csproj" />
+  <Project Path="SampSharp.Entities/SampSharp.Entities.csproj" />
+  <Project Path="SampSharp.GameMode/SampSharp.GameMode.csproj" />
+  <Project Path="TestMode.Entities/TestMode.Entities.csproj" />
+  <Project Path="TestMode.GameMode/TestMode.GameMode.csproj" />
+</Solution>

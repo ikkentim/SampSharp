@@ -1,0 +1,25 @@
+<Solution>
+  <Folder Name="/CodeAnalysis/">
+    <Project Path="src/SampSharp.Analyzer/SampSharp.Analyzer.csproj" />
+    <Project Path="src/SampSharp.CodeFixes/SampSharp.CodeFixes.csproj" />
+    <Project Path="src/SampSharp.SourceGenerator/SampSharp.SourceGenerator.csproj" />
+  </Folder>
+  <Folder Name="/SampSharp/">
+    <Project Path="src/SampSharp.OpenMp.Core/SampSharp.OpenMp.Core.csproj" />
+    <Project Path="src/SampSharp.OpenMp.Entities.Commands/SampSharp.OpenMp.Entities.Commands.csproj" />
+    <Project Path="src/SampSharp.OpenMp.Entities/SampSharp.OpenMp.Entities.csproj" />
+    <Project Path="src/SampSharp.Sdk/SampSharp.Sdk.csproj" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path=".gitignore" />
+    <File Path="Directory.Build.props" />
+    <File Path="LICENSE" />
+    <File Path="README.md" />
+  </Folder>
+  <Folder Name="/TestingModes/">
+    <Project Path="src/TestMode.OpenMp.Core/TestMode.OpenMp.Core.csproj" />
+    <Project Path="src/TestMode.OpenMp.Entities/TestMode.OpenMp.Entities.csproj" />
+    <Project Path="src/TestMode.UnitTests/TestMode.UnitTests.csproj" />
+  </Folder>
+</Solution>

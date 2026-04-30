@@ -27,9 +27,9 @@ build_component_libraries() {
     echo ""
     echo "Building C# libraries..."
     if [ -n "$CiVersion" ]; then
-        dotnet build SampSharp.sln -c Release "/p:CiVersion=$CiVersion"
+        dotnet build SampSharp.slnx -c Release "/p:CiVersion=$CiVersion"
     else
-        dotnet build SampSharp.sln -c Release
+        dotnet build SampSharp.slnx -c Release
     fi
 }
 
@@ -40,9 +40,9 @@ pack_component_libraries() {
     echo ""
     echo "Packing C# libraries..."
     if [ -n "$CiVersion" ]; then
-        dotnet pack SampSharp.sln -c Release "/p:CiVersion=$CiVersion"
+        dotnet pack SampSharp.slnx -c Release "/p:CiVersion=$CiVersion"
     else
-        dotnet pack SampSharp.sln -c Release
+        dotnet pack SampSharp.slnx -c Release
     fi
 
     echo ""
@@ -56,9 +56,9 @@ build_legacy_libraries() {
     echo ""
     echo "Building C# libraries..."
     if [ -n "$CiVersion" ]; then
-        dotnet build SampSharp.sln -c Release "/p:CiVersion=$CiVersion"
+        dotnet build SampSharp.slnx -c Release "/p:CiVersion=$CiVersion"
     else
-        dotnet build SampSharp.sln -c Release
+        dotnet build SampSharp.slnx -c Release
     fi
 }
 
@@ -69,9 +69,9 @@ pack_legacy_libraries() {
     echo ""
     echo "Packing C# libraries..."
     if [ -n "$CiVersion" ]; then
-        dotnet pack SampSharp.sln -c Release "/p:CiVersion=$CiVersion"
+        dotnet pack SampSharp.slnx -c Release "/p:CiVersion=$CiVersion"
     else
-        dotnet pack SampSharp.sln -c Release
+        dotnet pack SampSharp.slnx -c Release
     fi
     
     echo ""

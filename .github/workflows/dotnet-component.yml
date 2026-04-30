@@ -9,7 +9,7 @@ on:
       - .github/workflows/dotnet-component.yml
       - src/SampSharp.*/**
       - src/TestMode.*/**
-      - SampSharp.sln
+      - SampSharp.slnx
       - Directory.Build.props
       - build.sh
 
@@ -21,7 +21,7 @@ on:
       - .github/workflows/dotnet-component.yml
       - src/SampSharp.*/**
       - src/TestMode.*/**
-      - SampSharp.sln
+      - SampSharp.slnx
       - Directory.Build.props
       - build.sh
 
