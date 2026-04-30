@@ -1,7 +1,6 @@
 ﻿using System.Numerics;
 using Microsoft.Extensions.DependencyInjection;
 using SampSharp.Entities.SAMP;
-using SampSharp.OpenMp.Core.Api;
 using Shouldly;
 using Xunit;
 
@@ -76,7 +75,7 @@ public class MenuTest : TestBase
     {
         _menu.Disable();
 
-        ((IMenu)_menu).IsEnabled().ShouldBeFalse();
+        _menu.IsEnabled().ShouldBeFalse();
     }
 
     [Fact]
@@ -86,7 +85,26 @@ public class MenuTest : TestBase
         _menu.AddItem("c", "d");
         _menu.DisableRow(0);
 
-        ((IMenu)_menu).IsRowEnabled(0).ShouldBeFalse();
-        ((IMenu)_menu).IsRowEnabled(1).ShouldBeTrue();
+        _menu.IsRowEnabled(0).ShouldBeFalse();
+        _menu.IsRowEnabled(1).ShouldBeTrue();
+    }
+
+    [Fact]
+    public void GetCell_should_return_text()
+    {
+        _menu.AddItem("left", "right");
+
+        _menu.GetCell(0, 0).ShouldBe("left");
+        _menu.GetCell(1, 0).ShouldBe("right");
+    }
+
+    [Fact]
+    public void GetRowCount_should_return_count()
+    {
+        _menu.AddItem("a", "b");
+        _menu.AddItem("c", "d");
+
+        _menu.GetRowCount(0).ShouldBe(2);
+        _menu.GetRowCount(1).ShouldBe(2);
     }
 }

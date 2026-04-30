@@ -104,6 +104,38 @@ public class Menu : IdProvider
     {
         _menu.DisableRow((byte)row);
     }
+
+    /// <summary>Gets a value indicating whether a specific row in this menu is enabled.</summary>
+    /// <param name="row">The index of the row to check.</param>
+    /// <returns><c>true</c> if the row is enabled; otherwise, <c>false</c>.</returns>
+    public virtual bool IsRowEnabled(int row)
+    {
+        return _menu.IsRowEnabled((byte)row);
+    }
+
+    /// <summary>Gets a value indicating whether this menu is enabled.</summary>
+    /// <returns><c>true</c> if the menu is enabled; otherwise, <c>false</c>.</returns>
+    public virtual bool IsEnabled()
+    {
+        return _menu.IsEnabled();
+    }
+
+    /// <summary>Gets the text of a specific cell in this menu.</summary>
+    /// <param name="column">The index of the column.</param>
+    /// <param name="row">The index of the row.</param>
+    /// <returns>The text of the cell, or <c>null</c> if empty.</returns>
+    public virtual string? GetCell(int column, int row)
+    {
+        return _menu.GetCell((byte)column, (byte)row);
+    }
+
+    /// <summary>Gets the number of rows in a column of this menu.</summary>
+    /// <param name="column">The index of the column.</param>
+    /// <returns>The number of rows in the column.</returns>
+    public virtual int GetRowCount(int column)
+    {
+        return _menu.GetRowCount((byte)column);
+    }
     
     /// <inheritdoc />
     protected override void OnDestroyComponent()
