@@ -4,11 +4,11 @@ using SampSharp.Entities.Utilities;
 namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>
-/// Default <see cref="IPlayerCommandService"/> implementation. Scans every
-/// loaded <see cref="ISystem"/> for methods marked
-/// <see cref="PlayerCommandAttribute"/> and dispatches matching chat input
+/// Default <see cref="IPlayerCommandService" /> implementation. Scans every
+/// loaded <see cref="ISystem" /> for methods marked
+/// <see cref="PlayerCommandAttribute" /> and dispatches matching chat input
 /// (slash-prefixed) to them. The first parameter of the handler is the
-/// invoking <see cref="Player"/>.
+/// invoking <see cref="Player" />.
 /// </summary>
 public class PlayerCommandService : CommandServiceBase, IPlayerCommandService
 {

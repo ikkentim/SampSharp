@@ -3,27 +3,33 @@ using SampSharp.OpenMp.Core.Api;
 
 namespace SampSharp.Entities.SAMP;
 
-/// <summary>Represents a component which provides the data and functionality of a 3D text label.</summary>
+/// <summary>
+/// Represents a component which provides the data and functionality of a 3D text label.
+/// </summary>
 public class TextLabel : WorldEntity
 {
     private readonly IOmpEntityProvider _entityProvider;
     private readonly ITextLabelsComponent _textLabels;
     private readonly ITextLabel _textLabel;
 
-    /// <summary>Constructs an instance of TextLabel, should be used internally.</summary>
+    /// <summary>
+    /// Initializes a new instance of the <see cref="TextLabel" /> class.
+    /// </summary>
     protected TextLabel(IOmpEntityProvider entityProvider, ITextLabelsComponent textLabels, ITextLabel textLabel) : base((IEntity)textLabel)
     {
         _entityProvider = entityProvider;
         _textLabels = textLabels;
         _textLabel = textLabel;
     }
-    
+
     /// <summary>
     /// Gets a value indicating whether the open.mp entity counterpart has been destroyed.
     /// </summary>
     protected bool IsOmpEntityDestroyed => _textLabel.TryGetExtension<ComponentExtension>()?.IsOmpEntityDestroyed ?? true;
 
-    /// <summary>Gets or sets the color of this text label.</summary>
+    /// <summary>
+    /// Gets or sets the <see cref="Color" /> of this text label.
+    /// </summary>
     public virtual Color Color
     {
         get
@@ -34,26 +40,34 @@ public class TextLabel : WorldEntity
         set => _textLabel.SetColour(value);
     }
 
-    /// <summary>Gets or sets the text of this text label.</summary>
+    /// <summary>
+    /// Gets or sets the text displayed in this text label.
+    /// </summary>
     public virtual string Text
     {
         get => _textLabel.GetText();
         set => _textLabel.SetText(value);
     }
 
-    /// <summary>Gets the draw distance of this text label.</summary>
+    /// <summary>
+    /// Gets the draw distance of this text label.
+    /// </summary>
     public virtual float DrawDistance => _textLabel.GetDrawDistance();
-    
-    /// <summary>Gets a value indicating whether to test the line of sight.</summary>
+
+    /// <summary>
+    /// Gets a value indicating whether line-of-sight testing is enabled for this text label.
+    /// </summary>
     public virtual bool TestLos => _textLabel.GetTestLOS();
 
-    /// <summary>Gets or sets the attached entity (player or vehicle).</summary>
+    /// <summary>
+    /// Gets the entity this text label is attached to, if any.
+    /// </summary>
     public virtual Component? AttachedEntity
     {
         get
         {
             var attachmentData = _textLabel.GetAttachmentData();
-            
+
             if (attachmentData.PlayerId != OpenMpConstants.INVALID_PLAYER_ID)
             {
                 return _entityProvider.GetPlayer(attachmentData.PlayerId);
@@ -69,10 +83,10 @@ public class TextLabel : WorldEntity
     }
 
     /// <summary>
-    /// Attaches this text label to the specified player.
+    /// Attaches this text label to the specified <paramref name="player" />.
     /// </summary>
-    /// <param name="player">The player to attach this text label to.</param>
-    /// <param name="offset">The offset from the player's position to attach this text label to.</param>
+    /// <param name="player">The <see cref="Player" /> to attach this text label to.</param>
+    /// <param name="offset">The offset position relative to the player as a <see cref="Vector3" />.</param>
     public virtual void Attach(Player player, Vector3 offset = default)
     {
         ArgumentNullException.ThrowIfNull(player);
@@ -81,17 +95,17 @@ public class TextLabel : WorldEntity
     }
 
     /// <summary>
-    /// Attaches this text label to the specified vehicle.
+    /// Attaches this text label to the specified <paramref name="vehicle" />.
     /// </summary>
-    /// <param name="vehicle">The vehicle to attach this player text label to.</param>
-    /// <param name="offset">The offset from the vehicle's position to attach this player text label to.</param>
+    /// <param name="vehicle">The <see cref="Vehicle" /> to attach this text label to.</param>
+    /// <param name="offset">The offset position relative to the vehicle as a <see cref="Vector3" />.</param>
     public virtual void Attach(Vehicle vehicle, Vector3 offset = default)
     {
         ArgumentNullException.ThrowIfNull(vehicle);
         
         _textLabel.AttachToVehicle(vehicle, offset);
     }
-    
+
     /// <inheritdoc />
     protected override void OnDestroyComponent()
     {
@@ -100,14 +114,16 @@ public class TextLabel : WorldEntity
             _textLabels.AsPool().Release(Id);
         }
     }
-    
+
     /// <inheritdoc />
     public override string ToString()
     {
         return $"(Id: {Id}, Text: {Text})";
     }
-    
-    /// <summary>Performs an implicit conversion from <see cref="TextLabel" /> to <see cref="ITextLabel" />.</summary>
+
+    /// <summary>
+    /// Performs an implicit conversion from <see cref="TextLabel" /> to <see cref="ITextLabel" />.
+    /// </summary>
     public static implicit operator ITextLabel(TextLabel textLabel)
     {
         return textLabel._textLabel;

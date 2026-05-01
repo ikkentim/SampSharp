@@ -2,17 +2,23 @@
 
 namespace SampSharp.Entities;
 
-/// <summary>Provides information about the origin of a parameter of a method.</summary>
+/// <summary>
+/// Provides information about the origin of a parameter of a method.
+/// </summary>
 public class MethodParameterSource
 {
-    /// <summary>Initializes a new instance of the <see cref="MethodParameterSource" /> class.</summary>
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MethodParameterSource" /> class.
+    /// </summary>
     /// <param name="info">The parameter information.</param>
     public MethodParameterSource(ParameterInfo info)
     {
         Info = info;
     }
 
-    /// <summary>Gets the parameter information.</summary>
+    /// <summary>
+    /// Gets the parameter information.
+    /// </summary>
     public ParameterInfo Info { get; }
 
     /// <summary>
@@ -21,8 +27,10 @@ public class MethodParameterSource
     /// </summary>
     public int ParameterIndex { get; set; } = -1;
 
-    /// <summary>Gets or sets a value indicating whether the value of this parameter is a service which should be
-    /// retrieved from the service provider.</summary>
+    /// <summary>
+    /// Gets or sets a value indicating whether the value of this parameter is a service which should be
+    /// retrieved from the service provider.
+    /// </summary>
     public bool IsService { get; set; }
 
     /// <summary>

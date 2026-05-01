@@ -9,7 +9,7 @@ namespace SampSharp.OpenMp.Core.Api;
 public readonly struct ConsoleCommandSenderData
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="ConsoleCommandSenderData"/> struct.
+    /// Initializes a new instance of the <see cref="ConsoleCommandSenderData" /> struct.
     /// </summary>
     /// <param name="sender">The type of sender.</param>
     /// <param name="handle">The unmanaged handle to the sender object.</param>

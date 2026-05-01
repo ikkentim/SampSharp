@@ -5,7 +5,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace SampSharp.Entities;
 
-/// <summary>Provides a compiler for an invoke method for an instance method with injected dependencies and entity-to-component conversion.</summary>
+/// <summary>
+/// Provides a compiler for an invoke method for an instance method with injected dependencies and entity-to-component conversion.
+/// </summary>
 public static class MethodInvokerFactory
 {
     private static readonly MethodInfo _getComponentInfo = typeof(IEntityManager).GetMethod(nameof(IEntityManager.GetComponent),
@@ -14,7 +16,9 @@ public static class MethodInvokerFactory
     private static readonly MethodInfo _getServiceInfo =
         typeof(MethodInvokerFactory).GetMethod(nameof(GetService), BindingFlags.NonPublic | BindingFlags.Static)!;
 
-    /// <summary>Compiles the invoker for the specified method.</summary>
+    /// <summary>
+    /// Compiles the invoker for the specified method.
+    /// </summary>
     /// <param name="methodInfo">The method information.</param>
     /// <param name="parameterSources">The sources of the parameters.</param>
     /// <param name="uninvokedReturnValue">The value returned if the method is not invoked when a parameter could not be converted to the correct component.</param>
@@ -157,7 +161,7 @@ public static class MethodInvokerFactory
     }
 
     /// <summary>
-    /// Returns <see langword="true"/> for primitive-numeric / enum types where the
+    /// Returns <see langword="true" /> for primitive-numeric / enum types where the
     /// dispatcher might box a value of a different (but assignable) numeric type
     /// (uint↔int, ushort↔int, the enum's underlying type, etc.).
     /// </summary>
@@ -175,12 +179,12 @@ public static class MethodInvokerFactory
 
     /// <summary>
     /// Runtime numeric/enum coercion. Same-type pass-through; otherwise routes
-    /// through <see cref="Convert.ChangeType(object,Type,IFormatProvider)"/>
-    /// (or <see cref="Enum.ToObject(Type,object)"/> for enum targets). When
-    /// the source isn't <see cref="IConvertible"/> (e.g. a Vector3 mistakenly
+    /// through <see cref="Convert.ChangeType(object,Type,IFormatProvider)" />
+    /// (or <see cref="Enum.ToObject(Type,object)" /> for enum targets). When
+    /// the source isn't <see cref="IConvertible" /> (e.g. a Vector3 mistakenly
     /// landed at an int slot due to dispatcher arg-order mismatch), returns
-    /// the value as-is so the outer <see cref="Expression.Convert(Expression,Type)"/>
-    /// throws an <see cref="InvalidCastException"/> with the actual managed
+    /// the value as-is so the outer <see cref="Expression.Convert(Expression,Type)" />
+    /// throws an <see cref="InvalidCastException" /> with the actual managed
     /// types — much easier to debug than "Object must implement IConvertible".
     /// </summary>
     private static object? ConvertNumeric(object? value, Type targetType)

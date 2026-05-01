@@ -1,7 +1,7 @@
 ﻿namespace SampSharp.OpenMp.Core.Api;
 
 /// <summary>
-/// Provides the events for <see cref="IPlayerPool.GetPlayerDamageDispatcher"/>.
+/// Provides the events for <see cref="IPlayerPool.GetPlayerDamageDispatcher" />.
 /// </summary>
 [OpenMpEventHandler]
 public partial interface IPlayerDamageEventHandler

@@ -17,12 +17,16 @@ using System.Collections;
 
 namespace SampSharp.Entities.SAMP;
 
-/// <summary>Represents a dialog with a list of selectable rows with columns.</summary>
+/// <summary>
+/// Represents a dialog with a list of selectable rows with columns.
+/// </summary>
 public class TablistDialog : IDialog<TablistDialogResponse>, IEnumerable<TablistDialogRow>
 {
     private TablistDialogRow? _header;
 
-    /// <summary>Initializes a new instance of the <see cref="TablistDialog" /> class.</summary>
+    /// <summary>
+    /// Initializes a new instance of the <see cref="TablistDialog" /> class.
+    /// </summary>
     /// <param name="caption">The caption.</param>
     /// <param name="button1">The text on the left button.</param>
     /// <param name="button2">The text on the right button. If the value is <see langword="null" />, the right button is hidden.</param>
@@ -41,7 +45,9 @@ public class TablistDialog : IDialog<TablistDialogResponse>, IEnumerable<Tablist
         Rows = new TablistDialogRowCollection(columnCount);
     }
 
-    /// <summary>Initializes a new instance of the <see cref="TablistDialog" /> class.</summary>
+    /// <summary>
+    /// Initializes a new instance of the <see cref="TablistDialog" /> class.
+    /// </summary>
     /// <param name="caption">The caption.</param>
     /// <param name="button1">The text on the left button.</param>
     /// <param name="button2">The text on the right button. If the value is <see langword="null" />, the right button is hidden.</param>
@@ -63,7 +69,9 @@ public class TablistDialog : IDialog<TablistDialogResponse>, IEnumerable<Tablist
         Header = new TablistDialogRow(columnHeaders);
     }
 
-    /// <summary>Initializes a new instance of the <see cref="TablistDialog" /> class.</summary>
+    /// <summary>
+    /// Initializes a new instance of the <see cref="TablistDialog" /> class.
+    /// </summary>
     /// <param name="caption">The caption.</param>
     /// <param name="button1">The text on the left button.</param>
     /// <param name="button2">The text on the right button. If the value is <see langword="null" />, the right button is hidden.</param>
@@ -72,7 +80,9 @@ public class TablistDialog : IDialog<TablistDialogResponse>, IEnumerable<Tablist
     {
     }
 
-    /// <summary>Initializes a new instance of the <see cref="TablistDialog" /> class.</summary>
+    /// <summary>
+    /// Initializes a new instance of the <see cref="TablistDialog" /> class.
+    /// </summary>
     /// <param name="caption">The caption.</param>
     /// <param name="button1">The text on the left button.</param>
     /// <param name="button2">The text on the right button. If the value is <see langword="null" />, the right button is hidden.</param>
@@ -83,7 +93,9 @@ public class TablistDialog : IDialog<TablistDialogResponse>, IEnumerable<Tablist
     {
     }
 
-    /// <summary>Initializes a new instance of the <see cref="TablistDialog" /> class.</summary>
+    /// <summary>
+    /// Initializes a new instance of the <see cref="TablistDialog" /> class.
+    /// </summary>
     /// <param name="caption">The caption.</param>
     /// <param name="button1">The text on the left button.</param>
     /// <param name="button2">The text on the right button. If the value is <see langword="null" />, the right button is hidden.</param>
@@ -95,7 +107,9 @@ public class TablistDialog : IDialog<TablistDialogResponse>, IEnumerable<Tablist
     {
     }
 
-    /// <summary>Initializes a new instance of the <see cref="TablistDialog" /> class.</summary>
+    /// <summary>
+    /// Initializes a new instance of the <see cref="TablistDialog" /> class.
+    /// </summary>
     /// <param name="caption">The caption.</param>
     /// <param name="button1">The text on the left button.</param>
     /// <param name="button2">The text on the right button. If the value is <see langword="null" />, the right button is hidden.</param>
@@ -108,13 +122,19 @@ public class TablistDialog : IDialog<TablistDialogResponse>, IEnumerable<Tablist
     {
     }
 
-    /// <summary>Gets the rows of this dialog.</summary>
+    /// <summary>
+    /// Gets the rows of this dialog.
+    /// </summary>
     public TablistDialogRowCollection Rows { get; }
 
-    /// <summary>Gets the number of columns in this tablist dialog.</summary>
+    /// <summary>
+    /// Gets the number of columns in this tablist dialog.
+    /// </summary>
     public int ColumnCount { get; }
 
-    /// <summary>Gets or sets the header of this tablist dialog.</summary>
+    /// <summary>
+    /// Gets or sets the header of this tablist dialog.
+    /// </summary>
     public TablistDialogRow? Header
     {
         get => _header;
@@ -137,13 +157,19 @@ public class TablistDialog : IDialog<TablistDialogResponse>, IEnumerable<Tablist
         ? Rows.RawText
         : $"{((IDialogRow)_header).RawText}\n{Rows.RawText}";
 
-    /// <summary>Gets or sets the caption of this tablist dialog.</summary>
+    /// <summary>
+    /// Gets or sets the caption of this tablist dialog.
+    /// </summary>
     public string? Caption { get; set; }
 
-    /// <summary>Gets or sets the text on the left button of this tablist dialog.</summary>
+    /// <summary>
+    /// Gets or sets the text on the left button of this tablist dialog.
+    /// </summary>
     public string? Button1 { get; set; }
 
-    /// <summary>Gets or sets the text on the right button of this tablist dialog. If the value is <see langword="null" />, the right button is hidden.</summary>
+    /// <summary>
+    /// Gets or sets the text on the right button of this tablist dialog. If the value is <see langword="null" />, the right button is hidden.
+    /// </summary>
     public string? Button2 { get; set; }
 
     TablistDialogResponse IDialog<TablistDialogResponse>.Translate(DialogResult dialogResult)
@@ -177,7 +203,9 @@ public class TablistDialog : IDialog<TablistDialogResponse>, IEnumerable<Tablist
         return GetEnumerator();
     }
 
-    /// <summary>Adds a row to the list with the specified <paramref name="columns" />.</summary>
+    /// <summary>
+    /// Adds a row to the list with the specified <paramref name="columns" />.
+    /// </summary>
     /// <param name="columns">The columns of the row to add.</param>
     /// <exception cref="ArgumentNullException">Thrown if <paramref name="columns" /> is null.</exception>
     public void Add(params string[] columns)
@@ -187,7 +215,9 @@ public class TablistDialog : IDialog<TablistDialogResponse>, IEnumerable<Tablist
         Rows.Add(columns);
     }
 
-    /// <summary>Adds a row to the list with the specified <paramref name="columns" /> and <paramref name="tag" />.</summary>
+    /// <summary>
+    /// Adds a row to the list with the specified <paramref name="columns" /> and <paramref name="tag" />.
+    /// </summary>
     /// <param name="columns">The columns of the row to add.</param>
     /// <param name="tag">
     /// The tag of the row to add. The tag can be used so associate data with this row which can be used retrieved when the user responds to the
@@ -201,7 +231,9 @@ public class TablistDialog : IDialog<TablistDialogResponse>, IEnumerable<Tablist
         Rows.Add(new TablistDialogRow(columns) { Tag = tag });
     }
 
-    /// <summary>Adds the specified row to the list.</summary>
+    /// <summary>
+    /// Adds the specified row to the list.
+    /// </summary>
     /// <param name="row">The row to add.</param>
     /// <exception cref="ArgumentNullException">Thrown if <paramref name="row" /> is null.</exception>
     public void Add(TablistDialogRow row)

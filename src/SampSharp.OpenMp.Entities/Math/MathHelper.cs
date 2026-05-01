@@ -4,20 +4,30 @@ using SampSharp.OpenMp.Core.Api;
 
 namespace SampSharp.Entities;
 
-/// <summary>Contains commonly used pre-calculated values and mathematical operations.</summary>
+/// <summary>
+/// Contains commonly used pre-calculated values and mathematical operations.
+/// </summary>
 [Pure]
 public static class MathHelper
 {
-    /// <summary>Represents the value of pi divided by two(1.57079637).</summary>
+    /// <summary>
+    /// Represents the value of pi divided by two(1.57079637).
+    /// </summary>
     public const float PiOver2 = (float)(Math.PI / 2.0);
 
-    /// <summary>Represents the value of pi divided by four(0.7853982).</summary>
+    /// <summary>
+    /// Represents the value of pi divided by four(0.7853982).
+    /// </summary>
     public const float PiOver4 = (float)(Math.PI / 4.0);
 
-    /// <summary>Represents the value of pi times two(6.28318548).</summary>
+    /// <summary>
+    /// Represents the value of pi times two(6.28318548).
+    /// </summary>
     public const float TwoPi = (float)(Math.PI * 2.0);
 
-    /// <summary>Returns the Cartesian coordinate for one axis of a point that is defined by a given triangle and two normalized barycentric (areal) coordinates.</summary>
+    /// <summary>
+    /// Returns the Cartesian coordinate for one axis of a point that is defined by a given triangle and two normalized barycentric (areal) coordinates.
+    /// </summary>
     /// <param name="value1">The coordinate on one axis of vertex 1 of the defining triangle.</param>
     /// <param name="value2">The coordinate on the same axis of vertex 2 of the defining triangle.</param>
     /// <param name="value3">The coordinate on the same axis of vertex 3 of the defining triangle.</param>
@@ -35,7 +45,9 @@ public static class MathHelper
         return value1 + (value2 - value1) * amount1 + (value3 - value1) * amount2;
     }
 
-    /// <summary>Performs a Catmull-Rom interpolation using the specified positions.</summary>
+    /// <summary>
+    /// Performs a Catmull-Rom interpolation using the specified positions.
+    /// </summary>
     /// <param name="value1">The first position in the interpolation.</param>
     /// <param name="value2">The second position in the interpolation.</param>
     /// <param name="value3">The third position in the interpolation.</param>
@@ -52,7 +64,9 @@ public static class MathHelper
                               (3.0 * value2 - value1 - 3.0 * value3 + value4) * amountCubed));
     }
 
-    /// <summary>Calculates the absolute value of the difference of two values.</summary>
+    /// <summary>
+    /// Calculates the absolute value of the difference of two values.
+    /// </summary>
     /// <param name="value1">Source value.</param>
     /// <param name="value2">Source value.</param>
     /// <returns>Distance between the two values.</returns>
@@ -61,7 +75,9 @@ public static class MathHelper
         return Math.Abs(value1 - value2);
     }
 
-    /// <summary>Performs a Hermite spline interpolation.</summary>
+    /// <summary>
+    /// Performs a Hermite spline interpolation.
+    /// </summary>
     /// <param name="value1">Source position.</param>
     /// <param name="tangent1">Source tangent.</param>
     /// <param name="value2">Source position.</param>
@@ -92,7 +108,9 @@ public static class MathHelper
         return (float)result;
     }
 
-    /// <summary>Interpolates between two values using a cubic equation.</summary>
+    /// <summary>
+    /// Interpolates between two values using a cubic equation.
+    /// </summary>
     /// <param name="value1">Source value.</param>
     /// <param name="value2">Source value.</param>
     /// <param name="amount">Weighting value.</param>
@@ -173,7 +191,9 @@ public static class MathHelper
         return new GTAQuat(quat.X, quat.Z, quat.Y, quat.W);
     }
 
-    /// <summary>Reduces a given angle to a value between π and -π.</summary>
+    /// <summary>
+    /// Reduces a given angle to a value between π and -π.
+    /// </summary>
     /// <param name="angle">The angle to reduce, in radians.</param>
     /// <returns>The new angle, in radians.</returns>
     public static float WrapAngle(float angle)
@@ -192,7 +212,9 @@ public static class MathHelper
         return angle;
     }
 
-    /// <summary>Determines if value is powered by two.</summary>
+    /// <summary>
+    /// Determines if value is powered by two.
+    /// </summary>
     /// <param name="value">A value.</param>
     /// <returns><see langword="true" /> if <paramref name="value"/> is powered by two; otherwise, <see langword="false" />.</returns>
     public static bool IsPowerOfTwo(int value)

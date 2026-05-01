@@ -16,7 +16,7 @@ public readonly struct PeerAddress
 
     /// <summary>
     /// The IPv4 address represented as a 32-bit unsigned integer.
-    /// This field is only used if <see cref="Ipv6"/> is <c>false</c>.
+    /// This field is only used if <see cref="Ipv6" /> is <c>false</c>.
     /// </summary>
     public readonly uint V4;
 
@@ -29,9 +29,9 @@ public readonly struct PeerAddress
     public readonly byte[] Bytes;
 
     /// <summary>
-    /// Converts the peer address to an <see cref="IPAddress"/> instance.
+    /// Converts the peer address to an <see cref="IPAddress" /> instance.
     /// </summary>
-    /// <returns>An <see cref="IPAddress"/> representing the peer address.</returns>
+    /// <returns>An <see cref="IPAddress" /> representing the peer address.</returns>
     public IPAddress ToAddress()
     {
         if (Ipv6)

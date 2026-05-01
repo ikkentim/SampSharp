@@ -3,7 +3,7 @@
 namespace SampSharp.Entities;
 
 /// <summary>
-/// Provides extension methods for safely adding event handlers to components within a <see cref="SampSharpEnvironment"/>.
+/// Provides extension methods for safely adding event handlers to components within a <see cref="SampSharpEnvironment" />.
 /// </summary>
 public static class SafeEventHandlerSampSharpEnvironmentExtensions
 {
@@ -17,7 +17,7 @@ public static class SafeEventHandlerSampSharpEnvironmentExtensions
         /// <param name="dispatcherProvider">A function that provides the event dispatcher for the specified component.</param>
         /// <param name="handler">The event handler instance to add to the component.</param>
         /// <param name="priority">The priority with which the event handler should be registered. The default is <see cref="EventPriority.Default" />.</param>
-        /// <returns>An <see cref="IDisposable"/> representing the event handler registration, or <see langword="null"/> if the registration failed.</returns>
+        /// <returns>An <see cref="IDisposable" /> representing the event handler registration, or <see langword="null" /> if the registration failed.</returns>
         public IDisposable? TryAddEventHandler<TComponent, TEventHandler>(Func<TComponent, IEventDispatcher<TEventHandler>> dispatcherProvider, TEventHandler handler, EventPriority priority = EventPriority.Default)
             where TComponent : unmanaged, IComponent.IManagedInterface
             where TEventHandler : class, IEventHandler<TEventHandler>
@@ -49,11 +49,11 @@ public static class SafeEventHandlerSampSharpEnvironmentExtensions
         /// </summary>
         /// <typeparam name="TComponent">The type of the component to which the event handler will be added.</typeparam>
         /// <typeparam name="TEventHandler">The type of the event handler.</typeparam>
-        /// <param name="dispatcherProvider">A function that provides the event dispatcher for the specified component.</param>
+        /// <param name="dispatcherProvider">A function that provides the event dispatcher from the specified <paramref name="TComponent" />.</param>
         /// <param name="handler">The event handler instance to add to the component.</param>
         /// <param name="priority">The priority with which the event handler should be registered. The default is <see cref="EventPriority.Default" />.</param>
-        /// <returns>An <see cref="IDisposable"/> representing the event handler registration.</returns>
-        /// <exception cref="InvalidOperationException">Thrown if the event handler could not be added.</exception>
+        /// <returns>An <see cref="IDisposable" /> representing the event handler registration.</returns>
+        /// <exception cref="InvalidOperationException">Thrown if the component does not exist, the dispatcher cannot be retrieved, or the event handler could not be added.</exception>
         public IDisposable AddEventHandler<TComponent, TEventHandler>(Func<TComponent, IEventDispatcher<TEventHandler>> dispatcherProvider, TEventHandler handler, EventPriority priority = EventPriority.Default)
             where TComponent : unmanaged, IComponent.IManagedInterface
             where TEventHandler : class, IEventHandler<TEventHandler>
@@ -71,10 +71,10 @@ public static class SafeEventHandlerSampSharpEnvironmentExtensions
         /// Attempts to add an event handler to the core.
         /// </summary>
         /// <typeparam name="TEventHandler">The type of the event handler.</typeparam>
-        /// <param name="dispatcherProvider">A function that provides the event dispatcher for the specified core.</param>
-        /// <param name="handler">The event handler instance to add to the core component.</param>
+        /// <param name="dispatcherProvider">A function that provides the event dispatcher from the <see cref="ICore" />.</param>
+        /// <param name="handler">The event handler instance to add to the core.</param>
         /// <param name="priority">The priority with which the event handler should be registered. The default is <see cref="EventPriority.Default" />.</param>
-        /// <returns>An <see cref="IDisposable"/> representing the event handler registration, or <see langword="null"/> if the registration failed.</returns>
+        /// <returns>An <see cref="IDisposable" /> representing the event handler registration, or <see langword="null" /> if the registration failed.</returns>
         public IDisposable? TryAddEventHandler<TEventHandler>(Func<ICore, IEventDispatcher<TEventHandler>> dispatcherProvider, TEventHandler handler, EventPriority priority = EventPriority.Default)
             where TEventHandler : class, IEventHandler<TEventHandler>
         {
@@ -102,11 +102,11 @@ public static class SafeEventHandlerSampSharpEnvironmentExtensions
         /// Adds an event handler to the core.
         /// </summary>
         /// <typeparam name="TEventHandler">The type of the event handler.</typeparam>
-        /// <param name="dispatcherProvider">A function that provides the event dispatcher for the specified core.</param>
-        /// <param name="handler">The event handler instance to add to the core component.</param>
+        /// <param name="dispatcherProvider">A function that provides the event dispatcher from the <see cref="ICore" />.</param>
+        /// <param name="handler">The event handler instance to add to the core.</param>
         /// <param name="priority">The priority with which the event handler should be registered. The default is <see cref="EventPriority.Default" />.</param>
-        /// <returns>An <see cref="IDisposable"/> representing the event handler registration.</returns>
-        /// <exception cref="InvalidOperationException">Thrown if the event handler could not be added.</exception>
+        /// <returns>An <see cref="IDisposable" /> representing the event handler registration.</returns>
+        /// <exception cref="InvalidOperationException">Thrown if the core does not exist, the dispatcher cannot be retrieved, or the event handler could not be added.</exception>
         public IDisposable AddEventHandler<TEventHandler>(Func<ICore, IEventDispatcher<TEventHandler>> dispatcherProvider, TEventHandler handler, EventPriority priority = EventPriority.Default)
             where TEventHandler : class, IEventHandler<TEventHandler>
         {

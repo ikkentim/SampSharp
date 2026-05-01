@@ -3,7 +3,7 @@
 namespace SampSharp.OpenMp.Core.Api;
 
 /// <summary>
-/// Provides the events for <see cref="IPlayerPool.GetPlayerClickDispatcher"/>.
+/// Provides the events for <see cref="IPlayerPool.GetPlayerClickDispatcher" />.
 /// </summary>
 [OpenMpEventHandler]
 public partial interface IPlayerClickEventHandler

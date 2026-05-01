@@ -2,8 +2,8 @@ namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>
 /// Middleware on <c>OnPlayerCommandText</c> that, if the [Event]-handlers leave
-/// the input unhandled (return <see langword="false"/>/<see langword="null"/>),
-/// dispatches it through <see cref="IPlayerCommandService"/>.
+/// the input unhandled (return <see langword="false" />/<see langword="null" />),
+/// dispatches it through <see cref="IPlayerCommandService" />.
 /// </summary>
 public class PlayerCommandProcessingMiddleware
 {

@@ -64,7 +64,7 @@ public readonly partial struct IBaseObject
     /// <summary>
     /// Gets the current movement data of the object.
     /// </summary>
-    /// <returns>A reference to the <see cref="ObjectMoveData"/> structure containing the movement information.</returns>
+    /// <returns>A reference to the <see cref="ObjectMoveData" /> structure containing the movement information.</returns>
     public partial ref ObjectMoveData GetMovingData();
 
     /// <summary>
@@ -83,7 +83,7 @@ public readonly partial struct IBaseObject
     /// <summary>
     /// Gets the attachment data of the object.
     /// </summary>
-    /// <returns>A reference to the <see cref="ObjectAttachmentData"/> structure containing the attachment information.</returns>
+    /// <returns>A reference to the <see cref="ObjectAttachmentData" /> structure containing the attachment information.</returns>
     public partial ref ObjectAttachmentData GetAttachmentData();
 
     /// <summary>

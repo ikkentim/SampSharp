@@ -3,7 +3,7 @@
 namespace SampSharp.OpenMp.Core.Api;
 
 /// <summary>
-/// Provides the events for <see cref="ICore.GetEventDispatcher"/>.
+/// Provides the events for <see cref="ICore.GetEventDispatcher" />.
 /// </summary>
 [OpenMpEventHandler]
 public partial interface ICoreEventHandler

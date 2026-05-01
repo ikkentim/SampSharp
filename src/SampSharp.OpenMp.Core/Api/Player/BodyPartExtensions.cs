@@ -1,7 +1,7 @@
 ﻿namespace SampSharp.OpenMp.Core.Api;
 
 /// <summary>
-/// Provides extension methods for the <see cref="BodyPart"/> enum.
+/// Provides extension methods for the <see cref="BodyPart" /> enum.
 /// </summary>
 public static class BodyPartExtensions
 {
@@ -20,7 +20,7 @@ public static class BodyPartExtensions
     ];
 
     /// <summary>
-    /// Gets the name of the specified <see cref="BodyPart"/>.
+    /// Gets the name of the specified <see cref="BodyPart" />.
     /// </summary>
     /// <param name="bodyPart">The body part to get the name for.</param>
     /// <returns>The name of the body part, or "invalid" if the body part is not valid.</returns>

@@ -1,7 +1,7 @@
 ﻿namespace SampSharp.OpenMp.Core.Api;
 
 /// <summary>
-/// Provides the events for <see cref="IPlayerPool.GetPlayerConnectDispatcher"/>.
+/// Provides the events for <see cref="IPlayerPool.GetPlayerConnectDispatcher" />.
 /// </summary>
 [OpenMpEventHandler]
 public partial interface IPlayerConnectEventHandler
@@ -27,9 +27,9 @@ public partial interface IPlayerConnectEventHandler
     /// <param name="reason">The reason for the disconnection.</param>
     void OnPlayerDisconnect(IPlayer player, PeerDisconnectReason reason);
 
-    /// <summary>  
-    /// Called when a player's client starts initializing.  
-    /// </summary>  
-    /// <param name="player">The player whose client has started initializing.</param>  
+    /// <summary>
+    /// Called when a player's client starts initializing.
+    /// </summary>
+    /// <param name="player">The player whose client has started initializing.</param>
     void OnPlayerClientInit(IPlayer player);
 }

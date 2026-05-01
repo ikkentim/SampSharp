@@ -5,7 +5,8 @@ using SampSharp.OpenMp.Core.Std;
 namespace SampSharp.OpenMp.Core.RobinHood;
 
 /// <summary>
-/// Represent a pointer to an <c>robin_hood::unordered_flat_set</c> of <see cref="StringView" /> values.  <c>robin_hood::unordered_flat_set</c> is part of the <c>robin_hood</c> C++ library.
+/// Represent a pointer to an <c>robin_hood::unordered_flat_set</c> of <see cref="StringView" /> values.  <c>robin_hood::unordered_flat_set</c> is part of the <c>robin_hood</c> C++
+/// library.
 /// </summary>
 [StructLayout(LayoutKind.Sequential)]
 public readonly struct FlatHashSetStringView : IReadOnlyCollection<string?>

@@ -11,7 +11,7 @@ public readonly struct InvokeResult
 
     /// <summary>Initializes a new instance.</summary>
     /// <param name="response">The response.</param>
-    /// <param name="usageMessage">Usage message — only meaningful for <see cref="InvokeResponse.InvalidArguments"/>.</param>
+    /// <param name="usageMessage">Usage message — only meaningful for <see cref="InvokeResponse.InvalidArguments" />.</param>
     public InvokeResult(InvokeResponse response, string? usageMessage = null)
     {
         Response = response;

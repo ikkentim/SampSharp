@@ -17,7 +17,9 @@ using System.Reflection;
 
 namespace SampSharp.Entities;
 
-/// <summary>Provides extended methods for <see cref="ITimerService" />.</summary>
+/// <summary>
+/// Provides extended methods for <see cref="ITimerService" />.
+/// </summary>
 public static class TimerServiceExtensions
 {
     /// <summary>

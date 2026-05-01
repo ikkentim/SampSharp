@@ -2,7 +2,9 @@
 
 namespace SampSharp.Entities.Utilities;
 
-/// <summary>Represents a utility for scanning for classes and members with specific attributes in loaded assemblies.</summary>
+/// <summary>
+/// Represents a utility for scanning for classes and members with specific attributes in loaded assemblies.
+/// </summary>
 public sealed class ClassScanner
 {
     private List<Assembly> _assemblies = [];
@@ -30,7 +32,9 @@ public sealed class ClassScanner
     {
         return new ClassScanner();
     }
-    /// <summary>Includes the specified <paramref name="assembly" /> in the scan.</summary>
+    /// <summary>
+    /// Includes the specified <paramref name="assembly" /> in the scan.
+    /// </summary>
     /// <param name="assembly">The assembly to include.</param>
     /// <returns>An updated scanner.</returns>
     public ClassScanner IncludeAssembly(Assembly assembly)
@@ -45,7 +49,9 @@ public sealed class ClassScanner
         return result;
     }
 
-    /// <summary>Includes the referenced assemblies of the previously included assemblies in the scan.</summary>
+    /// <summary>
+    /// Includes the referenced assemblies of the previously included assemblies in the scan.
+    /// </summary>
     /// <returns>An updated scanner.</returns>
     public ClassScanner IncludeReferencedAssemblies()
     {
@@ -82,7 +88,8 @@ public sealed class ClassScanner
     }
 
     /// <summary>
-    /// Includes the specified <paramref name="types" /> in the scan. This can be used to include types from assemblies which are not directly referenced by the loaded assemblies, e.g. plugin assemblies.
+    /// Includes the specified <paramref name="types" /> in the scan. This can be used to include types from assemblies which are not directly referenced by the loaded assemblies, e.g.
+    /// plugin assemblies.
     /// </summary>
     /// <param name="types">The types to include.</param>
     /// <returns>An updated scanner.</returns>
@@ -100,7 +107,9 @@ public sealed class ClassScanner
                 assemblyRef.Name.StartsWith("netstandard", StringComparison.InvariantCulture));
     }
 
-    /// <summary>Includes non-public members in the scan.</summary>
+    /// <summary>
+    /// Includes non-public members in the scan.
+    /// </summary>
     /// <returns>An updated scanner.</returns>
     public ClassScanner IncludeNonPublicMembers()
     {
@@ -109,7 +118,9 @@ public sealed class ClassScanner
         return result;
     }
 
-    /// <summary>Includes members of abstract classes in the scan.</summary>
+    /// <summary>
+    /// Includes members of abstract classes in the scan.
+    /// </summary>
     /// <returns>An updated scanner.</returns>
     public ClassScanner IncludeAbstractClasses()
     {
@@ -118,7 +129,9 @@ public sealed class ClassScanner
         return result;
     }
 
-    /// <summary>Includes only members of classes which implement <typeparamref name="T" /> in the scan.</summary>
+    /// <summary>
+    /// Includes only members of classes which implement <typeparamref name="T" /> in the scan.
+    /// </summary>
     /// <typeparam name="T">The class or interface the results of the scan should implement.</typeparam>
     /// <returns>An updated scanner.</returns>
     public ClassScanner Implements<T>()
@@ -128,7 +141,9 @@ public sealed class ClassScanner
         return result;
     }
 
-    /// <summary>Includes only members of classes which have an attribute <typeparamref name="T" />.</summary>
+    /// <summary>
+    /// Includes only members of classes which have an attribute <typeparamref name="T" />.
+    /// </summary>
     /// <typeparam name="T">The type of the attribute the class should have.</typeparam>
     /// <returns>An updated scanner.</returns>
     public ClassScanner HasClassAttribute<T>() where T : Attribute
@@ -138,7 +153,9 @@ public sealed class ClassScanner
         return result;
     }
 
-    /// <summary>Includes only members which have an attribute <typeparamref name="T" />.</summary>
+    /// <summary>
+    /// Includes only members which have an attribute <typeparamref name="T" />.
+    /// </summary>
     /// <typeparam name="T">The type of the attribute the member should have.</typeparam>
     /// <returns>An updated scanner.</returns>
     public ClassScanner HasMemberAttribute<T>() where T : Attribute
@@ -161,7 +178,9 @@ public sealed class ClassScanner
         return _memberAttributes.All(a => memberInfo.GetCustomAttribute(a) != null);
     }
 
-    /// <summary>Runs the scan for methods.</summary>
+    /// <summary>
+    /// Runs the scan for methods.
+    /// </summary>
     /// <returns>The found methods.</returns>
     public IEnumerable<Type> ScanTypes()
     {
@@ -171,8 +190,10 @@ public sealed class ClassScanner
             .Distinct();
     }
 
-    /// <summary>Runs the scan for methods and provides the attribute <typeparamref name="TAttribute" /> in the
-    /// results.</summary>
+    /// <summary>
+    /// Runs the scan for methods and provides the attribute <typeparamref name="TAttribute" /> in the
+    /// results.
+    /// </summary>
     /// <typeparam name="TAttribute">The type of the attribute.</typeparam>
     /// <returns>The found methods with their attribute of type <typeparamref name="TAttribute" />.</returns>
     public IEnumerable<(Type target, MethodInfo method, TAttribute attribute)> ScanMethods<TAttribute>() where TAttribute : Attribute
@@ -182,7 +203,9 @@ public sealed class ClassScanner
             .Select(x => (x.target, x.method, attribute: x.method.GetCustomAttribute<TAttribute>()!));
     }
 
-    /// <summary>Runs the scan for methods.</summary>
+    /// <summary>
+    /// Runs the scan for methods.
+    /// </summary>
     /// <returns>The found methods.</returns>
     public IEnumerable<(Type target, MethodInfo method)> ScanMethods()
     {

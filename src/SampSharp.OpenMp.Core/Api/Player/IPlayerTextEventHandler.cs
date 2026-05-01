@@ -1,7 +1,7 @@
 ﻿namespace SampSharp.OpenMp.Core.Api;
 
 /// <summary>
-/// Provides the events for <see cref="IPlayerPool.GetPlayerTextDispatcher"/>.
+/// Provides the events for <see cref="IPlayerPool.GetPlayerTextDispatcher" />.
 /// </summary>
 [OpenMpEventHandler]
 public partial interface IPlayerTextEventHandler

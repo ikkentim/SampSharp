@@ -21,7 +21,9 @@ internal class DialogService : IDialogService
 {
     private readonly IEntityManager _entityManager;
 
-    /// <summary>The dialog ID used by the dialog service.</summary>
+    /// <summary>
+    /// The dialog ID used by the dialog service.
+    /// </summary>
     public const int DialogId = 10000;
 
     public DialogService(IEntityManager entityManager)

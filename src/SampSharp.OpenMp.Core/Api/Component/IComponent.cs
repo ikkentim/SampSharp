@@ -17,7 +17,7 @@ public readonly partial struct IComponent
     /// Gets the supported version of the component.
     /// </summary>
     /// <remarks>
-    ///	The idea is for the SDK to be totally forward compatible, so code built at any time will always work, thanks to
+    /// The idea is for the SDK to be totally forward compatible, so code built at any time will always work, thanks to
     /// ABI compatibility.  This method is an emergency trap door, just in case that's ever not the problem.  Check
     /// which major version this component was built for, if it isn't the current major version, fail to load it.
     /// Always just returns a constant, recompiling will often be enough to upgrade. `virtual` and `final` to be the

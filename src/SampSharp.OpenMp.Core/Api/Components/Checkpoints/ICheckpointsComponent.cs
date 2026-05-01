@@ -2,7 +2,7 @@
 
 /// <summary>
 /// This type represents a pointer to an unmanaged open.mp <see cref="ICheckpointsComponent" /> interface
-/// (the source of <see cref="IPlayerCheckpointEventHandler"/> events).
+/// (the source of <see cref="IPlayerCheckpointEventHandler" /> events).
 /// </summary>
 [OpenMpApi(typeof(IComponent))]
 public readonly partial struct ICheckpointsComponent

@@ -145,8 +145,10 @@ public abstract partial class Extension : IDisposable
     /// Attaches the extension to the specified extensible.
     /// </summary>
     /// <param name="extensible">The extensible entity to attach this extension to.</param>
-    /// <exception cref="InvalidOperationException">Throw if this extension was already attached to another
-    /// entity.</exception>
+    /// <exception cref="InvalidOperationException">
+    /// Throw if this extension was already attached to another
+    /// entity.
+    /// </exception>
     internal void Attach(IExtensible extensible)
     {
         if (_appliedTo.HasValue)

@@ -279,7 +279,7 @@ public static class OpenMpConstants
     public const float MAX_WORLD_BOUNDS = 20000.0f;
 
     /// <summary>
-    ///   The default lower X/Y bounds of the world.
+    /// The default lower X/Y bounds of the world.
     /// </summary>
     public const float MIN_WORLD_BOUNDS = -20000.0f;
 

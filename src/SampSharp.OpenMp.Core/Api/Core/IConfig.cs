@@ -87,7 +87,7 @@ public readonly partial struct IConfig
     public partial Size GetBansCount();
 
     /// <summary>
-    /// Gets the ban at the specified <paramref name="index"/>.
+    /// Gets the ban at the specified <paramref name="index" />.
     /// </summary>
     /// <param name="index">The index of the ban.</param>
     /// <returns>The ban entry.</returns>

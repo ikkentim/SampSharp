@@ -17,7 +17,7 @@ namespace SampSharp.OpenMp.Core.Std;
 public static unsafe class StringViewMarshaller
 {
     /// <summary>
-    /// Encoding used for every managed and native <see cref="string"/>
+    /// Encoding used for every managed and native <see cref="string" />
     /// crossing this marshaller. Defaults to UTF-8 (what open.mp clients speak).
     /// Gamemodes targeting clients with Cyrillic chat usually set
     /// this to Windows-1251 at startup (requires <c>System.Text.Encoding.CodePages</c>

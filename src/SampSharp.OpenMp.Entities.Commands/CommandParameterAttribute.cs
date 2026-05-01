@@ -7,6 +7,6 @@ public class CommandParameterAttribute : Attribute
     /// <summary>Override for the displayed parameter name (used in usage messages).</summary>
     public string? Name { get; set; }
 
-    /// <summary>Override parser type. Must implement <see cref="Parsers.ICommandParameterParser"/> and have a parameterless ctor.</summary>
+    /// <summary>Override parser type. Must implement <see cref="Parsers.ICommandParameterParser" /> and have a parameterless ctor.</summary>
     public Type? Parser { get; set; }
 }

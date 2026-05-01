@@ -26,9 +26,9 @@ public readonly struct PeerNetworkData
         public readonly ushort port;
 
         /// <summary>
-        /// Converts the network ID to an <see cref="IPEndPoint"/> instance.
+        /// Converts the network ID to an <see cref="IPEndPoint" /> instance.
         /// </summary>
-        /// <returns>An <see cref="IPEndPoint"/> representing the peer's address and port.</returns>
+        /// <returns>An <see cref="IPEndPoint" /> representing the peer's address and port.</returns>
         public IPEndPoint ToEndpoint()
         {
             return new IPEndPoint(address.ToAddress(), port);

@@ -2,7 +2,7 @@ using System.Globalization;
 
 namespace SampSharp.Entities.SAMP.Commands.Parsers;
 
-/// <summary>Parses a single <see cref="float"/> word (invariant culture).</summary>
+/// <summary>Parses a single <see cref="float" /> word (invariant culture).</summary>
 public class FloatParser : ICommandParameterParser
 {
     private readonly WordParser _wordParser = new();

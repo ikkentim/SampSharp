@@ -21,7 +21,7 @@ public class CommandParameterInfo
     /// <summary>Parser that converts input text into the parameter value.</summary>
     public ICommandParameterParser Parser { get; }
 
-    /// <summary>Required parameters must be supplied; optional ones use <see cref="DefaultValue"/>.</summary>
+    /// <summary>Required parameters must be supplied; optional ones use <see cref="DefaultValue" />.</summary>
     public bool IsRequired { get; }
 
     /// <summary>Default value used when an optional parameter is omitted.</summary>

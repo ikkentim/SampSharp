@@ -7,10 +7,10 @@ namespace SampSharp.Entities.SAMP.Commands;
 public static class EcsBuilderCommandsExtensions
 {
     /// <summary>
-    /// Registers <see cref="IPlayerCommandService"/> with the default
-    /// <see cref="PlayerCommandService"/> implementation. Uses
-    /// <see cref="ServiceCollectionDescriptorExtensions.TryAddSingleton(IServiceCollection, Type, Type)"/>
-    /// so a custom <see cref="IPlayerCommandService"/> registered earlier wins.
+    /// Registers <see cref="IPlayerCommandService" /> with the default
+    /// <see cref="PlayerCommandService" /> implementation. Uses
+    /// <see cref="ServiceCollectionDescriptorExtensions.TryAddSingleton(IServiceCollection, Type, Type)" />
+    /// so a custom <see cref="IPlayerCommandService" /> registered earlier wins.
     /// </summary>
     public static IServiceCollection AddPlayerCommands(this IServiceCollection services)
     {
@@ -19,9 +19,9 @@ public static class EcsBuilderCommandsExtensions
     }
 
     /// <summary>
-    /// Wires <see cref="PlayerCommandProcessingMiddleware"/> on
+    /// Wires <see cref="PlayerCommandProcessingMiddleware" /> on
     /// <c>OnPlayerCommandText</c>: any chat input not claimed by an
-    /// <c>[Event]</c> listener gets forwarded to <see cref="IPlayerCommandService"/>.
+    /// <c>[Event]</c> listener gets forwarded to <see cref="IPlayerCommandService" />.
     /// </summary>
     public static IEcsBuilder UsePlayerCommands(this IEcsBuilder builder)
     {
@@ -30,8 +30,8 @@ public static class EcsBuilderCommandsExtensions
 
     /// <summary>
     /// Registers the player-commands subsystem: adds the default
-    /// <see cref="IPlayerCommandService"/> implementation and wires up the
-    /// <see cref="PlayerCommandProcessingMiddleware"/> on <c>OnPlayerCommandText</c>.
+    /// <see cref="IPlayerCommandService" /> implementation and wires up the
+    /// <see cref="PlayerCommandProcessingMiddleware" /> on <c>OnPlayerCommandText</c>.
     /// </summary>
     public static IEcsHostBuilder UsePlayerCommands(this IEcsHostBuilder hostBuilder)
     {

@@ -2,7 +2,7 @@ using System.Globalization;
 
 namespace SampSharp.Entities.SAMP.Commands.Parsers;
 
-/// <summary>Parses a single <see cref="double"/> word (invariant culture).</summary>
+/// <summary>Parses a single <see cref="double" /> word (invariant culture).</summary>
 public class DoubleParser : ICommandParameterParser
 {
     private readonly WordParser _wordParser = new();

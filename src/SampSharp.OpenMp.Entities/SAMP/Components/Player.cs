@@ -5,19 +5,21 @@ using SampSharp.OpenMp.Core.Api;
 
 namespace SampSharp.Entities.SAMP;
 
-/// <summary>Represents a component which provides the data and functionality of a player.</summary>
+/// <summary>
+/// Represents a component which provides the data and functionality of a player.
+/// </summary>
 public class Player : WorldEntity
 {
     private readonly IOmpEntityProvider _entityProvider;
     private readonly IPlayer _rawPlayer;
 
     /// <summary>
-    /// Safe accessor for the underlying <see cref="IPlayer"/> handle. Throws
-    /// <see cref="ObjectDisposedException"/> if the component has been destroyed,
-    /// which means open.mp already fired <see cref="ComponentExtension.Cleanup"/>
+    /// Safe accessor for the underlying <see cref="IPlayer" /> handle. Throws
+    /// <see cref="ObjectDisposedException" /> if the component has been destroyed,
+    /// which means open.mp already fired <see cref="ComponentExtension.Cleanup" />
     /// and the native pointer is (or is about to be) freed. Without this guard,
     /// P/Invokes against a stale handle AV the process (0xC0000005) when gamemode
-    /// code holds onto a <see cref="Player"/> reference across disconnect (e.g. via
+    /// code holds onto a <see cref="Player" /> reference across disconnect (e.g. via
     /// an async continuation).
     /// </summary>
     private IPlayer _player
@@ -31,13 +33,15 @@ public class Player : WorldEntity
         }
     }
 
-    /// <summary>Constructs an instance of Player, should be used internally.</summary>
+    /// <summary>
+    /// Constructs an instance of <see cref="Player" />, should be used internally.
+    /// </summary>
     protected Player(IOmpEntityProvider entityProvider, IPlayer player) : base((IEntity)player)
     {
         _entityProvider = entityProvider;
         _rawPlayer = player;
     }
-    
+
     private IPlayerCheckpointData CheckpointData
     {
         get
@@ -51,12 +55,12 @@ public class Player : WorldEntity
         }
     }
 
-    
+
     private IPlayerVehicleData VehicleData
     {
         get
         {
-            var data = _player. QueryExtension<IPlayerVehicleData>();
+            var data = _player.QueryExtension<IPlayerVehicleData>();
             if (data == null)
             {
                 throw new InvalidOperationException("Missing vehicle data");
@@ -64,7 +68,7 @@ public class Player : WorldEntity
             return data;
         }
     }
-    
+
     private IPlayerObjectData ObjectData
     {
         get
@@ -118,7 +122,7 @@ public class Player : WorldEntity
             return data;
         }
     }
-    
+
     private IPlayerClassData ClassData
     {
         get
@@ -150,18 +154,21 @@ public class Player : WorldEntity
     /// </summary>
     protected bool IsOmpEntityDestroyed => _player.TryGetExtension<ComponentExtension>()?.IsOmpEntityDestroyed ?? true;
 
-    /// <summary>Gets the name of this player.</summary>
+    /// <summary>
+    /// Gets or sets the name of this player.
+    /// </summary>
     public virtual string Name
     {
         get => _player.GetName();
-        [Obsolete("Use SetName(string) instead")]set => SetName(value);
+        [Obsolete("Use SetName(string) instead")]
+        set => SetName(value);
     }
 
     /// <summary>
     /// Sets the name of this player.
     /// </summary>
-    /// <param name="name">The name to be set.</param>
-    /// <exception cref="InvalidPlayerNameException">Thrown if the name is invalid of already in use.</exception>
+    /// <param name="name">The new player name.</param>
+    /// <exception cref="InvalidPlayerNameException">Thrown if the <paramref name="name" /> is invalid or already in use.</exception>
     public virtual void SetName(string name)
     {
         ArgumentNullException.ThrowIfNull(name);
@@ -176,44 +183,60 @@ public class Player : WorldEntity
         }
     }
 
-    /// <summary>Gets or sets the facing angle of this player.</summary>
+    /// <summary>
+    /// Gets or sets the facing angle of this player.
+    /// </summary>
     public virtual float Angle
     {
         get => float.RadiansToDegrees(MathHelper.GetZAngleFromRotationMatrix(Matrix4x4.CreateFromQuaternion(Rotation)));
         set => Rotation = Quaternion.CreateFromAxisAngle(GtaVector.Up, float.DegreesToRadians(value));
     }
 
-    /// <summary>Gets or sets the interior of this player.</summary>
+    /// <summary>
+    /// Gets or sets the interior of this player.
+    /// </summary>
     public virtual int Interior
     {
         get => (int)_player.GetInterior();
         set => _player.SetInterior((uint)value);
     }
-    
-    /// <summary>Gets or sets the health of this player.</summary>
+
+    /// <summary>
+    /// Gets or sets the health of this player.
+    /// </summary>
     public virtual float Health
     {
         get => _player.GetHealth();
         set => _player.SetHealth(value);
     }
 
-    /// <summary>Gets or sets the armor of this player.</summary>
+    /// <summary>
+    /// Gets or sets the armor of this player.
+    /// </summary>
     public virtual float Armour
     {
         get => _player.GetArmour();
         set => _player.SetArmour(value);
     }
 
-    /// <summary>Gets the ammo of the Weapon this player is currently holding.</summary>
+    /// <summary>
+    /// Gets the ammunition of the <see cref="Weapon" /> this player is currently holding.
+    /// </summary>
     public virtual int WeaponAmmo => _player.GetArmedWeaponAmmo();
 
-    /// <summary>Gets the WeaponState of the Weapon this player is currently holding.</summary>
+    /// <summary>
+    /// Gets the <see cref="WeaponState" /> of the <see cref="Weapon" /> this player is currently holding.
+    /// </summary>
     public virtual WeaponState WeaponState => (WeaponState)_player.GetAimData().weaponState;
 
-    /// <summary>Gets the Weapon this player is currently holding.</summary>
+    /// <summary>
+    /// Gets the <see cref="Weapon" /> this player is currently holding.
+    /// </summary>
     public virtual Weapon Weapon => (Weapon)_player.GetArmedWeapon();
 
-    /// <summary>Gets the Player this player is aiming at.</summary>
+    /// <summary>
+    /// Gets the <see cref="Player" /> this player is aiming at.
+    /// </summary>
     public virtual Player? TargetPlayer
     {
         get
@@ -227,85 +250,116 @@ public class Player : WorldEntity
         }
     }
 
-    /// <summary>Gets or sets the team this player is in.</summary>
+    /// <summary>
+    /// Gets or sets the team this player is in.
+    /// </summary>
     public virtual int Team
     {
         get => _player.GetTeam();
         set => _player.SetTeam(value);
     }
 
-    /// <summary>Gets or sets the score of this player.</summary>
+    /// <summary>
+    /// Gets or sets the score of this player.
+    /// </summary>
     public virtual int Score
     {
         get => _player.GetScore();
         set => _player.SetScore(value);
     }
 
-    /// <summary>Gets or sets the drunkenness level of this player.</summary>
+    /// <summary>
+    /// Gets or sets the drunkenness level of this player.
+    /// </summary>
     public virtual int DrunkLevel
     {
         get => _player.GetDrunkLevel();
         set => _player.SetDrunkLevel(value);
     }
 
-    /// <summary>Gets or sets the Color of this player.</summary>
+    /// <summary>
+    /// Gets or sets the <see cref="Color" /> of this player.
+    /// </summary>
     public virtual Color Color
     {
         get => _player.GetColour();
         set => _player.SetColour(value);
     }
 
-    /// <summary>Gets or sets the skin of this player.</summary>
+    /// <summary>
+    /// Gets or sets the skin of this player.
+    /// </summary>
     public virtual int Skin
     {
         get => _player.GetSkin();
         set => _player.SetSkin(value);
     }
 
-    /// <summary>Gets or sets the money of this player.</summary>
+    /// <summary>
+    /// Gets or sets the money of this player.
+    /// </summary>
     public virtual int Money
     {
         get => _player.GetMoney();
         set => _player.SetMoney(value);
     }
 
-    /// <summary>Gets the state of this player.</summary>
+    /// <summary>
+    /// Gets the <see cref="PlayerState" /> of this player.
+    /// </summary>
     public virtual PlayerState State => (PlayerState)_player.GetState();
 
-    /// <summary>Gets the IP of this player as a string.</summary>
+    /// <summary>
+    /// Gets the IP of this player as a string.
+    /// </summary>
     public virtual string Ip => IpAddress.ToString();
-    
-    /// <summary>Gets the IP of this player.</summary>
+
+    /// <summary>
+    /// Gets the <see cref="IPAddress" /> of this player.
+    /// </summary>
     public virtual IPAddress IpAddress => _player.GetNetworkData().Value.networkID.address.ToAddress();
 
-    /// <summary>Gets the end point (IP and port) of this player.</summary>
+    /// <summary>
+    /// Gets the end point (<see cref="IPAddress" /> and port) of this player.
+    /// </summary>
     public virtual IPEndPoint EndPoint => _player.GetNetworkData().Value.networkID.ToEndpoint();
 
-    /// <summary>Gets the ping of this player.</summary>
+    /// <summary>
+    /// Gets the ping of this player.
+    /// </summary>
     public virtual int Ping => (int)_player.GetPing();
 
-    /// <summary>Gets or sets the wanted level of this player.</summary>
+    /// <summary>
+    /// Gets or sets the wanted level of this player.
+    /// </summary>
     public virtual int WantedLevel
     {
         get => (int)_player.GetWantedLevel();
         set => _player.SetWantedLevel((uint)value);
     }
 
-    /// <summary>Gets or sets the FightStyle of this player.</summary>
+    /// <summary>
+    /// Gets or sets the <see cref="FightStyle" /> of this player.
+    /// </summary>
     public virtual FightStyle FightStyle
     {
         get => (FightStyle)_player.GetFightingStyle();
         set => _player.SetFightingStyle((PlayerFightingStyle)value);
     }
 
-    /// <summary>Gets or sets the velocity of this player.</summary>
+    /// <summary>
+    /// Gets or sets the <see cref="Vector3" /> velocity of this player.
+    /// </summary>
     public virtual Vector3 Velocity
     {
         get => _player.GetVelocity();
         set => _player.SetVelocity(value);
     }
 
-    /// <summary>Gets the vehicle seat this player sits on.</summary>
+    /// <summary>
+    /// Gets the vehicle seat this player is occupying.
+    /// </summary>
+    /// <remarks>Returns -1 if the player is not in a vehicle.</remarks>
     public virtual int VehicleSeat
     {
         get
@@ -321,17 +375,23 @@ public class Player : WorldEntity
         }
     }
 
-    /// <summary>Gets the index of the animation this player is playing.</summary>
+    /// <summary>
+    /// Gets the animation index of the animation this player is currently playing.
+    /// </summary>
     public virtual int AnimationIndex => _player.GetAnimationData().ID;
 
-    /// <summary>Gets or sets the SpecialAction of this player.</summary>
+    /// <summary>
+    /// Gets or sets the <see cref="SpecialAction" /> of this player.
+    /// </summary>
     public virtual SpecialAction SpecialAction
     {
         get => (SpecialAction)_player.GetAction();
         set => _player.SetAction((PlayerSpecialAction)value);
     }
 
-    /// <summary>Gets or sets the position of the camera of this player.</summary>
+    /// <summary>
+    /// Gets or sets the position of the camera of this player as a <see cref="Vector3" />.
+    /// </summary>
     /// <remarks>
     /// The getter prefers the real-time client-reported camera position
     /// (<c>aimData.camPos</c>) and only falls back to <c>getCameraPosition()</c>
@@ -351,47 +411,73 @@ public class Player : WorldEntity
         set => _player.SetCameraPosition(value);
     }
 
-    /// <summary>Gets the front Vector3 of this player's camera.</summary>
+    /// <summary>
+    /// Gets the front <see cref="Vector3" /> of this player's camera.
+    /// </summary>
     public virtual Vector3 CameraFrontVector => _player.GetAimData().camFrontVector;
 
-    /// <summary>Gets the mode of this player's camera.</summary>
+    /// <summary>
+    /// Gets the <see cref="CameraMode" /> of this player's camera.
+    /// </summary>
     public virtual CameraMode CameraMode => (CameraMode)_player.GetAimData().camMode;
 
-    /// <summary>Gets the Actor this player is aiming at.</summary>
+    /// <summary>
+    /// Gets the <see cref="Actor" /> this player is aiming at.
+    /// </summary>
     public virtual Actor? TargetActor => _entityProvider.GetComponent(_player.GetTargetActor());
 
-    /// <summary>Gets the GlobalObject the camera of this player is pointing at.</summary>
+    /// <summary>
+    /// Gets the <see cref="GlobalObject" /> the camera of this player is pointing at.
+    /// </summary>
     public virtual GlobalObject? CameraTargetGlobalObject => _entityProvider.GetComponent(_player.GetCameraTargetObject());
 
-    /// <summary>Gets the PlayerObject the camera of this player is pointing at.</summary>
+    /// <summary>
+    /// Gets the <see cref="PlayerObject" /> the camera of this player is pointing at.
+    /// </summary>
     public virtual PlayerObject? CameraTargetPlayerObject => null; // TODO: broken, see https://github.com/openmultiplayer/open.mp/issues/1070
 
-    /// <summary>Gets the GtaVehicle the camera of this player is pointing at.</summary>
+    /// <summary>
+    /// Gets the <see cref="Vehicle" /> the camera of this player is pointing at.
+    /// </summary>
     public virtual Vehicle? CameraTargetVehicle => _entityProvider.GetComponent(_player.GetCameraTargetVehicle());
 
-    /// <summary>Gets the GtaPlayer the camera of this player is pointing at.</summary>
+    /// <summary>
+    /// Gets the <see cref="Player" /> the camera of this player is pointing at.
+    /// </summary>
     public virtual Player? CameraTargetPlayer => _entityProvider.GetComponent(_player.GetCameraTargetPlayer());
 
-    /// <summary>Gets the GtaPlayer the camera of this player is pointing at.</summary>
+    /// <summary>
+    /// Gets the <see cref="Actor" /> the camera of this player is pointing at.
+    /// </summary>
     public virtual Actor? CameraTargetActor => _entityProvider.GetComponent(_player.GetCameraTargetActor());
 
-    /// <summary>Gets the entity (player, player object, object, vehicle or actor) the camera of this player is pointing at.</summary>
-    public virtual Component? CameraTargetEntity => 
-        CameraTargetPlayer ?? 
+    /// <summary>
+    /// Gets the entity (<see cref="Player" />, <see cref="PlayerObject" />, object, <see cref="Vehicle" /> or <see cref="Actor" />) the camera of this player is pointing at.
+    /// </summary>
+    public virtual Component? CameraTargetEntity =>
+        CameraTargetPlayer ??
         CameraTargetActor ??
         (Component?)CameraTargetVehicle ??
         CameraTargetGlobalObject;
 
-    /// <summary>Gets whether this player is currently in any vehicle.</summary>
+    /// <summary>
+    /// Gets a value indicating whether this player is currently in any vehicle.
+    /// </summary>
     public virtual bool InAnyVehicle => Vehicle != null;
 
-    /// <summary>Gets whether this player is in his checkpoint.</summary>
+    /// <summary>
+    /// Gets a value indicating whether this player is in a checkpoint.
+    /// </summary>
     public virtual bool InCheckpoint => CheckpointData.GetCheckpoint().IsPlayerInside();
 
-    /// <summary>Gets whether this player is in his race-checkpoint.</summary>
+    /// <summary>
+    /// Gets a value indicating whether this player is in a race checkpoint.
+    /// </summary>
     public virtual bool InRaceCheckpoint => CheckpointData.GetRaceCheckpoint().IsPlayerInside();
 
-    /// <summary>Gets the component (object or vehicle) that this player is surfing.</summary>
+    /// <summary>
+    /// Gets the <see cref="Component" /> (object or vehicle) that this player is surfing.
+    /// </summary>
     public virtual Component? SurfingEntity
     {
         get
@@ -408,42 +494,60 @@ public class Player : WorldEntity
     }
 
 
-    /// <summary>Gets the Vehicle this player is currently in.</summary>
+    /// <summary>
+    /// Gets the <see cref="Vehicle" /> this player is currently in.
+    /// </summary>
     public virtual Vehicle? Vehicle => _entityProvider.GetComponent(VehicleData.GetVehicle());
 
-    /// <summary>Gets the Menu this player is currently in.</summary>
+    /// <summary>
+    /// Gets the <see cref="Menu" /> this player is currently in.
+    /// </summary>
     public virtual Menu? Menu
     {
         get
         {
             var menuId = MenuData.GetMenuID();
-            return menuId == OpenMpConstants.INVALID_MENU_ID ? null :  _entityProvider.GetMenu(menuId);
+            return menuId == OpenMpConstants.INVALID_MENU_ID ? null : _entityProvider.GetMenu(menuId);
         }
     }
 
-    /// <summary>Gets whether this player is an actual player or an NPC.</summary>
+    /// <summary>
+    /// Gets a value indicating whether this player is a bot (NPC).
+    /// </summary>
     public virtual bool IsNpc => _player.IsBot();
 
-    /// <summary>Gets whether this player is logged into RCON.</summary>
+    /// <summary>
+    /// Gets a value indicating whether this player is logged into RCON.
+    /// </summary>
     public virtual bool IsAdmin => ConsoleData.HasConsoleAccess();
 
     private static readonly PlayerState[] _deadStates = [PlayerState.None, PlayerState.Spectating, PlayerState.Wasted];
 
-    /// <summary>Gets a value indicating whether this player is alive.</summary>
+    /// <summary>
+    /// Gets a value indicating whether this player is alive.
+    /// </summary>
     public virtual bool IsAlive => !_deadStates.Contains(State);
 
-    /// <summary>Gets this player's game version.</summary>
+    /// <summary>
+    /// Gets this player's game version.
+    /// </summary>
     public virtual string Version =>
         // TODO: more client ver info
         _player.GetClientVersionName();
 
-    /// <summary>Gets this player's global computer identifier string.</summary>
+    /// <summary>
+    /// Gets this player's global computer identifier string.
+    /// </summary>
     public virtual string Gpci => _player.GetSerial();
 
-    /// <summary>Gets a value indicating whether this player is selecting a textdraw.</summary>
+    /// <summary>
+    /// Gets a value indicating whether this player is selecting a text draw.
+    /// </summary>
     public virtual bool IsSelectingTextDraw => TextDrawData.IsSelecting();
 
-    /// <summary>Gets the amount of time (in milliseconds) that a player has been connected to the server for.</summary>
+    /// <summary>
+    /// Gets the <see cref="TimeSpan" /> this player has been connected to the server.
+    /// </summary>
     public virtual TimeSpan ConnectedTime
     {
         get
@@ -453,7 +557,9 @@ public class Player : WorldEntity
         }
     }
 
-    /// <summary>Gets the number of messages the server has received from the player.</summary>
+    /// <summary>
+    /// Gets the number of messages received from this player.
+    /// </summary>
     public virtual int MessagesReceived
     {
         get
@@ -463,7 +569,9 @@ public class Player : WorldEntity
         }
     }
 
-    /// <summary>Gets the number of messages the player has received in the last second.</summary>
+    /// <summary>
+    /// Gets the number of messages received from this player per second.
+    /// </summary>
     public virtual int MessagesReceivedPerSecond
     {
         get
@@ -473,7 +581,9 @@ public class Player : WorldEntity
         }
     }
 
-    /// <summary>Gets the number of messages the server has sent to the player.</summary>
+    /// <summary>
+    /// Gets the number of messages sent to this player.
+    /// </summary>
     public virtual int MessagesSent
     {
         get
@@ -483,7 +593,9 @@ public class Player : WorldEntity
         }
     }
 
-    /// <summary>Get the amount of information (in bytes) that the server has sent to the player.</summary>
+    /// <summary>
+    /// Gets the number of bytes received from this player.
+    /// </summary>
     public virtual int BytesReceived
     {
         get
@@ -493,7 +605,9 @@ public class Player : WorldEntity
         }
     }
 
-    /// <summary>Get the amount of information (in bytes) that the server has received from the player.</summary>
+    /// <summary>
+    /// Gets the number of bytes sent to this player.
+    /// </summary>
     public virtual int BytesSent
     {
         get
@@ -503,7 +617,9 @@ public class Player : WorldEntity
         }
     }
 
-    /// <summary>Get a player's connection status.</summary>
+    /// <summary>
+    /// Gets the <see cref="ConnectionStatus" /> of this player.
+    /// </summary>
     public virtual ConnectionStatus ConnectionStatus
     {
         get
@@ -513,26 +629,29 @@ public class Player : WorldEntity
         }
     }
 
-    /// <summary>Gets the aspect ratio of this player's camera.</summary>
+    /// <summary>
+    /// Gets the aspect ratio of this player's camera.
+    /// </summary>
     public virtual float AspectCameraRatio => _player.GetAimData().aspectRatio;
 
-    /// <summary>Gets the game camera zoom level for this player.</summary>
+    /// <summary>
+    /// Gets the game camera zoom level for this player.
+    /// </summary>
     public virtual float CameraZoom => _player.GetAimData().camZoom;
 
     /// <summary>
-    /// This function can be used to change the spawn information of a specific player. It allows you to automatically set someone's spawn weapons, their
-    /// team, skin and spawn position, normally used in case of mini games or automatic-spawn systems.
+    /// Configures spawn information for this player, including team, skin, position, and weapons.
     /// </summary>
-    /// <param name="team">The Team-ID of the chosen player.</param>
-    /// <param name="skin">The skin which the player will spawn with.</param>
-    /// <param name="position">The player's spawn position.</param>
-    /// <param name="rotation">The direction in which the player needs to be facing after spawning.</param>
-    /// <param name="weapon1">The first spawn-weapon for the player.</param>
-    /// <param name="weapon1Ammo">The amount of ammunition for the primary spawn-weapon.</param>
-    /// <param name="weapon2">The second spawn-weapon for the player.</param>
-    /// <param name="weapon2Ammo">The amount of ammunition for the second spawn-weapon.</param>
-    /// <param name="weapon3">The third spawn-weapon for the player.</param>
-    /// <param name="weapon3Ammo">The amount of ammunition for the third spawn-weapon.</param>
+    /// <param name="team">The team ID for this player.</param>
+    /// <param name="skin">The skin this player will spawn with.</param>
+    /// <param name="position">The spawn position as a <see cref="Vector3" />.</param>
+    /// <param name="rotation">The facing direction after spawning.</param>
+    /// <param name="weapon1">The first spawn <see cref="Weapon" />.</param>
+    /// <param name="weapon1Ammo">The ammunition for the first <paramref name="weapon1" />.</param>
+    /// <param name="weapon2">The second spawn <see cref="Weapon" />.</param>
+    /// <param name="weapon2Ammo">The ammunition for the second <paramref name="weapon2" />.</param>
+    /// <param name="weapon3">The third spawn <see cref="Weapon" />.</param>
+    /// <param name="weapon3Ammo">The ammunition for the third <paramref name="weapon3" />.</param>
     public virtual void SetSpawnInfo(int team, int skin, Vector3 position, float rotation, Weapon weapon1 = Weapon.None, int weapon1Ammo = 0,
         Weapon weapon2 = Weapon.None, int weapon2Ammo = 0, Weapon weapon3 = Weapon.None, int weapon3Ammo = 0)
     {
@@ -547,9 +666,9 @@ public class Player : WorldEntity
     }
 
     /// <summary>
-    /// Get the network statistics of this player.
+    /// Gets the network statistics for this player.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>A <see cref="NetworkStats" /> object containing the player's network statistics.</returns>
     public NetworkStats GetNetworkStats()
     {
         return new NetworkStats(_player.GetNetworkData().Value.network.GetStatistics());
@@ -561,105 +680,134 @@ public class Player : WorldEntity
         _player.Spawn();
     }
 
-    /// <summary>Restore the camera to a place behind the player, after using a function like <see cref="CameraPosition" />.</summary>
+    /// <summary>
+    /// Restores the camera to the default position behind the player after manual camera positioning.
+    /// </summary>
     public virtual void PutCameraBehindPlayer()
     {
         _player.SetCameraBehind();
     }
 
-    /// <summary>This sets this player's position then adjusts the Player's z-coordinate to the nearest solid ground under the position.</summary>
-    /// <param name="position">The position to move this player to.</param>
+    /// <summary>
+    /// Sets this player's position and adjusts the Z-coordinate to the nearest solid ground beneath the position.
+    /// </summary>
+    /// <param name="position">The position to move this player to as a <see cref="Vector3" />.</param>
     public virtual void SetPositionFindZ(Vector3 position)
     {
         _player.SetPositionFindZ(position);
     }
 
-    /// <summary>Check if this player is in range of a point.</summary>
-    /// <param name="range">The furthest distance the player can be from the point to be in range.</param>
+    /// <summary>
+    /// Determines whether this player is in range of a specified point.
+    /// </summary>
+    /// <param name="range">The maximum distance this player can be from the point to be in range.</param>
     /// <param name="point">The point to check the range to.</param>
-    /// <returns>True if this player is in range of the point, otherwise False.</returns>
+    /// <returns><see langword="true" /> if this player is in range of the point; otherwise, <see langword="false" />.</returns>
     public virtual bool IsInRangeOfPoint(float range, Vector3 point)
     {
         return GetDistanceFromPoint(point) <= range;
     }
 
-    /// <summary>Calculate the distance between this player and a map coordinate.</summary>
-    /// <param name="point">The point to calculate the distance from.</param>
-    /// <returns>The distance between the player and the point as a float.</returns>
+    /// <summary>
+    /// Calculates the distance between this player and a specified point.
+    /// </summary>
+    /// <param name="point">The point to calculate the distance from as a <see cref="Vector3" />.</param>
+    /// <returns>The distance between this player and the <paramref name="point" />.</returns>
     public virtual float GetDistanceFromPoint(Vector3 point)
     {
         var offset = point - Position;
         return offset.Length();
     }
 
-    /// <summary>Checks if the specified <paramref name="player" /> is streamed in this player's client.</summary>
-    /// <remarks>Players aren't streamed in on their own client, so if this player is the same as the other Player, it will return false!</remarks>
-    /// <remarks>Players stream out if they are more than 150 meters away (see server.cfg - stream_distance)</remarks>
-    /// <param name="player">The player to check is streamed in.</param>
-    /// <returns>True if the other Player is streamed in for this player, False if not.</returns>
+    /// <summary>
+    /// Determines whether the specified <paramref name="player" /> is streamed in on this player's client.
+    /// </summary>
+    /// <remarks>Players are not streamed in on their own client. If this player is the same as the <paramref name="player" />, this method returns <see langword="false" />. Players stream out if they are more than 150 meters away (configurable via server.cfg stream_distance).</remarks>
+    /// <param name="player">The <see cref="Player" /> to check.</param>
+    /// <returns><see langword="true" /> if the specified <paramref name="player" /> is streamed in for this player; otherwise, <see langword="false" />.</returns>
     public virtual bool IsPlayerStreamedIn(Player player)
     {
         ArgumentNullException.ThrowIfNull(player);
         return _player.IsStreamedInForPlayer(player);
     }
 
-    /// <summary>Set the ammo of this player's weapon.</summary>
-    /// <param name="weapon">The weapon to set the ammo of.</param>
-    /// <param name="ammo">The amount of ammo to set.</param>
+    /// <summary>
+    /// Sets the ammunition for this player's weapon.
+    /// </summary>
+    /// <param name="weapon">The weapon to set ammunition for.</param>
+    /// <param name="ammo">The amount of ammunition to set.</param>
     public virtual void SetAmmo(Weapon weapon, int ammo)
     {
         _player.SetWeaponAmmo(new WeaponSlotData((byte)weapon, ammo));
     }
 
-    /// <summary>Give this player a <see cref="Weapon" /> with a specified amount of ammo.</summary>
-    /// <param name="weapon">The Weapon to give to this player.</param>
-    /// <param name="ammo">The amount of ammo to give to this player.</param>
+    /// <summary>
+    /// Gives this player a weapon with a specified amount of ammunition.
+    /// </summary>
+    /// <param name="weapon">The weapon to give to this player.</param>
+    /// <param name="ammo">The amount of ammunition to give with the weapon.</param>
     public virtual void GiveWeapon(Weapon weapon, int ammo)
     {
         _player.GiveWeapon(new WeaponSlotData((byte)weapon, ammo));
     }
 
 
-    /// <summary>Removes all weapons from this player.</summary>
+    /// <summary>
+    /// Removes all weapons from this player.
+    /// </summary>
     public virtual void ResetWeapons()
     {
         _player.ResetWeapons();
     }
 
-    /// <summary>Removes a single <see cref="Weapon"/> from this player.</summary>
+    /// <summary>
+    /// Removes a single weapon from this player.
+    /// </summary>
     /// <param name="weapon">The weapon to remove.</param>
     public virtual void RemoveWeapon(Weapon weapon)
     {
         _player.RemoveWeapon((byte)weapon);
     }
 
-    /// <summary>Gets or sets this player's gravity.</summary>
+    /// <summary>
+    /// Gets or sets this player's gravity.
+    /// </summary>
     public virtual float Gravity
     {
         get => _player.GetGravity();
         set => _player.SetGravity(value);
     }
 
-    /// <summary>Whether this player is using the official Rockstar/SA-MP client (as opposed to open.mp, mobile/PSP, or an unofficial fork).</summary>
+    /// <summary>
+    /// Gets a value indicating whether this player is using the official Rockstar/SA-MP client (as opposed to open.mp, mobile/PSP, or an unofficial fork).
+    /// </summary>
     public virtual bool IsUsingOfficialClient => _player.IsUsingOfficialClient();
 
-    /// <summary>Whether this player connected using the open.mp client.</summary>
+    /// <summary>
+    /// Gets a value indicating whether this player is using the open.mp client.
+    /// </summary>
     public virtual bool IsUsingOmp => _player.GetClientVersion() == ClientVersion.openmp;
 
-    /// <summary>Gets this player's <see cref="ClientVersion"/>.</summary>
+    /// <summary>
+    /// Gets this player's <see cref="ClientVersion" />.
+    /// </summary>
     public virtual ClientVersion ClientVersion => _player.GetClientVersion();
 
-    /// <summary>Sets the armed weapon of this player.</summary>
+    /// <summary>
+    /// Sets the armed weapon of this player.
+    /// </summary>
     /// <param name="weapon">The weapon that the player should be armed with.</param>
     public virtual void SetArmedWeapon(Weapon weapon)
     {
         _player.SetArmedWeapon((int)weapon);
     }
 
-    /// <summary>Get the <see cref="Weapon" /> and ammo in this player's weapon slot.</summary>
-    /// <param name="slot">The weapon slot to get data for (0-12).</param>
-    /// <param name="weapon">The variable in which to store the weapon, passed by reference.</param>
-    /// <param name="ammo">The variable in which to store the ammo, passed by reference.</param>
+    /// <summary>
+    /// Gets the <see cref="Weapon" /> and ammunition in this player's weapon slot.
+    /// </summary>
+    /// <param name="slot">The weapon slot index (0-12).</param>
+    /// <param name="weapon">The <see cref="Weapon" /> in the slot, passed by reference.</param>
+    /// <param name="ammo">The ammunition in the slot, passed by reference.</param>
     public virtual void GetWeaponData(int slot, out Weapon weapon, out int ammo)
     {
         var data = _player.GetWeaponSlot(slot);
@@ -667,27 +815,32 @@ public class Player : WorldEntity
         ammo = data.Ammo;
     }
 
-    /// <summary>Give money to this player.</summary>
-    /// <param name="money">The amount of money to give this player. Use a minus value to take money.</param>
+    /// <summary>
+    /// Gives money to this player.
+    /// </summary>
+    /// <param name="money">The amount of money to give. Use a negative value to take money.</param>
     public virtual void GiveMoney(int money)
     {
         _player.GiveMoney(money);
     }
 
-    /// <summary>Reset this player's money to $0.</summary>
+    /// <summary>
+    /// Resets this player's money to zero.
+    /// </summary>
     public virtual void ResetMoney()
     {
         _player.ResetMoney();
     }
 
-    /// <summary>Check which keys this player is pressing.</summary>
+    /// <summary>
+    /// Retrieves the keys this player is currently pressing.
+    /// </summary>
     /// <remarks>
-    /// Only the FUNCTION of keys can be detected; not actual keys. You can not detect if the player presses space, but you can detect if they press sprint
-    /// (which can be mapped (assigned) to ANY key, but is space by default)).
+    /// Only the function of keys can be detected, not the actual physical keys. For example, you cannot detect if the player presses space, but you can detect if they press sprint (which can be mapped to any key, defaulting to space).
     /// </remarks>
-    /// <param name="keys">A set of bits containing this player's key states</param>
-    /// <param name="upDown">Up or Down value, passed by reference.</param>
-    /// <param name="leftRight">Left or Right value, passed by reference.</param>
+    /// <param name="keys">The keys this player is pressing, passed by reference.</param>
+    /// <param name="upDown">The up/down direction value, passed by reference.</param>
+    /// <param name="leftRight">The left/right direction value, passed by reference.</param>
     public virtual void GetKeys(out Keys keys, out int upDown, out int leftRight)
     {
         var data = _player.GetKeyData();
@@ -696,134 +849,164 @@ public class Player : WorldEntity
         leftRight = data.leftRight;
     }
 
-    /// <summary>Sets the clock of this player to a specific value. This also changes the daytime. (night/day etc.)</summary>
-    /// <param name="hour">Hour to set (0-23).</param>
-    /// <param name="minutes">Minutes to set (0-59).</param>
+    /// <summary>
+    /// Sets the game clock for this player to a specific time. This also changes the daytime visuals.
+    /// </summary>
+    /// <param name="hour">The <paramref name="hour" /> to set (0-23).</param>
+    /// <param name="minutes">The <paramref name="minutes" /> to set (0-59).</param>
     public virtual void SetTime(int hour, int minutes)
     {
         _player.SetTime(TimeSpan.FromHours(hour), TimeSpan.FromMinutes(minutes));
     }
 
-    /// <summary>Get this player's current game time. Set by <see cref="IServerService.SetWorldTime" />, or by <see cref="ToggleClock" />.</summary>
-    /// <param name="hour">The variable to store the hour in, passed by reference.</param>
-    /// <param name="minutes">The variable to store the minutes in, passed by reference.</param>
+    /// <summary>
+    /// Gets the current game time for this player.
+    /// </summary>
+    /// <remarks>The time is set by <see cref="IServerService.SetWorldTime" /> or can be overridden per-player with <see cref="SetTime" />.</remarks>
+    /// <param name="hour">The current <paramref name="hour" />, passed by reference.</param>
+    /// <param name="minutes">The current <paramref name="minutes" />, passed by reference.</param>
     public virtual void GetTime(out int hour, out int minutes)
     {
         (hour, minutes) = _player.GetTime();
     }
 
-    /// <summary>Show/Hide the in-game clock (top right corner) for this player.</summary>
-    /// <remarks>Time is not synced with other players!</remarks>
-    /// <param name="toggle">True to show, False to hide.</param>
+    /// <summary>
+    /// Toggles the visibility of the in-game clock (top right corner) for this player.
+    /// </summary>
+    /// <remarks>Time is not synced with other players.</remarks>
+    /// <param name="toggle"><see langword="true" /> to show the clock; <see langword="false" /> to hide it.</param>
     public virtual void ToggleClock(bool toggle)
     {
         _player.UseClock(toggle);
     }
 
     /// <summary>
-    /// Set this player's weather. If <see cref="ToggleClock" /> has been used to enable the clock, weather changes will interpolate (gradually change),
-    /// otherwise will change instantly.
+    /// Sets the weather for this player. If the clock is enabled, weather changes will interpolate gradually; otherwise they change instantly.
     /// </summary>
-    /// <param name="weather">The weather to set.</param>
+    /// <param name="weather">The weather ID to set.</param>
     public virtual void SetWeather(int weather)
     {
         _player.SetWeather(weather);
     }
 
-    /// <summary>Forces this player to go back to class selection.</summary>
+    /// <summary>
+    /// Forces this player to go back to class selection.
+    /// </summary>
     /// <remarks>The player will not return to class selection until they re-spawn. This can be achieved with <see cref="ToggleSpectating" /></remarks>
     public virtual void ForceClassSelection()
     {
         _player.ForceClassSelection();
     }
 
-    /// <summary>Display the cursor and allow this player to select a text draw.</summary>
-    /// <param name="hoverColor">The color of the text draw when hovering over with mouse.</param>
+    /// <summary>
+    /// Displays the text draw selection cursor and enables this player to select a text draw.
+    /// </summary>
+    /// <param name="hoverColor">The <see cref="Color" /> to display when hovering over a text draw.</param>
     public virtual void SelectTextDraw(Color hoverColor)
     {
         TextDrawData.BeginSelection(hoverColor);
     }
 
-    /// <summary>Cancel text draw selection with the mouse for this player.</summary>
+    /// <summary>
+    /// Cancels text draw selection mode for this player.
+    /// </summary>
     public virtual void CancelSelectTextDraw()
     {
         TextDrawData.EndSelection();
     }
 
-    /// <summary>This function plays a crime report for this player - just like in single-player when CJ commits a crime.</summary>
-    /// <param name="suspect">The suspect player which will be described in the crime report.</param>
-    /// <param name="crime">The crime ID, which will be reported as a 10-code (i.e. 10-16 if 16 was passed as the crime ID).</param>
+    /// <summary>
+    /// Plays a crime report for this player, similar to single-player when committing a crime.
+    /// </summary>
+    /// <param name="suspect">The suspect <see cref="Player" /> to be described in the report.</param>
+    /// <param name="crime">The crime ID, which will be reported as a 10-code (e.g., 10-16 for crime ID 16).</param>
     public virtual void PlayCrimeReport(Player suspect, int crime)
     {
         ArgumentNullException.ThrowIfNull(suspect);
         _player.PlayerCrimeReport(suspect, crime);
     }
 
-    /// <summary>Play an 'audio stream' for this player. Normal audio files also work (e.g. MP3).</summary>
-    /// <param name="url">The url to play. Valid formats are mp3 and ogg/vorbis. A link to a .pls (playlist) file will play that playlist.</param>
-    /// <param name="position">The position at which to play the audio.</param>
-    /// <param name="distance">The distance over which the audio will be heard.</param>
+    /// <summary>
+    /// Plays an audio stream for this player. Standard audio files (such as MP3) are also supported.
+    /// </summary>
+    /// <param name="url">The URL to stream. Valid formats are MP3 and OGG/Vorbis. A link to a .pls file will play that playlist.</param>
+    /// <param name="position">The position from which the audio should be heard as a <see cref="Vector3" />.</param>
+    /// <param name="distance">The distance over which the audio will be audible.</param>
     public virtual void PlayAudioStream(string url, Vector3 position, float distance)
     {
         ArgumentNullException.ThrowIfNull(url);
         _player.PlayAudio(url, true, position, distance);
     }
 
-    /// <summary>Play an 'audio stream' for this player. Normal audio files also work (e.g. MP3).</summary>
-    /// <param name="url">The url to play. Valid formats are mp3 and ogg/vorbis. A link to a .pls (playlist) file will play that playlist.</param>
+    /// <summary>
+    /// Plays an audio stream for this player. Standard audio files (such as MP3) are also supported.
+    /// </summary>
+    /// <param name="url">The URL to stream. Valid formats are MP3 and OGG/Vorbis. A link to a .pls file will play that playlist.</param>
     public virtual void PlayAudioStream(string url)
     {
         ArgumentNullException.ThrowIfNull(url);
         _player.PlayAudio(url);
     }
 
-    /// <summary>Allows you to disable collisions between vehicles for a player.</summary>
-    /// <param name="disable">if set to <see langword="true" /> disables the collision between vehicles.</param>
+    /// <summary>
+    /// Disables or enables <see cref="Vehicle" /> collisions for this player.
+    /// </summary>
+    /// <param name="disable">If <see langword="true" />, <see cref="Vehicle" /> collisions are disabled; if <see langword="false" />, they are enabled.</param>
     public virtual void DisableRemoteVehicleCollisions(bool disable)
     {
         _player.SetRemoteVehicleCollisions(!disable);
     }
 
-    /// <summary>Toggles camera targeting functions for a player.</summary>
-    /// <param name="enable">if set to <see langword="true" /> the functionality is enabled.</param>
+    /// <summary>
+    /// Enables or disables camera targeting functionality for this player.
+    /// </summary>
+    /// <param name="enable">If <see langword="true" />, the functionality is enabled; if <see langword="false" />, it is disabled.</param>
     public virtual void EnablePlayerCameraTarget(bool enable)
     {
         _player.UseCameraTargeting(enable);
     }
 
-    /// <summary>Stops the current audio stream for this player.</summary>
+    /// <summary>
+    /// Stops the current audio stream for this player.
+    /// </summary>
     public virtual void StopAudioStream()
     {
         _player.StopAudio();
     }
 
-    /// <summary>Loads or unloads an interior script for this player. (for example the Ammunation menu)</summary>
-    /// <param name="shopName">The name of the shop, see <see cref="ShopName" /> for shop names.</param>
+    /// <summary>
+    /// Loads or unloads an interior script for this player (for example, the Ammunation shop menu).
+    /// </summary>
+    /// <param name="shopName">The name of the shop. See <see cref="ShopName" /> for available shop names.</param>
     public virtual void SetShopName(string shopName)
     {
         ArgumentNullException.ThrowIfNull(shopName);
         _player.SetShopName(shopName);
     }
 
-    /// <summary>Set the skill level of a certain weapon type for this player.</summary>
-    /// <remarks>The skill parameter is NOT the weapon ID, it is the skill type.</remarks>
-    /// <param name="skill">The <see cref="WeaponSkill" /> you want to set the skill of.</param>
-    /// <param name="level">The skill level to set for that weapon, ranging from 0 to 999. (A level out of range will max it out)</param>
+    /// <summary>
+    /// Sets the skill level of a specific <see cref="Weapon" /> for this player.
+    /// </summary>
+    /// <remarks>The <paramref name="skill" /> parameter is a weapon skill type, not a weapon ID.</remarks>
+    /// <param name="skill">The <see cref="WeaponSkill" /> to set.</param>
+    /// <param name="level">The skill level (0-999). Values outside this range will be clamped.</param>
     public virtual void SetSkillLevel(WeaponSkill skill, int level)
     {
         _player.SetSkillLevel((PlayerWeaponSkill)skill, level);
     }
 
-    /// <summary>Attach an object to a specific bone on this player.</summary>
-    /// <param name="index">The index (slot) to assign the object to (0-9).</param>
-    /// <param name="modelId">The model to attach.</param>
+    /// <summary>
+    /// Attaches an object to a specific bone on this player.
+    /// </summary>
+    /// <param name="index">The attachment slot index (0-9).</param>
+    /// <param name="modelId">The model ID of the object to attach.</param>
     /// <param name="bone">The bone to attach the object to.</param>
-    /// <param name="offset">offset for the object position.</param>
-    /// <param name="rotation">rotation of the object.</param>
-    /// <param name="scale">scale of the object.</param>
-    /// <param name="materialColor1">The first object color to set.</param>
-    /// <param name="materialColor2">The second object color to set.</param>
-    /// <returns>True on success, False otherwise.</returns>
+    /// <param name="offset">The offset of the object from the <paramref name="bone" /> as a <see cref="Vector3" />.</param>
+    /// <param name="rotation">The rotation of the attached object as a <see cref="Vector3" />.</param>
+    /// <param name="scale">The scale of the attached object as a <see cref="Vector3" />.</param>
+    /// <param name="materialColor1">The primary object <see cref="Color" />.</param>
+    /// <param name="materialColor2">The secondary object <see cref="Color" />.</param>
+    /// <returns><see langword="true" /> on success; otherwise, <see langword="false" />.</returns>
     public virtual bool SetAttachedObject(int index, int modelId, Bone bone, Vector3 offset, Vector3 rotation, Vector3 scale, Color materialColor1,
         Color materialColor2)
     {
@@ -839,9 +1022,11 @@ public class Player : WorldEntity
         return true;
     }
 
-    /// <summary>Remove an attached object from this player.</summary>
-    /// <param name="index">The index of the object to remove (set with <see cref="SetAttachedObject" />).</param>
-    /// <returns>True on success, False otherwise.</returns>
+    /// <summary>
+    /// Removes an attached object from this player.
+    /// </summary>
+    /// <param name="index">The attachment slot index (set via <see cref="SetAttachedObject" />).</param>
+    /// <returns><see langword="true" /> on success; otherwise, <see langword="false" />.</returns>
     public virtual bool RemoveAttachedObject(int index)
     {
         if (index is < 0 or >= OpenMpConstants.MAX_ATTACHED_OBJECT_SLOTS)
@@ -853,9 +1038,11 @@ public class Player : WorldEntity
         return true;
     }
 
-    /// <summary>Check if this player has an object attached in the specified index (slot).</summary>
-    /// <param name="index">The index (slot) to check.</param>
-    /// <returns>True if the slot is used, False otherwise.</returns>
+    /// <summary>
+    /// Determines whether this player has an object attached in the specified <paramref name="index" />.
+    /// </summary>
+    /// <param name="index">The attachment slot index to check.</param>
+    /// <returns><see langword="true" /> if the slot is occupied; otherwise, <see langword="false" />.</returns>
     public virtual bool IsAttachedObjectSlotUsed(int index)
     {
         if (index is < 0 or >= OpenMpConstants.MAX_ATTACHED_OBJECT_SLOTS)
@@ -866,9 +1053,11 @@ public class Player : WorldEntity
         return ObjectData.HasAttachedObject(index);
     }
 
-    /// <summary>Enter edition mode for an attached object.</summary>
-    /// <param name="index">The index (slot) of the attached object to edit.</param>
-    /// <returns>True on success, False otherwise.</returns>
+    /// <summary>
+    /// Enables edit mode for an attached object.
+    /// </summary>
+    /// <param name="index">The attachment slot index to edit.</param>
+    /// <returns><see langword="true" /> on success; otherwise, <see langword="false" />.</returns>
     public virtual bool DoEditAttachedObject(int index)
     {
         if (index is < 0 or >= OpenMpConstants.MAX_ATTACHED_OBJECT_SLOTS)
@@ -881,7 +1070,9 @@ public class Player : WorldEntity
         return true;
     }
 
-    /// <summary>Creates a chat bubble above this player's name tag.</summary>
+    /// <summary>
+    /// Creates a chat bubble above this player's name tag.
+    /// </summary>
     /// <param name="text">The text to display.</param>
     /// <param name="color">The text color.</param>
     /// <param name="drawDistance">The distance from where players are able to see the chat bubble.</param>
@@ -891,8 +1082,10 @@ public class Player : WorldEntity
     {
         SetChatBubble(text, color, drawDistance, TimeSpan.FromMilliseconds(expireTime));
     }
-    
-    /// <summary>Creates a chat bubble above this player's name tag.</summary>
+
+    /// <summary>
+    /// Creates a chat bubble above this player's name tag.
+    /// </summary>
     /// <param name="text">The text to display.</param>
     /// <param name="color">The text color.</param>
     /// <param name="drawDistance">The distance from where players are able to see the chat bubble.</param>
@@ -905,9 +1098,11 @@ public class Player : WorldEntity
         _player.SetChatBubble(text, ref clr, drawDistance, expireTime);
     }
 
-    /// <summary>Puts this player in a vehicle.</summary>
-    /// <param name="vehicle">The vehicle for the player to be put in.</param>
-    /// <param name="seatId">The ID of the seat to put the player in.</param>
+    /// <summary>
+    /// Puts this player in a vehicle as a <see cref="Vehicle" />.
+    /// </summary>
+    /// <param name="vehicle">The <see cref="Vehicle" /> to put the player in.</param>
+    /// <param name="seatId">The seat index (0 = driver).</param>
     public virtual void PutInVehicle(Vehicle vehicle, int seatId)
     {
         ArgumentNullException.ThrowIfNull(vehicle);
@@ -915,8 +1110,10 @@ public class Player : WorldEntity
         ((IVehicle)vehicle).PutPlayer(_player, seatId);
     }
 
-    /// <summary>Puts this player in a vehicle as driver.</summary>
-    /// <param name="vehicle">The vehicle for the player to be put in.</param>
+    /// <summary>
+    /// Puts this player in a <see cref="Vehicle" /> as driver.
+    /// </summary>
+    /// <param name="vehicle">The <see cref="Vehicle" /> to put the player in.</param>
     public virtual void PutInVehicle(Vehicle vehicle)
     {
         ArgumentNullException.ThrowIfNull(vehicle);
@@ -924,8 +1121,10 @@ public class Player : WorldEntity
         PutInVehicle(vehicle, 0);
     }
 
-    /// <summary>Removes/ejects this player from his vehicle.</summary>
-    /// <param name="force">Force the removal of the player.</param>
+    /// <summary>
+    /// Removes/ejects this player from their <see cref="Vehicle" />.
+    /// </summary>
+    /// <param name="force">Force the removal of the player when set to <see langword="true" />.</param>
     /// <remarks>
     /// The exiting animation is not synced for other players. This function will not work when used in the OnPlayerEnterVehicle event, because the player
     /// isn't in the vehicle when the callback is called. Use the OnPlayerStateChanged event instead.
@@ -935,49 +1134,49 @@ public class Player : WorldEntity
         _player.RemoveFromVehicle(force);
     }
 
-    /// <summary>Toggles whether this player can control themselves, basically freezes them.</summary>
-    /// <param name="toggle">False to freeze the player or True to unfreeze them.</param>
+    /// <summary>
+    /// Freezes or unfreezes this player, preventing or allowing player control.
+    /// </summary>
+    /// <param name="toggle"><see langword="true" /> to unfreeze the player; <see langword="false" /> to freeze them.</param>
     public virtual void ToggleControllable(bool toggle)
     {
         _player.SetControllable(toggle);
     }
 
-    /// <summary>Plays the specified sound for this player at a specific point.</summary>
+    /// <summary>
+    /// Plays the specified <paramref name="soundId" /> for this player at a specific point.
+    /// </summary>
     /// <param name="soundId">The sound to play.</param>
-    /// <param name="point">Point for the sound to play at.</param>
+    /// <param name="point">Point for the sound to play at as a <see cref="Vector3" />.</param>
     public virtual void PlaySound(int soundId, Vector3 point)
     {
         _player.PlaySound(soundId, point);
     }
 
-    /// <summary>Plays the specified sound for this player.</summary>
+    /// <summary>
+    /// Plays the specified <paramref name="soundId" /> for this player.
+    /// </summary>
     /// <param name="soundId">The sound to play.</param>
     public virtual void PlaySound(int soundId)
     {
         _player.PlaySound(soundId, new Vector3());
     }
 
-    /// <summary>Apply an animation to this player.</summary>
+    /// <summary>
+    /// Applies an animation to this player.
+    /// </summary>
     /// <remarks>
-    /// The <paramref name="forceSync" /> parameter, in most cases is not needed since players sync animations themselves. The <paramref name="forceSync" />
-    /// parameter can force all players who can see this player to play the animation regardless of whether the player is performing that animation. This is useful in
-    /// circumstances where the player can't sync the animation themselves. For example, they may be paused.
+    /// The <paramref name="forceSync" /> parameter forces all players who can see this player to play the animation regardless of whether the player is performing it themselves. This is useful when the player cannot sync the animation (for example, if they are paused). In most cases, this parameter is not needed since players sync animations themselves.
     /// </remarks>
-    /// <param name="animationLibrary">The name of the animation library in which the animation to apply is in.</param>
-    /// <param name="animationName">The name of the animation, within the library specified.</param>
-    /// <param name="fDelta">The speed to play the animation (use 4.1).</param>
-    /// <param name="loop">Set to True for looping otherwise set to False for playing animation sequence only once.</param>
-    /// <param name="lockX">
-    /// Set to False to return player to original x position after animation is complete for moving animations. The opposite effect occurs if set
-    /// to True.
-    /// </param>
-    /// <param name="lockY">
-    /// Set to False to return player to original y position after animation is complete for moving animations. The opposite effect occurs if set
-    /// to True.
-    /// </param>
-    /// <param name="freeze">Will freeze the player in position after the animation finishes.</param>
-    /// <param name="time">Animation duration. <see cref="TimeSpan.Zero"/> for a never-ending loop.</param>
-    /// <param name="forceSync">Set to <see langword="true" /> to force the player to sync animation with other players in all instances</param>
+    /// <param name="animationLibrary">The name of the animation library.</param>
+    /// <param name="animationName">The name of the animation within the library.</param>
+    /// <param name="fDelta">The animation speed (typically 4.1).</param>
+    /// <param name="loop"><see langword="true" /> to loop the animation; <see langword="false" /> to play it once.</param>
+    /// <param name="lockX">If <see langword="false" />, the player returns to their original X position after the animation completes (for moving animations). If <see langword="true" />, the opposite occurs.</param>
+    /// <param name="lockY">If <see langword="false" />, the player returns to their original Y position after the animation completes (for moving animations). If <see langword="true" />, the opposite occurs.</param>
+    /// <param name="freeze"><see langword="true" /> to freeze the player in position after the animation finishes.</param>
+    /// <param name="time">The animation duration. Use <see cref="TimeSpan.Zero" /> for an infinite loop.</param>
+    /// <param name="forceSync"><see langword="true" /> to force all players to see this animation.</param>
     public virtual void ApplyAnimation(string animationLibrary, string animationName, float fDelta, bool loop, bool lockX, bool lockY, bool freeze, TimeSpan time,
         bool forceSync)
     {
@@ -990,38 +1189,36 @@ public class Player : WorldEntity
         _player.ApplyAnimation(anim, forceSync ? PlayerAnimationSyncType.Sync : PlayerAnimationSyncType.NoSync);
     }
 
-    /// <summary>Apply an animation to this player.</summary>
-    /// <param name="animationLibrary">The name of the animation library in which the animation to apply is in.</param>
-    /// <param name="animationName">The name of the animation, within the library specified.</param>
-    /// <param name="fDelta">The speed to play the animation (use 4.1).</param>
-    /// <param name="loop">Set to True for looping otherwise set to False for playing animation sequence only once.</param>
-    /// <param name="lockX">
-    /// Set to False to return player to original x position after animation is complete for moving animations. The opposite effect occurs if set
-    /// to True.
-    /// </param>
-    /// <param name="lockY">
-    /// Set to False to return player to original y position after animation is complete for moving animations. The opposite effect occurs if set
-    /// to True.
-    /// </param>
-    /// <param name="freeze">Will freeze the player in position after the animation finishes.</param>
-    /// <param name="time">Animation duration. <see cref="TimeSpan.Zero"/> for a never-ending loop.</param>
+    /// <summary>
+    /// Applies an animation to this player.
+    /// </summary>
+    /// <param name="animationLibrary">The name of the animation library.</param>
+    /// <param name="animationName">The name of the animation within the library.</param>
+    /// <param name="fDelta">The animation speed (typically 4.1).</param>
+    /// <param name="loop"><see langword="true" /> to loop the animation; <see langword="false" /> to play it once.</param>
+    /// <param name="lockX">If <see langword="false" />, the player returns to their original X position after the animation completes (for moving animations). If <see langword="true" />, the opposite occurs.</param>
+    /// <param name="lockY">If <see langword="false" />, the player returns to their original Y position after the animation completes (for moving animations). If <see langword="true" />, the opposite occurs.</param>
+    /// <param name="freeze"><see langword="true" /> to freeze the player in position after the animation finishes.</param>
+    /// <param name="time">The animation duration.</param>
     public virtual void ApplyAnimation(string animationLibrary, string animationName, float fDelta, bool loop, bool lockX, bool lockY, bool freeze, TimeSpan time)
     {
         ApplyAnimation(animationLibrary, animationName, fDelta, loop, lockX, lockY, freeze, time, false);
     }
 
-    /// <inheritdoc cref="ApplyAnimation(string, string, float, bool, bool, bool, bool, TimeSpan, bool)"/>
+    /// <inheritdoc cref="ApplyAnimation(string, string, float, bool, bool, bool, bool, TimeSpan, bool)" />
     [Obsolete("Use the TimeSpan overload. This int-milliseconds variant is kept for source compatibility and will be removed.")]
     public virtual void ApplyAnimation(string animationLibrary, string animationName, float fDelta, bool loop, bool lockX, bool lockY, bool freeze, int time,
         bool forceSync)
         => ApplyAnimation(animationLibrary, animationName, fDelta, loop, lockX, lockY, freeze, TimeSpan.FromMilliseconds(time), forceSync);
 
-    /// <inheritdoc cref="ApplyAnimation(string, string, float, bool, bool, bool, bool, TimeSpan)"/>
+    /// <inheritdoc cref="ApplyAnimation(string, string, float, bool, bool, bool, bool, TimeSpan)" />
     [Obsolete("Use the TimeSpan overload. This int-milliseconds variant is kept for source compatibility and will be removed.")]
     public virtual void ApplyAnimation(string animationLibrary, string animationName, float fDelta, bool loop, bool lockX, bool lockY, bool freeze, int time)
         => ApplyAnimation(animationLibrary, animationName, fDelta, loop, lockX, lockY, freeze, TimeSpan.FromMilliseconds(time), false);
 
-    /// <summary>Clears all animations for this player.</summary>
+    /// <summary>
+    /// Clears all animations for this player.
+    /// </summary>
     /// <param name="forceSync">Specifies whether the animation should be shown to streamed in players.</param>
     public virtual void ClearAnimations(bool forceSync)
     {
@@ -1029,16 +1226,20 @@ public class Player : WorldEntity
         _player.ClearAnimations(forceSync ? PlayerAnimationSyncType.Sync : PlayerAnimationSyncType.NoSync);
     }
 
-    /// <summary>Clears all animations for this player.</summary>
+    /// <summary>
+    /// Clears all animations for this player.
+    /// </summary>
     public virtual void ClearAnimations()
     {
         ClearAnimations(false);
     }
 
-    /// <summary>Get the animation library/name this player is playing.</summary>
-    /// <param name="animationLibrary">String variable that stores the animation library.</param>
-    /// <param name="animationName">String variable that stores the animation name.</param>
-    /// <returns>True on success, False otherwise.</returns>
+    /// <summary>
+    /// Gets the library and name of the animation this player is currently playing.
+    /// </summary>
+    /// <param name="animationLibrary">The animation library name, passed by reference.</param>
+    /// <param name="animationName">The animation name, passed by reference.</param>
+    /// <returns><see langword="true" /> on success; otherwise, <see langword="false" />.</returns>
     public virtual bool GetAnimationName(out string? animationLibrary, out string? animationName)
     {
         var anim = _player.GetAnimationData();
@@ -1047,13 +1248,14 @@ public class Player : WorldEntity
         return true;
     }
 
-    /// <summary>Sets a checkpoint (red circle) for this player. Also shows a red blip on the radar.</summary>
+    /// <summary>
+    /// Sets a checkpoint (red circle) for this player and displays a red blip on the radar.
+    /// </summary>
     /// <remarks>
-    /// Checkpoints created on server-created objects will appear down on the 'real' ground, but will still function correctly. There is no fix available for
-    /// this issue. A pickup can be used instead.
+    /// Checkpoints created on server-created objects will appear on the ground but will still function correctly. There is no workaround for this issue.
     /// </remarks>
-    /// <param name="point">The point to set the checkpoint at.</param>
-    /// <param name="size">The size of the checkpoint.</param>
+    /// <param name="point">The checkpoint position as a <see cref="Vector3" />.</param>
+    /// <param name="size">The checkpoint radius.</param>
     public virtual void SetCheckpoint(Vector3 point, float size)
     {
         var cp = CheckpointData.GetCheckpoint();
@@ -1062,17 +1264,21 @@ public class Player : WorldEntity
         cp.Enable();
     }
 
-    /// <summary>Disable any initialized checkpoints for this player.</summary>
+    /// <summary>
+    /// Disables the current checkpoint for this player.
+    /// </summary>
     public virtual void DisableCheckpoint()
     {
         CheckpointData.GetCheckpoint().Disable();
     }
 
-    /// <summary>Creates a race checkpoint. When this player enters it, EnterRaceCheckpoint event is called.</summary>
-    /// <param name="type">Type of checkpoint.</param>
-    /// <param name="point">The point to set the checkpoint at.</param>
-    /// <param name="nextPosition">Coordinates of the next point, for the arrow facing direction.</param>
-    /// <param name="size">Length (diameter) of the checkpoint</param>
+    /// <summary>
+    /// Sets a race checkpoint for this player. The <see cref="Events.PlayerEnterCheckpointEvent" /> is triggered when the player enters.
+    /// </summary>
+    /// <param name="type">The <see cref="CheckpointType" />.</param>
+    /// <param name="point">The checkpoint position as a <see cref="Vector3" />.</param>
+    /// <param name="nextPosition">The position of the next checkpoint as a <see cref="Vector3" />, used for arrow direction.</param>
+    /// <param name="size">The checkpoint radius (diameter).</param>
     public virtual void SetRaceCheckpoint(CheckpointType type, Vector3 point, Vector3 nextPosition, float size)
     {
         var cp = CheckpointData.GetRaceCheckpoint();
@@ -1083,26 +1289,34 @@ public class Player : WorldEntity
         cp.Enable();
     }
 
-    /// <summary>Disable any initialized race checkpoints for this player.</summary>
+    /// <summary>
+    /// Disables the current race checkpoint for this player.
+    /// </summary>
     public virtual void DisableRaceCheckpoint()
     {
         CheckpointData.GetRaceCheckpoint().Disable();
     }
 
-    /// <summary>Set the world boundaries for this player - players can not go out of the boundaries.</summary>
-    /// <remarks>You can reset the player world bounds by setting the parameters to 20000.0000, -20000.0000, 20000.0000, -20000.0000.</remarks>
-    /// <param name="xMax">The maximum X coordinate the player can go to.</param>
-    /// <param name="xMin">The minimum X coordinate the player can go to.</param>
-    /// <param name="yMax">The maximum Y coordinate the player can go to.</param>
-    /// <param name="yMin">The minimum Y coordinate the player can go to.</param>
+    /// <summary>
+    /// Sets the world boundaries for this player. The player cannot travel outside these boundaries.
+    /// </summary>
+    /// <remarks>
+    /// To reset to default boundaries, set all parameters to their default values: xMax=20000, xMin=-20000, yMax=20000, yMin=-20000.
+    /// </remarks>
+    /// <param name="xMax">The maximum X coordinate.</param>
+    /// <param name="xMin">The minimum X coordinate.</param>
+    /// <param name="yMax">The maximum Y coordinate.</param>
+    /// <param name="yMin">The minimum Y coordinate.</param>
     public virtual void SetWorldBounds(float xMax, float xMin, float yMax, float yMin)
     {
         _player.SetWorldBounds(new Vector4(xMax, xMin, yMax, yMin));
     }
 
-    /// <summary>Change the color of this player's name tag and radar blip for another Player.</summary>
-    /// <param name="player">The player whose color will be changed.</param>
-    /// <param name="color">New color.</param>
+    /// <summary>
+    /// Changes the color of this player's name tag and radar blip for another <see cref="Player" />.
+    /// </summary>
+    /// <param name="player">The <see cref="Player" /> whose marker color will be changed.</param>
+    /// <param name="color">The new marker <see cref="Color" />.</param>
     public virtual void SetPlayerMarker(Player player, Color color)
     {
         ArgumentNullException.ThrowIfNull(player);
@@ -1110,129 +1324,153 @@ public class Player : WorldEntity
     }
 
     /// <summary>
-    /// This functions allows you to toggle the drawing of player name tags, health bars and armor bars which display above their head. For use of a similar
-    /// function like this on a global level, <see cref="IServerService.ShowNameTags" /> function.
+    /// Shows or hides the name tag, health bar, and armor bar for another <see cref="Player" />.
     /// </summary>
-    /// <remarks><see cref="IServerService.ShowNameTags" /> must be set to <see langword="true" /> to be able to show name tags with <see cref="ShowNameTagForPlayer" />.</remarks>
-    /// <param name="player">The player whose name tag will be shown or hidden.</param>
-    /// <param name="show">True to show name tag, False to hide name tag.</param>
+    /// <remarks>
+    /// <see cref="IServerService.ShowNameTags" /> must be enabled for name tags to be visible with this method.
+    /// </remarks>
+    /// <param name="player">The <see cref="Player" /> whose name tag will be shown or hidden.</param>
+    /// <param name="show"><see langword="true" /> to show the name tag; <see langword="false" /> to hide it.</param>
     public virtual void ShowNameTagForPlayer(Player player, bool show)
     {
         ArgumentNullException.ThrowIfNull(player);
         _player.ToggleOtherNameTag(player, show);
     }
 
-    /// <summary>Sets the direction this player's camera looks at. To be used in combination with <see cref="CameraPosition" />.</summary>
-    /// <param name="point">The coordinates for this player's camera to look at.</param>
-    /// <param name="cut">The style the camera-position changes.</param>
+    /// <summary>
+    /// Sets the direction this player's camera looks at. Use in combination with <see cref="CameraPosition" />.
+    /// </summary>
+    /// <param name="point">The point the camera should look at.</param>
+    /// <param name="cut">The <see cref="CameraCut" /> transition style.</param>
     public virtual void SetCameraLookAt(Vector3 point, CameraCut cut)
     {
         _player.SetCameraLookAt(point, (int)cut);
     }
 
-    /// <summary>Set the direction this player's camera looks at. To be used in combination with <see cref="CameraPosition" />.</summary>
-    /// <param name="point">The coordinates for this player's camera to look at.</param>
+    /// <summary>
+    /// Sets the direction this player's camera looks at. Use in combination with <see cref="CameraPosition" />.
+    /// </summary>
+    /// <param name="point">The point the camera should look at.</param>
     public virtual void SetCameraLookAt(Vector3 point)
     {
         SetCameraLookAt(point, CameraCut.Cut);
     }
 
-    /// <summary>Move this player's camera from one position to another, within the set time.</summary>
-    /// <param name="from">The position the camera should start to move from.</param>
-    /// <param name="to">The position the camera should move to.</param>
-    /// <param name="time">Interpolation duration.</param>
-    /// <param name="cut">The jump cut to use. Defaults to CameraCut.Cut. Set to CameraCut. Move for a smooth movement.</param>
+    /// <summary>
+    /// Interpolates this player's camera position between two points over a specified duration.
+    /// </summary>
+    /// <param name="from">The starting position.</param>
+    /// <param name="to">The ending position.</param>
+    /// <param name="time">The interpolation duration as a <see cref="TimeSpan" />.</param>
+    /// <param name="cut">The <see cref="CameraCut" /> transition style. Set to <see cref="CameraCut.Move" /> for smooth movement.</param>
     public virtual void InterpolateCameraPosition(Vector3 from, Vector3 to, TimeSpan time, CameraCut cut)
     {
         _player.InterpolateCameraPosition(from, to, (int)time.TotalMilliseconds, (PlayerCameraCutType)cut);
     }
 
-    /// <inheritdoc cref="InterpolateCameraPosition(Vector3, Vector3, TimeSpan, CameraCut)"/>
+    /// <inheritdoc cref="InterpolateCameraPosition(Vector3, Vector3, TimeSpan, CameraCut)" />
     [Obsolete("Use the TimeSpan overload. This int-milliseconds variant is kept for source compatibility and will be removed.")]
     public virtual void InterpolateCameraPosition(Vector3 from, Vector3 to, int time, CameraCut cut)
         => InterpolateCameraPosition(from, to, TimeSpan.FromMilliseconds(time), cut);
 
-    /// <summary>Interpolate this player's camera's 'look at' point between two coordinates with a set speed.</summary>
-    /// <param name="from">The position the camera should start to move from.</param>
-    /// <param name="to">The position the camera should move to.</param>
-    /// <param name="time">Interpolation duration.</param>
-    /// <param name="cut">The jump cut to use. Defaults to CameraCut.Cut (pointless). Set to CameraCut.Move for interpolation.</param>
+    /// <summary>
+    /// Interpolates this player's camera's look-at point between two positions over a specified duration.
+    /// </summary>
+    /// <param name="from">The starting look-at position.</param>
+    /// <param name="to">The ending look-at position.</param>
+    /// <param name="time">The interpolation duration as a <see cref="TimeSpan" />.</param>
+    /// <param name="cut">The <see cref="CameraCut" /> transition style. Set to <see cref="CameraCut.Move" /> for smooth interpolation.</param>
     public virtual void InterpolateCameraLookAt(Vector3 from, Vector3 to, TimeSpan time, CameraCut cut)
     {
         _player.InterpolateCameraLookAt(from, to, (int)time.TotalMilliseconds, (PlayerCameraCutType)cut);
     }
 
-    /// <inheritdoc cref="InterpolateCameraLookAt(Vector3, Vector3, TimeSpan, CameraCut)"/>
+    /// <inheritdoc cref="InterpolateCameraLookAt(Vector3, Vector3, TimeSpan, CameraCut)" />
     [Obsolete("Use the TimeSpan overload. This int-milliseconds variant is kept for source compatibility and will be removed.")]
     public virtual void InterpolateCameraLookAt(Vector3 from, Vector3 to, int time, CameraCut cut)
         => InterpolateCameraLookAt(from, to, TimeSpan.FromMilliseconds(time), cut);
 
-    /// <summary>Checks if this player is in a specific vehicle.</summary>
-    /// <param name="vehicle">The vehicle.</param>
-    /// <returns>True if player is in the vehicle; False otherwise.</returns>
+    /// <summary>
+    /// Determines whether this player is in a specific <see cref="Vehicle" />.
+    /// </summary>
+    /// <param name="vehicle">The <see cref="Vehicle" /> to check.</param>
+    /// <returns><see langword="true" /> if the player is in the <paramref name="vehicle" />; otherwise, <see langword="false" />.</returns>
     public virtual bool IsInVehicle(Vehicle vehicle)
     {
         return Vehicle == vehicle;
     }
 
-    /// <summary>Toggle stunt bonuses for this player.</summary>
-    /// <param name="enable">True to enable stunt bonuses, False to disable them.</param>
+    /// <summary>
+    /// Enables or disables stunt bonuses for this player.
+    /// </summary>
+    /// <param name="enable"><see langword="true" /> to enable stunt bonuses; <see langword="false" /> to disable them.</param>
     public virtual void EnableStuntBonus(bool enable)
     {
         _player.UseStuntBonuses(enable);
     }
 
-    /// <summary>Toggle this player's spectate mode.</summary>
-    /// <remarks>When the spectating is turned off, OnPlayerSpawn will automatically be called.</remarks>
-    /// <param name="toggle">True to enable spectating and False to disable.</param>
+    /// <summary>
+    /// Toggles spectating mode for this player.
+    /// </summary>
+    /// <remarks>When spectating is disabled, <see cref="Events.PlayerSpawnEvent" /> is automatically triggered.</remarks>
+    /// <param name="toggle"><see langword="true" /> to enable spectating; <see langword="false" /> to disable.</param>
     public virtual void ToggleSpectating(bool toggle)
     {
         _player.SetSpectating(toggle);
     }
 
-    /// <summary>Makes this player spectate (watch) another player.</summary>
-    /// <remarks>Order is CRITICAL! Ensure that you use <see cref="ToggleSpectating" /> before <see cref="SpectatePlayer(Player,SpectateMode)" />.</remarks>
-    /// <param name="targetPlayer">The Player that should be spectated.</param>
-    /// <param name="mode">The mode to spectate with.</param>
+    /// <summary>
+    /// Makes this player spectate another <see cref="Player" />.
+    /// </summary>
+    /// <remarks>Call <see cref="ToggleSpectating" /> before using this method.</remarks>
+    /// <param name="targetPlayer">The <see cref="Player" /> to spectate.</param>
+    /// <param name="mode">The <see cref="SpectateMode" /> to use.</param>
     public virtual void SpectatePlayer(Player targetPlayer, SpectateMode mode)
     {
         ArgumentNullException.ThrowIfNull(targetPlayer);
         _player.SpectatePlayer(targetPlayer, (PlayerSpectateMode)mode);
     }
 
-    /// <summary>Makes this player spectate (watch) another player.</summary>
-    /// <remarks>Order is CRITICAL! Ensure that you use <see cref="ToggleSpectating" /> before <see cref="SpectatePlayer(Player)" />.</remarks>
-    /// <param name="targetPlayer">The Player that should be spectated.</param>
+    /// <summary>
+    /// Makes this player spectate another <see cref="Player" />.
+    /// </summary>
+    /// <remarks>Call <see cref="ToggleSpectating" /> before using this method.</remarks>
+    /// <param name="targetPlayer">The <see cref="Player" /> to spectate.</param>
     public virtual void SpectatePlayer(Player targetPlayer)
     {
         ArgumentNullException.ThrowIfNull(targetPlayer);
         SpectatePlayer(targetPlayer, SpectateMode.Normal);
     }
 
-    /// <summary>Sets this player to spectate another vehicle, i.e. see what its driver sees.</summary>
-    /// <remarks>Order is CRITICAL! Ensure that you use <see cref="ToggleSpectating" /> before <see cref="SpectateVehicle(Vehicle,SpectateMode)" />.</remarks>
-    /// <param name="targetVehicle">The vehicle to spectate.</param>
-    /// <param name="mode">Spectate mode.</param>
+    /// <summary>
+    /// Makes this player spectate a <see cref="Vehicle" /> (see what its driver sees).
+    /// </summary>
+    /// <remarks>Call <see cref="ToggleSpectating" /> before using this method.</remarks>
+    /// <param name="targetVehicle">The <see cref="Vehicle" /> to spectate.</param>
+    /// <param name="mode">The <see cref="SpectateMode" /> to use.</param>
     public virtual void SpectateVehicle(Vehicle targetVehicle, SpectateMode mode)
     {
         ArgumentNullException.ThrowIfNull(targetVehicle);
         _player.SpectateVehicle(targetVehicle, (PlayerSpectateMode)mode);
     }
 
-    /// <summary>Sets this player to spectate another vehicle, i.e. see what its driver sees.</summary>
-    /// <remarks>Order is CRITICAL! Ensure that you use <see cref="ToggleSpectating" /> before <see cref="SpectateVehicle(Vehicle)" />.</remarks>
-    /// <param name="targetVehicle">The vehicle to spectate.</param>
+    /// <summary>
+    /// Makes this player spectate a <see cref="Vehicle" /> (see what its driver sees).
+    /// </summary>
+    /// <remarks>Call <see cref="ToggleSpectating" /> before using this method.</remarks>
+    /// <param name="targetVehicle">The <see cref="Vehicle" /> to spectate.</param>
     public virtual void SpectateVehicle(Vehicle targetVehicle)
     {
         ArgumentNullException.ThrowIfNull(targetVehicle);
         SpectateVehicle(targetVehicle, SpectateMode.Normal);
     }
 
-    /// <summary>Starts recording this player's movements to a file, which can then be reproduced by an NPC.</summary>
-    /// <param name="recordingType">The type of recording.</param>
+    /// <summary>
+    /// Starts recording this player's movements to a file, which can be reproduced by an NPC.
+    /// </summary>
+    /// <param name="recordingType">The <see cref="PlayerRecordingType" />.</param>
     /// <param name="recordingName">
-    /// Name of the file which will hold the recorded data. It will be saved in the scriptfiles folder, with an automatically added .rec
-    /// extension.
+    /// The name of the file to save the recording to. The file will be saved in the scriptfiles folder with a .rec extension added automatically.
     /// </param>
     public virtual void StartRecordingPlayerData(PlayerRecordingType recordingType, string recordingName)
     {
@@ -1240,15 +1478,19 @@ public class Player : WorldEntity
         RecordingData.Start((SampSharp.OpenMp.Core.Api.PlayerRecordingType)recordingType, recordingName);
     }
 
-    /// <summary>Stops all the recordings that had been started with <see cref="StartRecordingPlayerData" /> for this player.</summary>
+    /// <summary>
+    /// Stops all player data recordings for this player.
+    /// </summary>
     public virtual void StopRecordingPlayerData()
     {
         RecordingData.Stop();
     }
 
-    /// <summary>Retrieves the start and end (hit) position of the last bullet a player fired.</summary>
-    /// <param name="origin">The origin.</param>
-    /// <param name="hitPosition">The hit position.</param>
+    /// <summary>
+    /// Gets the start and end (hit) position of the last bullet this player fired.
+    /// </summary>
+    /// <param name="origin">The bullet origin position as a <see cref="Vector3" />, passed by reference.</param>
+    /// <param name="hitPosition">The bullet hit position as a <see cref="Vector3" />, passed by reference.</param>
     public virtual void GetLastShot(out Vector3 origin, out Vector3 hitPosition)
     {
         var data = _player.GetBulletData();
@@ -1258,11 +1500,13 @@ public class Player : WorldEntity
     }
 
     /// <summary>
-    /// This function sends a message to this player with a chosen color in the chat. The whole line in the chat box will be in the set color unless color
-    /// embedding is used.
+    /// Sends a message to this player in the chat with a specified <see cref="Color" />.
     /// </summary>
-    /// <param name="color">The color of the message.</param>
-    /// <param name="message">The text that will be displayed.</param>
+    /// <remarks>
+    /// The entire message will be displayed in the specified <paramref name="color" /> unless color embedding is used. Messages longer than 144 characters are automatically split.
+    /// </remarks>
+    /// <param name="color">The message <see cref="Color" />.</param>
+    /// <param name="message">The message text.</param>
     public virtual void SendClientMessage(Color color, string message)
     {
         ArgumentNullException.ThrowIfNull(message);
@@ -1280,12 +1524,14 @@ public class Player : WorldEntity
     }
 
     /// <summary>
-    /// This function sends a message to this player with a chosen color in the chat. The whole line in the chat box will be in the set color unless color
-    /// embedding is used.
+    /// Sends a formatted message to this player in the chat with a specified <see cref="Color" />.
     /// </summary>
-    /// <param name="color">The color of the message.</param>
-    /// <param name="messageFormat">The composite format string of the text that will be displayed (max 144 characters).</param>
-    /// <param name="args">An object array that contains zero or more objects to format.</param>
+    /// <remarks>
+    /// The entire message will be displayed in the specified <paramref name="color" /> unless color embedding is used. Messages longer than 144 characters are automatically split.
+    /// </remarks>
+    /// <param name="color">The message <see cref="Color" />.</param>
+    /// <param name="messageFormat">The composite format string (max 144 characters).</param>
+    /// <param name="args">The objects to format.</param>
     [StringFormatMethod("messageFormat")]
     public virtual void SendClientMessage(Color color, string messageFormat, params object[] args)
     {
@@ -1293,43 +1539,50 @@ public class Player : WorldEntity
     }
 
     /// <summary>
-    /// This function sends a message to this player in white in the chat. The whole line in the chat box will be in the set color unless color embedding is
-    /// used.
+    /// Sends a message to this player in the chat in white.
     /// </summary>
-    /// <param name="message">The text that will be displayed.</param>
+    /// <remarks>
+    /// Messages longer than 144 characters are automatically split. Color embedding can be used to add colored text.
+    /// </remarks>
+    /// <param name="message">The message text.</param>
     public virtual void SendClientMessage(string message)
     {
         SendClientMessage(Color.White, message);
     }
 
     /// <summary>
-    /// This function sends a message to this player in white in the chat. The whole line in the chat box will be in the set color unless color embedding is
-    /// used.
+    /// Sends a formatted message to this player in the chat in white.
     /// </summary>
-    /// <param name="messageFormat">The composite format string of the text that will be displayed (max 144 characters).</param>
-    /// <param name="args">An object array that contains zero or more objects to format.</param>
+    /// <remarks>
+    /// Messages longer than 144 characters are automatically split. Color embedding can be used to add colored text.
+    /// </remarks>
+    /// <param name="messageFormat">The composite format string (max 144 characters).</param>
+    /// <param name="args">The objects to format.</param>
     [StringFormatMethod("messageFormat")]
     public virtual void SendClientMessage(string messageFormat, params object[] args)
     {
         SendClientMessage(Color.White, string.Format(messageFormat, args));
     }
 
-    /// <summary>Kicks this player from the server. They will have to quit the game and re-connect if they wish to continue playing.</summary>
+    /// <summary>
+    /// Kicks this player from the server.
+    /// </summary>
     public virtual void Kick()
     {
         _player.Kick();
     }
 
     /// <summary>
-    /// Ban this player. The ban will be IP-based, and be saved in the samp.ban file in the server's root directory. <see cref="Ban(string)" /> allows you to
-    /// ban with a reason, while you can ban and unban IPs using the RCON banip and unbanip commands.
+    /// Bans this player. The ban is IP-based and saved in the samp.ban file in the server's root directory.
     /// </summary>
     public virtual void Ban()
     {
         Ban(string.Empty);
     }
 
-    /// <summary>Ban this player with a reason.</summary>
+    /// <summary>
+    /// Bans this player with a reason. The ban is IP-based and saved in the samp.ban file.
+    /// </summary>
     /// <param name="reason">The reason for the ban.</param>
     public virtual void Ban(string reason)
     {
@@ -1338,11 +1591,13 @@ public class Player : WorldEntity
     }
 
     /// <summary>
-    /// Sends a message in the name the specified <paramref name="sender" /> to this player. The message will appear in the chat box but can only be seen by
-    /// this player. The line will start with the the sender's name in their color, followed by the <paramref name="message" /> in white.
+    /// Sends a message in the name of another <see cref="Player" /> to this player.
     /// </summary>
-    /// <param name="sender">The player which has sent the message.</param>
-    /// <param name="message">The message that will be sent.</param>
+    /// <remarks>
+    /// The message appears in the chat box and can only be seen by this player. It starts with the <paramref name="sender" />'s name in their <see cref="Color" />, followed by the <paramref name="message" /> in white.
+    /// </remarks>
+    /// <param name="sender">The <see cref="Player" /> sending the message.</param>
+    /// <param name="message">The message text.</param>
     public virtual void SendPlayerMessageToPlayer(Player sender, string message)
     {
         ArgumentNullException.ThrowIfNull(sender);
@@ -1350,7 +1605,9 @@ public class Player : WorldEntity
         _player.SendChatMessage(sender, message);
     }
 
-    /// <summary>Shows 'game text' (on-screen text) for a certain length of time for this player.</summary>
+    /// <summary>
+    /// Shows 'game text' (on-screen text) for a certain length of time for this player.
+    /// </summary>
     /// <param name="text">The text to be displayed.</param>
     /// <param name="time">The duration of the text being shown in milliseconds.</param>
     /// <param name="style">The style of text to be displayed.</param>
@@ -1359,11 +1616,13 @@ public class Player : WorldEntity
     {
         GameText(text, TimeSpan.FromMilliseconds(time), style);
     }
-    
-    /// <summary>Shows 'game text' (on-screen text) for a certain length of time for this player.</summary>
-    /// <param name="text">The text to be displayed.</param>
-    /// <param name="time">The duration of the text being shown.</param>
-    /// <param name="style">The style of text to be displayed.</param>
+
+    /// <summary>
+    /// Displays on-screen text (game text) for a specified duration.
+    /// </summary>
+    /// <param name="text">The text to display.</param>
+    /// <param name="time">The display duration as a <see cref="TimeSpan" />.</param>
+    /// <param name="style">The text style.</param>
     public virtual void GameText(string text, TimeSpan time, int style)
     {
         ArgumentNullException.ThrowIfNull(text);
@@ -1371,73 +1630,91 @@ public class Player : WorldEntity
     }
 
     /// <summary>
-    /// Creates an explosion for this player. Only this player will see explosion and feel its effects. This is useful when you want to isolate explosions
-    /// from other players or to make them only appear in specific virtual worlds.
+    /// Creates an explosion for this player. Only this player sees and is affected by the explosion.
     /// </summary>
-    /// <param name="position">The position of the explosion.</param>
-    /// <param name="type">The explosion type.</param>
-    /// <param name="radius">The radius of the explosion.</param>
+    /// <remarks>
+    /// This is useful for isolating explosions to specific players or limiting them to specific virtual worlds.
+    /// </remarks>
+    /// <param name="position">The explosion position as a <see cref="Vector3" />.</param>
+    /// <param name="type">The <see cref="ExplosionType" />.</param>
+    /// <param name="radius">The explosion radius.</param>
     public virtual void CreateExplosion(Vector3 position, ExplosionType type, float radius)
     {
         _player.CreateExplosion(position, (int)type, radius);
     }
 
-    /// <summary>Adds a death to the kill feed on the right-hand side of the screen of this player.</summary>
-    /// <param name="killer">The player that killer the <paramref name="player" />.</param>
-    /// <param name="player">The player that has been killed.</param>
-    /// <param name="weapon">The reason for this player's death.</param>
+    /// <summary>
+    /// Adds a death message to the kill feed on the right side of the screen.
+    /// </summary>
+    /// <param name="killer">The <see cref="Player" /> who caused the death.</param>
+    /// <param name="player">The <see cref="Player" /> who was killed.</param>
+    /// <param name="weapon">The <see cref="Weapon" /> used.</param>
     public virtual void SendDeathMessage(Player killer, Player player, Weapon weapon)
     {
         ArgumentNullException.ThrowIfNull(killer);
         ArgumentNullException.ThrowIfNull(player);
         _player.SendDeathMessage(player, killer, (int)weapon);
     }
-    
-    /// <summary>Attaches a player's camera to an object.</summary>
-    /// <param name="object">The object to attach the camera to.</param>
+
+    /// <summary>
+    /// Attaches this player's camera to a <see cref="GlobalObject" />.
+    /// </summary>
+    /// <param name="object">The <see cref="GlobalObject" /> to attach the camera to.</param>
     public virtual void AttachCameraToObject(GlobalObject @object)
     {
         ArgumentNullException.ThrowIfNull(@object);
         _player.AttachCameraToObject(@object);
     }
 
-    /// <summary>Attaches a player's camera to an object.</summary>
-    /// <param name="object">The object to attach the camera to.</param>
+    /// <summary>
+    /// Attaches this player's camera to a <see cref="PlayerObject" />.
+    /// </summary>
+    /// <param name="object">The <see cref="PlayerObject" /> to attach the camera to.</param>
     public virtual void AttachCameraToObject(PlayerObject @object)
     {
         ArgumentNullException.ThrowIfNull(@object);
         _player.AttachCameraToObject(@object);
     }
-    
-    /// <summary>Lets this player edit the specified <paramref name="object" />.</summary>
-    /// <param name="object">The object to edit.</param>
+
+    /// <summary>
+    /// Enables edit mode for a <see cref="GlobalObject" /> so this player can modify it.
+    /// </summary>
+    /// <param name="object">The <see cref="GlobalObject" /> to edit.</param>
     public virtual void Edit(GlobalObject @object)
     {
         ArgumentNullException.ThrowIfNull(@object);
         ObjectData.BeginEditing(@object);
     }
 
-    /// <summary>Lets this player edit the specified <paramref name="object" />.</summary>
-    /// <param name="object">The object to edit.</param>
+    /// <summary>
+    /// Enables edit mode for a <see cref="PlayerObject" /> so this player can modify it.
+    /// </summary>
+    /// <param name="object">The <see cref="PlayerObject" /> to edit.</param>
     public virtual void Edit(PlayerObject @object)
     {
         ArgumentNullException.ThrowIfNull(@object);
         ObjectData.BeginEditing(@object);
     }
 
-    /// <summary>Cancels object editing mode for this player.</summary>
+    /// <summary>
+    /// Cancels object editing mode for this player.
+    /// </summary>
     public virtual void CancelEdit()
     {
         ObjectData.EndEditing();
     }
 
-    /// <summary>Lets this player select an object.</summary>
+    /// <summary>
+    /// Enables object selection mode for this player.
+    /// </summary>
     public virtual void Select()
     {
         ObjectData.BeginSelecting();
     }
-    
-    /// <summary>Removes a standard San Andreas model for this player within a specified range.</summary>
+
+    /// <summary>
+    /// Removes a standard San Andreas model for this player within a specified range.
+    /// </summary>
     /// <param name="modelId">The model identifier.</param>
     /// <param name="position">The position at which to remove the model.</param>
     /// <param name="radius">The radius in which to remove the model.</param>
@@ -1447,33 +1724,42 @@ public class Player : WorldEntity
         _player.RemoveDefaultObjects((uint)modelId, position, radius);
     }
 
-    /// <summary>Removes a standard San Andreas model for this player within a specified range.</summary>
-    /// <param name="modelId">The model identifier.</param>
-    /// <param name="position">The position at which to remove the model.</param>
-    /// <param name="radius">The radius in which to remove the model.</param>
+    /// <summary>
+    /// Removes a standard San Andreas model for this player within a specified range.
+    /// </summary>
+    /// <param name="modelId">The model ID to remove.</param>
+    /// <param name="position">The center position where the model should be removed as a <see cref="Vector3" />.</param>
+    /// <param name="radius">The removal radius.</param>
     public virtual void RemoveDefaultObjects(int modelId, Vector3 position, float radius)
     {
         _player.RemoveDefaultObjects((uint)modelId, position, radius);
     }
 
-    /// <summary>Place an icon/marker on this player's map. Can be used to mark locations such as banks and hospitals to players.</summary>
-    /// <param name="iconId">The player's icon identifier, ranging from 0 to 99. This means there is a maximum of 100 map icons.</param>
-    /// <param name="position">The position to place the map icon at.</param>
-    /// <param name="type">The type of the marker.</param>
-    /// <param name="color">The color of the marker.</param>
-    /// <param name="style">The style of the marker.</param>
+    /// <summary>
+    /// Places an icon/marker on this player's map.
+    /// </summary>
+    /// <remarks>
+    /// This can be used to mark locations such as banks and hospitals.
+    /// </remarks>
+    /// <param name="iconId">The icon ID for this player (0-99). Maximum 100 icons per <see cref="Player" />.</param>
+    /// <param name="position">The icon position as a <see cref="Vector3" />.</param>
+    /// <param name="type">The <see cref="MapIcon" /> type.</param>
+    /// <param name="color">The marker <see cref="Color" />.</param>
+    /// <param name="style">The <see cref="MapIconType" /> style.</param>
     public virtual void SetMapIcon(int iconId, Vector3 position, MapIcon type, Color color, MapIconType style)
     {
         _player.SetMapIcon(iconId, position, (int)type, color, (MapIconStyle)style);
     }
 
-    /// <summary>Removes a map icon that was set earlier for this player.</summary>
-    /// <param name="iconId">The player's icon identifier.</param>
+    /// <summary>
+    /// Removes a map icon that was previously set for this player.
+    /// </summary>
+    /// <param name="iconId">The icon ID to remove.</param>
     public virtual void RemoveMapIcon(int iconId)
     {
         _player.UnsetMapIcon(iconId);
     }
-    
+
     /// <inheritdoc />
     protected override void OnDestroyComponent()
     {
@@ -1488,8 +1774,10 @@ public class Player : WorldEntity
     {
         return $"(Id: {Id}, Name: {Name})";
     }
-    
-    /// <summary>Performs an implicit conversion from <see cref="Player" /> to <see cref="IPlayer" />.</summary>
+
+    /// <summary>
+    /// Performs an implicit conversion from <see cref="Player" /> to <see cref="IPlayer" />.
+    /// </summary>
     public static implicit operator IPlayer(Player player)
     {
         return player._player;

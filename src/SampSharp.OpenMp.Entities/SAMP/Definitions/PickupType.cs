@@ -15,7 +15,9 @@
 
 namespace SampSharp.Entities.SAMP;
 
-/// <summary>Contains all pickup types</summary>
+/// <summary>
+/// Contains all pickup types
+/// </summary>
 public enum PickupType
 {
     /// <summary>
@@ -30,37 +32,59 @@ public enum PickupType
     /// </summary>
     ScriptedActionsOnlyEveryFewSeconds = 1,
 
-    /// <summary>Disappears after pickup, respawns after 30 seconds if the player is at a distance of at least 15 meters.</summary>
+    /// <summary>
+    /// Disappears after pickup, respawns after 30 seconds if the player is at a distance of at least 15 meters.
+    /// </summary>
     ShowNearAndRespawnWhenPickup = 2,
 
-    /// <summary>Disappears after pickup, respawns after death.</summary>
+    /// <summary>
+    /// Disappears after pickup, respawns after death.
+    /// </summary>
     ShowAndRespawnWhenDeath = 3,
 
-    /// <summary>Disappears after 15 to 20 seconds. Respawns after death.</summary>
+    /// <summary>
+    /// Disappears after 15 to 20 seconds. Respawns after death.
+    /// </summary>
     ShowTemporary1520AndRespawnWhenDeath = 4,
 
-    /// <summary>Disappears after pickup, but has no effect.</summary>
+    /// <summary>
+    /// Disappears after pickup, but has no effect.
+    /// </summary>
     ShowTillPickedUp = 8,
 
-    /// <summary>Blows up a few seconds after being created (bombs?)</summary>
+    /// <summary>
+    /// Blows up a few seconds after being created (bombs?)
+    /// </summary>
     ShowAndExplode = 11,
 
-    /// <summary>Blows up a few seconds after being created.</summary>
+    /// <summary>
+    /// Blows up a few seconds after being created.
+    /// </summary>
     ShowAndExplode2 = 12,
 
-    /// <summary>Invisible. Triggers checkpoint sound when picked up with a vehicle, but doesn't trigger OnPlayerPickUpPickup.</summary>
+    /// <summary>
+    /// Invisible. Triggers checkpoint sound when picked up with a vehicle, but doesn't trigger OnPlayerPickUpPickup.
+    /// </summary>
     HiddenPlaySoundButNotPickupable = 13,
 
-    /// <summary>Disappears after pickup, can only be picked up with a vehicle. Triggers checkpoint sound.</summary>
+    /// <summary>
+    /// Disappears after pickup, can only be picked up with a vehicle. Triggers checkpoint sound.
+    /// </summary>
     ShowAndPickupableWithVehicleWithSound = 14,
 
-    /// <summary>Disappears after pickup, respawns after 30 seconds if the player is at a distance of at least 15 meters.</summary>
+    /// <summary>
+    /// Disappears after pickup, respawns after 30 seconds if the player is at a distance of at least 15 meters.
+    /// </summary>
     ShowNearAndRespawnWhenPickup2 = 15,
 
-    /// <summary>Similar to type 1. Pressing Tab (KEY_ACTION) makes it disappear but the key press doesn't trigger OnPlayerPickUpPickup.</summary>
+    /// <summary>
+    /// Similar to type 1. Pressing Tab (KEY_ACTION) makes it disappear but the key press doesn't trigger OnPlayerPickUpPickup.
+    /// </summary>
     ScriptedActionsOnlyEveryFewSecondsButTabDisappear = 18,
 
-    /// <summary>Disappears after pickup, but doesn't respawn. Makes "cash pickup" sound if picked up.</summary>
+    /// <summary>
+    /// Disappears after pickup, but doesn't respawn. Makes "cash pickup" sound if picked up.
+    /// </summary>
     ShowAndNoRespawnAfterPickupWithSound = 19,
 
     /// <summary>
@@ -69,6 +93,8 @@ public enum PickupType
     /// </summary>
     ScriptedActionsOnlyEveryFewSecondsButCameraWillDestroy = 20,
 
-    /// <summary>Disappears after pickup, respawns after death.</summary>
+    /// <summary>
+    /// Disappears after pickup, respawns after death.
+    /// </summary>
     ShowAndRespawnWhenDeath2 = 22
 }

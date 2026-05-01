@@ -28,7 +28,7 @@ public readonly partial struct IVehiclesComponent
     /// <param name="Z">The Z angle (rotation) of the vehicle. Default is 0.0f.</param>
     /// <param name="colour1">The primary color of the vehicle. Default is -1.</param>
     /// <param name="colour2">The secondary color of the vehicle. Default is -1.</param>
-    /// <param name="respawnDelay">The respawn delay of the vehicle. Use <see cref="TimeSpan.Zero"/> or a negative value to disable respawn.</param>
+    /// <param name="respawnDelay">The respawn delay of the vehicle. Use <see cref="TimeSpan.Zero" /> or a negative value to disable respawn.</param>
     /// <param name="addSiren"><see langword="true" /> if the vehicle should have a siren; otherwise, <see langword="false" />. Default is <see langword="false" />.</param>
     /// <returns>The created vehicle.</returns>
     public partial IVehicle Create(bool isStatic, int modelID, Vector3 position, float Z = 0.0f, int colour1 = -1, int colour2 = -1, [MarshalUsing(typeof(SecondsMarshaller))] TimeSpan respawnDelay = default, bool addSiren = false);

@@ -14,7 +14,7 @@ public readonly partial struct IGangZonesComponent
     /// <summary>
     /// Gets the event dispatcher for gang zone events.
     /// </summary>
-    /// <returns>An event dispatcher for <see cref="IGangZoneEventHandler"/> events.</returns>
+    /// <returns>An event dispatcher for <see cref="IGangZoneEventHandler" /> events.</returns>
     public partial IEventDispatcher<IGangZoneEventHandler> GetEventDispatcher();
 
     /// <summary>

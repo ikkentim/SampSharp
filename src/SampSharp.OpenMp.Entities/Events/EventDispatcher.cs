@@ -22,7 +22,9 @@ internal class EventDispatcher : IEventDispatcher, IEventService
     private readonly IEntityManager _entityManager;
     private readonly ILogger<EventDispatcher> _logger;
 
-    /// <summary>Initializes a new instance of the <see cref="EventDispatcher" /> class.</summary>
+    /// <summary>
+    /// Initializes a new instance of the <see cref="EventDispatcher" /> class.
+    /// </summary>
     public EventDispatcher(IServiceProvider serviceProvider, IEntityManager entityManager, ILogger<EventDispatcher> logger, ISystemRegistry systemRegistry)
     {
         _serviceProvider = serviceProvider;

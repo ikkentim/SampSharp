@@ -22,7 +22,7 @@ internal static unsafe class StructPointer
     }
 
     /// <summary>
-    ///Deference the given pointer and return the value as a struct of type <typeparamref name="T" />.
+    /// Dereference the given pointer and return the value as a struct of type <typeparamref name="T" />.
     /// </summary>
     /// <typeparam name="T">The unmanaged type the pointer points to.</typeparam>
     /// <param name="pointer">The pointer to dereference.</param>

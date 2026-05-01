@@ -17,7 +17,9 @@ using SampSharp.OpenMp.Core.Api;
 
 namespace SampSharp.Entities.SAMP;
 
-/// <summary>A component which contains the data of the currently visible dialog.</summary>
+/// <summary>
+/// A component which contains the data of the currently visible dialog.
+/// </summary>
 /// <seealso cref="Component" />
 /// <remarks>Initializes a new instance of the <see cref="VisibleDialog" /> class.</remarks>
 /// <param name="dialog">The open.mp dialog shown to the player.</param>
@@ -25,13 +27,19 @@ namespace SampSharp.Entities.SAMP;
 public class VisibleDialog(IDialog dialog, Action<DialogResult> handler) : Component
 {
 
-    /// <summary>Gets the visible dialog.</summary>
+    /// <summary>
+    /// Gets the visible dialog.
+    /// </summary>
     public IDialog Dialog { get; } = dialog ?? throw new ArgumentNullException(nameof(dialog));
 
-    /// <summary>Gets the response handler for the dialog.</summary>
+    /// <summary>
+    /// Gets the response handler for the dialog.
+    /// </summary>
     public Action<DialogResult> Handler { get; } = handler ?? throw new ArgumentNullException(nameof(handler));
 
-    /// <summary>Gets or sets a value indicating whether a response has been received.</summary>
+    /// <summary>
+    /// Gets or sets a value indicating whether a response has been received.
+    /// </summary>
     public bool ResponseReceived { get; set; }
     
     /// <inheritdoc />

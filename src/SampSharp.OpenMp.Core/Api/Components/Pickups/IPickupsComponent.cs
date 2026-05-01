@@ -14,7 +14,7 @@ public readonly partial struct IPickupsComponent
     /// <summary>
     /// Gets the event dispatcher for pickup events.
     /// </summary>
-    /// <returns>An event dispatcher for <see cref="IPickupEventHandler"/> events.</returns>
+    /// <returns>An event dispatcher for <see cref="IPickupEventHandler" /> events.</returns>
     public partial IEventDispatcher<IPickupEventHandler> GetEventDispatcher();
 
     /// <summary>

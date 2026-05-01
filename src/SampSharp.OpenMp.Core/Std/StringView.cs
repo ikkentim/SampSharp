@@ -34,7 +34,7 @@ public readonly unsafe struct StringView : ISpanFormattable
     }
 
     /// <summary>
-    /// Converts this view to a <see langword="string" /> using <see cref="StringViewMarshaller.Encoding"/>
+    /// Converts this view to a <see langword="string" /> using <see cref="StringViewMarshaller.Encoding" />
     /// (UTF-8 by default, can be overridden at startup).
     /// </summary>
     /// <returns>The converted string.</returns>
@@ -55,18 +55,31 @@ public readonly unsafe struct StringView : ISpanFormattable
     }
 
 
-    /// <summary>Tries to format the value of this string view into the provided span of characters. The string view is
-    /// converted using UTF-8 encoding.</summary>
-    /// <param name="destination">The span in which to write this instance's value formatted as a span of
-    /// characters.</param>
-    /// <param name="charsWritten">When this method returns, contains the number of characters that were written in
-    /// <paramref name="destination" />.</param>
-    /// <param name="format">A span containing the characters that represent a standard or custom format string that
-    /// defines the acceptable format for <paramref name="destination" />.</param>
-    /// <param name="provider">An optional object that supplies culture-specific formatting information for <paramref
-    /// name="destination" />.</param>
+    /// <summary>
+    /// Tries to format the value of this string view into the provided span of characters. The string view is
+    /// converted using UTF-8 encoding.
+    /// </summary>
+    /// <param name="destination">
+    /// The span in which to write this instance's value formatted as a span of
+    /// characters.
+    /// </param>
+    /// <param name="charsWritten">
+    /// When this method returns, contains the number of characters that were written in
+    /// <paramref name="destination" />.
+    /// </param>
+    /// <param name="format">
+    /// A span containing the characters that represent a standard or custom format string that
+    /// defines the acceptable format for <paramref name="destination" />.
+    /// </param>
+    /// <param name="provider">
+    /// An optional object that supplies culture-specific formatting information for
+    /// <paramref
+    ///     name="destination" />
+    /// .
+    /// </param>
     /// <returns>
-    /// <see langword="true" /> if the formatting was successful; otherwise, <see langword="false" />.</returns>
+    /// <see langword="true" /> if the formatting was successful; otherwise, <see langword="false" />.
+    /// </returns>
     public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider? provider)
     {
         return StringViewMarshaller.Encoding.TryGetChars(AsSpan(), destination, out charsWritten);
