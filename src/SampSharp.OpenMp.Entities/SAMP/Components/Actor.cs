@@ -56,6 +56,8 @@ public class Actor : WorldEntity
     /// <returns>True if streamed in; False otherwise.</returns>
     public virtual bool IsStreamedIn(Player player)
     {
+        ArgumentNullException.ThrowIfNull(player);
+        
         return _actor.IsStreamedInForPlayer(player);
     }
 

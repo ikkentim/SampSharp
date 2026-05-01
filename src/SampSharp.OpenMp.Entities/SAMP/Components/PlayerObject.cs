@@ -71,6 +71,9 @@ public class PlayerObject : WorldEntity
     /// <param name="materialColor">The object color to set (use default(Color) to keep the existing material color).</param>
     public virtual void SetMaterial(int materialIndex, int modelId, string txdName, string textureName, Color materialColor)
     {
+        ArgumentNullException.ThrowIfNull(txdName);
+        ArgumentNullException.ThrowIfNull(textureName);
+        
         _playerObject.SetMaterial((uint)materialIndex, modelId, txdName, textureName, materialColor);
     }
 
@@ -87,6 +90,9 @@ public class PlayerObject : WorldEntity
     public virtual void SetMaterialText(int materialIndex, string text, ObjectMaterialSize materialSize, string fontface, int fontSize, bool bold, Color foreColor,
         Color backColor, ObjectMaterialTextAlign textAlignment)
     {
+        ArgumentNullException.ThrowIfNull(text);
+        ArgumentNullException.ThrowIfNull(fontface);
+        
         _playerObject.SetMaterialText((uint)materialIndex, text, (SampSharp.OpenMp.Core.Api.ObjectMaterialSize)materialSize, fontface, fontSize, bold, foreColor, backColor,
             (SampSharp.OpenMp.Core.Api.ObjectMaterialTextAlign)textAlignment);
     }
@@ -103,6 +109,8 @@ public class PlayerObject : WorldEntity
     /// <param name="rotation">The rotation.</param>
     public virtual void AttachTo(Player target, Vector3 offset, Vector3 rotation)
     {
+        ArgumentNullException.ThrowIfNull(target);
+        
         _playerObject.AttachToPlayer(target, offset, rotation);
     }
     
@@ -112,6 +120,8 @@ public class PlayerObject : WorldEntity
     /// <param name="rotation">The rotation.</param>
     public virtual void AttachTo(Vehicle target, Vector3 offset, Vector3 rotation)
     {
+        ArgumentNullException.ThrowIfNull(target);
+        
         _playerObject.AttachToVehicle(target, offset, rotation);
     }
 
@@ -121,6 +131,8 @@ public class PlayerObject : WorldEntity
     /// <param name="rotation">The rotation.</param>
     public virtual void AttachTo(PlayerObject target, Vector3 offset, Vector3 rotation)
     {
+        ArgumentNullException.ThrowIfNull(target);
+        
         _playerObject.AttachToObject(target, offset, rotation);
     }
     

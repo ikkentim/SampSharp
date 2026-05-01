@@ -34,6 +34,8 @@ public class ConsoleCommandCollection(FlatHashSetStringView set) : IReadOnlyColl
     /// <param name="command">The command to add to the collection.</param>
     public void Add(string command)
     {
+        ArgumentNullException.ThrowIfNull(command);
+
         set.Emplace(command);
     }
 }
