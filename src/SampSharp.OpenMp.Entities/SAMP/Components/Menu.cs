@@ -103,6 +103,8 @@ public class Menu : IdProvider
     /// <param name="player">The player to show this menu to.</param>
     public virtual void Show(Player player)
     {
+        ArgumentNullException.ThrowIfNull(player);
+        
         _menu.ShowForPlayer(player);
     }
 
@@ -112,6 +114,8 @@ public class Menu : IdProvider
     /// <param name="player">The player to hide this menu from.</param>
     public virtual void Hide(Player player)
     {
+        ArgumentNullException.ThrowIfNull(player);
+        
         _menu.HideForPlayer(player);
     }
 

@@ -80,6 +80,8 @@ public abstract class Component
 	/// <param name="component">The instance of component to be added.</param>
     public void AddComponent<T>(T component) where T : Component
     {
+        ArgumentNullException.ThrowIfNull(component);
+        
         Manager.AddComponent(Entity, component);
     }
 

@@ -727,6 +727,7 @@ public class Player : WorldEntity
     /// <returns><see langword="true" /> if the specified <paramref name="player" /> is streamed in for this player; otherwise, <see langword="false" />.</returns>
     public virtual bool IsPlayerStreamedIn(Player player)
     {
+        ArgumentNullException.ThrowIfNull(player);
         return _player.IsStreamedInForPlayer(player);
     }
 
@@ -921,6 +922,7 @@ public class Player : WorldEntity
     /// <param name="crime">The crime ID, which will be reported as a 10-code (e.g., 10-16 for crime ID 16).</param>
     public virtual void PlayCrimeReport(Player suspect, int crime)
     {
+        ArgumentNullException.ThrowIfNull(suspect);
         _player.PlayerCrimeReport(suspect, crime);
     }
 
@@ -1103,6 +1105,8 @@ public class Player : WorldEntity
     /// <param name="seatId">The seat index (0 = driver).</param>
     public virtual void PutInVehicle(Vehicle vehicle, int seatId)
     {
+        ArgumentNullException.ThrowIfNull(vehicle);
+        
         ((IVehicle)vehicle).PutPlayer(_player, seatId);
     }
 
@@ -1112,6 +1116,8 @@ public class Player : WorldEntity
     /// <param name="vehicle">The <see cref="Vehicle" /> to put the player in.</param>
     public virtual void PutInVehicle(Vehicle vehicle)
     {
+        ArgumentNullException.ThrowIfNull(vehicle);
+        
         PutInVehicle(vehicle, 0);
     }
 
@@ -1313,6 +1319,7 @@ public class Player : WorldEntity
     /// <param name="color">The new marker <see cref="Color" />.</param>
     public virtual void SetPlayerMarker(Player player, Color color)
     {
+        ArgumentNullException.ThrowIfNull(player);
         _player.SetOtherColour(player, color);
     }
 
@@ -1326,6 +1333,7 @@ public class Player : WorldEntity
     /// <param name="show"><see langword="true" /> to show the name tag; <see langword="false" /> to hide it.</param>
     public virtual void ShowNameTagForPlayer(Player player, bool show)
     {
+        ArgumentNullException.ThrowIfNull(player);
         _player.ToggleOtherNameTag(player, show);
     }
 
@@ -1419,6 +1427,7 @@ public class Player : WorldEntity
     /// <param name="mode">The <see cref="SpectateMode" /> to use.</param>
     public virtual void SpectatePlayer(Player targetPlayer, SpectateMode mode)
     {
+        ArgumentNullException.ThrowIfNull(targetPlayer);
         _player.SpectatePlayer(targetPlayer, (PlayerSpectateMode)mode);
     }
 
@@ -1429,6 +1438,7 @@ public class Player : WorldEntity
     /// <param name="targetPlayer">The <see cref="Player" /> to spectate.</param>
     public virtual void SpectatePlayer(Player targetPlayer)
     {
+        ArgumentNullException.ThrowIfNull(targetPlayer);
         SpectatePlayer(targetPlayer, SpectateMode.Normal);
     }
 
@@ -1440,6 +1450,7 @@ public class Player : WorldEntity
     /// <param name="mode">The <see cref="SpectateMode" /> to use.</param>
     public virtual void SpectateVehicle(Vehicle targetVehicle, SpectateMode mode)
     {
+        ArgumentNullException.ThrowIfNull(targetVehicle);
         _player.SpectateVehicle(targetVehicle, (PlayerSpectateMode)mode);
     }
 
@@ -1450,6 +1461,7 @@ public class Player : WorldEntity
     /// <param name="targetVehicle">The <see cref="Vehicle" /> to spectate.</param>
     public virtual void SpectateVehicle(Vehicle targetVehicle)
     {
+        ArgumentNullException.ThrowIfNull(targetVehicle);
         SpectateVehicle(targetVehicle, SpectateMode.Normal);
     }
 
@@ -1639,6 +1651,8 @@ public class Player : WorldEntity
     /// <param name="weapon">The <see cref="Weapon" /> used.</param>
     public virtual void SendDeathMessage(Player killer, Player player, Weapon weapon)
     {
+        ArgumentNullException.ThrowIfNull(killer);
+        ArgumentNullException.ThrowIfNull(player);
         _player.SendDeathMessage(player, killer, (int)weapon);
     }
 
@@ -1648,6 +1662,7 @@ public class Player : WorldEntity
     /// <param name="object">The <see cref="GlobalObject" /> to attach the camera to.</param>
     public virtual void AttachCameraToObject(GlobalObject @object)
     {
+        ArgumentNullException.ThrowIfNull(@object);
         _player.AttachCameraToObject(@object);
     }
 
@@ -1657,6 +1672,7 @@ public class Player : WorldEntity
     /// <param name="object">The <see cref="PlayerObject" /> to attach the camera to.</param>
     public virtual void AttachCameraToObject(PlayerObject @object)
     {
+        ArgumentNullException.ThrowIfNull(@object);
         _player.AttachCameraToObject(@object);
     }
 
@@ -1666,6 +1682,7 @@ public class Player : WorldEntity
     /// <param name="object">The <see cref="GlobalObject" /> to edit.</param>
     public virtual void Edit(GlobalObject @object)
     {
+        ArgumentNullException.ThrowIfNull(@object);
         ObjectData.BeginEditing(@object);
     }
 
@@ -1675,6 +1692,7 @@ public class Player : WorldEntity
     /// <param name="object">The <see cref="PlayerObject" /> to edit.</param>
     public virtual void Edit(PlayerObject @object)
     {
+        ArgumentNullException.ThrowIfNull(@object);
         ObjectData.BeginEditing(@object);
     }
 

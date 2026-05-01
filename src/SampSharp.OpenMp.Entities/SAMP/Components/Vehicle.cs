@@ -407,6 +407,7 @@ public class Vehicle : WorldEntity
     /// <returns><see langword="true" /> if this vehicle is streamed in for the specified <paramref name="player" />; <see langword="false" /> otherwise.</returns>
     public virtual bool IsStreamedIn(Player player)
     {
+        ArgumentNullException.ThrowIfNull(player);
         return _vehicle.IsStreamedInForPlayer(player);
     }
 
@@ -417,6 +418,7 @@ public class Vehicle : WorldEntity
     /// <param name="parameters">The <see cref="VehicleParameters" /> to set.</param>
     public virtual void SetParametersForPlayer(Player player, in VehicleParameters parameters)
     {
+        ArgumentNullException.ThrowIfNull(player);
         var p = parameters.ToParams();
         _vehicle.SetParamsForPlayer(player, ref p);
     }

@@ -216,7 +216,7 @@ public static class MathHelper
     /// Determines if value is powered by two.
     /// </summary>
     /// <param name="value">A value.</param>
-    /// <returns><see langword="true" /> if <c>value</c> is powered by two; otherwise, <see langword="false" />.</returns>
+    /// <returns><see langword="true" /> if <paramref name="value"/> is powered by two; otherwise, <see langword="false" />.</returns>
     public static bool IsPowerOfTwo(int value)
     {
         return value > 0 && (value & value - 1) == 0;

@@ -89,6 +89,8 @@ public class TextLabel : WorldEntity
     /// <param name="offset">The offset position relative to the player as a <see cref="Vector3" />.</param>
     public virtual void Attach(Player player, Vector3 offset = default)
     {
+        ArgumentNullException.ThrowIfNull(player);
+        
         _textLabel.AttachToPlayer(player, offset);
     }
 
@@ -99,6 +101,8 @@ public class TextLabel : WorldEntity
     /// <param name="offset">The offset position relative to the vehicle as a <see cref="Vector3" />.</param>
     public virtual void Attach(Vehicle vehicle, Vector3 offset = default)
     {
+        ArgumentNullException.ThrowIfNull(vehicle);
+        
         _textLabel.AttachToVehicle(vehicle, offset);
     }
 

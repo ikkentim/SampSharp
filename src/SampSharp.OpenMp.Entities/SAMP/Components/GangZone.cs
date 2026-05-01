@@ -77,6 +77,8 @@ public class GangZone : IdProvider
     /// <param name="player">The <see cref="Player" /> to show this gang zone to.</param>
     public virtual void Show(Player player)
     {
+        ArgumentNullException.ThrowIfNull(player);
+        
         Colour clr = Color;
         _gangZone.ShowForPlayer(player, ref clr);
     }
@@ -98,6 +100,8 @@ public class GangZone : IdProvider
     /// <param name="player">The <see cref="Player" /> to hide this gang zone from.</param>
     public virtual void Hide(Player player)
     {
+        ArgumentNullException.ThrowIfNull(player);
+        
         _gangZone.HideForPlayer(player);
     }
 
@@ -120,6 +124,8 @@ public class GangZone : IdProvider
     /// <param name="color">The <see cref="Color" /> to flash.</param>
     public virtual void Flash(Player player, Color color)
     {
+        ArgumentNullException.ThrowIfNull(player);
+        
         Colour clr = color;
         _gangZone.FlashForPlayer(player, ref clr);
     }
@@ -141,6 +147,8 @@ public class GangZone : IdProvider
     /// <param name="player">The <see cref="Player" /> to stop the gang zone flash for.</param>
     public virtual void StopFlash(Player player)
     {
+        ArgumentNullException.ThrowIfNull(player);
+        
         _gangZone.StopFlashForPlayer(player);
     }
 

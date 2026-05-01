@@ -68,6 +68,8 @@ public class Actor : WorldEntity
     /// <returns><see langword="true" /> if the actor is streamed in for the player; <see langword="false" /> otherwise.</returns>
     public virtual bool IsStreamedIn(Player player)
     {
+        ArgumentNullException.ThrowIfNull(player);
+        
         return _actor.IsStreamedInForPlayer(player);
     }
 
