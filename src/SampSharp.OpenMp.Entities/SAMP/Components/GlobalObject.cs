@@ -4,13 +4,17 @@ using SampSharp.OpenMp.Core.Api;
 namespace SampSharp.Entities.SAMP;
 
 
-/// <summary>Represents a component which provides the data and functionality of an object.</summary>
+/// <summary>
+/// Represents a component which provides the data and functionality of an object.
+/// </summary>
 public class GlobalObject : WorldEntity
 {
     private readonly IObjectsComponent _objects;
     private readonly IObject _object;
 
-    /// <summary>Constructs an instance of GlobalObject, should be used internally.</summary>
+    /// <summary>
+    /// Constructs an instance of GlobalObject, should be used internally.
+    /// </summary>
     protected GlobalObject(IObjectsComponent objects, IObject @object) : base((IEntity)@object)
     {
         _objects = objects;
@@ -22,16 +26,24 @@ public class GlobalObject : WorldEntity
     /// </summary>
     protected bool IsOmpEntityDestroyed => _object.TryGetExtension<ComponentExtension>()?.IsOmpEntityDestroyed ?? true;
 
-    /// <summary>Gets whether this object is moving.</summary>
+    /// <summary>
+    /// Gets whether this object is moving.
+    /// </summary>
     public virtual bool IsMoving => _object.IsMoving();
 
-    /// <summary>Gets the model of this object.</summary>
+    /// <summary>
+    /// Gets the model of this object.
+    /// </summary>
     public virtual int ModelId => _object.GetModel();
 
-    /// <summary>Gets the draw distance of this object.</summary>
+    /// <summary>
+    /// Gets the draw distance of this object.
+    /// </summary>
     public virtual float DrawDistance => _object.GetDrawDistance();
 
-    /// <summary>Moves this object to the given position and rotation with the given speed.</summary>
+    /// <summary>
+    /// Moves this object to the given position and rotation with the given speed.
+    /// </summary>
     /// <param name="position">The position to which to move this object.</param>
     /// <param name="speed">The speed at which to move this object.</param>
     /// <param name="rotation">The rotation to which to move this object.</param>
@@ -46,7 +58,9 @@ public class GlobalObject : WorldEntity
         return (int)time;
     }
 
-    /// <summary>Moves this object to the given position with the given speed.</summary>
+    /// <summary>
+    /// Moves this object to the given position with the given speed.
+    /// </summary>
     /// <param name="position">The position to which to move this object.</param>
     /// <param name="speed">The speed at which to move this object.</param>
     /// <returns>The time it will take for the object to move in milliseconds.</returns>
@@ -55,13 +69,17 @@ public class GlobalObject : WorldEntity
         return Move(position, speed, new Vector3(-1000));
     }
 
-    /// <summary>Stop this object from moving any further.</summary>
+    /// <summary>
+    /// Stop this object from moving any further.
+    /// </summary>
     public virtual void Stop()
     {
         _object.Stop();
     }
 
-    /// <summary>Sets the material of this object.</summary>
+    /// <summary>
+    /// Sets the material of this object.
+    /// </summary>
     /// <param name="materialIndex">The material index on the object to change.</param>
     /// <param name="modelId">
     /// The model ID on which the replacement texture is located. Use 0 for alpha. Use -1 to change the material color without altering the
@@ -75,7 +93,9 @@ public class GlobalObject : WorldEntity
         _object.SetMaterial((uint)materialIndex, modelId, txdName, textureName, materialColor);
     }
 
-    /// <summary>Sets the material text of this object.</summary>
+    /// <summary>
+    /// Sets the material text of this object.
+    /// </summary>
     /// <param name="materialIndex">The material index on the object to change.</param>
     /// <param name="text">The text to show on the object. (MAX 2048 characters)</param>
     /// <param name="materialSize">The object's material index to replace with text.</param>
@@ -91,13 +111,17 @@ public class GlobalObject : WorldEntity
         _object.SetMaterialText((uint)materialIndex, text, (SampSharp.OpenMp.Core.Api.ObjectMaterialSize)materialSize, fontface, fontSize, bold, foreColor, backColor, (SampSharp.OpenMp.Core.Api.ObjectMaterialTextAlign)textAlignment);
     }
 
-    /// <summary>Disable collisions between players' cameras and this <see cref="GlobalObject" />.</summary>
+    /// <summary>
+    /// Disable collisions between players' cameras and this <see cref="GlobalObject" />.
+    /// </summary>
     public virtual void DisableCameraCollisions()
     {
         _object.SetCameraCollision(false);
     }
 
-    /// <summary>Attaches this object to the specified player.</summary>
+    /// <summary>
+    /// Attaches this object to the specified player.
+    /// </summary>
     /// <param name="target">The player.</param>
     /// <param name="offset">The offset.</param>
     /// <param name="rotation">The rotation.</param>
@@ -106,7 +130,9 @@ public class GlobalObject : WorldEntity
         _object.AttachToPlayer(target, offset, rotation);
     }
     
-    /// <summary>Attaches this object to the specified vehicle.</summary>
+    /// <summary>
+    /// Attaches this object to the specified vehicle.
+    /// </summary>
     /// <param name="target">The vehicle.</param>
     /// <param name="offset">The offset.</param>
     /// <param name="rotation">The rotation.</param>
@@ -115,7 +141,9 @@ public class GlobalObject : WorldEntity
         _object.AttachToVehicle(target, offset, rotation);
     }
 
-    /// <summary>Attaches this object to the specified object.</summary>
+    /// <summary>
+    /// Attaches this object to the specified object.
+    /// </summary>
     /// <param name="target">The object.</param>
     /// <param name="offset">The offset.</param>
     /// <param name="rotation">The rotation.</param>
@@ -140,7 +168,9 @@ public class GlobalObject : WorldEntity
         return $"(Id: {Id}, Model: {ModelId})";
     }
     
-    /// <summary>Performs an implicit conversion from <see cref="GlobalObject" /> to <see cref="IObject" />.</summary>
+    /// <summary>
+    /// Performs an implicit conversion from <see cref="GlobalObject" /> to <see cref="IObject" />.
+    /// </summary>
     public static implicit operator IObject(GlobalObject @object)
     {
         return @object._object;

@@ -3,13 +3,17 @@ using SampSharp.OpenMp.Core.Api;
 
 namespace SampSharp.Entities.SAMP;
 
-/// <summary>Represents a component which provides the data and functionality of an actor.</summary>
+/// <summary>
+/// Represents a component which provides the data and functionality of an actor.
+/// </summary>
 public class Actor : WorldEntity
 {
     private readonly IActorsComponent _actors;
     private readonly IActor _actor;
 
-    /// <summary>Constructs an instance of Actor, should be used internally.</summary>
+    /// <summary>
+    /// Constructs an instance of Actor, should be used internally.
+    /// </summary>
     protected Actor(IActorsComponent actors, IActor actor) : base((IEntity)actor)
     {
         _actors = actors;
@@ -21,7 +25,9 @@ public class Actor : WorldEntity
     /// </summary>
     protected bool IsOmpEntityDestroyed => _actor.TryGetExtension<ComponentExtension>()?.IsOmpEntityDestroyed ?? true;
 
-    /// <summary>Gets the facing angle of this actor.</summary>
+    /// <summary>
+    /// Gets the facing angle of this actor.
+    /// </summary>
     public virtual float Angle
     {
         get => float.RadiansToDegrees(MathHelper.GetZAngleFromRotationMatrix(Matrix4x4.CreateFromQuaternion(_actor.GetRotation())));
@@ -37,21 +43,27 @@ public class Actor : WorldEntity
         set => _actor.SetSkin(value);
     }
 
-    /// <summary>Gets the health of this actor.</summary>
+    /// <summary>
+    /// Gets the health of this actor.
+    /// </summary>
     public virtual float Health
     {
         get => _actor.GetHealth();
         set => _actor.SetHealth(value);
     }
 
-    /// <summary>Gets or sets a value indicating whether this actor is invulnerable.</summary>
+    /// <summary>
+    /// Gets or sets a value indicating whether this actor is invulnerable.
+    /// </summary>
     public virtual bool IsInvulnerable
     {
         get => _actor.IsInvulnerable();
         set => _actor.SetInvulnerable(value);
     }
 
-    /// <summary>Determines whether this actor is streamed in for the specified <paramref name="player" />.</summary>
+    /// <summary>
+    /// Determines whether this actor is streamed in for the specified <paramref name="player" />.
+    /// </summary>
     /// <param name="player">The player.</param>
     /// <returns><see langword="true" /> if streamed in; <see langword="false" /> otherwise.</returns>
     public virtual bool IsStreamedIn(Player player)
@@ -59,7 +71,9 @@ public class Actor : WorldEntity
         return _actor.IsStreamedInForPlayer(player);
     }
 
-    /// <summary>Applies the specified animation to this actor.</summary>
+    /// <summary>
+    /// Applies the specified animation to this actor.
+    /// </summary>
     /// <param name="library">The animation library from which to apply an animation.</param>
     /// <param name="name">The name of the animation to apply, within the specified library.</param>
     /// <param name="fDelta">The speed to play the animation.</param>
@@ -81,7 +95,9 @@ public class Actor : WorldEntity
     public virtual void ApplyAnimation(string library, string name, float fDelta, bool loop, bool lockX, bool lockY, bool freeze, int time)
         => ApplyAnimation(library, name, fDelta, loop, lockX, lockY, freeze, TimeSpan.FromMilliseconds(time));
 
-    /// <summary>Clear any animations applied to this actor.</summary>
+    /// <summary>
+    /// Clear any animations applied to this actor.
+    /// </summary>
     public virtual void ClearAnimations()
     {
         _actor.ClearAnimations();
@@ -102,7 +118,9 @@ public class Actor : WorldEntity
         return $"(Id: {Id})";
     }
     
-    /// <summary>Performs an implicit conversion from <see cref="Actor" /> to <see cref="IActor" />.</summary>
+    /// <summary>
+    /// Performs an implicit conversion from <see cref="Actor" /> to <see cref="IActor" />.
+    /// </summary>
     public static implicit operator IActor(Actor actor)
     {
         return actor._actor;

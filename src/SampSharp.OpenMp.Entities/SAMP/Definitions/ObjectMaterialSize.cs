@@ -15,7 +15,9 @@
 
 namespace SampSharp.Entities.SAMP;
 
-/// <summary>Contains all object material sizes.</summary>
+/// <summary>
+/// Contains all object material sizes.
+/// </summary>
 public enum ObjectMaterialSize
 {
     /// <summary>32 x 32</summary>

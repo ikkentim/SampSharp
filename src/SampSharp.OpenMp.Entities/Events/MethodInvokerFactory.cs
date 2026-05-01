@@ -5,7 +5,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace SampSharp.Entities;
 
-/// <summary>Provides a compiler for an invoke method for an instance method with injected dependencies and entity-to-component conversion.</summary>
+/// <summary>
+/// Provides a compiler for an invoke method for an instance method with injected dependencies and entity-to-component conversion.
+/// </summary>
 public static class MethodInvokerFactory
 {
     private static readonly MethodInfo _getComponentInfo = typeof(IEntityManager).GetMethod(nameof(IEntityManager.GetComponent),
@@ -14,7 +16,9 @@ public static class MethodInvokerFactory
     private static readonly MethodInfo _getServiceInfo =
         typeof(MethodInvokerFactory).GetMethod(nameof(GetService), BindingFlags.NonPublic | BindingFlags.Static)!;
 
-    /// <summary>Compiles the invoker for the specified method.</summary>
+    /// <summary>
+    /// Compiles the invoker for the specified method.
+    /// </summary>
     /// <param name="methodInfo">The method information.</param>
     /// <param name="parameterSources">The sources of the parameters.</param>
     /// <param name="uninvokedReturnValue">The value returned if the method is not invoked when a parameter could not be converted to the correct component.</param>

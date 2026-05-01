@@ -2,17 +2,23 @@
 
 namespace SampSharp.Entities;
 
-/// <summary>Provides information about the origin of a parameter of a method.</summary>
+/// <summary>
+/// Provides information about the origin of a parameter of a method.
+/// </summary>
 public class MethodParameterSource
 {
-    /// <summary>Initializes a new instance of the <see cref="MethodParameterSource" /> class.</summary>
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MethodParameterSource" /> class.
+    /// </summary>
     /// <param name="info">The parameter information.</param>
     public MethodParameterSource(ParameterInfo info)
     {
         Info = info;
     }
 
-    /// <summary>Gets the parameter information.</summary>
+    /// <summary>
+    /// Gets the parameter information.
+    /// </summary>
     public ParameterInfo Info { get; }
 
     /// <summary>

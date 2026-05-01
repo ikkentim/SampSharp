@@ -2,7 +2,9 @@
 
 namespace SampSharp.Entities;
 
-/// <summary>Provides functionality for the creation, modification and destruction of entities.</summary>
+/// <summary>
+/// Provides functionality for the creation, modification and destruction of entities.
+/// </summary>
 public interface IEntityManager
 {
     /// <summary>
@@ -69,11 +71,15 @@ public interface IEntityManager
     /// <param name="component">The instance of the component to be added.</param>
     void AddComponent<T>(EntityId entity, EntityId parent, T component) where T : Component;
 
-    /// <summary>Destroys the specified <paramref name="component" />.</summary>
+    /// <summary>
+    /// Destroys the specified <paramref name="component" />.
+    /// </summary>
     /// <param name="component">The component to destroy.</param>
     void Destroy(Component component);
 
-    /// <summary>Destroys the specified <paramref name="entity" />.</summary>
+    /// <summary>
+    /// Destroys the specified <paramref name="entity" />.
+    /// </summary>
     /// <param name="entity">The entity.</param>
     void Destroy(EntityId entity);
 
@@ -87,18 +93,24 @@ public interface IEntityManager
     /// </param>
     void Destroy<T>(EntityId entity) where T : Component;
 
-    /// <summary>Gets the children of the specified <paramref name="entity" />.</summary>
+    /// <summary>
+    /// Gets the children of the specified <paramref name="entity" />.
+    /// </summary>
     /// <param name="entity">The entity to get the children of.</param>
     /// <returns>An array with the entities of which the parent is the specified <paramref name="entity" />.</returns>
     [Pure]
     EntityId[] GetChildren(EntityId entity);
 
-    /// <summary>Gets all root entities with no parent.</summary>
+    /// <summary>
+    /// Gets all root entities with no parent.
+    /// </summary>
     /// <returns>An array with all entities without a parent.</returns>
     [Pure]
     EntityId[] GetRootEntities();
 
-    /// <summary>Gets a component of the specified type <typeparamref name="T" /> attached to any entity.</summary>
+    /// <summary>
+    /// Gets a component of the specified type <typeparamref name="T" /> attached to any entity.
+    /// </summary>
     /// <typeparam name="T">The type of the component to find.</typeparam>
     /// <returns>The found component or <see langword="null" /> if no component of the specified type could be found.</returns>
     [Pure]
@@ -136,7 +148,9 @@ public interface IEntityManager
     [Pure]
     T? GetComponentInParent<T>(EntityId entity) where T : Component;
 
-    /// <summary>Gets all components of the specified type <typeparamref name="T" /> attached to any entity.</summary>
+    /// <summary>
+    /// Gets all components of the specified type <typeparamref name="T" /> attached to any entity.
+    /// </summary>
     /// <typeparam name="T">The type of the components to find.</typeparam>
     /// <returns>A collection of the found components.</returns>
     [Pure]
@@ -174,7 +188,9 @@ public interface IEntityManager
     [Pure]
     T[] GetComponentsInParent<T>(EntityId entity) where T : Component;
 
-    /// <summary>Gets the parent entity of the specified <paramref name="entity" />.</summary>
+    /// <summary>
+    /// Gets the parent entity of the specified <paramref name="entity" />.
+    /// </summary>
     /// <param name="entity">The entity to get its parent.</param>
     /// <returns>
     /// The parent entity of the specified <paramref name="entity" />. <see cref="EntityId.Empty" /> is returned if the
@@ -183,7 +199,9 @@ public interface IEntityManager
     [Pure]
     EntityId GetParent(EntityId entity);
 
-    /// <summary>Returns a value indicating whether the specified <paramref name="entity" /> exists.</summary>
+    /// <summary>
+    /// Returns a value indicating whether the specified <paramref name="entity" /> exists.
+    /// </summary>
     /// <param name="entity">The entity to check its existence.</param>
     /// <returns><see langword="true" /> if the specified <paramref name="entity" /> exists; otherwise, <see langword="false" />.</returns>
     [Pure]

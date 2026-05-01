@@ -9,11 +9,17 @@
 /// </summary>
 public sealed record MethodResult(bool Value)
 {
-    /// <summary>Singleton "true" instance.</summary>
+    /// <summary>
+    /// Singleton "true" instance.
+    /// </summary>
     public static MethodResult True { get; } = new(true);
-    /// <summary>Singleton "false" instance.</summary>
+    /// <summary>
+    /// Singleton "false" instance.
+    /// </summary>
     public static MethodResult False { get; } = new(false);
 
-    /// <summary>Returns the singleton <see cref="MethodResult" /> for the given <paramref name="value" />.</summary>
+    /// <summary>
+    /// Returns the singleton <see cref="MethodResult" /> for the given <paramref name="value" />.
+    /// </summary>
     public static object From(bool value) => value ? True : False;
 }

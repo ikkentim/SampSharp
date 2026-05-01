@@ -21,7 +21,9 @@ public class Npc : IdProvider
     private readonly INPC _npc;
     private readonly INPCComponent _npcs;
 
-    /// <summary>Constructs an instance of Npc, should be used internally.</summary>
+    /// <summary>
+    /// Constructs an instance of Npc, should be used internally.
+    /// </summary>
     protected Npc(INPCComponent npcs, INPC npc) : base((IIDProvider)npc)
     {
         _npcs = npcs;
@@ -33,72 +35,94 @@ public class Npc : IdProvider
     /// </summary>
     protected bool IsOmpEntityDestroyed => _npc.TryGetExtension<ComponentExtension>()?.IsOmpEntityDestroyed ?? true;
 
-    /// <summary>The underlying <see cref="IPlayer" /> handle this NPC drives.</summary>
+    /// <summary>
+    /// The underlying <see cref="IPlayer" /> handle this NPC drives.
+    /// </summary>
     public virtual IPlayer Player => _npc.GetPlayer();
 
-    /// <summary>Gets or sets the NPC's world position. Use <see cref="SetPosition" /> for the immediate-update overload.</summary>
+    /// <summary>
+    /// Gets or sets the NPC's world position. Use <see cref="SetPosition" /> for the immediate-update overload.
+    /// </summary>
     public virtual Vector3 Position
     {
         get => _npc.GetPosition();
         set => _npc.SetPosition(value, false);
     }
 
-    /// <summary>Gets or sets the NPC's rotation as a quaternion.</summary>
+    /// <summary>
+    /// Gets or sets the NPC's rotation as a quaternion.
+    /// </summary>
     public virtual GTAQuat Rotation
     {
         get => _npc.GetRotation();
         set => _npc.SetRotation(value, false);
     }
 
-    /// <summary>Gets or sets the virtual world this NPC is in.</summary>
+    /// <summary>
+    /// Gets or sets the virtual world this NPC is in.
+    /// </summary>
     public virtual int VirtualWorld
     {
         get => _npc.GetVirtualWorld();
         set => _npc.SetVirtualWorld(value);
     }
 
-    /// <summary>Sets the NPC's skin model id.</summary>
+    /// <summary>
+    /// Sets the NPC's skin model id.
+    /// </summary>
     public virtual int Skin
     {
         set => _npc.SetSkin(value);
     }
 
-    /// <summary>Gets or sets the current weapon id.</summary>
+    /// <summary>
+    /// Gets or sets the current weapon id.
+    /// </summary>
     public virtual byte Weapon
     {
         get => _npc.GetWeapon();
         set => _npc.SetWeapon(value);
     }
 
-    /// <summary>Gets or sets ammo for the current weapon.</summary>
+    /// <summary>
+    /// Gets or sets ammo for the current weapon.
+    /// </summary>
     public virtual int Ammo
     {
         get => _npc.GetAmmo();
         set => _npc.SetAmmo(value);
     }
 
-    /// <summary>Gets or sets the NPC's health.</summary>
+    /// <summary>
+    /// Gets or sets the NPC's health.
+    /// </summary>
     public virtual float Health
     {
         get => _npc.GetHealth();
         set => _npc.SetHealth(value);
     }
 
-    /// <summary>Gets or sets the NPC's armour.</summary>
+    /// <summary>
+    /// Gets or sets the NPC's armour.
+    /// </summary>
     public virtual float Armour
     {
         get => _npc.GetArmour();
         set => _npc.SetArmour(value);
     }
 
-    /// <summary>Gets or sets the NPC's invulnerability flag.</summary>
+    /// <summary>
+    /// Gets or sets the NPC's invulnerability flag.
+    /// </summary>
     public virtual bool IsInvulnerable
     {
         get => _npc.IsInvulnerable();
         set => _npc.SetInvulnerable(value);
     }
 
-    /// <summary>Gets or sets the interior id this NPC is bookkept under (server-side only).</summary>
+    /// <summary>
+    /// Gets or sets the interior id this NPC is bookkept under (server-side only).
+    /// </summary>
     public virtual int Interior
     {
         get => (int)_npc.GetInterior();
@@ -111,7 +135,9 @@ public class Npc : IdProvider
     /// <summary><see langword="true" /> if the NPC is currently following any movement command.</summary>
     public virtual bool IsMoving => _npc.IsMoving();
 
-    /// <summary>Gets the NPC's current velocity.</summary>
+    /// <summary>
+    /// Gets the NPC's current velocity.
+    /// </summary>
     public virtual Vector3 Velocity => _npc.GetVelocity();
 
     /// <summary>
@@ -123,37 +149,49 @@ public class Npc : IdProvider
         _npc.SetPosition(position, immediateUpdate);
     }
 
-    /// <summary>Sets the NPC's rotation. See <see cref="SetPosition" /> for the immediate-update flag.</summary>
+    /// <summary>
+    /// Sets the NPC's rotation. See <see cref="SetPosition" /> for the immediate-update flag.
+    /// </summary>
     public virtual void SetRotation(GTAQuat rotation, bool immediateUpdate)
     {
         _npc.SetRotation(rotation, immediateUpdate);
     }
 
-    /// <summary>Spawns the NPC at its currently configured position/rotation.</summary>
+    /// <summary>
+    /// Spawns the NPC at its currently configured position/rotation.
+    /// </summary>
     public virtual void Spawn()
     {
         _npc.Spawn();
     }
 
-    /// <summary>Respawns the NPC keeping its current state.</summary>
+    /// <summary>
+    /// Respawns the NPC keeping its current state.
+    /// </summary>
     public virtual void Respawn()
     {
         _npc.Respawn();
     }
 
-    /// <summary>Tells the NPC to walk/jog/sprint/drive to the target position.</summary>
+    /// <summary>
+    /// Tells the NPC to walk/jog/sprint/drive to the target position.
+    /// </summary>
     public virtual bool MoveTo(Vector3 position, NPCMoveType moveType, float moveSpeed = -1f, float stopRange = 1.0f)
     {
         return _npc.Move(position, moveType, moveSpeed, stopRange);
     }
 
-    /// <summary>Stops any active movement.</summary>
+    /// <summary>
+    /// Stops any active movement.
+    /// </summary>
     public virtual void StopMoving()
     {
         _npc.StopMove();
     }
 
-    /// <summary>Applies an animation to this NPC.</summary>
+    /// <summary>
+    /// Applies an animation to this NPC.
+    /// </summary>
     public virtual void ApplyAnimation(string library, string name, float fDelta, bool loop, bool lockX, bool lockY,
         bool freeze, TimeSpan time)
     {
@@ -163,13 +201,17 @@ public class Npc : IdProvider
             (uint)time.TotalMilliseconds, library, name));
     }
 
-    /// <summary>Clears any applied animation.</summary>
+    /// <summary>
+    /// Clears any applied animation.
+    /// </summary>
     public virtual void ClearAnimations()
     {
         _npc.ClearAnimations();
     }
 
-    /// <summary>Sets the NPC's velocity.</summary>
+    /// <summary>
+    /// Sets the NPC's velocity.
+    /// </summary>
     public virtual void SetVelocity(Vector3 velocity, bool update = false)
     {
         _npc.SetVelocity(velocity, update);
@@ -196,7 +238,9 @@ public class Npc : IdProvider
         return $"(Id: {Id})";
     }
 
-    /// <summary>Performs an implicit conversion from <see cref="Npc" /> to <see cref="INPC" />.</summary>
+    /// <summary>
+    /// Performs an implicit conversion from <see cref="Npc" /> to <see cref="INPC" />.
+    /// </summary>
     public static implicit operator INPC(Npc npc)
     {
         return npc._npc;

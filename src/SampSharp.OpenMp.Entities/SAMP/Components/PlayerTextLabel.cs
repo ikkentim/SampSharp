@@ -3,14 +3,18 @@ using SampSharp.OpenMp.Core.Api;
 
 namespace SampSharp.Entities.SAMP;
 
-/// <summary>Represents a component which provides the data and functionality of a player 3D text label.</summary>
+/// <summary>
+/// Represents a component which provides the data and functionality of a player 3D text label.
+/// </summary>
 public class PlayerTextLabel : WorldEntity
 {
     private readonly IOmpEntityProvider _entityProvider;
     private readonly IPlayerTextLabelData _playerTextLabels;
     private readonly IPlayerTextLabel _playerTextLabel;
 
-    /// <summary>Constructs an instance of PlayerTextLabel, should be used internally.</summary>
+    /// <summary>
+    /// Constructs an instance of PlayerTextLabel, should be used internally.
+    /// </summary>
     protected PlayerTextLabel(IOmpEntityProvider entityProvider, IPlayerTextLabelData playerTextLabels, IPlayerTextLabel playerTextLabel) : base((IEntity)playerTextLabel)
     {
         _entityProvider = entityProvider;
@@ -23,7 +27,9 @@ public class PlayerTextLabel : WorldEntity
     /// </summary>
     protected bool IsOmpEntityDestroyed => _playerTextLabel.TryGetExtension<ComponentExtension>()?.IsOmpEntityDestroyed ?? true;
 
-    /// <summary>Gets the color of this player text label.</summary>
+    /// <summary>
+    /// Gets the color of this player text label.
+    /// </summary>
     public virtual Color Color
     {
         get
@@ -33,16 +39,24 @@ public class PlayerTextLabel : WorldEntity
         }
     }
 
-    /// <summary>Gets the text of this player text label.</summary>
+    /// <summary>
+    /// Gets the text of this player text label.
+    /// </summary>
     public virtual string Text => _playerTextLabel.GetText();
 
-    /// <summary>Gets the draw distance.</summary>
+    /// <summary>
+    /// Gets the draw distance.
+    /// </summary>
     public virtual float DrawDistance => _playerTextLabel.GetDrawDistance();
 
-    /// <summary>Gets a value indicating whether to test the line of sight.</summary>
+    /// <summary>
+    /// Gets a value indicating whether to test the line of sight.
+    /// </summary>
     public virtual bool TestLos => _playerTextLabel.GetTestLOS();
 
-    /// <summary>Gets the attached entity.</summary>
+    /// <summary>
+    /// Gets the attached entity.
+    /// </summary>
     public virtual Component? AttachedEntity
     {
         get
@@ -98,7 +112,9 @@ public class PlayerTextLabel : WorldEntity
         return $"(Id: {Id}, Text: {Text})";
     }
     
-    /// <summary>Performs an implicit conversion from <see cref="PlayerTextLabel" /> to <see cref="IPlayerTextLabel" />.</summary>
+    /// <summary>
+    /// Performs an implicit conversion from <see cref="PlayerTextLabel" /> to <see cref="IPlayerTextLabel" />.
+    /// </summary>
     public static implicit operator IPlayerTextLabel(PlayerTextLabel playerTextLabel)
     {
         return playerTextLabel._playerTextLabel;

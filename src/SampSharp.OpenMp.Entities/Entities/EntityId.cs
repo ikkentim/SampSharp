@@ -1,9 +1,13 @@
 namespace SampSharp.Entities;
 
-/// <summary>Represents an identifier of an entity.</summary>
+/// <summary>
+/// Represents an identifier of an entity.
+/// </summary>
 public readonly record struct EntityId
 {
-    /// <summary>An empty entity identifier.</summary>
+    /// <summary>
+    /// An empty entity identifier.
+    /// </summary>
     public static readonly EntityId Empty = new();
 
     private readonly Guid _id;
@@ -13,10 +17,14 @@ public readonly record struct EntityId
         _id = id;
     }
 
-    /// <summary>Gets a value indicating whether this handle is empty.</summary>
+    /// <summary>
+    /// Gets a value indicating whether this handle is empty.
+    /// </summary>
     public bool IsEmpty => _id == Guid.Empty;
 
-    /// <summary>Creates a fresh entity handle backed by a new <see cref="Guid" />.</summary>
+    /// <summary>
+    /// Creates a fresh entity handle backed by a new <see cref="Guid" />.
+    /// </summary>
     public static EntityId NewEntityId()
     {
         return new EntityId(Guid.NewGuid());
@@ -46,19 +54,25 @@ public readonly record struct EntityId
         return !value.IsEmpty;
     }
 
-    /// <summary>Implements the operator <see langword="true" />.</summary>
+    /// <summary>
+    /// Implements the operator <see langword="true" />.
+    /// </summary>
     public static bool operator true(EntityId value)
     {
         return !value.IsEmpty;
     }
 
-    /// <summary>Implements the operator <see langword="false" />.</summary>
+    /// <summary>
+    /// Implements the operator <see langword="false" />.
+    /// </summary>
     public static bool operator false(EntityId value)
     {
         return value.IsEmpty;
     }
 
-    /// <summary>Implements the operator <c>!</c>.</summary>
+    /// <summary>
+    /// Implements the operator <c>!</c>.
+    /// </summary>
     public static bool operator !(EntityId value)
     {
         return value.IsEmpty;
