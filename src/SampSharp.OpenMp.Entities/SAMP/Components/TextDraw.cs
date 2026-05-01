@@ -157,6 +157,8 @@ public class TextDraw : IdProvider
     /// <param name="player">The player to show this text draw to.</param>
     public virtual void Show(Player player)
     {
+        ArgumentNullException.ThrowIfNull(player);
+        
         _textDraw.ShowForPlayer(player);
     }
     
@@ -173,6 +175,8 @@ public class TextDraw : IdProvider
     /// <param name="player">The player to hide this text draw from.</param>
     public virtual void Hide(Player player)
     {
+        ArgumentNullException.ThrowIfNull(player);
+        
         _textDraw.HideForPlayer(player);
     }
 

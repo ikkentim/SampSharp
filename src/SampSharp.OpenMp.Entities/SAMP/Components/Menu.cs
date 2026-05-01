@@ -82,6 +82,8 @@ public class Menu : IdProvider
     /// <param name="player">The player.</param>
     public virtual void Show(Player player)
     {
+        ArgumentNullException.ThrowIfNull(player);
+        
         _menu.ShowForPlayer(player);
     }
 
@@ -89,6 +91,8 @@ public class Menu : IdProvider
     /// <param name="player">The player.</param>
     public virtual void Hide(Player player)
     {
+        ArgumentNullException.ThrowIfNull(player);
+        
         _menu.HideForPlayer(player);
     }
 

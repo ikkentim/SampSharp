@@ -72,6 +72,9 @@ public class GlobalObject : WorldEntity
     /// <param name="materialColor">The object color to set (use default(Color) to keep the existing material color).</param>
     public virtual void SetMaterial(int materialIndex, int modelId, string txdName, string textureName, Color materialColor)
     {
+        ArgumentNullException.ThrowIfNull(txdName);
+        ArgumentNullException.ThrowIfNull(textureName);
+        
         _object.SetMaterial((uint)materialIndex, modelId, txdName, textureName, materialColor);
     }
 
@@ -88,6 +91,9 @@ public class GlobalObject : WorldEntity
     public virtual void SetMaterialText(int materialIndex, string text, ObjectMaterialSize materialSize, string fontface, int fontSize, bool bold, Color foreColor,
         Color backColor, ObjectMaterialTextAlign textAlignment)
     {
+        ArgumentNullException.ThrowIfNull(text);
+        ArgumentNullException.ThrowIfNull(fontface);
+        
         _object.SetMaterialText((uint)materialIndex, text, (SampSharp.OpenMp.Core.Api.ObjectMaterialSize)materialSize, fontface, fontSize, bold, foreColor, backColor, (SampSharp.OpenMp.Core.Api.ObjectMaterialTextAlign)textAlignment);
     }
 
@@ -103,6 +109,8 @@ public class GlobalObject : WorldEntity
     /// <param name="rotation">The rotation.</param>
     public virtual void AttachTo(Player target, Vector3 offset, Vector3 rotation)
     {
+        ArgumentNullException.ThrowIfNull(target);
+        
         _object.AttachToPlayer(target, offset, rotation);
     }
     
@@ -112,6 +120,8 @@ public class GlobalObject : WorldEntity
     /// <param name="rotation">The rotation.</param>
     public virtual void AttachTo(Vehicle target, Vector3 offset, Vector3 rotation)
     {
+        ArgumentNullException.ThrowIfNull(target);
+        
         _object.AttachToVehicle(target, offset, rotation);
     }
 
@@ -122,6 +132,8 @@ public class GlobalObject : WorldEntity
     /// <param name="syncRotation">if set to <see langword="true" /> synchronize rotation with objects attached to.</param>
     public virtual void AttachTo(GlobalObject target, Vector3 offset, Vector3 rotation, bool syncRotation = false)
     {
+        ArgumentNullException.ThrowIfNull(target);
+        
         _object.AttachToObject(target, offset, rotation, syncRotation);
     }
     
