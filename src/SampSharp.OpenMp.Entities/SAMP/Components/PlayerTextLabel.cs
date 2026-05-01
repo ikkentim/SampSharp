@@ -4,7 +4,7 @@ using SampSharp.OpenMp.Core.Api;
 namespace SampSharp.Entities.SAMP;
 
 /// <summary>
-/// Represents a component which provides the data and functionality of a player 3D text label.
+/// Represents a component which provides the data and functionality of a per-player 3D text label.
 /// </summary>
 public class PlayerTextLabel : WorldEntity
 {
@@ -13,7 +13,7 @@ public class PlayerTextLabel : WorldEntity
     private readonly IPlayerTextLabel _playerTextLabel;
 
     /// <summary>
-    /// Constructs an instance of PlayerTextLabel, should be used internally.
+    /// Initializes a new instance of the <see cref="PlayerTextLabel" /> class.
     /// </summary>
     protected PlayerTextLabel(IOmpEntityProvider entityProvider, IPlayerTextLabelData playerTextLabels, IPlayerTextLabel playerTextLabel) : base((IEntity)playerTextLabel)
     {
@@ -40,22 +40,22 @@ public class PlayerTextLabel : WorldEntity
     }
 
     /// <summary>
-    /// Gets the text of this player text label.
+    /// Gets the text displayed in this player text label.
     /// </summary>
     public virtual string Text => _playerTextLabel.GetText();
 
     /// <summary>
-    /// Gets the draw distance.
+    /// Gets the draw distance of this player text label.
     /// </summary>
     public virtual float DrawDistance => _playerTextLabel.GetDrawDistance();
 
     /// <summary>
-    /// Gets a value indicating whether to test the line of sight.
+    /// Gets a value indicating whether line-of-sight testing is enabled for this player text label.
     /// </summary>
     public virtual bool TestLos => _playerTextLabel.GetTestLOS();
 
     /// <summary>
-    /// Gets the attached entity.
+    /// Gets the entity this player text label is attached to, if any.
     /// </summary>
     public virtual Component? AttachedEntity
     {
@@ -81,7 +81,7 @@ public class PlayerTextLabel : WorldEntity
     /// Attaches this player text label to the specified player.
     /// </summary>
     /// <param name="player">The player to attach this player text label to.</param>
-    /// <param name="offset">The offset from the player's position to attach this player text label to.</param>
+    /// <param name="offset">The offset position relative to the player.</param>
     public virtual void Attach(Player player, Vector3 offset = default)
     {
         _playerTextLabel.AttachToPlayer(player, offset);
@@ -90,8 +90,8 @@ public class PlayerTextLabel : WorldEntity
     /// <summary>
     /// Attaches this player text label to the specified vehicle.
     /// </summary>
-    /// <param name="vehicle">The vehicle to attach this text label to.</param>
-    /// <param name="offset">The offset from the vehicle's position to attach this text label to.</param>
+    /// <param name="vehicle">The vehicle to attach this player text label to.</param>
+    /// <param name="offset">The offset position relative to the vehicle.</param>
     public virtual void Attach(Vehicle vehicle, Vector3 offset = default)
     {
         _playerTextLabel.AttachToVehicle(vehicle, offset);

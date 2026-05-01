@@ -12,7 +12,7 @@ public class TextDraw : IdProvider
     private readonly ITextDraw _textDraw;
 
     /// <summary>
-    /// Constructs an instance of <see cref="TextDraw" />, should be used internally.
+    /// Initializes a new instance of the <see cref="TextDraw" /> class.
     /// </summary>
     protected TextDraw(ITextDrawsComponent textDraws, ITextDraw textDraw) : base((IIDProvider)textDraw)
     {
@@ -26,7 +26,7 @@ public class TextDraw : IdProvider
     protected bool IsOmpEntityDestroyed => _textDraw.TryGetExtension<ComponentExtension>()?.IsOmpEntityDestroyed ?? true;
 
     /// <summary>
-    /// Gets or sets the size of the letters of this text draw.
+    /// Gets or sets the size of the letters in this text draw.
     /// </summary>
     public virtual Vector2 LetterSize
     {
@@ -35,7 +35,7 @@ public class TextDraw : IdProvider
     }
 
     /// <summary>
-    /// Gets or sets the size of this text draw box and click-able area.
+    /// Gets or sets the size of this text draw box and clickable area.
     /// </summary>
     public virtual Vector2 TextSize
     {
@@ -53,7 +53,7 @@ public class TextDraw : IdProvider
     }
 
     /// <summary>
-    /// Gets or sets the color of the text of this text draw.
+    /// Gets or sets the foreground color of this text draw.
     /// </summary>
     public virtual Color ForeColor
     {
@@ -62,7 +62,7 @@ public class TextDraw : IdProvider
     }
 
     /// <summary>
-    /// Gets or sets a value indicating whether a box is used for this text draw.
+    /// Gets or sets a value indicating whether a box is displayed for this text draw.
     /// </summary>
     public virtual bool UseBox
     {
@@ -71,7 +71,7 @@ public class TextDraw : IdProvider
     }
 
     /// <summary>
-    /// Gets or sets the color of the box of this text draw.
+    /// Gets or sets the color of the box in this text draw.
     /// </summary>
     public virtual Color BoxColor
     {
@@ -120,7 +120,7 @@ public class TextDraw : IdProvider
     }
 
     /// <summary>
-    /// Gets or sets a value indicating whether the font of this text draw is rendered as a monospaced font.
+    /// Gets or sets a value indicating whether the text of this text draw uses proportional spacing.
     /// </summary>
     public virtual bool Proportional
     {
@@ -129,7 +129,7 @@ public class TextDraw : IdProvider
     }
 
     /// <summary>
-    /// Gets or sets a value indicating whether this text draw is selectable by the player.
+    /// Gets or sets a value indicating whether this text draw is selectable by players.
     /// </summary>
     public virtual bool Selectable
     {
@@ -138,7 +138,7 @@ public class TextDraw : IdProvider
     }
 
     /// <summary>
-    /// Gets or sets the text of this text draw.
+    /// Gets or sets the text displayed in this text draw.
     /// </summary>
     public virtual string Text
     {
@@ -147,7 +147,7 @@ public class TextDraw : IdProvider
     }
 
     /// <summary>
-    /// Gets or sets the preview model of this text draw.
+    /// Gets or sets the preview model ID displayed in this text draw.
     /// </summary>
     public virtual int PreviewModel
     {
@@ -160,12 +160,11 @@ public class TextDraw : IdProvider
     /// </summary>
     public virtual Vector2 Position => _textDraw.GetPosition();
 
-
     /// <summary>
-    /// Sets the preview object rotation and zoom of this text draw.
+    /// Sets the preview model rotation and zoom of this text draw.
     /// </summary>
-    /// <param name="rotation">The rotation of the preview object.</param>
-    /// <param name="zoom">The zoom of the preview object.</param>
+    /// <param name="rotation">The rotation of the preview model.</param>
+    /// <param name="zoom">The zoom level of the preview model.</param>
     public virtual void SetPreviewRotation(Vector3 rotation, float zoom = 1.0f)
     {
         _textDraw.SetPreviewRotation(rotation);
@@ -173,10 +172,10 @@ public class TextDraw : IdProvider
     }
 
     /// <summary>
-    /// Sets the color of the preview vehicle of this text draw.
+    /// Sets the preview vehicle colors of this text draw.
     /// </summary>
-    /// <param name="color1">The primary color of the vehicle.</param>
-    /// <param name="color2">The secondary color of the vehicle.</param>
+    /// <param name="color1">The primary color of the preview vehicle.</param>
+    /// <param name="color2">The secondary color of the preview vehicle.</param>
     public virtual void SetPreviewVehicleColor(int color1, int color2)
     {
         _textDraw.SetPreviewVehicleColour(color1, color2);
@@ -194,7 +193,7 @@ public class TextDraw : IdProvider
     }
 
     /// <summary>
-    /// Shows this text draw to the specified <paramref name="player" />.
+    /// Shows this text draw to the specified player.
     /// </summary>
     /// <param name="player">The player to show this text draw to.</param>
     public virtual void Show(Player player)
@@ -214,7 +213,7 @@ public class TextDraw : IdProvider
     }
 
     /// <summary>
-    /// Hides this text draw for the specified <paramref name="player" />.
+    /// Hides this text draw for the specified player.
     /// </summary>
     /// <param name="player">The player to hide this text draw from.</param>
     public virtual void Hide(Player player)

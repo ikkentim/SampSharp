@@ -13,7 +13,7 @@ public class TextLabel : WorldEntity
     private readonly ITextLabel _textLabel;
 
     /// <summary>
-    /// Constructs an instance of TextLabel, should be used internally.
+    /// Initializes a new instance of the <see cref="TextLabel" /> class.
     /// </summary>
     protected TextLabel(IOmpEntityProvider entityProvider, ITextLabelsComponent textLabels, ITextLabel textLabel) : base((IEntity)textLabel)
     {
@@ -41,7 +41,7 @@ public class TextLabel : WorldEntity
     }
 
     /// <summary>
-    /// Gets or sets the text of this text label.
+    /// Gets or sets the text displayed in this text label.
     /// </summary>
     public virtual string Text
     {
@@ -55,12 +55,12 @@ public class TextLabel : WorldEntity
     public virtual float DrawDistance => _textLabel.GetDrawDistance();
     
     /// <summary>
-    /// Gets a value indicating whether to test the line of sight.
+    /// Gets a value indicating whether line-of-sight testing is enabled for this text label.
     /// </summary>
     public virtual bool TestLos => _textLabel.GetTestLOS();
 
     /// <summary>
-    /// Gets or sets the attached entity (player or vehicle).
+    /// Gets the entity this text label is attached to, if any.
     /// </summary>
     public virtual Component? AttachedEntity
     {
@@ -86,7 +86,7 @@ public class TextLabel : WorldEntity
     /// Attaches this text label to the specified player.
     /// </summary>
     /// <param name="player">The player to attach this text label to.</param>
-    /// <param name="offset">The offset from the player's position to attach this text label to.</param>
+    /// <param name="offset">The offset position relative to the player.</param>
     public virtual void Attach(Player player, Vector3 offset = default)
     {
         _textLabel.AttachToPlayer(player, offset);
@@ -95,8 +95,8 @@ public class TextLabel : WorldEntity
     /// <summary>
     /// Attaches this text label to the specified vehicle.
     /// </summary>
-    /// <param name="vehicle">The vehicle to attach this player text label to.</param>
-    /// <param name="offset">The offset from the vehicle's position to attach this player text label to.</param>
+    /// <param name="vehicle">The vehicle to attach this text label to.</param>
+    /// <param name="offset">The offset position relative to the vehicle.</param>
     public virtual void Attach(Vehicle vehicle, Vector3 offset = default)
     {
         _textLabel.AttachToVehicle(vehicle, offset);

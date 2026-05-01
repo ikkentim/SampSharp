@@ -12,13 +12,12 @@ public class GangZone : IdProvider
     private readonly IGangZone _gangZone;
 
     /// <summary>
-    /// Constructs an instance of GangZone, should be used internally.
+    /// Initializes a new instance of the <see cref="GangZone" /> class.
     /// </summary>
     protected GangZone(IGangZonesComponent gangZones, IGangZone gangZone) : base((IIDProvider)gangZone)
     {
         _gangZone = gangZone;
         _gangZones = gangZones;
-        
     }
 
     /// <summary>
@@ -27,42 +26,42 @@ public class GangZone : IdProvider
     protected bool IsOmpEntityDestroyed => _gangZone.TryGetExtension<ComponentExtension>()?.IsOmpEntityDestroyed ?? true;
 
     /// <summary>
-    /// Gets the minimum position of this <see cref="GangZone" />.
+    /// Gets the minimum position of this gang zone.
     /// </summary>
     public virtual Vector2 Min => _gangZone.GetPosition().Min;
 
     /// <summary>
-    /// Gets the maximum position of this <see cref="GangZone" />.
+    /// Gets the maximum position of this gang zone.
     /// </summary>
     public virtual Vector2 Max => _gangZone.GetPosition().Max;
 
     /// <summary>
-    /// Gets the minimum x value for this <see cref="GangZone" />.
+    /// Gets the minimum x coordinate of this gang zone.
     /// </summary>
     public virtual float MinX => Min.X;
 
     /// <summary>
-    /// Gets the minimum y value for this <see cref="GangZone" />.
+    /// Gets the minimum y coordinate of this gang zone.
     /// </summary>
     public virtual float MinY => Min.Y;
 
     /// <summary>
-    /// Gets the maximum x value for this <see cref="GangZone" />.
+    /// Gets the maximum x coordinate of this gang zone.
     /// </summary>
     public virtual float MaxX => Max.X;
 
     /// <summary>
-    /// Gets the maximum y value for this <see cref="GangZone" />.
+    /// Gets the maximum y coordinate of this gang zone.
     /// </summary>
     public virtual float MaxY => Max.Y;
 
     /// <summary>
-    /// Gets or sets the color of this <see cref="GangZone" />.
+    /// Gets or sets the color of this gang zone.
     /// </summary>
     public virtual Color Color { get; set; }
 
     /// <summary>
-    /// Shows this <see cref="GangZone" />.
+    /// Shows this gang zone to all players.
     /// </summary>
     public virtual void Show()
     {
@@ -73,9 +72,9 @@ public class GangZone : IdProvider
     }
 
     /// <summary>
-    /// Shows this <see cref="GangZone" /> to the specified <paramref name="player" />.
+    /// Shows this gang zone to the specified player.
     /// </summary>
-    /// <param name="player">The player.</param>
+    /// <param name="player">The player to show this gang zone to.</param>
     public virtual void Show(Player player)
     {
         Colour clr = Color;
@@ -83,7 +82,7 @@ public class GangZone : IdProvider
     }
 
     /// <summary>
-    /// Hides this <see cref="GangZone" />.
+    /// Hides this gang zone for all players.
     /// </summary>
     public virtual void Hide()
     {
@@ -94,18 +93,18 @@ public class GangZone : IdProvider
     }
 
     /// <summary>
-    /// Hides this <see cref="GangZone" /> for the specified <paramref name="player" />.
+    /// Hides this gang zone for the specified player.
     /// </summary>
-    /// <param name="player">The player.</param>
+    /// <param name="player">The player to hide this gang zone from.</param>
     public virtual void Hide(Player player)
     {
         _gangZone.HideForPlayer(player);
     }
 
     /// <summary>
-    /// Flashes this <see cref="GangZone" />.
+    /// Flashes this gang zone to all players.
     /// </summary>
-    /// <param name="color">The color.</param>
+    /// <param name="color">The color to flash.</param>
     public virtual void Flash(Color color)
     {
         foreach (var player in Manager.GetComponents<Player>())
@@ -115,10 +114,10 @@ public class GangZone : IdProvider
     }
     
     /// <summary>
-    /// Flashes this <see cref="GangZone" /> for the specified <paramref name="player" />.
+    /// Flashes this gang zone for the specified player.
     /// </summary>
-    /// <param name="player">The player.</param>
-    /// <param name="color">The color.</param>
+    /// <param name="player">The player to flash this gang zone to.</param>
+    /// <param name="color">The color to flash.</param>
     public virtual void Flash(Player player, Color color)
     {
         Colour clr = color;
@@ -126,7 +125,7 @@ public class GangZone : IdProvider
     }
 
     /// <summary>
-    /// Stops this <see cref="GangZone" /> from flash.
+    /// Stops this gang zone from flashing for all players.
     /// </summary>
     public virtual void StopFlash()
     {
@@ -137,9 +136,9 @@ public class GangZone : IdProvider
     }
 
     /// <summary>
-    /// Stops this <see cref="GangZone" /> from flash for the specified player.
+    /// Stops this gang zone from flashing for the specified player.
     /// </summary>
-    /// <param name="player">The player.</param>
+    /// <param name="player">The player to stop the gang zone flash for.</param>
     public virtual void StopFlash(Player player)
     {
         _gangZone.StopFlashForPlayer(player);

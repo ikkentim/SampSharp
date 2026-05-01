@@ -11,7 +11,7 @@ public class Pickup : WorldEntity
     private readonly IPickup _pickup;
 
     /// <summary>
-    /// Constructs an instance of Pickup, should be used internally.
+    /// Initializes a new instance of the <see cref="Pickup" /> class.
     /// </summary>
     protected Pickup(IPickupsComponent pickups, IPickup pickup) : base((IEntity)pickup)
     {
@@ -25,12 +25,12 @@ public class Pickup : WorldEntity
     protected bool IsOmpEntityDestroyed => _pickup.TryGetExtension<ComponentExtension>()?.IsOmpEntityDestroyed ?? true;
 
     /// <summary>
-    /// Gets the model of this <see cref="Pickup" />.
+    /// Gets the model of this pickup.
     /// </summary>
     public virtual int Model => _pickup.GetModel();
 
     /// <summary>
-    /// Gets the type of this <see cref="Pickup" />.
+    /// Gets the type of this pickup.
     /// </summary>
     public virtual PickupType SpawnType => (PickupType)_pickup.GetPickupType();
     

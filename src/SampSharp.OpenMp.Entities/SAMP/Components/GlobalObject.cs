@@ -3,7 +3,6 @@ using SampSharp.OpenMp.Core.Api;
 
 namespace SampSharp.Entities.SAMP;
 
-
 /// <summary>
 /// Represents a component which provides the data and functionality of an object.
 /// </summary>
@@ -13,7 +12,7 @@ public class GlobalObject : WorldEntity
     private readonly IObject _object;
 
     /// <summary>
-    /// Constructs an instance of GlobalObject, should be used internally.
+    /// Initializes a new instance of the <see cref="GlobalObject" /> class.
     /// </summary>
     protected GlobalObject(IObjectsComponent objects, IObject @object) : base((IEntity)@object)
     {
@@ -27,12 +26,12 @@ public class GlobalObject : WorldEntity
     protected bool IsOmpEntityDestroyed => _object.TryGetExtension<ComponentExtension>()?.IsOmpEntityDestroyed ?? true;
 
     /// <summary>
-    /// Gets whether this object is moving.
+    /// Gets a value indicating whether this object is moving.
     /// </summary>
     public virtual bool IsMoving => _object.IsMoving();
 
     /// <summary>
-    /// Gets the model of this object.
+    /// Gets the model ID of this object.
     /// </summary>
     public virtual int ModelId => _object.GetModel();
 
@@ -42,12 +41,12 @@ public class GlobalObject : WorldEntity
     public virtual float DrawDistance => _object.GetDrawDistance();
 
     /// <summary>
-    /// Moves this object to the given position and rotation with the given speed.
+    /// Moves this object to the specified position and rotation with the specified speed.
     /// </summary>
-    /// <param name="position">The position to which to move this object.</param>
+    /// <param name="position">The position to move this object to.</param>
     /// <param name="speed">The speed at which to move this object.</param>
-    /// <param name="rotation">The rotation to which to move this object.</param>
-    /// <returns>The time it will take for the object to move in milliseconds.</returns>
+    /// <param name="rotation">The rotation to move this object to.</param>
+    /// <returns>The time in milliseconds for the object to complete the move.</returns>
     public virtual int Move(Vector3 position, float speed, Vector3 rotation)
     {
         var time = (position - Position).Length() / speed * 1000f;
@@ -59,18 +58,18 @@ public class GlobalObject : WorldEntity
     }
 
     /// <summary>
-    /// Moves this object to the given position with the given speed.
+    /// Moves this object to the specified position with the specified speed.
     /// </summary>
-    /// <param name="position">The position to which to move this object.</param>
+    /// <param name="position">The position to move this object to.</param>
     /// <param name="speed">The speed at which to move this object.</param>
-    /// <returns>The time it will take for the object to move in milliseconds.</returns>
+    /// <returns>The time in milliseconds for the object to complete the move.</returns>
     public virtual int Move(Vector3 position, float speed)
     {
         return Move(position, speed, new Vector3(-1000));
     }
 
     /// <summary>
-    /// Stop this object from moving any further.
+    /// Stops this object from moving.
     /// </summary>
     public virtual void Stop()
     {
@@ -78,16 +77,13 @@ public class GlobalObject : WorldEntity
     }
 
     /// <summary>
-    /// Sets the material of this object.
+    /// Sets the material texture of this object.
     /// </summary>
     /// <param name="materialIndex">The material index on the object to change.</param>
-    /// <param name="modelId">
-    /// The model ID on which the replacement texture is located. Use 0 for alpha. Use -1 to change the material color without altering the
-    /// texture.
-    /// </param>
-    /// <param name="txdName">The name of the txd file which contains the replacement texture (use "none" if not required).</param>
+    /// <param name="modelId">The model ID on which the replacement texture is located. Use 0 for alpha. Use -1 to change the material color without altering the texture.</param>
+    /// <param name="txdName">The name of the TXD file containing the replacement texture (use "none" if not required).</param>
     /// <param name="textureName">The name of the texture to use as the replacement (use "none" if not required).</param>
-    /// <param name="materialColor">The object color to set (use default(Color) to keep the existing material color).</param>
+    /// <param name="materialColor">The object color to set (use <see cref="default(Color)" /> to keep the existing material color).</param>
     public virtual void SetMaterial(int materialIndex, int modelId, string txdName, string textureName, Color materialColor)
     {
         _object.SetMaterial((uint)materialIndex, modelId, txdName, textureName, materialColor);
@@ -97,11 +93,11 @@ public class GlobalObject : WorldEntity
     /// Sets the material text of this object.
     /// </summary>
     /// <param name="materialIndex">The material index on the object to change.</param>
-    /// <param name="text">The text to show on the object. (MAX 2048 characters)</param>
-    /// <param name="materialSize">The object's material index to replace with text.</param>
-    /// <param name="fontface">The font to use.</param>
-    /// <param name="fontSize">The size of the text (max 255).</param>
-    /// <param name="bold">Whether to write in bold.</param>
+    /// <param name="text">The text to display on the object (maximum 2048 characters).</param>
+    /// <param name="materialSize">The object's material size.</param>
+    /// <param name="fontface">The font to use for the text.</param>
+    /// <param name="fontSize">The size of the text (maximum 255).</param>
+    /// <param name="bold">A value indicating whether to write the text in bold.</param>
     /// <param name="foreColor">The color of the text.</param>
     /// <param name="backColor">The background color of the text.</param>
     /// <param name="textAlignment">The alignment of the text.</param>
@@ -112,7 +108,7 @@ public class GlobalObject : WorldEntity
     }
 
     /// <summary>
-    /// Disable collisions between players' cameras and this <see cref="GlobalObject" />.
+    /// Disables collisions between players' cameras and this object.
     /// </summary>
     public virtual void DisableCameraCollisions()
     {
@@ -122,9 +118,9 @@ public class GlobalObject : WorldEntity
     /// <summary>
     /// Attaches this object to the specified player.
     /// </summary>
-    /// <param name="target">The player.</param>
-    /// <param name="offset">The offset.</param>
-    /// <param name="rotation">The rotation.</param>
+    /// <param name="target">The player to attach this object to.</param>
+    /// <param name="offset">The offset position relative to the player.</param>
+    /// <param name="rotation">The rotation to apply to this object.</param>
     public virtual void AttachTo(Player target, Vector3 offset, Vector3 rotation)
     {
         _object.AttachToPlayer(target, offset, rotation);
@@ -133,9 +129,9 @@ public class GlobalObject : WorldEntity
     /// <summary>
     /// Attaches this object to the specified vehicle.
     /// </summary>
-    /// <param name="target">The vehicle.</param>
-    /// <param name="offset">The offset.</param>
-    /// <param name="rotation">The rotation.</param>
+    /// <param name="target">The vehicle to attach this object to.</param>
+    /// <param name="offset">The offset position relative to the vehicle.</param>
+    /// <param name="rotation">The rotation to apply to this object.</param>
     public virtual void AttachTo(Vehicle target, Vector3 offset, Vector3 rotation)
     {
         _object.AttachToVehicle(target, offset, rotation);
@@ -144,10 +140,10 @@ public class GlobalObject : WorldEntity
     /// <summary>
     /// Attaches this object to the specified object.
     /// </summary>
-    /// <param name="target">The object.</param>
-    /// <param name="offset">The offset.</param>
-    /// <param name="rotation">The rotation.</param>
-    /// <param name="syncRotation">if set to <see langword="true" /> synchronize rotation with objects attached to.</param>
+    /// <param name="target">The object to attach this object to.</param>
+    /// <param name="offset">The offset position relative to the target object.</param>
+    /// <param name="rotation">The rotation to apply to this object.</param>
+    /// <param name="syncRotation">A value indicating whether to synchronize the rotation with the target object.</param>
     public virtual void AttachTo(GlobalObject target, Vector3 offset, Vector3 rotation, bool syncRotation = false)
     {
         _object.AttachToObject(target, offset, rotation, syncRotation);

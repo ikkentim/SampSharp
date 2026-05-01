@@ -12,7 +12,7 @@ public class Menu : IdProvider
     private readonly IMenu _menu;
     
     /// <summary>
-    /// Constructs an instance of Menu, should be used internally.
+    /// Initializes a new instance of the <see cref="Menu" /> class.
     /// </summary>
     protected Menu(IMenusComponent menus, IMenu menu, string title) : base((IIDProvider)menu)
     {
@@ -52,7 +52,7 @@ public class Menu : IdProvider
     public virtual float Col1Width => _menu.GetColumnWidths().Y;
 
     /// <summary>
-    /// Gets or sets the caption of the left column in this menu.
+    /// Gets or sets the header text of the left column in this menu.
     /// </summary>
     public virtual string Col0Header
     {
@@ -61,7 +61,7 @@ public class Menu : IdProvider
     }
 
     /// <summary>
-    /// Gets or sets the caption of the right column in this menu.
+    /// Gets or sets the header text of the right column in this menu.
     /// </summary>
     public virtual string Col1Header
     {
@@ -73,11 +73,10 @@ public class Menu : IdProvider
     /// Adds an item to this menu.
     /// </summary>
     /// <param name="col0Text">The text for the left column.</param>
-    /// <param name="col1Text">The text for the right column. If this menu only has one column, this value is ignored.</param>
+    /// <param name="col1Text">The text for the right column. If this menu only has one column, this parameter is ignored.</param>
     /// <returns>The index of the row this item was added to.</returns>
     /// <remarks>
-    /// You can only have 12 items per menu (13th goes to the right side of the header of column name (colored), 14th and higher not display at all). Maximum
-    /// length of menu item is 31 symbols.
+    /// A maximum of 12 items can be displayed per menu (the 13th appears to the right of the column header, and items beyond that are not displayed). The maximum length of a menu item is 31 characters.
     /// </remarks>
     public virtual int AddItem(string col0Text, string? col1Text = null)
     {
@@ -99,25 +98,25 @@ public class Menu : IdProvider
     }
 
     /// <summary>
-    /// Shows this menu for the specified <paramref name="player" />.
+    /// Shows this menu for the specified player.
     /// </summary>
-    /// <param name="player">The player.</param>
+    /// <param name="player">The player to show this menu to.</param>
     public virtual void Show(Player player)
     {
         _menu.ShowForPlayer(player);
     }
 
     /// <summary>
-    /// Hides this menu for the specified <paramref name="player" />.
+    /// Hides this menu for the specified player.
     /// </summary>
-    /// <param name="player">The player.</param>
+    /// <param name="player">The player to hide this menu from.</param>
     public virtual void Hide(Player player)
     {
         _menu.HideForPlayer(player);
     }
 
     /// <summary>
-    /// Disable input for this menu. Any item will lose the ability to be selected.
+    /// Disables input for this menu, preventing any items from being selected.
     /// </summary>
     public virtual void Disable()
     {
@@ -125,7 +124,7 @@ public class Menu : IdProvider
     }
 
     /// <summary>
-    /// Disable a specific row in this menu for all players. It will be grayed-out and can't be selected by players.
+    /// Disables a specific row in this menu for all players. The row will be grayed out and cannot be selected.
     /// </summary>
     /// <param name="row">The index of the row to disable.</param>
     public virtual void DisableRow(int row)

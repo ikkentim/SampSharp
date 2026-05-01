@@ -12,7 +12,7 @@ public class PlayerObject : WorldEntity
     private readonly IPlayerObject _playerObject;
 
     /// <summary>
-    /// Constructs an instance of PlayerObject, should be used internally.
+    /// Initializes a new instance of the <see cref="PlayerObject" /> class.
     /// </summary>
     protected PlayerObject(IPlayerObjectData playerObjects, IPlayerObject playerObject) : base((IEntity)playerObject)
     {
@@ -26,12 +26,12 @@ public class PlayerObject : WorldEntity
     protected bool IsOmpEntityDestroyed => _playerObject.TryGetExtension<ComponentExtension>()?.IsOmpEntityDestroyed ?? true;
 
     /// <summary>
-    /// Gets whether this player object is moving.
+    /// Gets a value indicating whether this player object is moving.
     /// </summary>
     public virtual bool IsMoving => _playerObject.IsMoving();
 
     /// <summary>
-    /// Gets the model of this player object.
+    /// Gets the model ID of this player object.
     /// </summary>
     public virtual int ModelId => _playerObject.GetModel();
 
@@ -41,12 +41,12 @@ public class PlayerObject : WorldEntity
     public virtual float DrawDistance => _playerObject.GetDrawDistance();
 
     /// <summary>
-    /// Moves this player object to the given position and rotation with the given speed.
+    /// Moves this player object to the specified position and rotation with the specified speed.
     /// </summary>
-    /// <param name="position">The position to which to move this player object.</param>
+    /// <param name="position">The position to move this player object to.</param>
     /// <param name="speed">The speed at which to move this player object.</param>
-    /// <param name="rotation">The rotation to which to move this player object.</param>
-    /// <returns>The time it will take for the object to move in milliseconds.</returns>
+    /// <param name="rotation">The rotation to move this player object to.</param>
+    /// <returns>The time in milliseconds for the object to complete the move.</returns>
     public virtual int Move(Vector3 position, float speed, Vector3 rotation)
     {
         var time = (position - Position).Length() / speed * 1000f;
@@ -58,18 +58,18 @@ public class PlayerObject : WorldEntity
     }
 
     /// <summary>
-    /// Moves this player object to the given position with the given speed.
+    /// Moves this player object to the specified position with the specified speed.
     /// </summary>
-    /// <param name="position">The position to which to move this player object.</param>
+    /// <param name="position">The position to move this player object to.</param>
     /// <param name="speed">The speed at which to move this player object.</param>
-    /// <returns>The time it will take for the object to move in milliseconds.</returns>
+    /// <returns>The time in milliseconds for the object to complete the move.</returns>
     public virtual int Move(Vector3 position, float speed)
     {
         return Move(position, speed, new Vector3(-1000));
     }
 
     /// <summary>
-    /// Stop this player object from moving any further.
+    /// Stops this player object from moving.
     /// </summary>
     public virtual void Stop()
     {
@@ -77,16 +77,13 @@ public class PlayerObject : WorldEntity
     }
 
     /// <summary>
-    /// Sets the material of this player object.
+    /// Sets the material texture of this player object.
     /// </summary>
     /// <param name="materialIndex">The material index on the object to change.</param>
-    /// <param name="modelId">
-    /// The model ID on which the replacement texture is located. Use 0 for alpha. Use -1 to change the material color without altering the
-    /// texture.
-    /// </param>
-    /// <param name="txdName">The name of the txd file which contains the replacement texture (use "none" if not required).</param>
+    /// <param name="modelId">The model ID on which the replacement texture is located. Use 0 for alpha. Use -1 to change the material color without altering the texture.</param>
+    /// <param name="txdName">The name of the TXD file containing the replacement texture (use "none" if not required).</param>
     /// <param name="textureName">The name of the texture to use as the replacement (use "none" if not required).</param>
-    /// <param name="materialColor">The object color to set (use default(Color) to keep the existing material color).</param>
+    /// <param name="materialColor">The object color to set (use <see cref="default(Color)" /> to keep the existing material color).</param>
     public virtual void SetMaterial(int materialIndex, int modelId, string txdName, string textureName, Color materialColor)
     {
         _playerObject.SetMaterial((uint)materialIndex, modelId, txdName, textureName, materialColor);
@@ -96,11 +93,11 @@ public class PlayerObject : WorldEntity
     /// Sets the material text of this player object.
     /// </summary>
     /// <param name="materialIndex">The material index on the object to change.</param>
-    /// <param name="text">The text to show on the object. (MAX 2048 characters)</param>
-    /// <param name="materialSize">The object's material index to replace with text.</param>
-    /// <param name="fontface">The font to use.</param>
-    /// <param name="fontSize">The size of the text (max 255).</param>
-    /// <param name="bold">Whether to write in bold.</param>
+    /// <param name="text">The text to display on the object (maximum 2048 characters).</param>
+    /// <param name="materialSize">The object's material size.</param>
+    /// <param name="fontface">The font to use for the text.</param>
+    /// <param name="fontSize">The size of the text (maximum 255).</param>
+    /// <param name="bold">A value indicating whether to write the text in bold.</param>
     /// <param name="foreColor">The color of the text.</param>
     /// <param name="backColor">The background color of the text.</param>
     /// <param name="textAlignment">The alignment of the text.</param>
@@ -112,7 +109,7 @@ public class PlayerObject : WorldEntity
     }
 
     /// <summary>
-    /// Disable collisions between players' cameras and this player object.
+    /// Disables collisions between players' cameras and this player object.
     /// </summary>
     public virtual void DisableCameraCollisions()
     {
@@ -122,9 +119,9 @@ public class PlayerObject : WorldEntity
     /// <summary>
     /// Attaches this object to the specified player.
     /// </summary>
-    /// <param name="target">The player.</param>
-    /// <param name="offset">The offset.</param>
-    /// <param name="rotation">The rotation.</param>
+    /// <param name="target">The player to attach this object to.</param>
+    /// <param name="offset">The offset position relative to the player.</param>
+    /// <param name="rotation">The rotation to apply to this object.</param>
     public virtual void AttachTo(Player target, Vector3 offset, Vector3 rotation)
     {
         _playerObject.AttachToPlayer(target, offset, rotation);
@@ -133,9 +130,9 @@ public class PlayerObject : WorldEntity
     /// <summary>
     /// Attaches this object to the specified vehicle.
     /// </summary>
-    /// <param name="target">The vehicle.</param>
-    /// <param name="offset">The offset.</param>
-    /// <param name="rotation">The rotation.</param>
+    /// <param name="target">The vehicle to attach this object to.</param>
+    /// <param name="offset">The offset position relative to the vehicle.</param>
+    /// <param name="rotation">The rotation to apply to this object.</param>
     public virtual void AttachTo(Vehicle target, Vector3 offset, Vector3 rotation)
     {
         _playerObject.AttachToVehicle(target, offset, rotation);
@@ -144,9 +141,9 @@ public class PlayerObject : WorldEntity
     /// <summary>
     /// Attaches this object to the specified player object.
     /// </summary>
-    /// <param name="target">The player object.</param>
-    /// <param name="offset">The offset.</param>
-    /// <param name="rotation">The rotation.</param>
+    /// <param name="target">The player object to attach this object to.</param>
+    /// <param name="offset">The offset position relative to the target object.</param>
+    /// <param name="rotation">The rotation to apply to this object.</param>
     public virtual void AttachTo(PlayerObject target, Vector3 offset, Vector3 rotation)
     {
         _playerObject.AttachToObject(target, offset, rotation);

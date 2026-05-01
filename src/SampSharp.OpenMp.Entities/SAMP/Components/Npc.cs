@@ -22,7 +22,7 @@ public class Npc : IdProvider
     private readonly INPCComponent _npcs;
 
     /// <summary>
-    /// Constructs an instance of Npc, should be used internally.
+    /// Initializes a new instance of the <see cref="Npc" /> class.
     /// </summary>
     protected Npc(INPCComponent npcs, INPC npc) : base((IIDProvider)npc)
     {
@@ -36,12 +36,12 @@ public class Npc : IdProvider
     protected bool IsOmpEntityDestroyed => _npc.TryGetExtension<ComponentExtension>()?.IsOmpEntityDestroyed ?? true;
 
     /// <summary>
-    /// The underlying <see cref="IPlayer" /> handle this NPC drives.
+    /// Gets the underlying player handle that this NPC drives.
     /// </summary>
     public virtual IPlayer Player => _npc.GetPlayer();
 
     /// <summary>
-    /// Gets or sets the NPC's world position. Use <see cref="SetPosition" /> for the immediate-update overload.
+    /// Gets or sets the NPC's position in the world. Use <see cref="SetPosition" /> for the immediate-update overload.
     /// </summary>
     public virtual Vector3 Position
     {
@@ -68,7 +68,7 @@ public class Npc : IdProvider
     }
 
     /// <summary>
-    /// Sets the NPC's skin model id.
+    /// Sets the NPC's skin model ID.
     /// </summary>
     public virtual int Skin
     {
@@ -76,7 +76,7 @@ public class Npc : IdProvider
     }
 
     /// <summary>
-    /// Gets or sets the current weapon id.
+    /// Gets or sets the current weapon ID.
     /// </summary>
     public virtual byte Weapon
     {
@@ -85,7 +85,7 @@ public class Npc : IdProvider
     }
 
     /// <summary>
-    /// Gets or sets ammo for the current weapon.
+    /// Gets or sets the ammunition for the current weapon.
     /// </summary>
     public virtual int Ammo
     {
@@ -94,7 +94,7 @@ public class Npc : IdProvider
     }
 
     /// <summary>
-    /// Gets or sets the NPC's health.
+    /// Gets or sets the health of this NPC.
     /// </summary>
     public virtual float Health
     {
@@ -103,7 +103,7 @@ public class Npc : IdProvider
     }
 
     /// <summary>
-    /// Gets or sets the NPC's armour.
+    /// Gets or sets the armor of this NPC.
     /// </summary>
     public virtual float Armour
     {
@@ -112,7 +112,7 @@ public class Npc : IdProvider
     }
 
     /// <summary>
-    /// Gets or sets the NPC's invulnerability flag.
+    /// Gets or sets a value indicating whether this NPC is invulnerable.
     /// </summary>
     public virtual bool IsInvulnerable
     {
@@ -121,7 +121,7 @@ public class Npc : IdProvider
     }
 
     /// <summary>
-    /// Gets or sets the interior id this NPC is bookkept under (server-side only).
+    /// Gets or sets the interior ID this NPC is in (server-side only).
     /// </summary>
     public virtual int Interior
     {
@@ -129,36 +129,43 @@ public class Npc : IdProvider
         set => _npc.SetInterior((uint)value);
     }
 
-    /// <summary><see langword="true" /> if the NPC has been killed and not yet respawned.</summary>
+    /// <summary>
+    /// Gets a value indicating whether this NPC has been killed and not yet respawned.
+    /// </summary>
     public virtual bool IsDead => _npc.IsDead();
 
-    /// <summary><see langword="true" /> if the NPC is currently following any movement command.</summary>
+    /// <summary>
+    /// Gets a value indicating whether this NPC is currently executing any movement command.
+    /// </summary>
     public virtual bool IsMoving => _npc.IsMoving();
 
     /// <summary>
-    /// Gets the NPC's current velocity.
+    /// Gets the velocity of this NPC.
     /// </summary>
     public virtual Vector3 Velocity => _npc.GetVelocity();
 
     /// <summary>
-    /// Sets the NPC's position. <paramref name="immediateUpdate" />=true broadcasts a sync
-    /// to streamed-in players right away instead of waiting for the next tick.
+    /// Sets the position of this NPC.
     /// </summary>
+    /// <param name="position">The position to set.</param>
+    /// <param name="immediateUpdate">A value indicating whether to broadcast a sync to streamed-in players immediately instead of waiting for the next tick.</param>
     public virtual void SetPosition(Vector3 position, bool immediateUpdate)
     {
         _npc.SetPosition(position, immediateUpdate);
     }
 
     /// <summary>
-    /// Sets the NPC's rotation. See <see cref="SetPosition" /> for the immediate-update flag.
+    /// Sets the rotation of this NPC. See <see cref="SetPosition" /> for the immediate-update flag.
     /// </summary>
+    /// <param name="rotation">The rotation to set.</param>
+    /// <param name="immediateUpdate">A value indicating whether to broadcast a sync to streamed-in players immediately instead of waiting for the next tick.</param>
     public virtual void SetRotation(GTAQuat rotation, bool immediateUpdate)
     {
         _npc.SetRotation(rotation, immediateUpdate);
     }
 
     /// <summary>
-    /// Spawns the NPC at its currently configured position/rotation.
+    /// Spawns this NPC at its currently configured position and rotation.
     /// </summary>
     public virtual void Spawn()
     {
@@ -166,7 +173,7 @@ public class Npc : IdProvider
     }
 
     /// <summary>
-    /// Respawns the NPC keeping its current state.
+    /// Respawns this NPC, keeping its current state.
     /// </summary>
     public virtual void Respawn()
     {
@@ -174,15 +181,20 @@ public class Npc : IdProvider
     }
 
     /// <summary>
-    /// Tells the NPC to walk/jog/sprint/drive to the target position.
+    /// Instructs this NPC to move to the specified position.
     /// </summary>
+    /// <param name="position">The position to move to.</param>
+    /// <param name="moveType">The movement type (walk, jog, sprint, or drive).</param>
+    /// <param name="moveSpeed">The speed to move at (-1 for default speed).</param>
+    /// <param name="stopRange">The distance within which the NPC stops moving.</param>
+    /// <returns><see langword="true" /> if the movement command was successful; <see langword="false" /> otherwise.</returns>
     public virtual bool MoveTo(Vector3 position, NPCMoveType moveType, float moveSpeed = -1f, float stopRange = 1.0f)
     {
         return _npc.Move(position, moveType, moveSpeed, stopRange);
     }
 
     /// <summary>
-    /// Stops any active movement.
+    /// Stops any active movement command for this NPC.
     /// </summary>
     public virtual void StopMoving()
     {
@@ -192,6 +204,14 @@ public class Npc : IdProvider
     /// <summary>
     /// Applies an animation to this NPC.
     /// </summary>
+    /// <param name="library">The animation library.</param>
+    /// <param name="name">The animation name.</param>
+    /// <param name="fDelta">The speed to play the animation.</param>
+    /// <param name="loop">A value indicating whether the animation should loop.</param>
+    /// <param name="lockX">A value indicating whether to lock the NPC's x-coordinate during the animation.</param>
+    /// <param name="lockY">A value indicating whether to lock the NPC's y-coordinate during the animation.</param>
+    /// <param name="freeze">A value indicating whether to freeze the NPC at the end of the animation.</param>
+    /// <param name="time">The duration for which to play the animation.</param>
     public virtual void ApplyAnimation(string library, string name, float fDelta, bool loop, bool lockX, bool lockY,
         bool freeze, TimeSpan time)
     {
@@ -202,7 +222,7 @@ public class Npc : IdProvider
     }
 
     /// <summary>
-    /// Clears any applied animation.
+    /// Clears all animations applied to this NPC.
     /// </summary>
     public virtual void ClearAnimations()
     {
@@ -210,14 +230,20 @@ public class Npc : IdProvider
     }
 
     /// <summary>
-    /// Sets the NPC's velocity.
+    /// Sets the velocity of this NPC.
     /// </summary>
+    /// <param name="velocity">The velocity to set.</param>
+    /// <param name="update">A value indicating whether to update immediately.</param>
     public virtual void SetVelocity(Vector3 velocity, bool update = false)
     {
         _npc.SetVelocity(velocity, update);
     }
 
-    /// <summary><see langword="true" /> if this NPC is streamed in for the given player.</summary>
+    /// <summary>
+    /// Determines whether this NPC is streamed in for the specified player.
+    /// </summary>
+    /// <param name="player">The player to check.</param>
+    /// <returns><see langword="true" /> if this NPC is streamed in for the player; <see langword="false" /> otherwise.</returns>
     public virtual bool IsStreamedIn(Player player)
     {
         return player != null && _npc.IsStreamedInForPlayer(player);
