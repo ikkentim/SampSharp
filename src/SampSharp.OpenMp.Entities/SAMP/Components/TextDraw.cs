@@ -19,7 +19,7 @@ public class TextDraw : IdProvider
         _textDraws = textDraws;
         _textDraw = textDraw;
     }
-    
+
     /// <summary>
     /// Gets a value indicating whether the open.mp entity counterpart has been destroyed.
     /// </summary>
@@ -53,7 +53,7 @@ public class TextDraw : IdProvider
     }
 
     /// <summary>
-    /// Gets or sets the foreground color of this text draw.
+    /// Gets or sets the foreground <see cref="Color" /> of this text draw.
     /// </summary>
     public virtual Color ForeColor
     {
@@ -71,7 +71,7 @@ public class TextDraw : IdProvider
     }
 
     /// <summary>
-    /// Gets or sets the color of the box in this text draw.
+    /// Gets or sets the <see cref="Color" /> of the box in this text draw.
     /// </summary>
     public virtual Color BoxColor
     {
@@ -102,7 +102,7 @@ public class TextDraw : IdProvider
     }
 
     /// <summary>
-    /// Gets or sets the background color of this text draw.
+    /// Gets or sets the background <see cref="Color" /> of this text draw.
     /// </summary>
     public virtual Color BackColor
     {
@@ -163,7 +163,7 @@ public class TextDraw : IdProvider
     /// <summary>
     /// Sets the preview model rotation and zoom of this text draw.
     /// </summary>
-    /// <param name="rotation">The rotation of the preview model.</param>
+    /// <param name="rotation">The rotation of the preview model as a <see cref="Vector3" />.</param>
     /// <param name="zoom">The zoom level of the preview model.</param>
     public virtual void SetPreviewRotation(Vector3 rotation, float zoom = 1.0f)
     {
@@ -180,7 +180,7 @@ public class TextDraw : IdProvider
     {
         _textDraw.SetPreviewVehicleColour(color1, color2);
     }
-    
+
     /// <summary>
     /// Shows this text draw to all players.
     /// </summary>
@@ -193,14 +193,14 @@ public class TextDraw : IdProvider
     }
 
     /// <summary>
-    /// Shows this text draw to the specified player.
+    /// Shows this text draw to the specified <paramref name="player" />.
     /// </summary>
-    /// <param name="player">The player to show this text draw to.</param>
+    /// <param name="player">The <see cref="Player" /> to show this text draw to.</param>
     public virtual void Show(Player player)
     {
         _textDraw.ShowForPlayer(player);
     }
-    
+
     /// <summary>
     /// Hides this text draw for all players.
     /// </summary>
@@ -213,7 +213,7 @@ public class TextDraw : IdProvider
     }
 
     /// <summary>
-    /// Hides this text draw for the specified player.
+    /// Hides this text draw for the specified <paramref name="player" />.
     /// </summary>
     /// <param name="player">The player to hide this text draw from.</param>
     public virtual void Hide(Player player)
@@ -235,7 +235,7 @@ public class TextDraw : IdProvider
     {
         return $"(Id: {Id}, Text: {Text})";
     }
-    
+
     /// <summary>
     /// Performs an implicit conversion from <see cref="TextDraw" /> to <see cref="ITextDraw" />.
     /// </summary>

@@ -41,7 +41,7 @@ public class Player : WorldEntity
         _entityProvider = entityProvider;
         _rawPlayer = player;
     }
-    
+
     private IPlayerCheckpointData CheckpointData
     {
         get
@@ -55,12 +55,12 @@ public class Player : WorldEntity
         }
     }
 
-    
+
     private IPlayerVehicleData VehicleData
     {
         get
         {
-            var data = _player. QueryExtension<IPlayerVehicleData>();
+            var data = _player.QueryExtension<IPlayerVehicleData>();
             if (data == null)
             {
                 throw new InvalidOperationException("Missing vehicle data");
@@ -68,7 +68,7 @@ public class Player : WorldEntity
             return data;
         }
     }
-    
+
     private IPlayerObjectData ObjectData
     {
         get
@@ -122,7 +122,7 @@ public class Player : WorldEntity
             return data;
         }
     }
-    
+
     private IPlayerClassData ClassData
     {
         get
@@ -160,7 +160,8 @@ public class Player : WorldEntity
     public virtual string Name
     {
         get => _player.GetName();
-        [Obsolete("Use SetName(string) instead")]set => SetName(value);
+        [Obsolete("Use SetName(string) instead")]
+        set => SetName(value);
     }
 
     /// <summary>
@@ -199,7 +200,7 @@ public class Player : WorldEntity
         get => (int)_player.GetInterior();
         set => _player.SetInterior((uint)value);
     }
-    
+
     /// <summary>
     /// Gets or sets the health of this player.
     /// </summary>
@@ -312,7 +313,7 @@ public class Player : WorldEntity
     /// Gets the IP of this player as a string.
     /// </summary>
     public virtual string Ip => IpAddress.ToString();
-    
+
     /// <summary>
     /// Gets the <see cref="IPAddress" /> of this player.
     /// </summary>
@@ -453,8 +454,8 @@ public class Player : WorldEntity
     /// <summary>
     /// Gets the entity (<see cref="Player" />, <see cref="PlayerObject" />, object, <see cref="Vehicle" /> or <see cref="Actor" />) the camera of this player is pointing at.
     /// </summary>
-    public virtual Component? CameraTargetEntity => 
-        CameraTargetPlayer ?? 
+    public virtual Component? CameraTargetEntity =>
+        CameraTargetPlayer ??
         CameraTargetActor ??
         (Component?)CameraTargetVehicle ??
         CameraTargetGlobalObject;
@@ -506,7 +507,7 @@ public class Player : WorldEntity
         get
         {
             var menuId = MenuData.GetMenuID();
-            return menuId == OpenMpConstants.INVALID_MENU_ID ? null :  _entityProvider.GetMenu(menuId);
+            return menuId == OpenMpConstants.INVALID_MENU_ID ? null : _entityProvider.GetMenu(menuId);
         }
     }
 
@@ -719,11 +720,11 @@ public class Player : WorldEntity
     }
 
     /// <summary>
-    /// Determines whether the specified player is streamed in on this player's client.
+    /// Determines whether the specified <paramref name="player" /> is streamed in on this player's client.
     /// </summary>
     /// <remarks>Players are not streamed in on their own client. If this player is the same as the <paramref name="player" />, this method returns <see langword="false" />. Players stream out if they are more than 150 meters away (configurable via server.cfg stream_distance).</remarks>
     /// <param name="player">The <see cref="Player" /> to check.</param>
-    /// <returns><see langword="true" /> if the specified player is streamed in for this player; otherwise, <see langword="false" />.</returns>
+    /// <returns><see langword="true" /> if the specified <paramref name="player" /> is streamed in for this player; otherwise, <see langword="false" />.</returns>
     public virtual bool IsPlayerStreamedIn(Player player)
     {
         return _player.IsStreamedInForPlayer(player);
@@ -1036,7 +1037,7 @@ public class Player : WorldEntity
     }
 
     /// <summary>
-    /// Determines whether this player has an object attached in the specified slot.
+    /// Determines whether this player has an object attached in the specified <paramref name="index" />.
     /// </summary>
     /// <param name="index">The attachment slot index to check.</param>
     /// <returns><see langword="true" /> if the slot is occupied; otherwise, <see langword="false" />.</returns>
@@ -1079,7 +1080,7 @@ public class Player : WorldEntity
     {
         SetChatBubble(text, color, drawDistance, TimeSpan.FromMilliseconds(expireTime));
     }
-    
+
     /// <summary>
     /// Creates a chat bubble above this player's name tag.
     /// </summary>
@@ -1137,7 +1138,7 @@ public class Player : WorldEntity
     }
 
     /// <summary>
-    /// Plays the specified sound for this player at a specific point.
+    /// Plays the specified <paramref name="soundId" /> for this player at a specific point.
     /// </summary>
     /// <param name="soundId">The sound to play.</param>
     /// <param name="point">Point for the sound to play at as a <see cref="Vector3" />.</param>
@@ -1147,7 +1148,7 @@ public class Player : WorldEntity
     }
 
     /// <summary>
-    /// Plays the specified sound for this player.
+    /// Plays the specified <paramref name="soundId" /> for this player.
     /// </summary>
     /// <param name="soundId">The sound to play.</param>
     public virtual void PlaySound(int soundId)
@@ -1603,7 +1604,7 @@ public class Player : WorldEntity
     {
         GameText(text, TimeSpan.FromMilliseconds(time), style);
     }
-    
+
     /// <summary>
     /// Displays on-screen text (game text) for a specified duration.
     /// </summary>
@@ -1640,7 +1641,7 @@ public class Player : WorldEntity
     {
         _player.SendDeathMessage(player, killer, (int)weapon);
     }
-    
+
     /// <summary>
     /// Attaches this player's camera to a <see cref="GlobalObject" />.
     /// </summary>
@@ -1658,7 +1659,7 @@ public class Player : WorldEntity
     {
         _player.AttachCameraToObject(@object);
     }
-    
+
     /// <summary>
     /// Enables edit mode for a <see cref="GlobalObject" /> so this player can modify it.
     /// </summary>
@@ -1692,7 +1693,7 @@ public class Player : WorldEntity
     {
         ObjectData.BeginSelecting();
     }
-    
+
     /// <summary>
     /// Removes a standard San Andreas model for this player within a specified range.
     /// </summary>
@@ -1740,7 +1741,7 @@ public class Player : WorldEntity
     {
         _player.UnsetMapIcon(iconId);
     }
-    
+
     /// <inheritdoc />
     protected override void OnDestroyComponent()
     {
@@ -1755,7 +1756,7 @@ public class Player : WorldEntity
     {
         return $"(Id: {Id}, Name: {Name})";
     }
-    
+
     /// <summary>
     /// Performs an implicit conversion from <see cref="Player" /> to <see cref="IPlayer" />.
     /// </summary>

@@ -19,7 +19,7 @@ public class GlobalObject : WorldEntity
         _objects = objects;
         _object = @object;
     }
-    
+
     /// <summary>
     /// Gets a value indicating whether the open.mp entity counterpart has been destroyed.
     /// </summary>
@@ -41,11 +41,11 @@ public class GlobalObject : WorldEntity
     public virtual float DrawDistance => _object.GetDrawDistance();
 
     /// <summary>
-    /// Moves this object to the specified position and rotation with the specified speed.
+    /// Moves this global object to the specified <paramref name="position" /> and <paramref name="rotation" /> with the specified <paramref name="speed" />.
     /// </summary>
-    /// <param name="position">The position to move this object to.</param>
+    /// <param name="position">The position to move this object to as a <see cref="Vector3" />.</param>
     /// <param name="speed">The speed at which to move this object.</param>
-    /// <param name="rotation">The rotation to move this object to.</param>
+    /// <param name="rotation">The rotation to move this object to as a <see cref="Vector3" />.</param>
     /// <returns>The time in milliseconds for the object to complete the move.</returns>
     public virtual int Move(Vector3 position, float speed, Vector3 rotation)
     {
@@ -58,9 +58,9 @@ public class GlobalObject : WorldEntity
     }
 
     /// <summary>
-    /// Moves this object to the specified position with the specified speed.
+    /// Moves this global object to the specified <paramref name="position" /> with the specified <paramref name="speed" />.
     /// </summary>
-    /// <param name="position">The position to move this object to.</param>
+    /// <param name="position">The position to move this object to as a <see cref="Vector3" />.</param>
     /// <param name="speed">The speed at which to move this object.</param>
     /// <returns>The time in milliseconds for the object to complete the move.</returns>
     public virtual int Move(Vector3 position, float speed)
@@ -77,20 +77,20 @@ public class GlobalObject : WorldEntity
     }
 
     /// <summary>
-    /// Sets the material texture of this object.
+    /// Sets the material color of this global object.
     /// </summary>
     /// <param name="materialIndex">The material index on the object to change.</param>
     /// <param name="modelId">The model ID on which the replacement texture is located. Use 0 for alpha. Use -1 to change the material color without altering the texture.</param>
     /// <param name="txdName">The name of the TXD file containing the replacement texture (use "none" if not required).</param>
     /// <param name="textureName">The name of the texture to use as the replacement (use "none" if not required).</param>
-    /// <param name="materialColor">The object color to set (use <see cref="default(Color)" /> to keep the existing material color).</param>
+    /// <param name="materialColor">The <see cref="Color" /> of the material to set (use <see cref="default(Color)" /> to keep the existing material color).</param>
     public virtual void SetMaterial(int materialIndex, int modelId, string txdName, string textureName, Color materialColor)
     {
         _object.SetMaterial((uint)materialIndex, modelId, txdName, textureName, materialColor);
     }
 
     /// <summary>
-    /// Sets the material text of this object.
+    /// Sets the material text of this global object.
     /// </summary>
     /// <param name="materialIndex">The material index on the object to change.</param>
     /// <param name="text">The text to display on the object (maximum 2048 characters).</param>
@@ -98,8 +98,8 @@ public class GlobalObject : WorldEntity
     /// <param name="fontface">The font to use for the text.</param>
     /// <param name="fontSize">The size of the text (maximum 255).</param>
     /// <param name="bold">A value indicating whether to write the text in bold.</param>
-    /// <param name="foreColor">The color of the text.</param>
-    /// <param name="backColor">The background color of the text.</param>
+    /// <param name="foreColor">The <see cref="Color" /> of the text.</param>
+    /// <param name="backColor">The background <see cref="Color" /> of the text.</param>
     /// <param name="textAlignment">The alignment of the text.</param>
     public virtual void SetMaterialText(int materialIndex, string text, ObjectMaterialSize materialSize, string fontface, int fontSize, bool bold, Color foreColor,
         Color backColor, ObjectMaterialTextAlign textAlignment)
@@ -108,7 +108,7 @@ public class GlobalObject : WorldEntity
     }
 
     /// <summary>
-    /// Disables collisions between players' cameras and this object.
+    /// Disables collisions between players' cameras and this global object.
     /// </summary>
     public virtual void DisableCameraCollisions()
     {
@@ -116,39 +116,39 @@ public class GlobalObject : WorldEntity
     }
 
     /// <summary>
-    /// Attaches this object to the specified player.
+    /// Attaches this global object to the specified <paramref name="target" /> <see cref="Player" />.
     /// </summary>
-    /// <param name="target">The player to attach this object to.</param>
-    /// <param name="offset">The offset position relative to the player.</param>
-    /// <param name="rotation">The rotation to apply to this object.</param>
+    /// <param name="target">The <see cref="Player" /> to attach this object to.</param>
+    /// <param name="offset">The offset position relative to the player as a <see cref="Vector3" />.</param>
+    /// <param name="rotation">The rotation to apply to this object as a <see cref="Vector3" />.</param>
     public virtual void AttachTo(Player target, Vector3 offset, Vector3 rotation)
     {
         _object.AttachToPlayer(target, offset, rotation);
     }
-    
+
     /// <summary>
-    /// Attaches this object to the specified vehicle.
+    /// Attaches this global object to the specified <paramref name="target" /> <see cref="Vehicle" />.
     /// </summary>
-    /// <param name="target">The vehicle to attach this object to.</param>
-    /// <param name="offset">The offset position relative to the vehicle.</param>
-    /// <param name="rotation">The rotation to apply to this object.</param>
+    /// <param name="target">The <see cref="Vehicle" /> to attach this object to.</param>
+    /// <param name="offset">The offset position relative to the vehicle as a <see cref="Vector3" />.</param>
+    /// <param name="rotation">The rotation to apply to this object as a <see cref="Vector3" />.</param>
     public virtual void AttachTo(Vehicle target, Vector3 offset, Vector3 rotation)
     {
         _object.AttachToVehicle(target, offset, rotation);
     }
 
     /// <summary>
-    /// Attaches this object to the specified object.
+    /// Attaches this global object to the specified <paramref name="target" /> <see cref="GlobalObject" />.
     /// </summary>
-    /// <param name="target">The object to attach this object to.</param>
-    /// <param name="offset">The offset position relative to the target object.</param>
-    /// <param name="rotation">The rotation to apply to this object.</param>
+    /// <param name="target">The <see cref="GlobalObject" /> to attach this object to.</param>
+    /// <param name="offset">The offset position relative to the target object as a <see cref="Vector3" />.</param>
+    /// <param name="rotation">The rotation to apply to this object as a <see cref="Vector3" />.</param>
     /// <param name="syncRotation">A value indicating whether to synchronize the rotation with the target object.</param>
     public virtual void AttachTo(GlobalObject target, Vector3 offset, Vector3 rotation, bool syncRotation = false)
     {
         _object.AttachToObject(target, offset, rotation, syncRotation);
     }
-    
+
     /// <inheritdoc />
     protected override void OnDestroyComponent()
     {
@@ -157,13 +157,13 @@ public class GlobalObject : WorldEntity
             _objects.AsPool().Release(Id);
         }
     }
-    
+
     /// <inheritdoc />
     public override string ToString()
     {
         return $"(Id: {Id}, Model: {ModelId})";
     }
-    
+
     /// <summary>
     /// Performs an implicit conversion from <see cref="GlobalObject" /> to <see cref="IObject" />.
     /// </summary>

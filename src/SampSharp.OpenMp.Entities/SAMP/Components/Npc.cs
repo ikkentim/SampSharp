@@ -36,12 +36,12 @@ public class Npc : IdProvider
     protected bool IsOmpEntityDestroyed => _npc.TryGetExtension<ComponentExtension>()?.IsOmpEntityDestroyed ?? true;
 
     /// <summary>
-    /// Gets the underlying player handle that this NPC drives.
+    /// Gets the underlying <see cref="IPlayer" /> handle that this NPC drives.
     /// </summary>
     public virtual IPlayer Player => _npc.GetPlayer();
 
     /// <summary>
-    /// Gets or sets the NPC's position in the world. Use <see cref="SetPosition" /> for the immediate-update overload.
+    /// Gets or sets the NPC's position in the world as a <see cref="Vector3" />. Use <see cref="SetPosition" /> for the immediate-update overload.
     /// </summary>
     public virtual Vector3 Position
     {
@@ -140,14 +140,14 @@ public class Npc : IdProvider
     public virtual bool IsMoving => _npc.IsMoving();
 
     /// <summary>
-    /// Gets the velocity of this NPC.
+    /// Gets the velocity of this NPC as a <see cref="Vector3" />.
     /// </summary>
     public virtual Vector3 Velocity => _npc.GetVelocity();
 
     /// <summary>
     /// Sets the position of this NPC.
     /// </summary>
-    /// <param name="position">The position to set.</param>
+    /// <param name="position">The <see cref="Vector3" /> position to set.</param>
     /// <param name="immediateUpdate">A value indicating whether to broadcast a sync to streamed-in players immediately instead of waiting for the next tick.</param>
     public virtual void SetPosition(Vector3 position, bool immediateUpdate)
     {
@@ -181,7 +181,7 @@ public class Npc : IdProvider
     }
 
     /// <summary>
-    /// Instructs this NPC to move to the specified position.
+    /// Instructs this NPC to move to the specified <paramref name="position" />.
     /// </summary>
     /// <param name="position">The position to move to.</param>
     /// <param name="moveType">The movement type (walk, jog, sprint, or drive).</param>
@@ -240,7 +240,7 @@ public class Npc : IdProvider
     }
 
     /// <summary>
-    /// Determines whether this NPC is streamed in for the specified player.
+    /// Determines whether this NPC is streamed in for the specified <paramref name="player" />.
     /// </summary>
     /// <param name="player">The player to check.</param>
     /// <returns><see langword="true" /> if this NPC is streamed in for the player; <see langword="false" /> otherwise.</returns>

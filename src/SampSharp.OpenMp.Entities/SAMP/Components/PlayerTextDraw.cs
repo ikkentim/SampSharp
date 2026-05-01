@@ -19,7 +19,7 @@ public class PlayerTextDraw : IdProvider
         _playerTextDraws = playerTextDraws;
         _playerTextDraw = playerTextDraw;
     }
-    
+
     /// <summary>
     /// Gets a value indicating whether the open.mp entity counterpart has been destroyed.
     /// </summary>
@@ -53,7 +53,7 @@ public class PlayerTextDraw : IdProvider
     }
 
     /// <summary>
-    /// Gets or sets the foreground color of this text draw.
+    /// Gets or sets the foreground <see cref="Color" /> of this text draw.
     /// </summary>
     public virtual Color ForeColor
     {
@@ -71,7 +71,7 @@ public class PlayerTextDraw : IdProvider
     }
 
     /// <summary>
-    /// Gets or sets the color of the box in this text draw.
+    /// Gets or sets the <see cref="Color" /> of the box in this text draw.
     /// </summary>
     public virtual Color BoxColor
     {
@@ -102,7 +102,7 @@ public class PlayerTextDraw : IdProvider
     }
 
     /// <summary>
-    /// Gets or sets the background color of this text draw.
+    /// Gets or sets the background <see cref="Color" /> of this text draw.
     /// </summary>
     public virtual Color BackColor
     {
@@ -196,7 +196,7 @@ public class PlayerTextDraw : IdProvider
     {
         _playerTextDraw.Hide();
     }
-    
+
     /// <inheritdoc />
     protected override void OnDestroyComponent()
     {
@@ -205,13 +205,13 @@ public class PlayerTextDraw : IdProvider
             _playerTextDraws.AsPool().Release(Id);
         }
     }
-    
+
     /// <inheritdoc />
     public override string ToString()
     {
         return $"(Id: {Id}, Text: {Text})";
     }
-    
+
     /// <summary>
     /// Performs an implicit conversion from <see cref="PlayerTextDraw" /> to <see cref="IPlayerTextDraw" />.
     /// </summary>

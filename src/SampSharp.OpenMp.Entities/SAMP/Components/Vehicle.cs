@@ -19,7 +19,7 @@ public class Vehicle : WorldEntity
         _vehicles = vehicles;
         _vehicle = vehicle;
     }
-    
+
     /// <summary>
     /// Gets a value indicating whether the open.mp entity counterpart has been destroyed.
     /// </summary>
@@ -46,7 +46,7 @@ public class Vehicle : WorldEntity
     public virtual bool HasTrailer => _vehicle.GetTrailer() != null;
 
     /// <summary>
-    /// Gets or sets the trailer attached to this vehicle.
+    /// Gets or sets the <see cref="Vehicle" /> trailer attached to this vehicle.
     /// </summary>
     public virtual Vehicle? Trailer
     {
@@ -390,10 +390,10 @@ public class Vehicle : WorldEntity
     }
 
     /// <summary>
-    /// Calculates the distance between this vehicle and the specified point.
+    /// Calculates the distance between this vehicle and the specified <paramref name="point" />.
     /// </summary>
-    /// <param name="point">The point to calculate the distance to.</param>
-    /// <returns>The distance from this vehicle to the specified point.</returns>
+    /// <param name="point">The point to calculate the distance to as a <see cref="Vector3" />.</param>
+    /// <returns>The distance from this vehicle to the specified <paramref name="point" />.</returns>
     public virtual float GetDistanceFromPoint(Vector3 point)
     {
         var offset = point - Position;
@@ -401,20 +401,20 @@ public class Vehicle : WorldEntity
     }
 
     /// <summary>
-    /// Determines whether this vehicle is streamed in for the specified player.
+    /// Determines whether this vehicle is streamed in for the specified <paramref name="player" />.
     /// </summary>
-    /// <param name="player">The player to check.</param>
-    /// <returns><see langword="true" /> if this vehicle is streamed in for the specified player; <see langword="false" /> otherwise.</returns>
+    /// <param name="player">The <see cref="Player" /> to check.</param>
+    /// <returns><see langword="true" /> if this vehicle is streamed in for the specified <paramref name="player" />; <see langword="false" /> otherwise.</returns>
     public virtual bool IsStreamedIn(Player player)
     {
         return _vehicle.IsStreamedInForPlayer(player);
     }
 
     /// <summary>
-    /// Sets the parameters of this vehicle for the specified player.
+    /// Sets the parameters of this vehicle for the specified <paramref name="player" />.
     /// </summary>
-    /// <param name="player">The player to set this vehicle's parameters for.</param>
-    /// <param name="parameters">The vehicle parameters to set.</param>
+    /// <param name="player">The <see cref="Player" /> to set this vehicle's parameters for.</param>
+    /// <param name="parameters">The <see cref="VehicleParameters" /> to set.</param>
     public virtual void SetParametersForPlayer(Player player, in VehicleParameters parameters)
     {
         var p = parameters.ToParams();
@@ -485,10 +485,10 @@ public class Vehicle : WorldEntity
     }
 
     /// <summary>
-    /// Gets the component ID installed in the specified mod slot of this vehicle.
+    /// Gets the component ID installed in the specified <paramref name="slot" /> of this vehicle.
     /// </summary>
     /// <param name="slot">The component slot to check.</param>
-    /// <returns>The ID of the component installed in the specified slot.</returns>
+    /// <returns>The ID of the component installed in the specified <paramref name="slot" />.</returns>
     public virtual int GetComponentInSlot(CarModType slot)
     {
         return _vehicle.GetComponentInSlot((int)slot);
@@ -535,7 +535,7 @@ public class Vehicle : WorldEntity
     {
         _vehicle.SetDamageStatus(panels, doors, (byte)lights, (byte)tires, updater ?? default(IPlayer));
     }
-    
+
     /// <inheritdoc />
     protected override void OnDestroyComponent()
     {
@@ -544,13 +544,13 @@ public class Vehicle : WorldEntity
             _vehicles.AsPool().Release(Id);
         }
     }
-    
+
     /// <inheritdoc />
     public override string ToString()
     {
         return $"(Id: {Id}, Model: {Model})";
     }
-    
+
     /// <summary>
     /// Performs an implicit conversion from <see cref="Vehicle" /> to <see cref="IVehicle" />.
     /// </summary>

@@ -10,7 +10,7 @@ public class Menu : IdProvider
 {
     private readonly IMenusComponent _menus;
     private readonly IMenu _menu;
-    
+
     /// <summary>
     /// Initializes a new instance of the <see cref="Menu" /> class.
     /// </summary>
@@ -98,7 +98,7 @@ public class Menu : IdProvider
     }
 
     /// <summary>
-    /// Shows this menu for the specified player.
+    /// Shows this menu for the specified <paramref name="player" />.
     /// </summary>
     /// <param name="player">The player to show this menu to.</param>
     public virtual void Show(Player player)
@@ -107,7 +107,7 @@ public class Menu : IdProvider
     }
 
     /// <summary>
-    /// Hides this menu for the specified player.
+    /// Hides this menu for the specified <paramref name="player" />.
     /// </summary>
     /// <param name="player">The player to hide this menu from.</param>
     public virtual void Hide(Player player)
@@ -131,7 +131,7 @@ public class Menu : IdProvider
     {
         _menu.DisableRow((byte)row);
     }
-    
+
     /// <inheritdoc />
     protected override void OnDestroyComponent()
     {
@@ -140,7 +140,7 @@ public class Menu : IdProvider
             _menus.AsPool().Release(Id);
         }
     }
-    
+
     /// <inheritdoc />
     public override string ToString()
     {

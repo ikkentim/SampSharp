@@ -17,9 +17,9 @@ public class Actor : WorldEntity
     protected Actor(IActorsComponent actors, IActor actor) : base((IEntity)actor)
     {
         _actors = actors;
-        _actor= actor;
+        _actor = actor;
     }
-  
+
     /// <summary>
     /// Gets a value indicating whether the open.mp entity counterpart has been destroyed.
     /// </summary>
@@ -35,7 +35,7 @@ public class Actor : WorldEntity
     }
 
     /// <summary>
-    /// Gets or sets the skin of the actor.
+    /// Gets or sets the skin of this actor.
     /// </summary>
     public virtual int Skin
     {
@@ -64,7 +64,7 @@ public class Actor : WorldEntity
     /// <summary>
     /// Determines whether this actor is streamed in for the specified <paramref name="player" />.
     /// </summary>
-    /// <param name="player">The player to check.</param>
+    /// <param name="player">The <see cref="Player" /> to check.</param>
     /// <returns><see langword="true" /> if the actor is streamed in for the player; <see langword="false" /> otherwise.</returns>
     public virtual bool IsStreamedIn(Player player)
     {
@@ -75,7 +75,7 @@ public class Actor : WorldEntity
     /// Applies the specified animation to this actor.
     /// </summary>
     /// <param name="library">The animation library from which to apply an animation.</param>
-    /// <param name="name">The name of the animation to apply within the specified library.</param>
+    /// <param name="name">The name of the animation to apply within the specified <paramref name="library" />.</param>
     /// <param name="fDelta">The speed at which to play the animation.</param>
     /// <param name="loop">A value indicating whether the animation should loop.</param>
     /// <param name="lockX">A value indicating whether to allow this actor to move along its x-coordinate.</param>
@@ -102,7 +102,7 @@ public class Actor : WorldEntity
     {
         _actor.ClearAnimations();
     }
-    
+
     /// <inheritdoc />
     protected override void OnDestroyComponent()
     {
@@ -111,13 +111,13 @@ public class Actor : WorldEntity
             _actors.AsPool().Release(Id);
         }
     }
-    
+
     /// <inheritdoc />
     public override string ToString()
     {
         return $"(Id: {Id})";
     }
-    
+
     /// <summary>
     /// Performs an implicit conversion from <see cref="Actor" /> to <see cref="IActor" />.
     /// </summary>

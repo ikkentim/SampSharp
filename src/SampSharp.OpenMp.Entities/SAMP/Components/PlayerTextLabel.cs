@@ -21,14 +21,14 @@ public class PlayerTextLabel : WorldEntity
         _playerTextLabels = playerTextLabels;
         _playerTextLabel = playerTextLabel;
     }
-    
+
     /// <summary>
     /// Gets a value indicating whether the open.mp entity counterpart has been destroyed.
     /// </summary>
     protected bool IsOmpEntityDestroyed => _playerTextLabel.TryGetExtension<ComponentExtension>()?.IsOmpEntityDestroyed ?? true;
 
     /// <summary>
-    /// Gets the color of this player text label.
+    /// Gets the <see cref="Color" /> of this player text label.
     /// </summary>
     public virtual Color Color
     {
@@ -76,27 +76,27 @@ public class PlayerTextLabel : WorldEntity
             return null;
         }
     }
-    
+
     /// <summary>
-    /// Attaches this player text label to the specified player.
+    /// Attaches this player text label to the specified <paramref name="player" />.
     /// </summary>
-    /// <param name="player">The player to attach this player text label to.</param>
-    /// <param name="offset">The offset position relative to the player.</param>
+    /// <param name="player">The <see cref="Player" /> to attach this player text label to.</param>
+    /// <param name="offset">The offset position relative to the player as a <see cref="Vector3" />.</param>
     public virtual void Attach(Player player, Vector3 offset = default)
     {
         _playerTextLabel.AttachToPlayer(player, offset);
     }
-    
+
     /// <summary>
-    /// Attaches this player text label to the specified vehicle.
+    /// Attaches this player text label to the specified <paramref name="vehicle" />.
     /// </summary>
-    /// <param name="vehicle">The vehicle to attach this player text label to.</param>
-    /// <param name="offset">The offset position relative to the vehicle.</param>
+    /// <param name="vehicle">The <see cref="Vehicle" /> to attach this player text label to.</param>
+    /// <param name="offset">The offset position relative to the vehicle as a <see cref="Vector3" />.</param>
     public virtual void Attach(Vehicle vehicle, Vector3 offset = default)
     {
         _playerTextLabel.AttachToVehicle(vehicle, offset);
     }
-    
+
     /// <inheritdoc />
     protected override void OnDestroyComponent()
     {
@@ -111,7 +111,7 @@ public class PlayerTextLabel : WorldEntity
     {
         return $"(Id: {Id}, Text: {Text})";
     }
-    
+
     /// <summary>
     /// Performs an implicit conversion from <see cref="PlayerTextLabel" /> to <see cref="IPlayerTextLabel" />.
     /// </summary>
