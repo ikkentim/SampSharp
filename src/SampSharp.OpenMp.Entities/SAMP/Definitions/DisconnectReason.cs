@@ -26,7 +26,7 @@ public enum DisconnectReason
     TimedOut = 0,
 
     /// <summary>
-    /// The Player left. (/q(uit) or trough the menu)
+    /// The Player left. (/q(uit) or through the menu)
     /// </summary>
     Left = 1,
 

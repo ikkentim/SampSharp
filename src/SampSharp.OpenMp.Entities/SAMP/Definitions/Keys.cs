@@ -123,7 +123,7 @@ public enum Keys
     No = 131072,
 
     /// <summary>
-    /// Controll back key. (Default: H)
+    /// Control back key. (Default: H)
     /// </summary>
     CtrlBack = 262144
 }

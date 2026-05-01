@@ -6,7 +6,7 @@
 public static class EcsBuilderEventScopeExtensions
 {
     /// <summary>
-    /// Enabled a Dependency Injection scope for the event with the specified <paramref name="name" />.
+    /// Enables a Dependency Injection scope for the event with the specified <paramref name="name" />.
     /// </summary>
     /// <param name="builder">The ECS builder in which to enable the scope.</param>
     /// <param name="name">The name of the event to add the scope to.</param>

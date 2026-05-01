@@ -36,7 +36,7 @@ public enum DialogStyle
     List = 2,
 
     /// <summary>
-    /// A box with a caption, text, an password input box and one or two buttons.
+    /// A box with a caption, text, a password input box and one or two buttons.
     /// </summary>
     Password = 3,
 

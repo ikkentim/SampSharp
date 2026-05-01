@@ -16,7 +16,7 @@
 namespace SampSharp.Entities.SAMP;
 
 /// <summary>
-/// Represents a row in a <see cref="ListDialog" />
+/// Represents a row in a <see cref="ListDialog" />.
 /// </summary>
 public class ListDialogRow : IDialogRow
 {
@@ -35,7 +35,7 @@ public class ListDialogRow : IDialogRow
     public string Text { get; }
 
     /// <summary>
-    /// Gets or sets the tag. The tag can be used so associate data with this row which can be used retrieved when the user responds to the dialog.
+    /// Gets or sets the tag. The tag can be used to associate data with this row which can be retrieved when the user responds to the dialog.
     /// </summary>
     public object? Tag { get; set; }
 

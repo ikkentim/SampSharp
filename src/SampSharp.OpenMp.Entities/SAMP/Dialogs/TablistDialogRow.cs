@@ -16,12 +16,12 @@
 namespace SampSharp.Entities.SAMP;
 
 /// <summary>
-/// Represents a row in a <see cref="TablistDialog" />
+/// Represents a row in a <see cref="TablistDialog" />.
 /// </summary>
 public class TablistDialogRow : IDialogRow
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="ListDialogRow" /> class.
+    /// Initializes a new instance of the <see cref="TablistDialogRow" /> class.
     /// </summary>
     /// <param name="columns">The columns of the row.</param>
     public TablistDialogRow(params string[] columns)
@@ -40,7 +40,7 @@ public class TablistDialogRow : IDialogRow
     public int ColumnCount => Columns.Length;
 
     /// <summary>
-    /// Gets or sets the tag. The tag can be used so associate data with this row which can be used retrieved when the user responds to the dialog.
+    /// Gets or sets the tag. The tag can be used to associate data with this row which can be retrieved when the user responds to the dialog.
     /// </summary>
     public object? Tag { get; set; }
 

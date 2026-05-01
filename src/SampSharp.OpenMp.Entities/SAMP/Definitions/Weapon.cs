@@ -30,7 +30,7 @@ public enum Weapon
     None = 0,
 
     /// <summary>
-    /// Brask knuckles.
+    /// Brass knuckles.
     /// </summary>
     Brassknuckle = 1,
 
@@ -115,7 +115,7 @@ public enum Weapon
     Teargas = 17,
 
     /// <summary>
-    /// Molotov Cockail.
+    /// Molotov Cocktail.
     /// </summary>
     Moltov = 18,
 

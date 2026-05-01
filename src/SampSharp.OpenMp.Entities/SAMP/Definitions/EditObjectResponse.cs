@@ -26,12 +26,12 @@ public enum EditObjectResponse
     Cancel = 0,
 
     /// <summary>
-    /// The current is the final edit sate.
+    /// The current is the final edit state.
     /// </summary>
     Final = 1,
 
     /// <summary>
-    /// The current is a updated edit state.
+    /// The current is an updated edit state.
     /// </summary>
     Update = 2
 }

@@ -22,7 +22,7 @@ namespace SampSharp.Entities.SAMP;
 public enum MapIconType
 {
     /// <summary>
-    /// Displays in the player's local are.
+    /// Displays in the player's local area.
     /// </summary>
     Local = 0,
 

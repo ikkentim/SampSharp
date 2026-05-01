@@ -30,10 +30,7 @@ public interface IEntityManager
     T AddComponent<T>(EntityId entity, EntityId parent, params object[] args) where T : Component;
 
     /// <summary>
-    /// Adds a component of the specified type <typeparamref name="T" /> to the specified
-    /// <paramref
-    ///     name="entity" />
-    /// .
+    /// Adds a component of the specified type <typeparamref name="T" /> to the specified <paramref name="entity" />.
     /// </summary>
     /// <typeparam name="T">The type of the component to add.</typeparam>
     /// <param name="entity">The entity to add the component to.</param>
@@ -51,10 +48,7 @@ public interface IEntityManager
     T AddComponent<T>(EntityId entity, EntityId parent) where T : Component;
 
     /// <summary>
-    /// Adds a component of the specified type <typeparamref name="T" /> to the specified
-    /// <paramref
-    ///     name="entity" />
-    /// .
+    /// Adds a component of the specified type <typeparamref name="T" /> to the specified <paramref name="entity" />.
     /// </summary>
     /// <typeparam name="T">The type of the component to add.</typeparam>
     /// <param name="entity">The entity to add the component to.</param>
@@ -117,10 +111,7 @@ public interface IEntityManager
     T? GetComponent<T>() where T : Component;
 
     /// <summary>
-    /// Gets a component of the specified type <typeparamref name="T" /> attached to the specified
-    /// <paramref
-    ///     name="entity" />
-    /// .
+    /// Gets a component of the specified type <typeparamref name="T" /> attached to the specified <paramref name="entity" />.
     /// </summary>
     /// <typeparam name="T">The type of the component to find.</typeparam>
     /// <param name="entity">The entity to get the component from.</param>
@@ -157,10 +148,7 @@ public interface IEntityManager
     T[] GetComponents<T>() where T : Component;
 
     /// <summary>
-    /// Gets all components of the specified type <typeparamref name="T" /> attached to the specified
-    /// <paramref
-    ///     name="entity" />
-    /// .
+    /// Gets all components of the specified type <typeparamref name="T" /> attached to the specified <paramref name="entity" />.
     /// </summary>
     /// <typeparam name="T">The type of the components to find.</typeparam>
     /// <param name="entity">The entity to get the components from.</param>

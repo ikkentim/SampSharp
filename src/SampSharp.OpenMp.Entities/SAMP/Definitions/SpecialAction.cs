@@ -100,7 +100,7 @@ public enum SpecialAction
     SmokeCiggy = 21,
 
     /// <summary>
-    /// Player is drinking whine.
+    /// Player is drinking wine.
     /// </summary>
     DrinkWine = 22,
 
@@ -115,7 +115,7 @@ public enum SpecialAction
     Cuffed = 24,
 
     /// <summary>
-    /// PLayer is carrying.
+    /// Player is carrying.
     /// </summary>
     Carry = 25,
 
