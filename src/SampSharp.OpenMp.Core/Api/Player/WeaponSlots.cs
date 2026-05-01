@@ -20,10 +20,10 @@ public readonly struct WeaponSlots
     public readonly WeaponSlotData[] Data;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="WeaponSlots"/> struct.
+    /// Initializes a new instance of the <see cref="WeaponSlots" /> struct.
     /// </summary>
     /// <param name="data">The array of weapon slot data.</param>
-    /// <exception cref="ArgumentException">Thrown if the length of <paramref name="data"/> is not equal to <see cref="MAX_WEAPON_SLOTS"/>.</exception>
+    /// <exception cref="ArgumentException">Thrown if the length of <paramref name="data" /> is not equal to <see cref="MAX_WEAPON_SLOTS" />.</exception>
     public WeaponSlots(WeaponSlotData[] data)
     {
         if (data.Length != MAX_WEAPON_SLOTS)

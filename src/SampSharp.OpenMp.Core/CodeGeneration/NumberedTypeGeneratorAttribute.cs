@@ -3,7 +3,8 @@
 namespace SampSharp.OpenMp.Core;
 
 /// <summary>
-/// This attribute marks a type which should be cloned by the source generator with a changed constant field value. This type is mainly used by <see cref="HybridString16" /> and related types.
+/// This attribute marks a type which should be cloned by the source generator with a changed constant field value. This type is mainly used by <see cref="HybridString16" /> and
+/// related types.
 /// </summary>
 /// <param name="fieldName">The name of the field which should be updated.</param>
 /// <param name="value">The updated value to set to the field.</param>

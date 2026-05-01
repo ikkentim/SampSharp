@@ -8,7 +8,8 @@ namespace SampSharp.OpenMp.Core;
 public sealed class StartupContext : IStartupContext
 {
     /// <summary>
-    /// The API version of the native open.mp component which supports this version of the managed API. This is used to check for version mismatches between the managed and native components.
+    /// The API version of the native open.mp component which supports this version of the managed API. This is used to check for version mismatches between the managed and native
+    /// components.
     /// </summary>
     private const int SupportedApiVersion = 1;
 

@@ -25,8 +25,10 @@ public interface IWorldService
     /// <param name="rotation">The facing angle for the vehicle.</param>
     /// <param name="color1">The primary color ID.</param>
     /// <param name="color2">The secondary color ID.</param>
-    /// <param name="respawnDelay">The delay until the car is respawned without a driver in seconds. Using -1 will
-    /// prevent the vehicle from respawning.</param>
+    /// <param name="respawnDelay">
+    /// The delay until the car is respawned without a driver in seconds. Using -1 will
+    /// prevent the vehicle from respawning.
+    /// </param>
     /// <param name="addSiren">If true, enables the vehicle to have a siren, providing the vehicle has a horn.</param>
     /// <param name="parent">The parent of the entity to be created.</param>
     /// <returns> The created vehicle.</returns>
@@ -39,8 +41,10 @@ public interface IWorldService
     /// <param name="rotation">The facing angle for the vehicle.</param>
     /// <param name="color1">The primary color ID.</param>
     /// <param name="color2">The secondary color ID.</param>
-    /// <param name="respawnDelay">The delay until the car is respawned without a driver in seconds. Using -1 will
-    /// prevent the vehicle from respawning.</param>
+    /// <param name="respawnDelay">
+    /// The delay until the car is respawned without a driver in seconds. Using -1 will
+    /// prevent the vehicle from respawning.
+    /// </param>
     /// <param name="addSiren">If true, enables the vehicle to have a siren, providing the vehicle has a horn.</param>
     /// <param name="parent">The parent of the entity to be created.</param>
     /// <returns> The created vehicle.</returns>

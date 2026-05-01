@@ -153,11 +153,11 @@ public interface IServerService
     /// <param name="url">The website URL.</param>
     void SetWebsiteUrl(string url);
 
-    /// <summary>Set the connect password. Pass <see langword="null"/> or empty string to clear.</summary>
+    /// <summary>Set the connect password. Pass <see langword="null" /> or empty string to clear.</summary>
     /// <param name="password">The password, or null/empty to disable password auth.</param>
     void SetServerPassword(string? password);
 
-    /// <summary>Set the RCON admin password. Pass <see langword="null"/> or empty string to clear.</summary>
+    /// <summary>Set the RCON admin password. Pass <see langword="null" /> or empty string to clear.</summary>
     /// <param name="password">The RCON password, or null/empty to disable.</param>
     void SetAdminPassword(string? password);
 

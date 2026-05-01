@@ -1,6 +1,6 @@
 namespace SampSharp.Entities.SAMP.Commands.Parsers;
 
-/// <summary>Consumes ALL remaining input text (used for the last <see cref="string"/> parameter, e.g. chat messages).</summary>
+/// <summary>Consumes ALL remaining input text (used for the last <see cref="string" /> parameter, e.g. chat messages).</summary>
 public class StringParser : ICommandParameterParser
 {
     /// <inheritdoc />

@@ -50,7 +50,7 @@ public readonly partial struct IMenu
     /// <summary>
     /// Gets the position of the menu.
     /// </summary>
-    /// <returns>A reference to the menu's position as a <see cref="System.Numerics.Vector2"/>.</returns>
+    /// <returns>A reference to the menu's position as a <see cref="System.Numerics.Vector2" />.</returns>
     public partial ref Vector2 GetPosition();
 
     /// <summary>
@@ -75,7 +75,7 @@ public readonly partial struct IMenu
     /// <summary>
     /// Gets the widths of the menu columns.
     /// </summary>
-    /// <returns>A <see cref="System.Numerics.Vector2"/> containing the widths of the columns.</returns>
+    /// <returns>A <see cref="System.Numerics.Vector2" /> containing the widths of the columns.</returns>
     public Vector2 GetColumnWidths()
     {
         GetColumnWidths(out var result);

@@ -105,10 +105,10 @@ public class Npc : IdProvider
         set => _npc.SetInterior((uint)value);
     }
 
-    /// <summary>True if the NPC has been killed and not yet respawned.</summary>
+    /// <summary><see langword="true" /> if the NPC has been killed and not yet respawned.</summary>
     public virtual bool IsDead => _npc.IsDead();
 
-    /// <summary>True if the NPC is currently following any movement command.</summary>
+    /// <summary><see langword="true" /> if the NPC is currently following any movement command.</summary>
     public virtual bool IsMoving => _npc.IsMoving();
 
     /// <summary>Gets the NPC's current velocity.</summary>
@@ -175,7 +175,7 @@ public class Npc : IdProvider
         _npc.SetVelocity(velocity, update);
     }
 
-    /// <summary>True iff this NPC is streamed in for the given player.</summary>
+    /// <summary><see langword="true" /> if this NPC is streamed in for the given player.</summary>
     public virtual bool IsStreamedIn(Player player)
     {
         return player != null && _npc.IsStreamedInForPlayer(player);

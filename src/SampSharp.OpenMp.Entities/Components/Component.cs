@@ -39,8 +39,10 @@ public abstract class Component
         return Manager.GetComponent<T>(Entity);
     }
 
-    /// <summary>Adds a component of the specified type <typeparamref name="T" /> to the entity with the specified
-    /// constructor <paramref name="args" />.</summary>
+    /// <summary>
+    /// Adds a component of the specified type <typeparamref name="T" /> to the entity with the specified
+    /// constructor <paramref name="args" />.
+    /// </summary>
     /// <typeparam name="T">The type of the component to add.</typeparam>
     /// <param name="args">The arguments of the constructor of the component.</param>
     /// <returns>The created component.</returns>
@@ -65,8 +67,10 @@ public abstract class Component
         Manager.AddComponent(Entity, component);
     }
 
-    /// <summary>Destroys the components of the specified type <typeparamref name="T" /> attached to the
-    /// entity.</summary>
+    /// <summary>
+    /// Destroys the components of the specified type <typeparamref name="T" /> attached to the
+    /// entity.
+    /// </summary>
     /// <typeparam name="T">The type of the components to destroy.</typeparam>
     public void DestroyComponents<T>() where T : Component
     {
@@ -94,8 +98,10 @@ public abstract class Component
         return Manager.GetComponents<T>(Entity);
     }
 
-    /// <summary>Gets a component of the specified type <typeparamref name="T" /> attached to a child entity of the
-    /// entity using a depth first search.</summary>
+    /// <summary>
+    /// Gets a component of the specified type <typeparamref name="T" /> attached to a child entity of the
+    /// entity using a depth first search.
+    /// </summary>
     /// <typeparam name="T">The type of the component to find.</typeparam>
     /// <returns>The found component or <see langword="null" /> if no component of the specified type could be found.</returns>
     [Pure]
@@ -104,8 +110,10 @@ public abstract class Component
         return Manager.GetComponentInChildren<T>(Entity);
     }
 
-    /// <summary>Gets all components of the specified type <typeparamref name="T" /> attached to a child entity of the
-    /// entity.</summary>
+    /// <summary>
+    /// Gets all components of the specified type <typeparamref name="T" /> attached to a child entity of the
+    /// entity.
+    /// </summary>
     /// <typeparam name="T">The type of the components to find.</typeparam>
     /// <returns>A collection of the found components.</returns>
     [Pure]
@@ -114,8 +122,10 @@ public abstract class Component
         return Manager.GetComponentsInChildren<T>(Entity);
     }
 
-    /// <summary>Gets a component of the specified type <typeparamref name="T" /> attached to a parent entity of the
-    /// entity.</summary>
+    /// <summary>
+    /// Gets a component of the specified type <typeparamref name="T" /> attached to a parent entity of the
+    /// entity.
+    /// </summary>
     /// <typeparam name="T">The type of the component to find.</typeparam>
     /// <returns>The found component or <see langword="null" /> if no component of the specified type could be found.</returns>
     [Pure]
@@ -124,8 +134,10 @@ public abstract class Component
         return Manager.GetComponentInParent<T>(Entity);
     }
 
-    /// <summary>Gets all components of the specified type <typeparamref name="T" /> attached to a parent entity of the
-    /// entity.</summary>
+    /// <summary>
+    /// Gets all components of the specified type <typeparamref name="T" /> attached to a parent entity of the
+    /// entity.
+    /// </summary>
     /// <typeparam name="T">The type of the components to find.</typeparam>
     /// <returns>A collection of the found components.</returns>
     [Pure]
@@ -156,8 +168,10 @@ public abstract class Component
         IsComponentAlive = false;
     }
 
-    /// <summary>Implements the operator true. Returns <see langword="true" /> if the specified <paramref name="component" /> is
-    /// alive.</summary>
+    /// <summary>
+    /// Implements the operator true. Returns <see langword="true" /> if the specified <paramref name="component" /> is
+    /// alive.
+    /// </summary>
     /// <param name="component">The component.</param>
     /// <returns><see langword="true" /> if the specified <paramref name="component" /> is alive; <see langword="false" /> otherwise.</returns>
     public static bool operator true([NotNullWhen(true)]Component? component)
@@ -165,21 +179,29 @@ public abstract class Component
         return component is { IsComponentAlive: true };
     }
 
-    /// <summary>Implements the operator false. Returns <see langword="true" /> if the specified <paramref name="component" /> is
-    /// not alive.</summary>
+    /// <summary>
+    /// Implements the operator false. Returns <see langword="true" /> if the specified <paramref name="component" /> is
+    /// not alive.
+    /// </summary>
     /// <param name="component">The component.</param>
-    /// <returns><see langword="true" /> if the specified <paramref name="component" /> is not alive; <see langword="false" />
-    /// otherwise.</returns>
+    /// <returns>
+    /// <see langword="true" /> if the specified <paramref name="component" /> is not alive; <see langword="false" />
+    /// otherwise.
+    /// </returns>
     public static bool operator false([NotNullWhen(false)]Component? component)
     {
         return component is not { IsComponentAlive: true };
     }
 
-    /// <summary>Implements the operator !. Returns <see langword="true" /> if the specified <paramref name="component" /> is not
-    /// alive.</summary>
+    /// <summary>
+    /// Implements the operator !. Returns <see langword="true" /> if the specified <paramref name="component" /> is not
+    /// alive.
+    /// </summary>
     /// <param name="component">The component.</param>
-    /// <returns><see langword="true" /> if the specified <paramref name="component" /> is not alive; otherwise
-    /// <see langword="false" />.</returns>
+    /// <returns>
+    /// <see langword="true" /> if the specified <paramref name="component" /> is not alive; otherwise
+    /// <see langword="false" />.
+    /// </returns>
     public static bool operator !([NotNullWhen(false)]Component? component)
     {
         return component is not { IsComponentAlive: true };

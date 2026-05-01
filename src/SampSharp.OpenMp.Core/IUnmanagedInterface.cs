@@ -2,7 +2,7 @@
 
 /// <summary>
 /// Provides the methods to work with structs which represent pointers to open.mp interfaces. This interface is the
-/// managed counterpart the unmanaged interface. 
+/// managed counterpart the unmanaged interface.
 /// </summary>
 public interface IUnmanagedInterface
 {

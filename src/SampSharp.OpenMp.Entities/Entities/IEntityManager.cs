@@ -27,8 +27,12 @@ public interface IEntityManager
     /// <returns>The created component.</returns>
     T AddComponent<T>(EntityId entity, EntityId parent, params object[] args) where T : Component;
 
-    /// <summary>Adds a component of the specified type <typeparamref name="T" /> to the specified <paramref
-    /// name="entity" />.</summary>
+    /// <summary>
+    /// Adds a component of the specified type <typeparamref name="T" /> to the specified
+    /// <paramref
+    ///     name="entity" />
+    /// .
+    /// </summary>
     /// <typeparam name="T">The type of the component to add.</typeparam>
     /// <param name="entity">The entity to add the component to.</param>
     /// <returns>The created component.</returns>
@@ -44,8 +48,12 @@ public interface IEntityManager
     /// <returns>The created component.</returns>
     T AddComponent<T>(EntityId entity, EntityId parent) where T : Component;
 
-    /// <summary>Adds a component of the specified type <typeparamref name="T" /> to the specified <paramref
-    /// name="entity" />.</summary>
+    /// <summary>
+    /// Adds a component of the specified type <typeparamref name="T" /> to the specified
+    /// <paramref
+    ///     name="entity" />
+    /// .
+    /// </summary>
     /// <typeparam name="T">The type of the component to add.</typeparam>
     /// <param name="entity">The entity to add the component to.</param>
     /// <param name="component">The instance of the component to be added.</param>
@@ -69,11 +77,14 @@ public interface IEntityManager
     /// <param name="entity">The entity.</param>
     void Destroy(EntityId entity);
 
-    /// <summary>Destroys the components of the specified type <typeparamref name="T" /> attached to the specified
-    /// <paramref name="entity" />.</summary>
+    /// <summary>
+    /// Destroys the components of the specified type <typeparamref name="T" /> attached to the specified
+    /// <paramref name="entity" />.
+    /// </summary>
     /// <typeparam name="T">The type of the components to destroy.</typeparam>
-    /// <param name="entity">The entity of which to destroy its components of the specified type <typeparamref name="T"
-    /// />.</param>
+    /// <param name="entity">
+    /// The entity of which to destroy its components of the specified type <typeparamref name="T" />.
+    /// </param>
     void Destroy<T>(EntityId entity) where T : Component;
 
     /// <summary>Gets the children of the specified <paramref name="entity" />.</summary>
@@ -93,8 +104,12 @@ public interface IEntityManager
     [Pure]
     T? GetComponent<T>() where T : Component;
 
-    /// <summary>Gets a component of the specified type <typeparamref name="T" /> attached to the specified <paramref
-    /// name="entity" />.</summary>
+    /// <summary>
+    /// Gets a component of the specified type <typeparamref name="T" /> attached to the specified
+    /// <paramref
+    ///     name="entity" />
+    /// .
+    /// </summary>
     /// <typeparam name="T">The type of the component to find.</typeparam>
     /// <param name="entity">The entity to get the component from.</param>
     /// <returns>The found component or <see langword="null" /> if no component of the specified type could be found.</returns>
@@ -111,8 +126,10 @@ public interface IEntityManager
     [Pure]
     T? GetComponentInChildren<T>(EntityId entity) where T : Component;
 
-    /// <summary>Gets a component of the specified type <typeparamref name="T" /> attached to a parent entity of the
-    /// specified <paramref name="entity" />.</summary>
+    /// <summary>
+    /// Gets a component of the specified type <typeparamref name="T" /> attached to a parent entity of the
+    /// specified <paramref name="entity" />.
+    /// </summary>
     /// <typeparam name="T">The type of the component to find.</typeparam>
     /// <param name="entity">The entity to get the component from.</param>
     /// <returns>The found component or <see langword="null" /> if no component of the specified type could be found.</returns>
@@ -125,24 +142,32 @@ public interface IEntityManager
     [Pure]
     T[] GetComponents<T>() where T : Component;
 
-    /// <summary>Gets all components of the specified type <typeparamref name="T" /> attached to the specified <paramref
-    /// name="entity" />.</summary>
+    /// <summary>
+    /// Gets all components of the specified type <typeparamref name="T" /> attached to the specified
+    /// <paramref
+    ///     name="entity" />
+    /// .
+    /// </summary>
     /// <typeparam name="T">The type of the components to find.</typeparam>
     /// <param name="entity">The entity to get the components from.</param>
     /// <returns>A collection of the found components.</returns>
     [Pure]
     T[] GetComponents<T>(EntityId entity) where T : Component;
 
-    /// <summary>Gets all components of the specified type <typeparamref name="T" /> attached to a child entity of the
-    /// specified <paramref name="entity" />.</summary>
+    /// <summary>
+    /// Gets all components of the specified type <typeparamref name="T" /> attached to a child entity of the
+    /// specified <paramref name="entity" />.
+    /// </summary>
     /// <typeparam name="T">The type of the components to find.</typeparam>
     /// <param name="entity">The entity to get the components from.</param>
     /// <returns>A collection of the found components.</returns>
     [Pure]
     T[] GetComponentsInChildren<T>(EntityId entity) where T : Component;
 
-    /// <summary>Gets all components of the specified type <typeparamref name="T" /> attached to a parent entity of the
-    /// specified <paramref name="entity" />.</summary>
+    /// <summary>
+    /// Gets all components of the specified type <typeparamref name="T" /> attached to a parent entity of the
+    /// specified <paramref name="entity" />.
+    /// </summary>
     /// <typeparam name="T">The type of the components to find.</typeparam>
     /// <param name="entity">The entity to get the components from.</param>
     /// <returns>A collection of the found components.</returns>

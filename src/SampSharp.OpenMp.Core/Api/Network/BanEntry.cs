@@ -13,7 +13,7 @@ namespace SampSharp.OpenMp.Core.Api;
 public record BanEntry(string Address, DateTimeOffset Time, string? Name, string? Reason)
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="BanEntry"/> class with only an address.
+    /// Initializes a new instance of the <see cref="BanEntry" /> class with only an address.
     /// The ban time is set to the current UTC time, and the name and reason are left null.
     /// </summary>
     /// <param name="address">The IP address of the banned player.</param>

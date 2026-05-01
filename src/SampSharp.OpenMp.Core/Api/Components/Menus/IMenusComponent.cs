@@ -14,7 +14,7 @@ public readonly partial struct IMenusComponent
     /// <summary>
     /// Gets the event dispatcher for menu events.
     /// </summary>
-    /// <returns>An event dispatcher for <see cref="IMenuEventHandler"/> events.</returns>
+    /// <returns>An event dispatcher for <see cref="IMenuEventHandler" /> events.</returns>
     public partial IEventDispatcher<IMenuEventHandler> GetEventDispatcher();
 
     /// <summary>

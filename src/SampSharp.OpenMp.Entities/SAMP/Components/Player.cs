@@ -12,12 +12,12 @@ public class Player : WorldEntity
     private readonly IPlayer _rawPlayer;
 
     /// <summary>
-    /// Safe accessor for the underlying <see cref="IPlayer"/> handle. Throws
-    /// <see cref="ObjectDisposedException"/> if the component has been destroyed,
-    /// which means open.mp already fired <see cref="ComponentExtension.Cleanup"/>
+    /// Safe accessor for the underlying <see cref="IPlayer" /> handle. Throws
+    /// <see cref="ObjectDisposedException" /> if the component has been destroyed,
+    /// which means open.mp already fired <see cref="ComponentExtension.Cleanup" />
     /// and the native pointer is (or is about to be) freed. Without this guard,
     /// P/Invokes against a stale handle AV the process (0xC0000005) when gamemode
-    /// code holds onto a <see cref="Player"/> reference across disconnect (e.g. via
+    /// code holds onto a <see cref="Player" /> reference across disconnect (e.g. via
     /// an async continuation).
     /// </summary>
     private IPlayer _player
@@ -577,7 +577,7 @@ public class Player : WorldEntity
     /// <summary>Check if this player is in range of a point.</summary>
     /// <param name="range">The furthest distance the player can be from the point to be in range.</param>
     /// <param name="point">The point to check the range to.</param>
-    /// <returns>True if this player is in range of the point, otherwise False.</returns>
+    /// <returns><see langword="true" /> if this player is in range of the point, <see langword="false" /> otherwise.</returns>
     public virtual bool IsInRangeOfPoint(float range, Vector3 point)
     {
         return GetDistanceFromPoint(point) <= range;
@@ -596,7 +596,7 @@ public class Player : WorldEntity
     /// <remarks>Players aren't streamed in on their own client, so if this player is the same as the other Player, it will return false!</remarks>
     /// <remarks>Players stream out if they are more than 150 meters away (see server.cfg - stream_distance)</remarks>
     /// <param name="player">The player to check is streamed in.</param>
-    /// <returns>True if the other Player is streamed in for this player, False if not.</returns>
+    /// <returns><see langword="true" /> if the other Player is streamed in for this player, <see langword="false" /> otherwise.</returns>
     public virtual bool IsPlayerStreamedIn(Player player)
     {
         return _player.IsStreamedInForPlayer(player);
@@ -625,7 +625,7 @@ public class Player : WorldEntity
         _player.ResetWeapons();
     }
 
-    /// <summary>Removes a single <see cref="Weapon"/> from this player.</summary>
+    /// <summary>Removes a single <see cref="Weapon" /> from this player.</summary>
     /// <param name="weapon">The weapon to remove.</param>
     public virtual void RemoveWeapon(Weapon weapon)
     {
@@ -645,7 +645,7 @@ public class Player : WorldEntity
     /// <summary>Whether this player connected using the open.mp client.</summary>
     public virtual bool IsUsingOmp => _player.GetClientVersion() == ClientVersion.openmp;
 
-    /// <summary>Gets this player's <see cref="ClientVersion"/>.</summary>
+    /// <summary>Gets this player's <see cref="ClientVersion" />.</summary>
     public virtual ClientVersion ClientVersion => _player.GetClientVersion();
 
     /// <summary>Sets the armed weapon of this player.</summary>
@@ -713,7 +713,7 @@ public class Player : WorldEntity
 
     /// <summary>Show/Hide the in-game clock (top right corner) for this player.</summary>
     /// <remarks>Time is not synced with other players!</remarks>
-    /// <param name="toggle">True to show, False to hide.</param>
+    /// <param name="toggle"><see langword="true" /> to show, <see langword="false" /> to hide.</param>
     public virtual void ToggleClock(bool toggle)
     {
         _player.UseClock(toggle);
@@ -821,7 +821,7 @@ public class Player : WorldEntity
     /// <param name="scale">scale of the object.</param>
     /// <param name="materialColor1">The first object color to set.</param>
     /// <param name="materialColor2">The second object color to set.</param>
-    /// <returns>True on success, False otherwise.</returns>
+    /// <returns><see langword="true" /> on success, <see langword="false" /> otherwise.</returns>
     public virtual bool SetAttachedObject(int index, int modelId, Bone bone, Vector3 offset, Vector3 rotation, Vector3 scale, Color materialColor1,
         Color materialColor2)
     {
@@ -839,7 +839,7 @@ public class Player : WorldEntity
 
     /// <summary>Remove an attached object from this player.</summary>
     /// <param name="index">The index of the object to remove (set with <see cref="SetAttachedObject" />).</param>
-    /// <returns>True on success, False otherwise.</returns>
+    /// <returns><see langword="true" /> on success, <see langword="false" /> otherwise.</returns>
     public virtual bool RemoveAttachedObject(int index)
     {
         if (index is < 0 or >= OpenMpConstants.MAX_ATTACHED_OBJECT_SLOTS)
@@ -853,7 +853,7 @@ public class Player : WorldEntity
 
     /// <summary>Check if this player has an object attached in the specified index (slot).</summary>
     /// <param name="index">The index (slot) to check.</param>
-    /// <returns>True if the slot is used, False otherwise.</returns>
+    /// <returns><see langword="true" /> if the slot is used, <see langword="false" /> otherwise.</returns>
     public virtual bool IsAttachedObjectSlotUsed(int index)
     {
         if (index is < 0 or >= OpenMpConstants.MAX_ATTACHED_OBJECT_SLOTS)
@@ -866,7 +866,7 @@ public class Player : WorldEntity
 
     /// <summary>Enter edition mode for an attached object.</summary>
     /// <param name="index">The index (slot) of the attached object to edit.</param>
-    /// <returns>True on success, False otherwise.</returns>
+    /// <returns><see langword="true" /> on success, <see langword="false" /> otherwise.</returns>
     public virtual bool DoEditAttachedObject(int index)
     {
         if (index is < 0 or >= OpenMpConstants.MAX_ATTACHED_OBJECT_SLOTS)
@@ -930,7 +930,7 @@ public class Player : WorldEntity
     }
 
     /// <summary>Toggles whether this player can control themselves, basically freezes them.</summary>
-    /// <param name="toggle">False to freeze the player or True to unfreeze them.</param>
+    /// <param name="toggle"><see langword="false" /> to freeze the player, <see langword="true" /> to unfreeze them.</param>
     public virtual void ToggleControllable(bool toggle)
     {
         _player.SetControllable(toggle);
@@ -970,7 +970,7 @@ public class Player : WorldEntity
     /// to True.
     /// </param>
     /// <param name="freeze">Will freeze the player in position after the animation finishes.</param>
-    /// <param name="time">Animation duration. <see cref="TimeSpan.Zero"/> for a never-ending loop.</param>
+    /// <param name="time">Animation duration. <see cref="TimeSpan.Zero" /> for a never-ending loop.</param>
     /// <param name="forceSync">Set to <see langword="true" /> to force the player to sync animation with other players in all instances</param>
     public virtual void ApplyAnimation(string animationLibrary, string animationName, float fDelta, bool loop, bool lockX, bool lockY, bool freeze, TimeSpan time,
         bool forceSync)
@@ -998,19 +998,19 @@ public class Player : WorldEntity
     /// to True.
     /// </param>
     /// <param name="freeze">Will freeze the player in position after the animation finishes.</param>
-    /// <param name="time">Animation duration. <see cref="TimeSpan.Zero"/> for a never-ending loop.</param>
+    /// <param name="time">Animation duration. <see cref="TimeSpan.Zero" /> for a never-ending loop.</param>
     public virtual void ApplyAnimation(string animationLibrary, string animationName, float fDelta, bool loop, bool lockX, bool lockY, bool freeze, TimeSpan time)
     {
         ApplyAnimation(animationLibrary, animationName, fDelta, loop, lockX, lockY, freeze, time, false);
     }
 
-    /// <inheritdoc cref="ApplyAnimation(string, string, float, bool, bool, bool, bool, TimeSpan, bool)"/>
+    /// <inheritdoc cref="ApplyAnimation(string, string, float, bool, bool, bool, bool, TimeSpan, bool)" />
     [Obsolete("Use the TimeSpan overload. This int-milliseconds variant is kept for source compatibility and will be removed.")]
     public virtual void ApplyAnimation(string animationLibrary, string animationName, float fDelta, bool loop, bool lockX, bool lockY, bool freeze, int time,
         bool forceSync)
         => ApplyAnimation(animationLibrary, animationName, fDelta, loop, lockX, lockY, freeze, TimeSpan.FromMilliseconds(time), forceSync);
 
-    /// <inheritdoc cref="ApplyAnimation(string, string, float, bool, bool, bool, bool, TimeSpan)"/>
+    /// <inheritdoc cref="ApplyAnimation(string, string, float, bool, bool, bool, bool, TimeSpan)" />
     [Obsolete("Use the TimeSpan overload. This int-milliseconds variant is kept for source compatibility and will be removed.")]
     public virtual void ApplyAnimation(string animationLibrary, string animationName, float fDelta, bool loop, bool lockX, bool lockY, bool freeze, int time)
         => ApplyAnimation(animationLibrary, animationName, fDelta, loop, lockX, lockY, freeze, TimeSpan.FromMilliseconds(time), false);
@@ -1032,7 +1032,7 @@ public class Player : WorldEntity
     /// <summary>Get the animation library/name this player is playing.</summary>
     /// <param name="animationLibrary">String variable that stores the animation library.</param>
     /// <param name="animationName">String variable that stores the animation name.</param>
-    /// <returns>True on success, False otherwise.</returns>
+    /// <returns><see langword="true" /> on success, <see langword="false" /> otherwise.</returns>
     public virtual bool GetAnimationName(out string? animationLibrary, out string? animationName)
     {
         var anim = _player.GetAnimationData();
@@ -1108,7 +1108,7 @@ public class Player : WorldEntity
     /// </summary>
     /// <remarks><see cref="IServerService.ShowNameTags" /> must be set to <see langword="true" /> to be able to show name tags with <see cref="ShowNameTagForPlayer" />.</remarks>
     /// <param name="player">The player whose name tag will be shown or hidden.</param>
-    /// <param name="show">True to show name tag, False to hide name tag.</param>
+    /// <param name="show"><see langword="true" /> to show name tag, <see langword="false" /> to hide name tag.</param>
     public virtual void ShowNameTagForPlayer(Player player, bool show)
     {
         _player.ToggleOtherNameTag(player, show);
@@ -1139,7 +1139,7 @@ public class Player : WorldEntity
         _player.InterpolateCameraPosition(from, to, (int)time.TotalMilliseconds, (PlayerCameraCutType)cut);
     }
 
-    /// <inheritdoc cref="InterpolateCameraPosition(Vector3, Vector3, TimeSpan, CameraCut)"/>
+    /// <inheritdoc cref="InterpolateCameraPosition(Vector3, Vector3, TimeSpan, CameraCut)" />
     [Obsolete("Use the TimeSpan overload. This int-milliseconds variant is kept for source compatibility and will be removed.")]
     public virtual void InterpolateCameraPosition(Vector3 from, Vector3 to, int time, CameraCut cut)
         => InterpolateCameraPosition(from, to, TimeSpan.FromMilliseconds(time), cut);
@@ -1154,21 +1154,21 @@ public class Player : WorldEntity
         _player.InterpolateCameraLookAt(from, to, (int)time.TotalMilliseconds, (PlayerCameraCutType)cut);
     }
 
-    /// <inheritdoc cref="InterpolateCameraLookAt(Vector3, Vector3, TimeSpan, CameraCut)"/>
+    /// <inheritdoc cref="InterpolateCameraLookAt(Vector3, Vector3, TimeSpan, CameraCut)" />
     [Obsolete("Use the TimeSpan overload. This int-milliseconds variant is kept for source compatibility and will be removed.")]
     public virtual void InterpolateCameraLookAt(Vector3 from, Vector3 to, int time, CameraCut cut)
         => InterpolateCameraLookAt(from, to, TimeSpan.FromMilliseconds(time), cut);
 
     /// <summary>Checks if this player is in a specific vehicle.</summary>
     /// <param name="vehicle">The vehicle.</param>
-    /// <returns>True if player is in the vehicle; False otherwise.</returns>
+    /// <returns><see langword="true" /> if player is in the vehicle, <see langword="false" /> otherwise.</returns>
     public virtual bool IsInVehicle(Vehicle vehicle)
     {
         return Vehicle == vehicle;
     }
 
     /// <summary>Toggle stunt bonuses for this player.</summary>
-    /// <param name="enable">True to enable stunt bonuses, False to disable them.</param>
+    /// <param name="enable"><see langword="true" /> to enable stunt bonuses, <see langword="false" /> to disable them.</param>
     public virtual void EnableStuntBonus(bool enable)
     {
         _player.UseStuntBonuses(enable);
@@ -1176,7 +1176,7 @@ public class Player : WorldEntity
 
     /// <summary>Toggle this player's spectate mode.</summary>
     /// <remarks>When the spectating is turned off, OnPlayerSpawn will automatically be called.</remarks>
-    /// <param name="toggle">True to enable spectating and False to disable.</param>
+    /// <param name="toggle"><see langword="true" /> to enable spectating, <see langword="false" /> to disable.</param>
     public virtual void ToggleSpectating(bool toggle)
     {
         _player.SetSpectating(toggle);

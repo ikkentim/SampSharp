@@ -4,7 +4,8 @@ using System.Runtime.InteropServices;
 namespace SampSharp.OpenMp.Core.RobinHood;
 
 /// <summary>
-/// Represent a pointer to an <c>robin_hood::unordered_flat_set</c> of open.mp interface pointers of type <typeparamref name="T" />. <c>robin_hood::unordered_flat_set</c> is part of the <c>robin_hood</c> C++ library.
+/// Represent a pointer to an <c>robin_hood::unordered_flat_set</c> of open.mp interface pointers of type <typeparamref name="T" />. <c>robin_hood::unordered_flat_set</c> is part of
+/// the <c>robin_hood</c> C++ library.
 /// </summary>
 /// <typeparam name="T"></typeparam>
 [StructLayout(LayoutKind.Sequential)]

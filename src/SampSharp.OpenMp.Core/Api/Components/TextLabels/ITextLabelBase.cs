@@ -73,7 +73,7 @@ public readonly partial struct ITextLabelBase
     /// <summary>
     /// Gets the attachment data of the text label.
     /// </summary>
-    /// <returns>A reference to the <see cref="TextLabelAttachmentData"/> structure containing the attachment information.</returns>
+    /// <returns>A reference to the <see cref="TextLabelAttachmentData" /> structure containing the attachment information.</returns>
     public partial ref TextLabelAttachmentData GetAttachmentData();
 
     /// <summary>

@@ -51,13 +51,13 @@ public readonly partial struct IBaseGangZone
     /// <summary>
     /// Gets the position of the gangzone.
     /// </summary>
-    /// <returns>A <see cref="GangZonePos"/> structure containing the minimum and maximum coordinates.</returns>
+    /// <returns>A <see cref="GangZonePos" /> structure containing the minimum and maximum coordinates.</returns>
     public partial GangZonePos GetPosition();
 
     /// <summary>
     /// Sets the position of the gangzone.
     /// </summary>
-    /// <param name="position">A <see cref="GangZonePos"/> structure containing the minimum and maximum coordinates.</param>
+    /// <param name="position">A <see cref="GangZonePos" /> structure containing the minimum and maximum coordinates.</param>
     public partial void SetPosition(ref GangZonePos position);
 
     /// <summary>

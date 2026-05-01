@@ -53,7 +53,7 @@ public class Actor : WorldEntity
 
     /// <summary>Determines whether this actor is streamed in for the specified <paramref name="player" />.</summary>
     /// <param name="player">The player.</param>
-    /// <returns>True if streamed in; False otherwise.</returns>
+    /// <returns><see langword="true" /> if streamed in; <see langword="false" /> otherwise.</returns>
     public virtual bool IsStreamedIn(Player player)
     {
         return _actor.IsStreamedInForPlayer(player);
@@ -76,7 +76,7 @@ public class Actor : WorldEntity
         _actor.ApplyAnimation(new AnimationData(fDelta, loop, lockX, lockY, freeze, (uint)time.TotalMilliseconds, library, name));
     }
 
-    /// <inheritdoc cref="ApplyAnimation(string, string, float, bool, bool, bool, bool, TimeSpan)"/>
+    /// <inheritdoc cref="ApplyAnimation(string, string, float, bool, bool, bool, bool, TimeSpan)" />
     [Obsolete("Use the TimeSpan overload. This int-milliseconds variant is kept for source compatibility and will be removed.")]
     public virtual void ApplyAnimation(string library, string name, float fDelta, bool loop, bool lockX, bool lockY, bool freeze, int time)
         => ApplyAnimation(library, name, fDelta, loop, lockX, lockY, freeze, TimeSpan.FromMilliseconds(time));

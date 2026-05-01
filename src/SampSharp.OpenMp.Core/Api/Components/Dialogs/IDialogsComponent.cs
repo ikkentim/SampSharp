@@ -12,6 +12,6 @@ public readonly partial struct IDialogsComponent
     /// <summary>
     /// Gets the event dispatcher for dialog events.
     /// </summary>
-    /// <returns>An event dispatcher for <see cref="IPlayerDialogEventHandler"/> events.</returns>
+    /// <returns>An event dispatcher for <see cref="IPlayerDialogEventHandler" /> events.</returns>
     public partial IEventDispatcher<IPlayerDialogEventHandler> GetEventDispatcher();
 }

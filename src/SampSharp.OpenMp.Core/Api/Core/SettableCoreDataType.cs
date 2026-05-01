@@ -1,7 +1,7 @@
 ﻿namespace SampSharp.OpenMp.Core.Api;
 
 /// <summary>
-///  Types of data can be set in core during runtime.
+/// Types of data can be set in core during runtime.
 /// </summary>
 public enum SettableCoreDataType
 {

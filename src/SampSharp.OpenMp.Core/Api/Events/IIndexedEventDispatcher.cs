@@ -81,8 +81,10 @@ public readonly struct IIndexedEventDispatcher<T> : IUnmanagedInterface where T 
     /// <param name="handler">The handler to check.</param>
     /// <param name="index">The index to check</param>
     /// <param name="priority">The priority at which the handler should receive the events.</param>
-    /// <returns><see langword="true" /> if handler is registered with this event dispatcher at the given index;
-    /// otherwise <see langword="false" />.</returns>
+    /// <returns>
+    /// <see langword="true" /> if handler is registered with this event dispatcher at the given index;
+    /// otherwise <see langword="false" />.
+    /// </returns>
     public bool HasEventHandler(T handler, int index, out EventPriority priority)
     {
         var handlerHandle = T.Marshaller.Marshal(handler).Handle;

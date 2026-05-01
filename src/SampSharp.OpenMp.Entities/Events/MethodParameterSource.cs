@@ -21,8 +21,10 @@ public class MethodParameterSource
     /// </summary>
     public int ParameterIndex { get; set; } = -1;
 
-    /// <summary>Gets or sets a value indicating whether the value of this parameter is a service which should be
-    /// retrieved from the service provider.</summary>
+    /// <summary>
+    /// Gets or sets a value indicating whether the value of this parameter is a service which should be
+    /// retrieved from the service provider.
+    /// </summary>
     public bool IsService { get; set; }
 
     /// <summary>

@@ -942,7 +942,7 @@ public partial struct Color
     }
 
     /// <summary>Indicates whether this instance and a specified object are equal.</summary>
-    /// <returns>true if <paramref name="other" /> and this instance represent the same value; otherwise, false.</returns>
+    /// <returns><see langword="true" /> if <paramref name="other" /> and this instance represent the same value, <see langword="false" /> otherwise.</returns>
     /// <param name="other">Another object to compare to. </param>
     public bool Equals(Color other)
     {
@@ -950,7 +950,7 @@ public partial struct Color
     }
 
     /// <summary>Indicates whether this instance and a specified object are equal.</summary>
-    /// <returns>true if <paramref name="obj" /> and this instance are the same type and represent the same value; otherwise, false.</returns>
+    /// <returns><see langword="true" /> if <paramref name="obj" /> and this instance are the same type and represent the same value, <see langword="false" /> otherwise.</returns>
     /// <param name="obj">Another object to compare to. </param>
     public override bool Equals(object? obj)
     {

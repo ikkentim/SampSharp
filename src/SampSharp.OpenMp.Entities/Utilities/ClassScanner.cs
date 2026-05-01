@@ -82,7 +82,8 @@ public sealed class ClassScanner
     }
 
     /// <summary>
-    /// Includes the specified <paramref name="types" /> in the scan. This can be used to include types from assemblies which are not directly referenced by the loaded assemblies, e.g. plugin assemblies.
+    /// Includes the specified <paramref name="types" /> in the scan. This can be used to include types from assemblies which are not directly referenced by the loaded assemblies, e.g.
+    /// plugin assemblies.
     /// </summary>
     /// <param name="types">The types to include.</param>
     /// <returns>An updated scanner.</returns>
@@ -171,8 +172,10 @@ public sealed class ClassScanner
             .Distinct();
     }
 
-    /// <summary>Runs the scan for methods and provides the attribute <typeparamref name="TAttribute" /> in the
-    /// results.</summary>
+    /// <summary>
+    /// Runs the scan for methods and provides the attribute <typeparamref name="TAttribute" /> in the
+    /// results.
+    /// </summary>
     /// <typeparam name="TAttribute">The type of the attribute.</typeparam>
     /// <returns>The found methods with their attribute of type <typeparamref name="TAttribute" />.</returns>
     public IEnumerable<(Type target, MethodInfo method, TAttribute attribute)> ScanMethods<TAttribute>() where TAttribute : Attribute

@@ -35,7 +35,7 @@ public readonly struct PlayerClass
     public readonly WeaponSlots Weapons;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="PlayerClass"/> struct.
+    /// Initializes a new instance of the <see cref="PlayerClass" /> struct.
     /// </summary>
     /// <param name="team">The team ID.</param>
     /// <param name="skin">The skin model ID.</param>

@@ -11,7 +11,7 @@ public static class StartupContextEcsExtensions
     /// Configures the ECS system for the SampSharp application.
     /// </summary>
     /// <param name="context">The startup context.</param>
-    /// <returns>A <see cref="IEcsHostBuilder"/> instance which can be used to further configure the ECS system.</returns>
+    /// <returns>A <see cref="IEcsHostBuilder" /> instance which can be used to further configure the ECS system.</returns>
     public static IEcsHostBuilder UseEntities(this IStartupContext context)
     {
         var builder = context.Core.TryGetExtension<EcsHostBuilder>();

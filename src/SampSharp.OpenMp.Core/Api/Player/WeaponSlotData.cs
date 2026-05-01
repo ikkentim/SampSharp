@@ -9,7 +9,7 @@ namespace SampSharp.OpenMp.Core.Api;
 public readonly struct WeaponSlotData
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="WeaponSlotData"/> struct.
+    /// Initializes a new instance of the <see cref="WeaponSlotData" /> struct.
     /// </summary>
     /// <param name="id">The ID of the weapon in the slot.</param>
     /// <param name="ammo">The amount of ammunition for the weapon.</param>

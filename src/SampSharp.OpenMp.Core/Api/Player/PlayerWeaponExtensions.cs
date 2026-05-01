@@ -1,7 +1,7 @@
 ﻿namespace SampSharp.OpenMp.Core.Api;
 
 /// <summary>
-/// Provides extension methods for the <see cref="PlayerWeapon"/> enum.
+/// Provides extension methods for the <see cref="PlayerWeapon" /> enum.
 /// </summary>
 public static class PlayerWeaponExtensions
 {
@@ -65,7 +65,7 @@ public static class PlayerWeaponExtensions
     ];
 
     /// <summary>
-    /// Gets the name of the specified <see cref="PlayerWeapon"/>.
+    /// Gets the name of the specified <see cref="PlayerWeapon" />.
     /// </summary>
     /// <param name="weapon">The weapon to get the name for.</param>
     /// <returns>The name of the weapon, or "Invalid" if the weapon is not valid.</returns>
