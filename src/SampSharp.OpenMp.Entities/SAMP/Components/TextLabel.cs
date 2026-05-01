@@ -106,6 +106,75 @@ public class TextLabel : WorldEntity
         _textLabel.AttachToVehicle(vehicle, offset);
     }
 
+    /// <summary>
+    /// Detaches this text label from the player it was attached to and places it at <paramref name="position" />.
+    /// </summary>
+    /// <param name="position">The new world position.</param>
+    public virtual void DetachFromPlayer(Vector3 position)
+    {
+        _textLabel.DetachFromPlayer(position);
+    }
+
+    /// <summary>
+    /// Detaches this text label from the vehicle it was attached to and places it at <paramref name="position" />.
+    /// </summary>
+    /// <param name="position">The new world position.</param>
+    public virtual void DetachFromVehicle(Vector3 position)
+    {
+        _textLabel.DetachFromVehicle(position);
+    }
+
+    /// <summary>
+    /// Updates the colour and text of this text label in a single operation.
+    /// </summary>
+    /// <param name="color">The new colour.</param>
+    /// <param name="text">The new text.</param>
+    public virtual void SetColourAndText(Color color, string text)
+    {
+        ArgumentNullException.ThrowIfNull(text);
+        _textLabel.SetColourAndText(color, text);
+    }
+
+    /// <summary>
+    /// Gets the raw attachment data of this text label.
+    /// </summary>
+    /// <returns>The <see cref="TextLabelAttachmentData" /> describing the current attachment.</returns>
+    public virtual TextLabelAttachmentData GetAttachmentData()
+    {
+        return _textLabel.GetAttachmentData();
+    }
+
+    /// <summary>
+    /// Checks whether this text label is streamed in for the specified <paramref name="player" />.
+    /// </summary>
+    /// <param name="player">The player.</param>
+    /// <returns><see langword="true" /> if streamed in; otherwise <see langword="false" />.</returns>
+    public virtual bool IsStreamedInForPlayer(Player player)
+    {
+        ArgumentNullException.ThrowIfNull(player);
+        return _textLabel.IsStreamedInForPlayer(player);
+    }
+
+    /// <summary>
+    /// Streams this text label in for the specified <paramref name="player" />.
+    /// </summary>
+    /// <param name="player">The player.</param>
+    public virtual void StreamInForPlayer(Player player)
+    {
+        ArgumentNullException.ThrowIfNull(player);
+        _textLabel.StreamInForPlayer(player);
+    }
+
+    /// <summary>
+    /// Streams this text label out for the specified <paramref name="player" />.
+    /// </summary>
+    /// <param name="player">The player.</param>
+    public virtual void StreamOutForPlayer(Player player)
+    {
+        ArgumentNullException.ThrowIfNull(player);
+        _textLabel.StreamOutForPlayer(player);
+    }
+
     /// <inheritdoc />
     protected override void OnDestroyComponent()
     {

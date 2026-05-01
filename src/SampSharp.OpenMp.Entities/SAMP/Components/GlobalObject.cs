@@ -122,6 +122,56 @@ public class GlobalObject : WorldEntity
     }
 
     /// <summary>
+    /// Sets whether this global object collides with players' cameras.
+    /// </summary>
+    /// <param name="enable"><see langword="true" /> to enable camera collision; <see langword="false" /> to disable.</param>
+    public virtual void SetCameraCollision(bool enable)
+    {
+        _object.SetCameraCollision(enable);
+    }
+
+    /// <summary>
+    /// Gets a value indicating whether this global object collides with players' cameras.
+    /// </summary>
+    public virtual bool HasCameraCollision => _object.GetCameraCollision();
+
+    /// <summary>
+    /// Gets the current movement data of this global object.
+    /// </summary>
+    /// <returns>The <see cref="ObjectMoveData" /> describing the current move target.</returns>
+    public virtual ObjectMoveData GetMovingData()
+    {
+        return _object.GetMovingData();
+    }
+
+    /// <summary>
+    /// Gets the attachment data of this global object.
+    /// </summary>
+    /// <returns>The <see cref="ObjectAttachmentData" /> describing the current attachment.</returns>
+    public virtual ObjectAttachmentData GetAttachmentData()
+    {
+        return _object.GetAttachmentData();
+    }
+
+    /// <summary>
+    /// Resets any current attachment of this global object (to a player, vehicle, or another object).
+    /// </summary>
+    public virtual void ResetAttachment()
+    {
+        _object.ResetAttachment();
+    }
+
+    /// <summary>
+    /// Gets the material data for the specified material slot, if any has been set.
+    /// </summary>
+    /// <param name="materialIndex">The material slot index.</param>
+    /// <returns>The material data, or <see langword="null" /> if no material has been set in that slot.</returns>
+    public virtual ObjectMaterialData? GetMaterialData(int materialIndex)
+    {
+        return _object.GetMaterialData((uint)materialIndex, out var data) ? data : null;
+    }
+
+    /// <summary>
     /// Attaches this global object to the specified <paramref name="target" /> <see cref="Player" />.
     /// </summary>
     /// <param name="target">The <see cref="Player" /> to attach this object to.</param>

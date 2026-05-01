@@ -55,7 +55,7 @@ internal class WorldService(SampSharpEnvironment environment, IEntityManager ent
     {
         var native = _gangZones.Create(new GangZonePos(min, max));
         var entityId = EntityId.NewEntityId();
-        var component = entityManager.AddComponent<GangZone>(entityId, parent, _gangZones, native);
+        var component = entityManager.AddComponent<GangZone>(entityId, parent, entityProvider, _gangZones, native);
 
         var extension = new ComponentExtension(component);
         native.AddExtension(extension);
@@ -63,11 +63,49 @@ internal class WorldService(SampSharpEnvironment environment, IEntityManager ent
         return component;
     }
 
+    public PlayerGangZone CreatePlayerGangZone(Player owner, Vector2 min, Vector2 max, EntityId parent = default)
+    {
+        ArgumentNullException.ThrowIfNull(owner);
+
+        var native = _gangZones.Create(new GangZonePos(min, max));
+        native.SetLegacyPlayer(owner);
+
+        var entityId = EntityId.NewEntityId();
+        var component = entityManager.AddComponent<PlayerGangZone>(entityId, parent, entityProvider, _gangZones, native);
+
+        var extension = new ComponentExtension(component);
+        native.AddExtension(extension);
+
+        return component;
+    }
+
+    public void UseGangZoneCheck(GangZone zone, bool enable)
+    {
+        ArgumentNullException.ThrowIfNull(zone);
+        _gangZones.UseGangZoneCheck(zone, enable);
+    }
+
     public Pickup CreatePickup(int model, PickupType type, Vector3 position, int virtualWorld = -1, EntityId parent = default)
     {
         var native = _pickups.Create(model, (byte)type, position, (uint)virtualWorld, false);
         var entityId = EntityId.NewEntityId();
         var component = entityManager.AddComponent<Pickup>(entityId, parent, _pickups, native);
+
+        var extension = new ComponentExtension(component);
+        native.AddExtension(extension);
+
+        return component;
+    }
+
+    public PlayerPickup CreatePlayerPickup(Player owner, int model, PickupType type, Vector3 position, int virtualWorld = -1, EntityId parent = default)
+    {
+        ArgumentNullException.ThrowIfNull(owner);
+
+        var native = _pickups.Create(model, (byte)type, position, (uint)virtualWorld, false);
+        native.SetLegacyPlayer(owner);
+
+        var entityId = EntityId.NewEntityId();
+        var component = entityManager.AddComponent<PlayerPickup>(entityId, parent, _pickups, native);
 
         var extension = new ComponentExtension(component);
         native.AddExtension(extension);
@@ -209,7 +247,7 @@ internal class WorldService(SampSharpEnvironment environment, IEntityManager ent
         var native = _vehicles.Create(isStatic, (int)type, position, rotation, color1, color2, respawnDelaySpan, addSiren);
 
         var entityId = EntityId.NewEntityId();
-        var component = entityManager.AddComponent<Vehicle>(entityId, parent, _vehicles, native);
+        var component = entityManager.AddComponent<Vehicle>(entityId, parent, entityProvider, _vehicles, native);
 
         var extension = new ComponentExtension(component);
         native.AddExtension(extension);

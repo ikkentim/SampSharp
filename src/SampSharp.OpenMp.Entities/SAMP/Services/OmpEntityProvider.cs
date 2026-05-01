@@ -131,7 +131,7 @@ internal class OmpEntityProvider(SampSharpEnvironment environment, IEntityManage
         var ext = gangZone.TryGetExtension<ComponentExtension>();
         if (ext == null)
         {
-            var component = entityManager.AddComponent<GangZone>(EntityId.NewEntityId(), _gangZones, gangZone);
+            var component = entityManager.AddComponent<GangZone>(EntityId.NewEntityId(), this, _gangZones, gangZone);
             ext = new ComponentExtension(component);
             gangZone.AddExtension(ext);
 
@@ -359,7 +359,7 @@ internal class OmpEntityProvider(SampSharpEnvironment environment, IEntityManage
 
         if (ext == null)
         {
-            var component = entityManager.AddComponent<Vehicle>(EntityId.NewEntityId(), _vehicles, vehicle);
+            var component = entityManager.AddComponent<Vehicle>(EntityId.NewEntityId(), this, _vehicles, vehicle);
             ext = new ComponentExtension(component);
             vehicle.AddExtension(ext);
 

@@ -101,6 +101,44 @@ public class PlayerTextLabel : WorldEntity
         _playerTextLabel.AttachToVehicle(vehicle, offset);
     }
 
+    /// <summary>
+    /// Detaches this player text label from the player it was attached to and places it at <paramref name="position" />.
+    /// </summary>
+    /// <param name="position">The new world position.</param>
+    public virtual void DetachFromPlayer(Vector3 position)
+    {
+        _playerTextLabel.DetachFromPlayer(position);
+    }
+
+    /// <summary>
+    /// Detaches this player text label from the vehicle it was attached to and places it at <paramref name="position" />.
+    /// </summary>
+    /// <param name="position">The new world position.</param>
+    public virtual void DetachFromVehicle(Vector3 position)
+    {
+        _playerTextLabel.DetachFromVehicle(position);
+    }
+
+    /// <summary>
+    /// Updates the colour and text of this player text label in a single operation.
+    /// </summary>
+    /// <param name="color">The new colour.</param>
+    /// <param name="text">The new text.</param>
+    public virtual void SetColourAndText(Color color, string text)
+    {
+        ArgumentNullException.ThrowIfNull(text);
+        _playerTextLabel.SetColourAndText(color, text);
+    }
+
+    /// <summary>
+    /// Gets the raw attachment data of this player text label.
+    /// </summary>
+    /// <returns>The <see cref="TextLabelAttachmentData" /> describing the current attachment.</returns>
+    public virtual TextLabelAttachmentData GetAttachmentData()
+    {
+        return _playerTextLabel.GetAttachmentData();
+    }
+
     /// <inheritdoc />
     protected override void OnDestroyComponent()
     {

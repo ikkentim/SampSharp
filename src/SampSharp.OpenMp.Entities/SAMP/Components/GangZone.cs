@@ -8,14 +8,16 @@ namespace SampSharp.Entities.SAMP;
 /// </summary>
 public class GangZone : IdProvider
 {
+    private readonly IOmpEntityProvider _entityProvider;
     private readonly IGangZonesComponent _gangZones;
     private readonly IGangZone _gangZone;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="GangZone" /> class.
     /// </summary>
-    protected GangZone(IGangZonesComponent gangZones, IGangZone gangZone) : base((IIDProvider)gangZone)
+    protected GangZone(IOmpEntityProvider entityProvider, IGangZonesComponent gangZones, IGangZone gangZone) : base((IIDProvider)gangZone)
     {
+        _entityProvider = entityProvider;
         _gangZone = gangZone;
         _gangZones = gangZones;
     }
@@ -150,6 +152,92 @@ public class GangZone : IdProvider
         ArgumentNullException.ThrowIfNull(player);
         
         _gangZone.StopFlashForPlayer(player);
+    }
+
+    /// <summary>
+    /// Checks whether this gang zone is currently shown for the specified <paramref name="player" />.
+    /// </summary>
+    /// <param name="player">The player.</param>
+    /// <returns><see langword="true" /> if shown; otherwise <see langword="false" />.</returns>
+    public virtual bool IsShownForPlayer(Player player)
+    {
+        ArgumentNullException.ThrowIfNull(player);
+        return _gangZone.IsShownForPlayer(player);
+    }
+
+    /// <summary>
+    /// Checks whether this gang zone is currently flashing for the specified <paramref name="player" />.
+    /// </summary>
+    /// <param name="player">The player.</param>
+    /// <returns><see langword="true" /> if flashing; otherwise <see langword="false" />.</returns>
+    public virtual bool IsFlashingForPlayer(Player player)
+    {
+        ArgumentNullException.ThrowIfNull(player);
+        return _gangZone.IsFlashingForPlayer(player);
+    }
+
+    /// <summary>
+    /// Gets the colour with which this gang zone is shown for the specified <paramref name="player" />.
+    /// </summary>
+    /// <param name="player">The player.</param>
+    /// <returns>The per-player gang zone colour.</returns>
+    public virtual Color GetColourForPlayer(Player player)
+    {
+        ArgumentNullException.ThrowIfNull(player);
+        return _gangZone.GetColourForPlayer(player);
+    }
+
+    /// <summary>
+    /// Gets the flashing colour for this gang zone as seen by the specified <paramref name="player" />.
+    /// </summary>
+    /// <param name="player">The player.</param>
+    /// <returns>The per-player flashing colour.</returns>
+    public virtual Color GetFlashingColourForPlayer(Player player)
+    {
+        ArgumentNullException.ThrowIfNull(player);
+        return _gangZone.GetFlashingColourForPlayer(player);
+    }
+
+    /// <summary>
+    /// Enumerates the players for whom this gang zone is currently shown.
+    /// </summary>
+    /// <returns>A lazy sequence of <see cref="Player" /> components.</returns>
+    public virtual IEnumerable<Player> GetShownFor()
+    {
+        foreach (var raw in _gangZone.GetShownFor())
+        {
+            var component = _entityProvider.GetComponent(raw);
+            if (component != null)
+            {
+                yield return component;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Updates the boundary of this gang zone.
+    /// </summary>
+    /// <param name="min">The minimum corner.</param>
+    /// <param name="max">The maximum corner.</param>
+    public virtual void SetPosition(Vector2 min, Vector2 max)
+    {
+        var pos = new GangZonePos(min, max);
+        _gangZone.SetPosition(ref pos);
+    }
+
+    /// <summary>
+    /// Checks whether the specified <paramref name="player" /> is inside this gang zone.
+    /// </summary>
+    /// <remarks>
+    /// Requires that this gang zone has been registered for enter/leave checking via
+    /// <see cref="IWorldService.UseGangZoneCheck" />, otherwise the result is always <see langword="false" />.
+    /// </remarks>
+    /// <param name="player">The player.</param>
+    /// <returns><see langword="true" /> if the player is inside; otherwise <see langword="false" />.</returns>
+    public virtual bool IsPlayerInside(Player player)
+    {
+        ArgumentNullException.ThrowIfNull(player);
+        return _gangZone.IsPlayerInside(player);
     }
 
     /// <inheritdoc />

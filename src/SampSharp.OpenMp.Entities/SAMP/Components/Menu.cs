@@ -136,6 +136,42 @@ public class Menu : IdProvider
         _menu.DisableRow((byte)row);
     }
 
+    /// <summary>
+    /// Checks whether the specified menu row is selectable.
+    /// </summary>
+    /// <param name="row">The row index.</param>
+    /// <returns><see langword="true" /> if enabled; otherwise <see langword="false" />.</returns>
+    public virtual bool IsRowEnabled(int row)
+    {
+        return _menu.IsRowEnabled((byte)row);
+    }
+
+    /// <summary>
+    /// Gets a value indicating whether this menu accepts input.
+    /// </summary>
+    public virtual bool IsEnabled => _menu.IsEnabled();
+
+    /// <summary>
+    /// Gets the text of a specific menu cell.
+    /// </summary>
+    /// <param name="row">The row index.</param>
+    /// <param name="column">The column index.</param>
+    /// <returns>The cell text, or <see langword="null" /> if no cell exists at the given coordinates.</returns>
+    public virtual string? GetCell(int row, int column)
+    {
+        return _menu.GetCell((byte)column, (byte)row);
+    }
+
+    /// <summary>
+    /// Gets the number of rows in the specified column.
+    /// </summary>
+    /// <param name="column">The column index.</param>
+    /// <returns>The number of rows.</returns>
+    public virtual int GetRowCount(int column)
+    {
+        return _menu.GetRowCount((byte)column);
+    }
+
     /// <inheritdoc />
     protected override void OnDestroyComponent()
     {

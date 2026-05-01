@@ -161,6 +161,36 @@ public class TextDraw : IdProvider
     public virtual Vector2 Position => _textDraw.GetPosition();
 
     /// <summary>
+    /// Gets the preview model rotation of this text draw.
+    /// </summary>
+    public virtual Vector3 PreviewRotation => _textDraw.GetPreviewRotation();
+
+    /// <summary>
+    /// Gets the preview model zoom of this text draw.
+    /// </summary>
+    public virtual float PreviewZoom => _textDraw.GetPreviewZoom();
+
+    /// <summary>
+    /// Forces this text draw to be re-sent to all players who currently have it visible.
+    /// </summary>
+    public virtual void Restream()
+    {
+        _textDraw.Restream();
+    }
+
+    /// <summary>
+    /// Updates the displayed text of this text draw for a single <paramref name="player" /> without hiding/showing it.
+    /// </summary>
+    /// <param name="player">The player.</param>
+    /// <param name="text">The new text.</param>
+    public virtual void SetTextForPlayer(Player player, string text)
+    {
+        ArgumentNullException.ThrowIfNull(player);
+        ArgumentNullException.ThrowIfNull(text);
+        _textDraw.SetTextForPlayer(player, string.IsNullOrEmpty(text) ? "_" : text);
+    }
+
+    /// <summary>
     /// Sets the preview model rotation and zoom of this text draw.
     /// </summary>
     /// <param name="rotation">The rotation of the preview model as a <see cref="Vector3" />.</param>

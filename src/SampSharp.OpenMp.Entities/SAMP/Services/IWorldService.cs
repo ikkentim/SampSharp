@@ -83,6 +83,27 @@ public interface IWorldService
     GangZone CreateGangZone(Vector2 min, Vector2 max, EntityId parent = default);
 
     /// <summary>
+    /// Creates a gang zone logically scoped to a single player. The gang zone is created in the global pool and
+    /// bound to the specified <paramref name="owner" /> via <c>SetLegacyPlayer</c>. Use
+    /// <see cref="GangZone.Show(Player)" /> / <see cref="GangZone.Hide(Player)" /> to control per-player visibility.
+    /// </summary>
+    /// <param name="owner">The player that owns this gang zone.</param>
+    /// <param name="min">The minimum position.</param>
+    /// <param name="max">The maximum position.</param>
+    /// <param name="parent">The parent of the entity to be created.</param>
+    /// <returns>The created player gang zone.</returns>
+    PlayerGangZone CreatePlayerGangZone(Player owner, Vector2 min, Vector2 max, EntityId parent = default);
+
+    /// <summary>
+    /// Enables or disables enter/leave checking for the specified <paramref name="zone" />. When enabled,
+    /// <see cref="GangZone.IsPlayerInside(Player)" /> returns the live containment state and the gang-zone
+    /// enter/leave events fire.
+    /// </summary>
+    /// <param name="zone">The gang zone to configure.</param>
+    /// <param name="enable"><see langword="true" /> to enable checking; <see langword="false" /> to disable.</param>
+    void UseGangZoneCheck(GangZone zone, bool enable);
+
+    /// <summary>
     /// Creates a pickup in the world.
     /// </summary>
     /// <param name="model">The model of the pickup.</param>
@@ -92,6 +113,20 @@ public interface IWorldService
     /// <param name="parent">The parent of the entity to be created.</param>
     /// <returns>The created pickup.</returns>
     Pickup CreatePickup(int model, PickupType type, Vector3 position, int virtualWorld = -1, EntityId parent = default);
+
+    /// <summary>
+    /// Creates a pickup logically scoped to a single player. The pickup is created in the global pool and bound
+    /// to the specified <paramref name="owner" /> via <c>SetLegacyPlayer</c>. Per-player visibility (hiding from
+    /// other players) is the caller's responsibility through <see cref="Pickup.SetHiddenForPlayer" />.
+    /// </summary>
+    /// <param name="owner">The player that owns this pickup.</param>
+    /// <param name="model">The model of the pickup.</param>
+    /// <param name="type">The pickup spawn type.</param>
+    /// <param name="position">The position where the pickup should be spawned.</param>
+    /// <param name="virtualWorld">The virtual world ID of the pickup. Use -1 for all worlds.</param>
+    /// <param name="parent">The parent of the entity to be created.</param>
+    /// <returns>The created player pickup.</returns>
+    PlayerPickup CreatePlayerPickup(Player owner, int model, PickupType type, Vector3 position, int virtualWorld = -1, EntityId parent = default);
 
     /// <summary>
     /// Adds a 'static' pickup to the world. These pickups support weapons, health, armor etc., with the ability to
