@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using SampSharp.OpenMp.Core.Std;
 
 namespace SampSharp.OpenMp.Core.Api;
@@ -146,7 +147,40 @@ public readonly partial struct IConfig
         return (pair.First, pair.Second);
     }
 
-    // TODO: public partial void enumOptions(OptionEnumeratorCallback& callback); // enumerator callback not available
+    /// <summary>
+    /// Enumerates all config options.
+    /// </summary>
+    /// <param name="callback">
+    /// The callback to invoke for each option. Return <see langword="true" /> to continue enumeration;
+    /// <see langword="false" /> to stop.
+    /// </param>
+    public unsafe void EnumOptions(Func<string?, ConfigOptionType, bool> callback)
+    {
+        // enumOptions invokes the callback synchronously before returning, so pinning the GCHandle for the
+        // duration of the call is sufficient.
+        var gcHandle = GCHandle.Alloc(callback);
+        try
+        {
+            delegate* unmanaged[Cdecl]<nint, StringView, ConfigOptionType, BlittableBoolean> fnPtr = &OptionEnumeratorCallbackProxy;
+            __PInvoke(_handle, (nint)fnPtr, GCHandle.ToIntPtr(gcHandle));
+        }
+        finally
+        {
+            gcHandle.Free();
+        }
+
+        // Local P/Invoke
+        [DllImport("SampSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "IConfig_enumOptions", ExactSpelling = true)]
+        static extern void __PInvoke(nint handle_, nint callback, nint userData);
+    }
+
+    [UnmanagedCallersOnly(CallConvs = [typeof(CallConvCdecl)])]
+    private static BlittableBoolean OptionEnumeratorCallbackProxy(nint userData, StringView name, ConfigOptionType type)
+    {
+        var callback = GCHandle.FromIntPtr(userData).Target as Func<string?, ConfigOptionType, bool>
+            ?? throw new InvalidOperationException("Enumeration callback GCHandle target is null or invalid.");
+        return callback(name, type);
+    }
 
     /// <summary>
     /// Get a variable as a boolean.

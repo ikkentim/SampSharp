@@ -639,7 +639,30 @@ PROXY(IConfig, void, reloadBans);
 PROXY(IConfig, void, clearBans);
 PROXY(IConfig, bool, isBanned, BanEntry&);
 PROXY_PTR(IConfig, BoolStringPair, getNameFromAlias, StringView);
-PROXY(IConfig, void, enumOptions, OptionEnumeratorCallback&);
+
+// Custom proxy for enumOptions: accepts a function pointer with user data instead of OptionEnumeratorCallback&,
+// because C# cannot implement C++ virtual classes directly.
+typedef bool (API_CALLTYPE * OptionEnumeratorCallbackFn)(void* userData, StringView name, ConfigOptionType type);
+
+class OptionEnumeratorCallbackImpl final : public OptionEnumeratorCallback
+{
+    OptionEnumeratorCallbackFn _fn;
+    void* _userData;
+public:
+    OptionEnumeratorCallbackImpl(OptionEnumeratorCallbackFn fn, void* userData) : _fn(fn), _userData(userData) {}
+    bool proc(StringView name, ConfigOptionType type) override
+    {
+        return _fn(_userData, name, type);
+    }
+};
+
+extern "C" SDK_EXPORT void __CDECL IConfig_enumOptions(IConfig* subject, OptionEnumeratorCallbackFn callback, void* userData)
+{
+    if (!subject) { return; }
+    OptionEnumeratorCallbackImpl impl(callback, userData);
+    subject->enumOptions(impl);
+}
+
 PROXY(IConfig, bool *, getBool, StringView);
 
 PROXY(ICore, SemanticVersion, getVersion);
