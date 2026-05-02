@@ -1,7 +1,7 @@
 ﻿namespace SampSharp.OpenMp.Core.Api;
 
 /// <summary>
-/// Bitfield flags for NPC AimAt / Shoot 'in-between' entity checks.
+/// Flags for NPC AimAt / Shoot 'in-between' entity checks.
 /// </summary>
 [Flags]
 public enum EntityCheckType : byte

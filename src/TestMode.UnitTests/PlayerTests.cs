@@ -663,7 +663,7 @@ public class PlayerTests : TestBase
     [Fact]
     public void GameText_should_succeed()
     {
-        Player.GameText("Test text", TimeSpan.FromSeconds(5), 1);
+        Player.GameText("Test text", TimeSpan.FromSeconds(5), GameTextStyle.Style1);
     }
 
     [Fact]

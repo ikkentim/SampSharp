@@ -1,5 +1,6 @@
 ﻿using System.Numerics;
 using JetBrains.Annotations;
+using SampSharp.Entities.SAMP.Definitions;
 
 namespace SampSharp.Entities.SAMP;
 
@@ -282,7 +283,7 @@ public interface IWorldService
     /// <param name="text">The text to be displayed.</param>
     /// <param name="time">The duration of the text being shown in milliseconds.</param>
     /// <param name="style">The style of text to be displayed.</param>
-    [Obsolete("Use GameText(string, TimeSpan, int) instead.")]
+    [Obsolete("Use GameText(string, TimeSpan, GameTextStyle) instead.")]
     void GameText(string text, int time, int style);
 
     /// <summary>
@@ -291,7 +292,13 @@ public interface IWorldService
     /// <param name="text">The text to be displayed.</param>
     /// <param name="time">The duration of the text being shown.</param>
     /// <param name="style">The style of text to be displayed.</param>
-    void GameText(string text, TimeSpan time, int style);
+    void GameText(string text, TimeSpan time, GameTextStyle style);
+
+    /// <summary>
+    /// Hides the game text in the specified style/slot for all players.
+    /// </summary>
+    /// <param name="style">The style/slot of the game text to hide.</param>
+    void HideGameText(GameTextStyle style);
 
     /// <summary>
     /// Creates an explosion for all players.

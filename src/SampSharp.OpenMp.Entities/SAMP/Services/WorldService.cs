@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using SampSharp.Entities.SAMP.Definitions;
 using SampSharp.OpenMp.Core.Api;
 
 namespace SampSharp.Entities.SAMP;
@@ -284,13 +285,17 @@ internal class WorldService(SampSharpEnvironment environment, IEntityManager ent
 
     public void GameText(string text, int time, int style)
     {
-        GameText(text, TimeSpan.FromMilliseconds(time), style);
+        GameText(text, TimeSpan.FromMilliseconds(time), (GameTextStyle)style);
     }
 
-    public void GameText(string text, TimeSpan time, int style)
+    public void GameText(string text, TimeSpan time, GameTextStyle style)
     {
-        // TODO: style enum?
-        _players.SendGameTextToAll(text, time, style);
+        _players.SendGameTextToAll(text, time, (int)style);
+    }
+
+    public void HideGameText(GameTextStyle style)
+    {
+        _players.HideGameTextForAll((int)style);
     }
 
     public void CreateExplosion(Vector3 position, ExplosionType type, float radius)

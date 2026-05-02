@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Numerics;
 using JetBrains.Annotations;
+using SampSharp.Entities.SAMP.Definitions;
 using SampSharp.OpenMp.Core.Api;
 
 namespace SampSharp.Entities.SAMP;
@@ -1353,7 +1354,7 @@ public class Player : WorldEntity
     {
         var anim = _player.GetAnimationData();
         var id = anim.ID;
-        (animationLibrary, animationName) = Animation.GetAnmiation(id);
+        (animationLibrary, animationName) = Animation.GetAnimation(id);
         return true;
     }
 
@@ -1721,10 +1722,10 @@ public class Player : WorldEntity
     /// <param name="text">The text to be displayed.</param>
     /// <param name="time">The duration of the text being shown in milliseconds.</param>
     /// <param name="style">The style of text to be displayed.</param>
-    [Obsolete("Obsolete. Use GameText(string,TimeSpan,int) instead.")]
+    [Obsolete("Obsolete. Use GameText(string,TimeSpan,GameTextStyle) instead.")]
     public virtual void GameText(string text, int time, int style)
     {
-        GameText(text, TimeSpan.FromMilliseconds(time), style);
+        GameText(text, TimeSpan.FromMilliseconds(time), (GameTextStyle)style);
     }
 
     /// <summary>
@@ -1733,10 +1734,10 @@ public class Player : WorldEntity
     /// <param name="text">The text to display.</param>
     /// <param name="time">The display duration as a <see cref="TimeSpan" />.</param>
     /// <param name="style">The text style.</param>
-    public virtual void GameText(string text, TimeSpan time, int style)
+    public virtual void GameText(string text, TimeSpan time, GameTextStyle style)
     {
         ArgumentNullException.ThrowIfNull(text);
-        _player.SendGameText(text, time, style);
+        _player.SendGameText(text, time, (int)style);
     }
 
     /// <summary>

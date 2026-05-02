@@ -289,9 +289,9 @@ public class VehicleTests : TestBase
     [Fact]
     public void LinkToInterior_should_succeed()
     {
-        _vehicle.LinkToInterior(4);
-        ((IVehicle)_vehicle).GetInterior().ShouldBe(4);// TODO add to api
-        _vehicle.LinkToInterior(0);
+        _vehicle.Interior = 4;
+        _vehicle.Interior.ShouldBe(4);
+        _vehicle.Interior = 0;
     }
 
     [Fact]

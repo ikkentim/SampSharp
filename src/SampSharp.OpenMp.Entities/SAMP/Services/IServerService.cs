@@ -248,12 +248,6 @@ public interface IServerService
     void UsePlayerPedAnims();
 
     /// <summary>
-    /// Hides the game text in the specified style/slot for all players.
-    /// </summary>
-    /// <param name="style">The style/slot of the game text to hide.</param>
-    void HideGameText(int style);
-
-    /// <summary>
     /// Sends an empty death-feed message to every player. Useful for clearing the kill feed.
     /// </summary>
     void SendEmptyDeathMessage();
