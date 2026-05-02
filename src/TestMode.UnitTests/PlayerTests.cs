@@ -405,7 +405,7 @@ public class PlayerTests : TestBase
     [Fact]
     public void SetWeather_should_succeed()
     {
-        Player.SetWeather(1);
+        Player.Weather = 1;
     }
 
     [Fact]

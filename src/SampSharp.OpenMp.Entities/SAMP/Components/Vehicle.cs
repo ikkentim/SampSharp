@@ -371,26 +371,12 @@ public class Vehicle : WorldEntity
     /// <summary>
     /// Gets the primary color of this vehicle.
     /// </summary>
-    public virtual int Color1
-    {
-        get
-        {
-            _vehicle.GetColour(out var pair);
-            return pair.First;
-        }
-    }
+    public virtual int Color1 => Colors.Primary;
 
     /// <summary>
     /// Gets the secondary color of this vehicle.
     /// </summary>
-    public virtual int Color2
-    {
-        get
-        {
-            _vehicle.GetColour(out var pair);
-            return pair.Second;
-        }
-    }
+    public virtual int Color2 => Colors.Secondary;
 
     /// <summary>
     /// Calculates the distance between this vehicle and the specified <paramref name="point" />.

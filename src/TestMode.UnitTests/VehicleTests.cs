@@ -224,7 +224,7 @@ public class VehicleTests : TestBase
     [Fact]
     public void ChangeColor_should_succeed()
     {
-        _vehicle.ChangeColor(5, 12);
+        _vehicle.Colors = (5, 12);
     }
 
     [Fact]
@@ -242,7 +242,7 @@ public class VehicleTests : TestBase
     [Fact]
     public void ChangePaintjob_should_succeed()
     {
-        _vehicle.ChangePaintjob(54);
+        _vehicle.Paintjob = 54;
     }
 
     [Fact]
