@@ -8,14 +8,16 @@ namespace SampSharp.Entities.SAMP;
 /// </summary>
 public class PlayerObject : WorldEntity
 {
+    private readonly IOmpEntityProvider _entityProvider;
     private readonly IPlayerObjectData _playerObjects;
     private readonly IPlayerObject _playerObject;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="PlayerObject" /> class.
     /// </summary>
-    protected PlayerObject(IPlayerObjectData playerObjects, IPlayerObject playerObject) : base((IEntity)playerObject)
+    protected PlayerObject(IOmpEntityProvider entityProvider, IPlayerObjectData playerObjects, IPlayerObject playerObject) : base((IEntity)playerObject)
     {
+        _entityProvider = entityProvider;
         _playerObjects = playerObjects;
         _playerObject = playerObject;
     }
@@ -120,6 +122,66 @@ public class PlayerObject : WorldEntity
     public virtual void DisableCameraCollisions()
     {
         _playerObject.SetCameraCollision(false);
+    }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether this player object collides with the player's camera.
+    /// </summary>
+    public virtual bool HasCameraCollision
+    {
+        get => _playerObject.GetCameraCollision();
+        set => _playerObject.SetCameraCollision(value);
+    }
+
+    /// <summary>
+    /// Gets the current movement data of this player object.
+    /// </summary>
+    /// <returns>The <see cref="ObjectMoveData" /> describing the current move target.</returns>
+    public virtual ObjectMoveData GetMovingData()
+    {
+        return _playerObject.GetMovingData();
+    }
+
+    /// <summary>
+    /// Gets the <see cref="Player" /> this player object is attached to, or <see langword="null" /> if it is not attached to a player.
+    /// </summary>
+    public virtual Player? AttachedPlayer
+    {
+        get
+        {
+            var data = _playerObject.GetAttachmentData();
+            return data.Type == AttachmentType.Player ? _entityProvider.GetPlayer(data.Id) : null;
+        }
+    }
+
+    /// <summary>
+    /// Gets the <see cref="Vehicle" /> this player object is attached to, or <see langword="null" /> if it is not attached to a vehicle.
+    /// </summary>
+    public virtual Vehicle? AttachedVehicle
+    {
+        get
+        {
+            var data = _playerObject.GetAttachmentData();
+            return data.Type == AttachmentType.Vehicle ? _entityProvider.GetVehicle(data.Id) : null;
+        }
+    }
+
+    /// <summary>
+    /// Resets any current attachment of this player object (to a player, vehicle, or another object).
+    /// </summary>
+    public virtual void ResetAttachment()
+    {
+        _playerObject.ResetAttachment();
+    }
+
+    /// <summary>
+    /// Gets the material data for the specified material slot, if any has been set.
+    /// </summary>
+    /// <param name="materialIndex">The material slot index.</param>
+    /// <returns>The material data, or <see langword="null" /> if no material has been set in that slot.</returns>
+    public virtual ObjectMaterialData? GetMaterialData(int materialIndex)
+    {
+        return _playerObject.GetMaterialData((uint)materialIndex, out var data) ? data : null;
     }
 
     /// <summary>

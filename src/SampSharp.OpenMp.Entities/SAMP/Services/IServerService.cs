@@ -246,4 +246,51 @@ public interface IServerService
     /// </summary>
     /// <remarks>Only works when placed under OnGameModeInit.</remarks>
     void UsePlayerPedAnims();
+
+    /// <summary>
+    /// Hides the game text in the specified style/slot for all players.
+    /// </summary>
+    /// <param name="style">The style/slot of the game text to hide.</param>
+    void HideGameText(int style);
+
+    /// <summary>
+    /// Sends an empty death-feed message to every player. Useful for clearing the kill feed.
+    /// </summary>
+    void SendEmptyDeathMessage();
+
+    /// <summary>
+    /// Checks whether the specified player name is already taken on the server.
+    /// </summary>
+    /// <param name="name">The name to test.</param>
+    /// <param name="skip">An optional player to exclude from the check (typically <c>self</c> on rename).</param>
+    /// <returns><see langword="true" /> if the name is taken; otherwise <see langword="false" />.</returns>
+    bool IsNameTaken(string name, Player? skip = null);
+
+    /// <summary>
+    /// Checks whether the specified player name passes server-side validation rules (length, characters).
+    /// </summary>
+    /// <param name="name">The name to validate.</param>
+    /// <returns><see langword="true" /> if valid; otherwise <see langword="false" />.</returns>
+    bool IsNameValid(string name);
+
+    /// <summary>
+    /// Adds or removes the given character from the global allowlist of nickname characters.
+    /// </summary>
+    /// <param name="character">The character.</param>
+    /// <param name="allow"><see langword="true" /> to allow; <see langword="false" /> to disallow.</param>
+    void AllowNickNameCharacter(char character, bool allow);
+
+    /// <summary>
+    /// Checks whether the given character is allowed in nicknames.
+    /// </summary>
+    /// <param name="character">The character.</param>
+    /// <returns><see langword="true" /> if allowed; otherwise <see langword="false" />.</returns>
+    bool IsNickNameCharacterAllowed(char character);
+
+    /// <summary>
+    /// Gets the default name-tag/blip color assigned by the server to a given player ID.
+    /// </summary>
+    /// <param name="playerId">The player pool ID.</param>
+    /// <returns>The default color.</returns>
+    Color GetDefaultColour(int playerId);
 }

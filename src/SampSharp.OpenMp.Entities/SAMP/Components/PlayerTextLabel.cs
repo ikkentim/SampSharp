@@ -101,6 +101,45 @@ public class PlayerTextLabel : WorldEntity
         _playerTextLabel.AttachToVehicle(vehicle, offset);
     }
 
+    /// <summary>
+    /// Detaches this player text label from the player it was attached to and places it at <paramref name="position" />.
+    /// </summary>
+    /// <param name="position">The new world position.</param>
+    public virtual void DetachFromPlayer(Vector3 position)
+    {
+        _playerTextLabel.DetachFromPlayer(position);
+    }
+
+    /// <summary>
+    /// Detaches this player text label from the vehicle it was attached to and places it at <paramref name="position" />.
+    /// </summary>
+    /// <param name="position">The new world position.</param>
+    public virtual void DetachFromVehicle(Vector3 position)
+    {
+        _playerTextLabel.DetachFromVehicle(position);
+    }
+
+    /// <summary>
+    /// Updates the color and text of this player text label in a single operation.
+    /// </summary>
+    /// <param name="color">The new color.</param>
+    /// <param name="text">The new text.</param>
+    public virtual void SetColorAndText(Color color, string text)
+    {
+        ArgumentNullException.ThrowIfNull(text);
+        _playerTextLabel.SetColourAndText(color, text);
+    }
+
+    /// <summary>
+    /// Gets the <see cref="Player" /> this text label is attached to, or <see langword="null" /> if it is not attached to a player.
+    /// </summary>
+    public virtual Player? AttachedPlayer => _entityProvider.GetPlayer(_playerTextLabel.GetAttachmentData().PlayerId);
+
+    /// <summary>
+    /// Gets the <see cref="Vehicle" /> this text label is attached to, or <see langword="null" /> if it is not attached to a vehicle.
+    /// </summary>
+    public virtual Vehicle? AttachedVehicle => _entityProvider.GetVehicle(_playerTextLabel.GetAttachmentData().VehicleId);
+
     /// <inheritdoc />
     protected override void OnDestroyComponent()
     {

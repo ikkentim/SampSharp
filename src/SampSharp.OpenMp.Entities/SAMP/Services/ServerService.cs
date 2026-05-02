@@ -389,4 +389,41 @@ internal class ServerService : IServerService
         ref var fld = ref _config.GetBool("game.use_player_ped_anims").Value;
         fld = true;
     }
+
+    public void HideGameText(int style)
+    {
+        _players.HideGameTextForAll(style);
+    }
+
+    public void SendEmptyDeathMessage()
+    {
+        _players.SendEmptyDeathMessageToAll();
+    }
+
+    public bool IsNameTaken(string name, Player? skip = null)
+    {
+        ArgumentNullException.ThrowIfNull(name);
+        return _players.IsNameTaken(name, skip ?? default(IPlayer));
+    }
+
+    public bool IsNameValid(string name)
+    {
+        ArgumentNullException.ThrowIfNull(name);
+        return _players.IsNameValid(name);
+    }
+
+    public void AllowNickNameCharacter(char character, bool allow)
+    {
+        _players.AllowNickNameCharacter(character, allow);
+    }
+
+    public bool IsNickNameCharacterAllowed(char character)
+    {
+        return _players.IsNickNameCharacterAllowed(character);
+    }
+
+    public Color GetDefaultColour(int playerId)
+    {
+        return _players.GetDefaultColour(playerId);
+    }
 }

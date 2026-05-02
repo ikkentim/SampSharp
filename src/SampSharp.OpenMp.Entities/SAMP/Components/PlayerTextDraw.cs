@@ -156,9 +156,35 @@ public class PlayerTextDraw : IdProvider
     }
 
     /// <summary>
-    /// Gets the position of this text draw.
+    /// Gets or sets the position of this text draw.
     /// </summary>
-    public virtual Vector2 Position => _playerTextDraw.GetPosition();
+    public virtual Vector2 Position
+    {
+        get => _playerTextDraw.GetPosition();
+        set => _playerTextDraw.SetPosition(value);
+    }
+
+    /// <summary>
+    /// Gets or sets the preview model rotation of this text draw.
+    /// </summary>
+    public virtual Vector3 PreviewRotation
+    {
+        get => _playerTextDraw.GetPreviewRotation();
+        set => _playerTextDraw.SetPreviewRotation(value);
+    }
+
+    /// <summary>
+    /// Gets the preview model zoom of this text draw.
+    /// </summary>
+    public virtual float PreviewZoom => _playerTextDraw.GetPreviewZoom();
+
+    /// <summary>
+    /// Forces this text draw to be re-sent to the player.
+    /// </summary>
+    public virtual void Restream()
+    {
+        _playerTextDraw.Restream();
+    }
 
     /// <summary>
     /// Sets the preview model rotation and zoom of this text draw.

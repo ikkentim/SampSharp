@@ -1,5 +1,6 @@
 ﻿using System.Numerics;
 using SampSharp.OpenMp.Core.Api;
+using SampSharp.OpenMp.Core.Std.Chrono;
 
 namespace SampSharp.Entities.SAMP;
 
@@ -8,14 +9,16 @@ namespace SampSharp.Entities.SAMP;
 /// </summary>
 public class Vehicle : WorldEntity
 {
+    private readonly IOmpEntityProvider _entityProvider;
     private readonly IVehiclesComponent _vehicles;
     private readonly IVehicle _vehicle;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Vehicle" /> class.
     /// </summary>
-    protected Vehicle(IVehiclesComponent vehicles, IVehicle vehicle) : base((IEntity)vehicle)
+    protected Vehicle(IOmpEntityProvider entityProvider, IVehiclesComponent vehicles, IVehicle vehicle) : base((IEntity)vehicle)
     {
+        _entityProvider = entityProvider;
         _vehicles = vehicles;
         _vehicle = vehicle;
     }
@@ -536,6 +539,209 @@ public class Vehicle : WorldEntity
     public virtual void UpdateDamageStatus(int panels, int doors, int lights, int tires, Player? updater = null)
     {
         _vehicle.SetDamageStatus(panels, doors, (byte)lights, (byte)tires, updater ?? default(IPlayer));
+    }
+
+    /// <summary>
+    /// Replaces the spawn data of this vehicle (model, position, rotation, colors, siren, interior, respawn delay).
+    /// </summary>
+    /// <param name="data">The new spawn data.</param>
+    public virtual void SetSpawnData(VehicleSpawnInfo data)
+    {
+        var raw = new VehicleSpawnData(
+            respawnDelay: data.RespawnDelay,
+            modelID: data.ModelId,
+            position: data.Position,
+            zRotation: data.ZRotation,
+            colour1: data.PrimaryColor,
+            colour2: data.SecondaryColor,
+            siren: data.HasSiren,
+            interior: data.Interior);
+        _vehicle.SetSpawnData(ref raw);
+    }
+
+    /// <summary>
+    /// Gets the current spawn data of this vehicle.
+    /// </summary>
+    /// <returns>The spawn data.</returns>
+    public virtual VehicleSpawnInfo GetSpawnData()
+    {
+        var raw = _vehicle.GetSpawnData();
+        return new VehicleSpawnInfo(
+            ModelId: raw.modelID,
+            Position: raw.position,
+            ZRotation: raw.zRotation,
+            PrimaryColor: raw.colour1,
+            SecondaryColor: raw.colour2,
+            HasSiren: raw.siren,
+            Interior: raw.interior,
+            RespawnDelay: raw.respawnDelay);
+    }
+
+    /// <summary>
+    /// Gets the colours of this vehicle as a tuple of <c>(primary, secondary)</c> colour IDs.
+    /// </summary>
+    /// <returns>A tuple containing the primary and secondary colour IDs.</returns>
+    public virtual (int Primary, int Secondary) GetColours()
+    {
+        return _vehicle.GetColour();
+    }
+
+    /// <summary>
+    /// Gets the current numberplate text of this vehicle.
+    /// </summary>
+    public virtual string NumberPlate => _vehicle.GetPlate();
+
+    /// <summary>
+    /// Gets a value indicating whether this vehicle is dead (destroyed).
+    /// </summary>
+    public virtual bool IsDead => _vehicle.IsDead();
+
+    /// <summary>
+    /// Gets a value indicating whether this vehicle is currently in the process of respawning.
+    /// </summary>
+    public virtual bool IsRespawning => _vehicle.IsRespawning();
+
+    /// <summary>
+    /// Gets or sets the respawn delay for this vehicle.
+    /// </summary>
+    public virtual TimeSpan RespawnDelay
+    {
+        get => _vehicle.GetRespawnDelay();
+        set => _vehicle.SetRespawnDelay(value);
+    }
+
+    /// <summary>
+    /// Gets a value indicating whether this vehicle has ever been occupied.
+    /// </summary>
+    public virtual bool HasBeenOccupied => _vehicle.HasBeenOccupied();
+
+    /// <summary>
+    /// Gets a value indicating whether this vehicle is currently occupied.
+    /// </summary>
+    public virtual bool IsOccupied => _vehicle.IsOccupied();
+
+    /// <summary>
+    /// Gets the timestamp at which this vehicle was last occupied.
+    /// </summary>
+    public virtual DateTimeOffset LastOccupiedTime => _vehicle.GetLastOccupiedTime();
+
+    /// <summary>
+    /// Gets the timestamp at which this vehicle was last spawned.
+    /// </summary>
+    public virtual DateTimeOffset LastSpawnTime => _vehicle.GetLastSpawnTime();
+
+    /// <summary>
+    /// Gets the player pool ID of the last driver of this vehicle.
+    /// </summary>
+    public virtual int LastDriverPoolID => _vehicle.GetLastDriverPoolID();
+
+    /// <summary>
+    /// Gets a value indicating whether this vehicle is a trailer (i.e. is being towed by another vehicle).
+    /// </summary>
+    public virtual bool IsTrailer => _vehicle.IsTrailer();
+
+    /// <summary>
+    /// Gets the cab (towing vehicle) currently towing this vehicle, or <see langword="null" /> if there is none.
+    /// </summary>
+    public virtual Vehicle? Cab => _entityProvider.GetComponent(_vehicle.GetCab());
+
+    /// <summary>
+    /// Gets the current driver of this vehicle, or <see langword="null" /> if there is none.
+    /// </summary>
+    public virtual Player? Driver => _entityProvider.GetComponent(_vehicle.GetDriver());
+
+    /// <summary>
+    /// Enumerates the current passengers of this vehicle.
+    /// </summary>
+    /// <returns>A lazy sequence of <see cref="Player" /> components.</returns>
+    public virtual IEnumerable<Player> GetPassengers()
+    {
+        foreach (var raw in _vehicle.GetPassengers())
+        {
+            var component = _entityProvider.GetComponent(raw);
+            if (component != null)
+            {
+                yield return component;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Enumerates the players for whom this vehicle is currently streamed in.
+    /// </summary>
+    /// <returns>A lazy sequence of <see cref="Player" /> components.</returns>
+    public virtual IEnumerable<Player> StreamedForPlayers()
+    {
+        foreach (var raw in _vehicle.StreamedForPlayers())
+        {
+            var component = _entityProvider.GetComponent(raw);
+            if (component != null)
+            {
+                yield return component;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Sets the siren state of this vehicle.
+    /// </summary>
+    /// <param name="enable"><see langword="true" /> to turn the siren on; <see langword="false" /> to turn it off.</param>
+    public virtual void SetSiren(bool enable)
+    {
+        _vehicle.SetSiren(enable);
+    }
+
+    /// <summary>
+    /// Gets the current Hydra (jet) thrust angle of this vehicle.
+    /// </summary>
+    public virtual uint HydraThrustAngle => _vehicle.GetHydraThrustAngle();
+
+    /// <summary>
+    /// Gets the current train speed of this vehicle.
+    /// </summary>
+    public virtual float TrainSpeed => _vehicle.GetTrainSpeed();
+
+    /// <summary>
+    /// Gets the current state of this vehicle's landing gear.
+    /// </summary>
+    public virtual byte LandingGearState => _vehicle.GetLandingGearState();
+
+    /// <summary>
+    /// Adds a carriage to this train at the specified position in the carriage chain.
+    /// </summary>
+    /// <param name="carriage">The vehicle to add as a carriage.</param>
+    /// <param name="pos">The position of the carriage in the chain.</param>
+    public virtual void AddCarriage(Vehicle carriage, int pos)
+    {
+        ArgumentNullException.ThrowIfNull(carriage);
+        _vehicle.AddCarriage(carriage, pos);
+    }
+
+    /// <summary>
+    /// Updates the position and velocity of a carriage attached to this train.
+    /// </summary>
+    /// <param name="position">The new carriage position.</param>
+    /// <param name="velocity">The new carriage velocity.</param>
+    public virtual void UpdateCarriage(Vector3 position, Vector3 velocity)
+    {
+        _vehicle.UpdateCarriage(position, velocity);
+    }
+
+    /// <summary>
+    /// Enumerates the carriages currently linked to this train, in order.
+    /// </summary>
+    /// <returns>A sequence of <see cref="Vehicle" /> components representing the carriages.</returns>
+    public virtual IEnumerable<Vehicle> GetCarriages()
+    {
+        var array = _vehicle.GetCarriages();
+        foreach (var raw in array.Values)
+        {
+            var component = _entityProvider.GetComponent(raw);
+            if (component != null)
+            {
+                yield return component;
+            }
+        }
     }
 
     /// <inheritdoc />

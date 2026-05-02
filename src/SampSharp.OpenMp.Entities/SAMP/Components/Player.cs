@@ -1760,6 +1760,226 @@ public class Player : WorldEntity
         _player.UnsetMapIcon(iconId);
     }
 
+    /// <summary>
+    /// Toggles ghost mode for this player. Other players will pass through them as if they were not there. (open.mp only)
+    /// </summary>
+    /// <param name="enable"><see langword="true" /> to enable ghost mode; <see langword="false" /> to disable.</param>
+    public virtual void ToggleGhostMode(bool enable)
+    {
+        _player.ToggleGhostMode(enable);
+    }
+
+    /// <summary>
+    /// Gets a value indicating whether ghost mode is enabled for this player. (open.mp only)
+    /// </summary>
+    public virtual bool IsGhostModeEnabled => _player.IsGhostModeEnabled();
+
+    /// <summary>
+    /// Allows or disallows this player to use weapons. (open.mp only)
+    /// </summary>
+    /// <param name="allow"><see langword="true" /> to allow weapons; <see langword="false" /> to disallow.</param>
+    public virtual void AllowWeapons(bool allow)
+    {
+        _player.AllowWeapons(allow);
+    }
+
+    /// <summary>
+    /// Gets a value indicating whether this player is allowed to use weapons. (open.mp only)
+    /// </summary>
+    public virtual bool AreWeaponsAllowed => _player.AreWeaponsAllowed();
+
+    /// <summary>
+    /// Allows or disallows this player to teleport by clicking on the map. (open.mp only)
+    /// </summary>
+    /// <param name="allow"><see langword="true" /> to allow teleporting; <see langword="false" /> to disallow.</param>
+    public virtual void AllowTeleport(bool allow)
+    {
+        _player.AllowTeleport(allow);
+    }
+
+    /// <summary>
+    /// Gets a value indicating whether map-click teleporting is allowed for this player. (open.mp only)
+    /// </summary>
+    public virtual bool IsTeleportAllowed => _player.IsTeleportAllowed();
+
+    /// <summary>
+    /// Hides the game text in the specified style/slot for this player.
+    /// </summary>
+    /// <param name="style">The style/slot of the game text to hide.</param>
+    public virtual void HideGameText(int style)
+    {
+        _player.HideGameText(style);
+    }
+
+    /// <summary>
+    /// Gets a value indicating whether the game text in the specified style/slot is currently displayed for this player.
+    /// </summary>
+    /// <param name="style">The style/slot of the game text to check.</param>
+    /// <returns><see langword="true" /> if game text is displayed; otherwise <see langword="false" />.</returns>
+    public virtual bool HasGameText(int style)
+    {
+        return _player.HasGameText(style);
+    }
+
+    /// <summary>
+    /// Retrieves the currently displayed game text for this player in the specified style/slot.
+    /// </summary>
+    /// <param name="style">The style/slot of the game text to retrieve.</param>
+    /// <param name="message">When this method returns, contains the message text, or <see langword="null" /> if no game text is shown.</param>
+    /// <param name="time">When this method returns, contains the duration the text was scheduled to display.</param>
+    /// <param name="remaining">When this method returns, contains the remaining display time.</param>
+    /// <returns><see langword="true" /> if game text is currently shown; otherwise <see langword="false" />.</returns>
+    public virtual bool GetGameText(int style, out string? message, out TimeSpan time, out TimeSpan remaining)
+    {
+        return _player.GetGameText(style, out message, out time, out remaining);
+    }
+
+    /// <summary>
+    /// Gets or sets the world bounds for this player as <c>(maxX, minX, maxY, minY)</c>.
+    /// </summary>
+    public virtual Vector4 WorldBounds
+    {
+        get => _player.GetWorldBounds();
+        set => _player.SetWorldBounds(value);
+    }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether widescreen mode is enabled for this player.
+    /// </summary>
+    public virtual bool HasWidescreen
+    {
+        get => _player.HasWidescreen();
+        set => _player.UseWidescreen(value);
+    }
+
+    /// <summary>
+    /// Clears all in-progress AI tasks for this player.
+    /// </summary>
+    /// <param name="forceSync">If <see langword="true" />, the clear is synchronized to streamed-in players.</param>
+    public virtual void ClearTasks(bool forceSync = false)
+    {
+        _player.ClearTasks(forceSync ? PlayerAnimationSyncType.Sync : PlayerAnimationSyncType.NoSync);
+    }
+
+    /// <summary>
+    /// Sets the in-game world time (hours-only resolution on the native side) for this player.
+    /// </summary>
+    /// <param name="time">The world time to set; only the whole-hour portion is applied.</param>
+    public virtual void SetWorldTime(TimeSpan time)
+    {
+        _player.SetWorldTime(time);
+    }
+
+    /// <summary>
+    /// Gets or sets the current weather for this player.
+    /// </summary>
+    public virtual int Weather
+    {
+        get => _player.GetWeather();
+        set => _player.SetWeather(value);
+    }
+
+    /// <summary>
+    /// Sends a command on behalf of this player as if they had typed it themselves.
+    /// </summary>
+    /// <param name="message">The command line, including the leading slash.</param>
+    public virtual void SendCommand(string message)
+    {
+        ArgumentNullException.ThrowIfNull(message);
+        _player.SendCommand(message);
+    }
+
+    /// <summary>
+    /// Forces this player to be streamed in for the specified <paramref name="target" /> player.
+    /// </summary>
+    /// <param name="target">The player for whom this player should be streamed in.</param>
+    public virtual void StreamInForPlayer(Player target)
+    {
+        ArgumentNullException.ThrowIfNull(target);
+        _player.StreamInForPlayer(target);
+    }
+
+    /// <summary>
+    /// Forces this player to be streamed out for the specified <paramref name="target" /> player.
+    /// </summary>
+    /// <param name="target">The player for whom this player should be streamed out.</param>
+    public virtual void StreamOutForPlayer(Player target)
+    {
+        ArgumentNullException.ThrowIfNull(target);
+        _player.StreamOutForPlayer(target);
+    }
+
+    /// <summary>
+    /// Enumerates the players for whom this player is currently streamed in.
+    /// </summary>
+    /// <returns>A lazy sequence of <see cref="Player" /> components.</returns>
+    public virtual IEnumerable<Player> StreamedForPlayers()
+    {
+        foreach (var raw in _player.StreamedForPlayers())
+        {
+            var component = _entityProvider.GetComponent(raw);
+            if (component != null)
+            {
+                yield return component;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Gets the number of default world objects that have been removed for this player.
+    /// </summary>
+    public virtual int DefaultObjectsRemoved => _player.GetDefaultObjectsRemoved();
+
+    /// <summary>
+    /// Gets a value indicating whether this player is in the process of being kicked.
+    /// </summary>
+    public virtual bool IsBeingKicked => _player.GetKickStatus();
+
+    /// <summary>
+    /// Grants or revokes RCON (console) access for this player at runtime.
+    /// </summary>
+    /// <param name="enable"><see langword="true" /> to grant access; <see langword="false" /> to revoke.</param>
+    public virtual void SetConsoleAccessibility(bool enable)
+    {
+        ConsoleData.SetConsoleAccessibility(enable);
+    }
+
+    private IPlayerCustomModelsData? CustomModelsData =>
+        _player.TryQueryExtension<IPlayerCustomModelsData>(out var data) ? data : null;
+
+    /// <summary>
+    /// Gets the active custom skin model ID for this player, or <see langword="null" /> if no custom skin is set.
+    /// </summary>
+    public virtual uint? CustomSkin
+    {
+        get
+        {
+            var skin = CustomModelsData?.GetCustomSkin() ?? 0;
+            return skin == 0 ? null : skin;
+        }
+    }
+
+    /// <summary>
+    /// Sets the custom skin model for this player.
+    /// </summary>
+    /// <param name="skinModel">The custom skin model ID.</param>
+    public virtual void SetCustomSkin(uint skinModel)
+    {
+        var data = CustomModelsData ?? throw new InvalidOperationException("Custom models component is not loaded");
+        data.SetCustomSkin(skinModel);
+    }
+
+    /// <summary>
+    /// Sends a download URL to this player for resolving custom model assets.
+    /// </summary>
+    /// <param name="url">The URL.</param>
+    public virtual void SendDownloadUrl(string url)
+    {
+        ArgumentNullException.ThrowIfNull(url);
+        var data = CustomModelsData ?? throw new InvalidOperationException("Custom models component is not loaded");
+        data.SendDownloadUrl(url);
+    }
+
     /// <inheritdoc />
     protected override void OnDestroyComponent()
     {
