@@ -510,13 +510,6 @@ public class Player : WorldEntity
     public virtual bool IsAlive => !_deadStates.Contains(State);
 
     /// <summary>
-    /// Gets this player's game version.
-    /// </summary>
-    public virtual string Version =>
-        // TODO: more client ver info
-        _player.GetClientVersionName();
-
-    /// <summary>
     /// Gets this player's global computer identifier string.
     /// </summary>
     public virtual string Gpci => _player.GetSerial();
@@ -637,12 +630,17 @@ public class Player : WorldEntity
     /// <summary>
     /// Gets a value indicating whether this player is using the open.mp client.
     /// </summary>
-    public virtual bool IsUsingOmp => _player.GetClientVersion() == ClientVersion.openmp;
+    public virtual bool IsUsingOmp => ClientVersion == ClientVersion.openmp;
 
     /// <summary>
-    /// Gets this player's <see cref="ClientVersion" />.
+    /// Gets this player's <see cref="SampSharp.OpenMp.Core.Api.ClientVersion" />.
     /// </summary>
     public virtual ClientVersion ClientVersion => _player.GetClientVersion();
+
+    /// <summary>
+    /// Gets this player's client version name.
+    /// </summary>
+    public virtual string ClientVersionName => _player.GetClientVersionName();
 
     // TODO: Is ghost mode only available for open-mp clients? If available for SA-MP clients, remove the 'open.mp only' note from the docs.
     /// <summary>
@@ -1024,14 +1022,15 @@ public class Player : WorldEntity
     }
 
     /// <summary>
-    /// Plays a crime report for this player, similar to single-player when committing a crime.
+    /// Plays a crime report for this player with the specified <paramref name="suspect"/> and <paramref name="crime"/>, similar to single-player when committing a crime.
     /// </summary>
     /// <param name="suspect">The suspect <see cref="Player" /> to be described in the report.</param>
     /// <param name="crime">The crime ID, which will be reported as a 10-code (e.g., 10-16 for crime ID 16).</param>
-    public virtual void PlayCrimeReport(Player suspect, int crime)
+    /// <returns><see langword="true" /> if the suspect is in a state for which a crime report could be played; otherwise <see langword="false"/>.</returns>
+    public virtual bool PlayCrimeReport(Player suspect, int crime)
     {
         ArgumentNullException.ThrowIfNull(suspect);
-        _player.PlayerCrimeReport(suspect, crime);
+        return _player.PlayerCrimeReport(suspect, crime);
     }
 
     /// <summary>
@@ -1214,7 +1213,7 @@ public class Player : WorldEntity
     public virtual void PutInVehicle(Vehicle vehicle, int seatId)
     {
         ArgumentNullException.ThrowIfNull(vehicle);
-        
+
         ((IVehicle)vehicle).PutPlayer(_player, seatId);
     }
 
@@ -1225,7 +1224,7 @@ public class Player : WorldEntity
     public virtual void PutInVehicle(Vehicle vehicle)
     {
         ArgumentNullException.ThrowIfNull(vehicle);
-        
+
         PutInVehicle(vehicle, 0);
     }
 
@@ -1273,9 +1272,6 @@ public class Player : WorldEntity
     /// <summary>
     /// Applies an animation to this player.
     /// </summary>
-    /// <remarks>
-    /// The <paramref name="forceSync" /> parameter forces all players who can see this player to play the animation regardless of whether the player is performing it themselves. This is useful when the player cannot sync the animation (for example, if they are paused). In most cases, this parameter is not needed since players sync animations themselves.
-    /// </remarks>
     /// <param name="animationLibrary">The name of the animation library.</param>
     /// <param name="animationName">The name of the animation within the library.</param>
     /// <param name="fDelta">The animation speed (typically 4.1).</param>
@@ -1284,62 +1280,61 @@ public class Player : WorldEntity
     /// <param name="lockY">If <see langword="false" />, the player returns to their original Y position after the animation completes (for moving animations). If <see langword="true" />, the opposite occurs.</param>
     /// <param name="freeze"><see langword="true" /> to freeze the player in position after the animation finishes.</param>
     /// <param name="time">The animation duration. Use <see cref="TimeSpan.Zero" /> for an infinite loop.</param>
-    /// <param name="forceSync"><see langword="true" /> to force all players to see this animation.</param>
+    /// <param name="syncType">
+    /// The synchronization type to apply to the animation.
+    /// <see cref="PlayerAnimationSyncType.NoSync" /> (default) - No synchronization; the player animates themselves.
+    /// <see cref="PlayerAnimationSyncType.Sync" /> - Forces the server to sync the animation with all other players in streaming radius. Useful when the player cannot sync the animation themselves (for example, if they are paused).
+    /// <see cref="PlayerAnimationSyncType.SyncOthers" /> - Same as <see cref="PlayerAnimationSyncType.Sync" />, but will ONLY apply the animation to streamed-in players, NOT the actual player being animated. Useful for NPC animations and persistent animations when players are being streamed.
+    /// </param>
     public virtual void ApplyAnimation(string animationLibrary, string animationName, float fDelta, bool loop, bool lockX, bool lockY, bool freeze, TimeSpan time,
-        bool forceSync)
+        PlayerAnimationSyncType syncType = PlayerAnimationSyncType.NoSync)
     {
         ArgumentNullException.ThrowIfNull(animationLibrary);
         ArgumentNullException.ThrowIfNull(animationName);
 
         var anim = new AnimationData(fDelta, loop, lockX, lockY, freeze, (uint)time.TotalMilliseconds, animationLibrary, animationName);
 
-        // TODO: other sync?
-        _player.ApplyAnimation(anim, forceSync ? PlayerAnimationSyncType.Sync : PlayerAnimationSyncType.NoSync);
+        _player.ApplyAnimation(anim, (OpenMp.Core.Api.PlayerAnimationSyncType)syncType);
     }
 
-    /// <summary>
-    /// Applies an animation to this player.
-    /// </summary>
-    /// <param name="animationLibrary">The name of the animation library.</param>
-    /// <param name="animationName">The name of the animation within the library.</param>
-    /// <param name="fDelta">The animation speed (typically 4.1).</param>
-    /// <param name="loop"><see langword="true" /> to loop the animation; <see langword="false" /> to play it once.</param>
-    /// <param name="lockX">If <see langword="false" />, the player returns to their original X position after the animation completes (for moving animations). If <see langword="true" />, the opposite occurs.</param>
-    /// <param name="lockY">If <see langword="false" />, the player returns to their original Y position after the animation completes (for moving animations). If <see langword="true" />, the opposite occurs.</param>
-    /// <param name="freeze"><see langword="true" /> to freeze the player in position after the animation finishes.</param>
-    /// <param name="time">The animation duration.</param>
-    public virtual void ApplyAnimation(string animationLibrary, string animationName, float fDelta, bool loop, bool lockX, bool lockY, bool freeze, TimeSpan time)
-    {
-        ApplyAnimation(animationLibrary, animationName, fDelta, loop, lockX, lockY, freeze, time, false);
-    }
-
-    /// <inheritdoc cref="ApplyAnimation(string, string, float, bool, bool, bool, bool, TimeSpan, bool)" />
-    [Obsolete("Use the TimeSpan overload. This int-milliseconds variant is kept for source compatibility and will be removed.")]
+    /// <inheritdoc cref="ApplyAnimation(string, string, float, bool, bool, bool, bool, TimeSpan, PlayerAnimationSyncType)" />
+    [Obsolete("Use ApplyAnimation(string, string, float, bool, bool, bool, bool, TimeSpan, PlayerAnimationSyncType) instead.")]
     public virtual void ApplyAnimation(string animationLibrary, string animationName, float fDelta, bool loop, bool lockX, bool lockY, bool freeze, int time,
         bool forceSync)
-        => ApplyAnimation(animationLibrary, animationName, fDelta, loop, lockX, lockY, freeze, TimeSpan.FromMilliseconds(time), forceSync);
+    {
+        ApplyAnimation(animationLibrary, animationName, fDelta, loop, lockX, lockY, freeze, TimeSpan.FromMilliseconds(time),
+            forceSync ? PlayerAnimationSyncType.Sync : PlayerAnimationSyncType.NoSync);
+    }
 
-    /// <inheritdoc cref="ApplyAnimation(string, string, float, bool, bool, bool, bool, TimeSpan)" />
-    [Obsolete("Use the TimeSpan overload. This int-milliseconds variant is kept for source compatibility and will be removed.")]
+    /// <inheritdoc cref="ApplyAnimation(string, string, float, bool, bool, bool, bool, TimeSpan, PlayerAnimationSyncType)" />
+    [Obsolete("Use ApplyAnimation(string, string, float, bool, bool, bool, bool, TimeSpan, PlayerAnimationSyncType) instead.")]
     public virtual void ApplyAnimation(string animationLibrary, string animationName, float fDelta, bool loop, bool lockX, bool lockY, bool freeze, int time)
-        => ApplyAnimation(animationLibrary, animationName, fDelta, loop, lockX, lockY, freeze, TimeSpan.FromMilliseconds(time), false);
+    {
+        ApplyAnimation(animationLibrary, animationName, fDelta, loop, lockX, lockY, freeze, TimeSpan.FromMilliseconds(time));
+    }
 
     /// <summary>
     /// Clears all animations for this player.
     /// </summary>
     /// <param name="forceSync">Specifies whether the animation should be shown to streamed in players.</param>
+    [Obsolete("Use ClearAnimations(PlayerAnimationSyncType) instead")]
     public virtual void ClearAnimations(bool forceSync)
     {
-        // TODO: other sync?
-        _player.ClearAnimations(forceSync ? PlayerAnimationSyncType.Sync : PlayerAnimationSyncType.NoSync);
+        ClearAnimations(forceSync ? PlayerAnimationSyncType.Sync : PlayerAnimationSyncType.NoSync);
     }
 
     /// <summary>
     /// Clears all animations for this player.
     /// </summary>
-    public virtual void ClearAnimations()
+    /// <param name="syncType">
+    /// The synchronization type to apply to the animation.
+    /// <see cref="PlayerAnimationSyncType.NoSync" /> (default) - No synchronization; the player animates themselves.
+    /// <see cref="PlayerAnimationSyncType.Sync" /> - Forces the server to sync the animation with all other players in streaming radius. Useful when the player cannot sync the animation themselves (for example, if they are paused).
+    /// <see cref="PlayerAnimationSyncType.SyncOthers" /> - Same as <see cref="PlayerAnimationSyncType.Sync" />, but will ONLY apply the animation to streamed-in players, NOT the actual player being animated. Useful for NPC animations and persistent animations when players are being streamed.
+    /// </param>
+    public virtual void ClearAnimations(PlayerAnimationSyncType syncType = PlayerAnimationSyncType.NoSync)
     {
-        ClearAnimations(false);
+        _player.ClearAnimations((OpenMp.Core.Api.PlayerAnimationSyncType)syncType);
     }
 
     /// <summary>
@@ -1352,7 +1347,7 @@ public class Player : WorldEntity
     {
         var anim = _player.GetAnimationData();
         var id = anim.ID;
-        (animationLibrary, animationName) = Animation.GetAnmiation(id);
+        (animationLibrary, animationName) = Animation.GetAnimation(id);
         return true;
     }
 
@@ -1720,10 +1715,10 @@ public class Player : WorldEntity
     /// <param name="text">The text to be displayed.</param>
     /// <param name="time">The duration of the text being shown in milliseconds.</param>
     /// <param name="style">The style of text to be displayed.</param>
-    [Obsolete("Obsolete. Use GameText(string,TimeSpan,int) instead.")]
+    [Obsolete("Obsolete. Use GameText(string,TimeSpan,GameTextStyle) instead.")]
     public virtual void GameText(string text, int time, int style)
     {
-        GameText(text, TimeSpan.FromMilliseconds(time), style);
+        GameText(text, TimeSpan.FromMilliseconds(time), (GameTextStyle)style);
     }
 
     /// <summary>
@@ -1732,10 +1727,10 @@ public class Player : WorldEntity
     /// <param name="text">The text to display.</param>
     /// <param name="time">The display duration as a <see cref="TimeSpan" />.</param>
     /// <param name="style">The text style.</param>
-    public virtual void GameText(string text, TimeSpan time, int style)
+    public virtual void GameText(string text, TimeSpan time, GameTextStyle style)
     {
         ArgumentNullException.ThrowIfNull(text);
-        _player.SendGameText(text, time, style);
+        _player.SendGameText(text, time, (int)style);
     }
 
     /// <summary>
@@ -1902,12 +1897,18 @@ public class Player : WorldEntity
     }
 
     /// <summary>
-    /// Clears all in-progress AI tasks for this player.
+    /// Clears all tasks for this player.
     /// </summary>
-    /// <param name="forceSync">If <see langword="true" />, the clear is synchronized to streamed-in players.</param>
-    public virtual void ClearTasks(bool forceSync = false)
+    /// <remarks>This is lower-level function related to animation clearing. Generally you should use <see cref="ClearAnimations(PlayerAnimationSyncType)" /> instead.</remarks>
+    /// <param name="syncType">
+    /// The synchronization type to apply to the animation.
+    /// <see cref="PlayerAnimationSyncType.NoSync" /> (default) - No synchronization; the player animates themselves.
+    /// <see cref="PlayerAnimationSyncType.Sync" /> - Forces the server to sync the animation with all other players in streaming radius. Useful when the player cannot sync the animation themselves (for example, if they are paused).
+    /// <see cref="PlayerAnimationSyncType.SyncOthers" /> - Same as <see cref="PlayerAnimationSyncType.Sync" />, but will ONLY apply the animation to streamed-in players, NOT the actual player being animated. Useful for NPC animations and persistent animations when players are being streamed.
+    /// </param>
+    public virtual void ClearTasks(PlayerAnimationSyncType syncType)
     {
-        _player.ClearTasks(forceSync ? PlayerAnimationSyncType.Sync : PlayerAnimationSyncType.NoSync);
+        _player.ClearTasks((OpenMp.Core.Api.PlayerAnimationSyncType)syncType);
     }
 
     /// <summary>

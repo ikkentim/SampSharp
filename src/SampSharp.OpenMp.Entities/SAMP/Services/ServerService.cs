@@ -390,11 +390,6 @@ internal class ServerService : IServerService
         fld = true;
     }
 
-    public void HideGameText(int style)
-    {
-        _players.HideGameTextForAll(style);
-    }
-
     public void SendEmptyDeathMessage()
     {
         _players.SendEmptyDeathMessageToAll();

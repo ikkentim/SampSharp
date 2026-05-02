@@ -388,6 +388,15 @@ public class Vehicle : WorldEntity
     }
 
     /// <summary>
+    /// Gets or sets the interior ID of this vehicle.
+    /// </summary>
+    public virtual int Interior
+    {
+        get => _vehicle.GetInterior();
+        set => _vehicle.SetInterior(value);
+    }
+
+    /// <summary>
     /// Gets or sets the spawn data of this vehicle (model, position, rotation, colors, siren, interior, respawn delay).
     /// </summary>
     public virtual VehicleSpawnInfo SpawnData
@@ -555,6 +564,7 @@ public class Vehicle : WorldEntity
     /// Links this vehicle to an interior, allowing it to be used in interior areas such as arenas or stadiums.
     /// </summary>
     /// <param name="interiorId">The ID of the interior to link this vehicle to.</param>
+    [Obsolete("Use the Interior property instead.")]
     public virtual void LinkToInterior(int interiorId)
     {
         _vehicle.SetInterior(interiorId);

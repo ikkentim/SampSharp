@@ -14,7 +14,6 @@ public readonly partial struct IConfig
     /// </summary>
     /// <param name="key">The key of the variable.</param>
     /// <returns>The value of the variable or <see langword="null" /> if not found.</returns>
-    // TODO: is it nullable?
     public partial string? GetString(string key);
 
     /// <summary>
@@ -98,7 +97,7 @@ public readonly partial struct IConfig
     /// </summary>
     /// <param name="entry">The ban entry to add.</param>
     public partial void AddBan(BanEntry entry);
-    
+
     /// <summary>
     /// Removes a ban.
     /// </summary>

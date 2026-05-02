@@ -351,11 +351,11 @@ public readonly partial struct IPlayer
     public partial void PlayAudio(string url, bool usePos = false, Vector3 pos = default, float distance = 0);
 
     /// <summary>
-    /// Reports a crime committed by a player.
+    /// Plays a crime report for the player with the specified <paramref name="suspect" /> and <paramref name="crime"/>.
     /// </summary>
     /// <param name="suspect">The player who committed the crime.</param>
     /// <param name="crime">The crime ID.</param>
-    /// <returns>TODO: Clarify the meaning of the return value.</returns>
+    /// <returns><see langword="true" /> if the suspect is in a state for which a crime report could be played; otherwise <see langword="false"/>.</returns>
     public partial bool PlayerCrimeReport(IPlayer suspect, int crime);
 
     /// <summary>
@@ -402,7 +402,7 @@ public readonly partial struct IPlayer
     /// Forces the player to reselect their class.
     /// </summary>
     public partial void ForceClassSelection();
-    
+
     /// <summary>
     /// Sets the player's money.
     /// </summary>
@@ -782,7 +782,7 @@ public readonly partial struct IPlayer
     /// </summary>
     /// <returns>The player's current interior ID.</returns>
     public partial uint GetInterior();
-    
+
     /// <summary>
     /// Gets the player's key data.
     /// </summary>

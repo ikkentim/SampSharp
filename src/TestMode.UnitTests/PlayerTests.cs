@@ -252,7 +252,7 @@ public class PlayerTests : TestBase
     [Fact]
     public void Version_should_succeed()
     {
-        _ = Player.Version;
+        _ = Player.ClientVersion;
     }
 
     [Fact]
@@ -519,7 +519,7 @@ public class PlayerTests : TestBase
     [Fact]
     public void ApplyAnimation_with_forceSync_should_succeed()
     {
-        Player.ApplyAnimation("AIRPORT", "THRW_BARL_THRW", 4.1f, true, false, false, false, TimeSpan.Zero, true);
+        Player.ApplyAnimation("AIRPORT", "THRW_BARL_THRW", 4.1f, true, false, false, false, TimeSpan.Zero, PlayerAnimationSyncType.Sync);
     }
 
     [Fact]
@@ -531,7 +531,7 @@ public class PlayerTests : TestBase
     [Fact]
     public void ClearAnimations_with_forceSync_should_succeed()
     {
-        Player.ClearAnimations(true);
+        Player.ClearAnimations(PlayerAnimationSyncType.Sync);
     }
 
     [Fact]
@@ -663,7 +663,7 @@ public class PlayerTests : TestBase
     [Fact]
     public void GameText_should_succeed()
     {
-        Player.GameText("Test text", TimeSpan.FromSeconds(5), 1);
+        Player.GameText("Test text", TimeSpan.FromSeconds(5), GameTextStyle.Style1);
     }
 
     [Fact]

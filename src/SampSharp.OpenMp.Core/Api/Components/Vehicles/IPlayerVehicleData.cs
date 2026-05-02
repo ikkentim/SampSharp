@@ -19,7 +19,7 @@ public readonly partial struct IPlayerVehicleData
     /// Resets the player's vehicle data internally.
     /// </summary>
     /// <remarks>
-    /// TODO: Clarify the exact purpose and usage of this method.
+    /// This is an internal method and should not be called in typical scenarios. It is not intended for vehicle destruction or removing players from vehicles.
     /// </remarks>
     public partial void ResetVehicle();
 

@@ -1975,7 +1975,7 @@ public static class Animation
     /// </summary>
     /// <param name="id">The identifier of the animation.</param>
     /// <returns>The library and name of the animation. <see langword="null" /> values are returned if the specified identifier is invalid.</returns>
-    public static (string? library, string? name) GetAnmiation(int id)
+    public static (string? library, string? name) GetAnimation(int id)
     {
         if (id <= 0 || id >= _animationNames.Count)
         {
