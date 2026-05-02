@@ -285,7 +285,7 @@ public readonly partial struct ITextDrawBase
     public partial float GetPreviewZoom();
 
     /// <summary>
-    /// Restreams the textdraw. TODO: Add more details.
+    /// Re-streams the textdraw to all players to which it is currently streamed in.
     /// </summary>
     public partial void Restream();
 }

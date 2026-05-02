@@ -1024,14 +1024,15 @@ public class Player : WorldEntity
     }
 
     /// <summary>
-    /// Plays a crime report for this player, similar to single-player when committing a crime.
+    /// Plays a crime report for this player with the specified <paramref name="suspect"/> and <paramref name="crime"/>, similar to single-player when committing a crime.
     /// </summary>
     /// <param name="suspect">The suspect <see cref="Player" /> to be described in the report.</param>
     /// <param name="crime">The crime ID, which will be reported as a 10-code (e.g., 10-16 for crime ID 16).</param>
-    public virtual void PlayCrimeReport(Player suspect, int crime)
+    /// <returns><see langword="true" /> if the suspect is in a state for which a crime report could be played; otherwise <see langword="false"/>.</returns>
+    public virtual bool PlayCrimeReport(Player suspect, int crime)
     {
         ArgumentNullException.ThrowIfNull(suspect);
-        _player.PlayerCrimeReport(suspect, crime);
+        return _player.PlayerCrimeReport(suspect, crime);
     }
 
     /// <summary>
@@ -1214,7 +1215,7 @@ public class Player : WorldEntity
     public virtual void PutInVehicle(Vehicle vehicle, int seatId)
     {
         ArgumentNullException.ThrowIfNull(vehicle);
-        
+
         ((IVehicle)vehicle).PutPlayer(_player, seatId);
     }
 
@@ -1225,7 +1226,7 @@ public class Player : WorldEntity
     public virtual void PutInVehicle(Vehicle vehicle)
     {
         ArgumentNullException.ThrowIfNull(vehicle);
-        
+
         PutInVehicle(vehicle, 0);
     }
 

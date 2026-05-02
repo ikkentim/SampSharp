@@ -29,7 +29,7 @@ public class CustomMarshallerTypeDetector
 
         return entryPoint == null
             ? null
-            : GetCustomMarshaller(entryPoint,  type, direction, parameter.RefKind);
+            : GetCustomMarshaller(entryPoint, type, direction, parameter.RefKind);
     }
 
     /// <summary>
@@ -114,7 +114,7 @@ public class CustomMarshallerTypeDetector
         {
             var containing = ReplacePlaceholderWithType(marshallerType.ContainingType, forType);
 
-            // TODO: might not work properly for nested generic types
+            // unsupported scenario: This will not work for nested marshaller types.
             marshallerType = containing.GetMembers(marshallerType.Name)
                 .OfType<INamedTypeSymbol>()
                 .First();
