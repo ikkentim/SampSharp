@@ -1,5 +1,4 @@
 ﻿using System.Numerics;
-using SampSharp.Entities.SAMP.Definitions;
 using SampSharp.OpenMp.Core.Api;
 
 namespace SampSharp.Entities.SAMP;

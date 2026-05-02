@@ -1,7 +1,6 @@
 ﻿using System.Net;
 using System.Numerics;
 using JetBrains.Annotations;
-using SampSharp.Entities.SAMP.Definitions;
 using SampSharp.OpenMp.Core.Api;
 
 namespace SampSharp.Entities.SAMP;
@@ -1327,18 +1326,15 @@ public class Player : WorldEntity
     /// <summary>
     /// Clears all animations for this player.
     /// </summary>
-    /// <param name="syncType">The synchronization type to apply to the animation.</param>
-    public virtual void ClearAnimations(PlayerAnimationSyncType syncType)
+    /// <param name="syncType">
+    /// The synchronization type to apply to the animation.
+    /// <see cref="PlayerAnimationSyncType.NoSync" /> (default) - No synchronization; the player animates themselves.
+    /// <see cref="PlayerAnimationSyncType.Sync" /> - Forces the server to sync the animation with all other players in streaming radius. Useful when the player cannot sync the animation themselves (for example, if they are paused).
+    /// <see cref="PlayerAnimationSyncType.SyncOthers" /> - Same as <see cref="PlayerAnimationSyncType.Sync" />, but will ONLY apply the animation to streamed-in players, NOT the actual player being animated. Useful for NPC animations and persistent animations when players are being streamed.
+    /// </param>
+    public virtual void ClearAnimations(PlayerAnimationSyncType syncType = PlayerAnimationSyncType.NoSync)
     {
         _player.ClearAnimations((OpenMp.Core.Api.PlayerAnimationSyncType)syncType);
-    }
-
-    /// <summary>
-    /// Clears all animations for this player.
-    /// </summary>
-    public virtual void ClearAnimations()
-    {
-        ClearAnimations(false);
     }
 
     /// <summary>
@@ -1901,12 +1897,18 @@ public class Player : WorldEntity
     }
 
     /// <summary>
-    /// Clears all in-progress AI tasks for this player.
+    /// Clears all tasks for this player.
     /// </summary>
-    /// <param name="forceSync">If <see langword="true" />, the clear is synchronized to streamed-in players.</param>
-    public virtual void ClearTasks(bool forceSync = false)
+    /// <remarks>This is lower-level function related to animation clearing. Generally you should use <see cref="ClearAnimations(PlayerAnimationSyncType)" /> instead.</remarks>
+    /// <param name="syncType">
+    /// The synchronization type to apply to the animation.
+    /// <see cref="PlayerAnimationSyncType.NoSync" /> (default) - No synchronization; the player animates themselves.
+    /// <see cref="PlayerAnimationSyncType.Sync" /> - Forces the server to sync the animation with all other players in streaming radius. Useful when the player cannot sync the animation themselves (for example, if they are paused).
+    /// <see cref="PlayerAnimationSyncType.SyncOthers" /> - Same as <see cref="PlayerAnimationSyncType.Sync" />, but will ONLY apply the animation to streamed-in players, NOT the actual player being animated. Useful for NPC animations and persistent animations when players are being streamed.
+    /// </param>
+    public virtual void ClearTasks(PlayerAnimationSyncType syncType)
     {
-        _player.ClearTasks(forceSync ? PlayerAnimationSyncType.Sync : PlayerAnimationSyncType.NoSync);
+        _player.ClearTasks((OpenMp.Core.Api.PlayerAnimationSyncType)syncType);
     }
 
     /// <summary>
