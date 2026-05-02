@@ -32,14 +32,14 @@ public class IntegerType : ICommandParameterType
     /// <returns>true if parsed successfully; false otherwise.</returns>
     public bool Parse(ref string commandText, out object output, bool isNullable = false)
     {
-        var text = commandText.TrimStart();
+        commandText = commandText.TrimStart();
         output = null;
 
-        if (string.IsNullOrEmpty(text))
+        if (string.IsNullOrEmpty(commandText))
             return false;
 
 
-        var word = text.Split(' ')
+        var word = commandText.Split(' ')
             .First();
 
 

@@ -270,7 +270,7 @@ public class DefaultCommand : ICommand
             if (!name.Matches(commandText, IsCaseIgnored)) continue;
 
             matchedNameLength = name.Length;
-            commandText = commandText.Substring(name.Length);
+            commandText = commandText.Substring(name.Length).Trim();
             var result = GetArguments(commandText, out _, out var argumentsLength);
             matchedNameLength += argumentsLength;
             return result

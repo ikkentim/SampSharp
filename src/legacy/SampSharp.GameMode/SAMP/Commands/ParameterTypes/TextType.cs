@@ -25,15 +25,15 @@ public class TextType : ICommandParameterType
     /// <returns>true if parsed successfully; false otherwise.</returns>
     public bool Parse(ref string commandText, out object output, bool isNullable = false)
     {
-        var text = commandText.Trim();
+        commandText = commandText.Trim();
 
-        if (string.IsNullOrEmpty(text))
+        if (string.IsNullOrEmpty(commandText))
         {
             output = null;
             return false;
         }
 
-        output = text;
+        output = commandText;
         commandText = string.Empty;
         return true;
     }

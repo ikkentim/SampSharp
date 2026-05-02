@@ -79,7 +79,13 @@ public partial class BasePlayer : IdentifiedPool<BasePlayer>, IWorldObject
             PlayerInternal.Instance.GetPlayerName(Id, out var name, MaxNameLength);
             return name;
         }
-        set => PlayerInternal.Instance.SetPlayerName(Id, value);
+        set
+        {
+            if (PlayerInternal.Instance.SetPlayerName(Id, value) == -1)
+            {
+                throw new InvalidOperationException("The name is already in use, too long or has invalid characters.");
+            }
+        }
     }
 
     /// <summary>Gets or sets the facing angle of this Player.</summary>
