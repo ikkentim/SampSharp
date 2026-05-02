@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using JetBrains.Annotations;
 
 namespace SampSharp.Entities.SAMP;
 
