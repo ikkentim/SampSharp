@@ -85,7 +85,7 @@ public class GlobalObject : WorldEntity
     /// <param name="modelId">The model ID on which the replacement texture is located. Use 0 for alpha. Use -1 to change the material color without altering the texture.</param>
     /// <param name="txdName">The name of the TXD file containing the replacement texture (use "none" if not required).</param>
     /// <param name="textureName">The name of the texture to use as the replacement (use "none" if not required).</param>
-    /// <param name="materialColor">The <see cref="Color" /> of the material to set (use <see cref="default(Color)" /> to keep the existing material color).</param>
+    /// <param name="materialColor">The <see cref="Color" /> of the material to set (use <see langword="default"/>(<see cref="Color"/>) to keep the existing material color).</param>
     public virtual void SetMaterial(int materialIndex, int modelId, string txdName, string textureName, Color materialColor)
     {
         ArgumentNullException.ThrowIfNull(txdName);

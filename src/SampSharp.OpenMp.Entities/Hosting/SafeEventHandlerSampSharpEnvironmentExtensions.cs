@@ -49,7 +49,7 @@ public static class SafeEventHandlerSampSharpEnvironmentExtensions
         /// </summary>
         /// <typeparam name="TComponent">The type of the component to which the event handler will be added.</typeparam>
         /// <typeparam name="TEventHandler">The type of the event handler.</typeparam>
-        /// <param name="dispatcherProvider">A function that provides the event dispatcher from the specified <paramref name="TComponent" />.</param>
+        /// <param name="dispatcherProvider">A function that provides the event dispatcher from the specified <typeparamref name="TComponent" />.</param>
         /// <param name="handler">The event handler instance to add to the component.</param>
         /// <param name="priority">The priority with which the event handler should be registered. The default is <see cref="EventPriority.Default" />.</param>
         /// <returns>An <see cref="IDisposable" /> representing the event handler registration.</returns>

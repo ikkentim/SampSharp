@@ -1274,7 +1274,7 @@ public class Player : WorldEntity
     }
 
     /// <summary>
-    /// Sets a race checkpoint for this player. The <see cref="Events.PlayerEnterCheckpointEvent" /> is triggered when the player enters.
+    /// Sets a race checkpoint for this player. The <c>OnPlayerEnterCheckpoint</c> is triggered when the player enters.
     /// </summary>
     /// <param name="type">The <see cref="CheckpointType" />.</param>
     /// <param name="point">The checkpoint position as a <see cref="Vector3" />.</param>
@@ -1414,7 +1414,7 @@ public class Player : WorldEntity
     /// <summary>
     /// Toggles spectating mode for this player.
     /// </summary>
-    /// <remarks>When spectating is disabled, <see cref="Events.PlayerSpawnEvent" /> is automatically triggered.</remarks>
+    /// <remarks>When spectating is disabled, the <c>OnPlayerSpawn</c> event is automatically triggered.</remarks>
     /// <param name="toggle"><see langword="true" /> to enable spectating; <see langword="false" /> to disable.</param>
     public virtual void ToggleSpectating(bool toggle)
     {
