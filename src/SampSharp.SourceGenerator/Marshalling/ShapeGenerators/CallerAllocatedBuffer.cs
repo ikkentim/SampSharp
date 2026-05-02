@@ -10,22 +10,6 @@ namespace SampSharp.SourceGenerator.Marshalling.ShapeGenerators;
 
 public class CallerAllocatedBuffer(IMarshalShapeGenerator innerGenerator) : IMarshalShapeGenerator
 {
-    public bool UsesNativeIdentifier => innerGenerator.UsesNativeIdentifier;
-
-    public TypeSyntax GetNativeType(IdentifierStubContext context)
-    {
-        return innerGenerator.GetNativeType(context);
-    }
-
-    public IEnumerable<StatementSyntax> Generate(MarshalPhase phase, IdentifierStubContext context)
-    {
-        return phase switch
-        {
-            MarshalPhase.Marshal => GenerateMarshal(context),
-            _ => innerGenerator.Generate(phase, context)
-        };
-    }
-
     private IEnumerable<StatementSyntax> GenerateMarshal(IdentifierStubContext context)
     {
         var bufferVar = context.GetNativeExtraId("buffer");
@@ -52,6 +36,22 @@ public class CallerAllocatedBuffer(IMarshalShapeGenerator innerGenerator) : IMar
         {
             yield return (StatementSyntax)rewriter.Visit(el);
         }
+    }
+
+    public bool UsesNativeIdentifier => innerGenerator.UsesNativeIdentifier;
+
+    public TypeSyntax GetNativeType(IdentifierStubContext context)
+    {
+        return innerGenerator.GetNativeType(context);
+    }
+
+    public IEnumerable<StatementSyntax> Generate(MarshalPhase phase, IdentifierStubContext context)
+    {
+        return phase switch
+        {
+            MarshalPhase.Marshal => GenerateMarshal(context),
+            _ => innerGenerator.Generate(phase, context)
+        };
     }
 
     private class InvocationRewriter(string bufferName) : CSharpSyntaxRewriter

@@ -8,6 +8,18 @@ namespace SampSharp.SourceGenerator.Marshalling.ShapeGenerators;
 
 internal class StatelessUnmanagedToManagedGuaranteed(IMarshalShapeGenerator innerGenerator) : IMarshalShapeGenerator
 {
+    private static IEnumerable<StatementSyntax> GuaranteedUnmarshal(IdentifierStubContext context)
+    {
+        // managed = Marshaller.ConvertToManagedFinally(unmanaged);
+        yield return Assign(
+            context.GetManagedId(),
+            context.PostfixManagedNullableSuppression(
+                InvocationExpression(
+                    context.MarshallerType!.TypeName,
+                    ShapeConstants.MethodConvertToManagedFinally, 
+                    Argument(IdentifierName(context.GetNativeId())))));
+    }
+
     public bool UsesNativeIdentifier => true;
 
     public TypeSyntax GetNativeType(IdentifierStubContext context)
@@ -22,17 +34,5 @@ internal class StatelessUnmanagedToManagedGuaranteed(IMarshalShapeGenerator inne
             MarshalPhase.GuaranteedUnmarshal => GuaranteedUnmarshal(context),
             _ => innerGenerator.Generate(phase, context)
         };
-    }
-
-    private static IEnumerable<StatementSyntax> GuaranteedUnmarshal(IdentifierStubContext context)
-    {
-        // managed = Marshaller.ConvertToManagedFinally(unmanaged);
-        yield return Assign(
-            context.GetManagedId(),
-            context.PostfixManagedNullableSuppression(
-                InvocationExpression(
-                    context.MarshallerType!.TypeName,
-                    ShapeConstants.MethodConvertToManagedFinally, 
-                    Argument(IdentifierName(context.GetNativeId())))));
     }
 }

@@ -6,6 +6,14 @@ namespace SampSharp.SourceGenerator.Marshalling.ShapeGenerators;
 
 public class StatefulNotifyForSuccesfulInvokeMarshaller(IMarshalShapeGenerator innerGenerator) : IMarshalShapeGenerator
 {
+    private static IEnumerable<StatementSyntax> GenerateNotifyForSuccessfulInvoke(IdentifierStubContext context)
+    {
+        // marshaller.OnInvoked();
+        yield return Invoke(
+            context.GetMarshallerId(), 
+            ShapeConstants.MethodOnInvoked);
+    }
+
     public bool UsesNativeIdentifier => innerGenerator.UsesNativeIdentifier;
 
     public TypeSyntax GetNativeType(IdentifierStubContext context)
@@ -20,13 +28,5 @@ public class StatefulNotifyForSuccesfulInvokeMarshaller(IMarshalShapeGenerator i
             MarshalPhase.NotifyForSuccessfulInvoke => GenerateNotifyForSuccessfulInvoke(context),
             _ => innerGenerator.Generate(phase, context)
         };
-    }
-
-    private static IEnumerable<StatementSyntax> GenerateNotifyForSuccessfulInvoke(IdentifierStubContext context)
-    {
-        // marshaller.OnInvoked();
-        yield return Invoke(
-            context.GetMarshallerId(), 
-            ShapeConstants.MethodOnInvoked);
     }
 }

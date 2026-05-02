@@ -22,19 +22,6 @@ public class PlayerCommandService : CommandServiceBase, IPlayerCommandService
     }
 
     /// <inheritdoc />
-    public bool Invoke(IServiceProvider services, EntityId player, string inputText)
-    {
-        var result = Invoke(services, [(object)player], inputText);
-
-        if (result.Response != InvokeResponse.InvalidArguments)
-            return result.Response == InvokeResponse.Success;
-
-        // Auto-print usage hint to the invoking player on InvalidArguments.
-        _entityManager.GetComponent<Player>(player)?.SendClientMessage(result.UsageMessage ?? "Invalid arguments.");
-        return true;
-    }
-
-    /// <inheritdoc />
     protected override IEnumerable<(MethodInfo method, ICommandMethodInfo commandInfo)> ScanMethods()
     {
         // Same enumeration mode as EventDispatcher: instance + non-public + ISystem-types from registry.
@@ -68,5 +55,18 @@ public class PlayerCommandService : CommandServiceBase, IPlayerCommandService
         var args = string.Join(" ",
             command.Parameters.Select(a => a.IsRequired ? $"[{a.Name}]" : $"<{a.Name}>"));
         return $"Usage: /{command.Name} {args}";
+    }
+
+    /// <inheritdoc />
+    public bool Invoke(IServiceProvider services, EntityId player, string inputText)
+    {
+        var result = Invoke(services, [(object)player], inputText);
+
+        if (result.Response != InvokeResponse.InvalidArguments)
+            return result.Response == InvokeResponse.Success;
+
+        // Auto-print usage hint to the invoking player on InvalidArguments.
+        _entityManager.GetComponent<Player>(player)?.SendClientMessage(result.UsageMessage ?? "Invalid arguments.");
+        return true;
     }
 }

@@ -10,6 +10,17 @@ namespace SampSharp.Entities.SAMP;
 public class ConsoleCommandCollection(FlatHashSetStringView set) : IReadOnlyCollection<string>
 {
     /// <summary>
+    /// Adds a command to this collection.
+    /// </summary>
+    /// <param name="command">The command to add to the collection.</param>
+    public void Add(string command)
+    {
+        ArgumentNullException.ThrowIfNull(command);
+
+        set.Emplace(command);
+    }
+
+    /// <summary>
     /// Gets the number of commands in this collection.
     /// </summary>
     public int Count => set.Count;
@@ -26,16 +37,5 @@ public class ConsoleCommandCollection(FlatHashSetStringView set) : IReadOnlyColl
     IEnumerator IEnumerable.GetEnumerator()
     {
         return GetEnumerator();
-    }
-
-    /// <summary>
-    /// Adds a command to this collection.
-    /// </summary>
-    /// <param name="command">The command to add to the collection.</param>
-    public void Add(string command)
-    {
-        ArgumentNullException.ThrowIfNull(command);
-
-        set.Emplace(command);
     }
 }

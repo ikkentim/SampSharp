@@ -9,25 +9,6 @@ namespace SampSharp.SourceGenerator.Marshalling.ShapeGenerators;
 
 public class StatefulUnmanagedToManaged(IMarshalShapeGenerator innerGenerator) : IMarshalShapeGenerator
 {
-    public bool UsesNativeIdentifier => true;
-
-    public TypeSyntax GetNativeType(IdentifierStubContext context)
-    {
-        return context.NativeType!.TypeName;
-    }
-
-    public IEnumerable<StatementSyntax> Generate(MarshalPhase phase, IdentifierStubContext context)
-    {
-        return phase switch
-        {
-            MarshalPhase.Setup => Setup(context),
-            MarshalPhase.UnmarshalCapture => UnmarshalCapture(context),
-            MarshalPhase.Unmarshal => Unmarshal(context),
-            MarshalPhase.CleanupCalleeAllocated => CleanupCalleeAllocated(context),
-            _ => innerGenerator.Generate(phase, context)
-        };
-    }
-
     private static IEnumerable<StatementSyntax> Setup(IdentifierStubContext context)
     {
         // scoped type marshaller = new();
@@ -75,5 +56,24 @@ public class StatefulUnmanagedToManaged(IMarshalShapeGenerator innerGenerator) :
             ShapeConstants.MethodFromUnmanaged,
             Argument(
                 IdentifierName(context.GetNativeId())));
+    }
+
+    public bool UsesNativeIdentifier => true;
+
+    public TypeSyntax GetNativeType(IdentifierStubContext context)
+    {
+        return context.NativeType!.TypeName;
+    }
+
+    public IEnumerable<StatementSyntax> Generate(MarshalPhase phase, IdentifierStubContext context)
+    {
+        return phase switch
+        {
+            MarshalPhase.Setup => Setup(context),
+            MarshalPhase.UnmarshalCapture => UnmarshalCapture(context),
+            MarshalPhase.Unmarshal => Unmarshal(context),
+            MarshalPhase.CleanupCalleeAllocated => CleanupCalleeAllocated(context),
+            _ => innerGenerator.Generate(phase, context)
+        };
     }
 }

@@ -14,16 +14,6 @@ namespace SampSharp.SourceGenerator.Generators;
 [Generator]
 public class NumberedTypeSourceGenerator : IIncrementalGenerator
 {
-    public void Initialize(IncrementalGeneratorInitializationContext context)
-    {
-        var structDeclarations = context.SyntaxProvider.ForAttributeWithMetadataName(Constants.NumberedTypeGeneratorAttributeFQN,
-            predicate: static (s, _) => s is StructDeclarationSyntax, transform: static (ctx, _) => GetSemanticTargetForGeneration(ctx));
-
-        var compilationAndStructs = context.CompilationProvider.Combine(structDeclarations.Collect());
-
-        context.RegisterSourceOutput(compilationAndStructs, static (spc, source) => Execute(source.Left, source.Right, spc));
-    }
-
     private static StructData GetSemanticTargetForGeneration(GeneratorAttributeSyntaxContext context)
     {
         var attributes = new AttributeData[context.Attributes.Length];
@@ -172,6 +162,16 @@ public class NumberedTypeSourceGenerator : IIncrementalGenerator
         // Create a new rewriter that works on symbols tied to the original syntax tree
         var rewriter = new FullyQualifiedTypeRewriter(semanticModel);
         return (StructDeclarationSyntax)rewriter.Visit(structDeclaration);
+    }
+
+    public void Initialize(IncrementalGeneratorInitializationContext context)
+    {
+        var structDeclarations = context.SyntaxProvider.ForAttributeWithMetadataName(Constants.NumberedTypeGeneratorAttributeFQN,
+            predicate: static (s, _) => s is StructDeclarationSyntax, transform: static (ctx, _) => GetSemanticTargetForGeneration(ctx));
+
+        var compilationAndStructs = context.CompilationProvider.Combine(structDeclarations.Collect());
+
+        context.RegisterSourceOutput(compilationAndStructs, static (spc, source) => Execute(source.Left, source.Right, spc));
     }
 
 

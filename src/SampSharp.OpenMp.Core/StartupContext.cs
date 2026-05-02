@@ -34,35 +34,6 @@ public sealed class StartupContext : IStartupContext
         SampSharpExceptionHandler.SetExceptionHandler(_unhandledExceptionHandler);
     }
 
-    /// <inheritdoc />
-    public ICore Core { get; }
-
-    /// <inheritdoc />
-    public IComponentList ComponentList { get; }
-
-    /// <inheritdoc />
-    public SampSharpInfo Info { get; }
-
-    /// <inheritdoc />
-    public IStartup Configurator => _configurator ?? throw new InvalidOperationException("The configurator has not been set.");
-
-    /// <inheritdoc />
-    public ExceptionHandler UnhandledExceptionHandler
-    {
-        get => _unhandledExceptionHandler;
-        set
-        {
-            _unhandledExceptionHandler = value;
-            SampSharpExceptionHandler.SetExceptionHandler(value);
-        }
-    }
-
-    /// <inheritdoc />
-    public event EventHandler? Cleanup;
-
-    /// <inheritdoc />
-    public event EventHandler? Initialized;
-
     /// <summary>
     /// Internal method. Do not invoke manually.
     /// </summary>
@@ -116,4 +87,33 @@ public sealed class StartupContext : IStartupContext
             Environment.FailFast(message);
         }
     }
+
+    /// <inheritdoc />
+    public ICore Core { get; }
+
+    /// <inheritdoc />
+    public IComponentList ComponentList { get; }
+
+    /// <inheritdoc />
+    public SampSharpInfo Info { get; }
+
+    /// <inheritdoc />
+    public IStartup Configurator => _configurator ?? throw new InvalidOperationException("The configurator has not been set.");
+
+    /// <inheritdoc />
+    public ExceptionHandler UnhandledExceptionHandler
+    {
+        get => _unhandledExceptionHandler;
+        set
+        {
+            _unhandledExceptionHandler = value;
+            SampSharpExceptionHandler.SetExceptionHandler(value);
+        }
+    }
+
+    /// <inheritdoc />
+    public event EventHandler? Cleanup;
+
+    /// <inheritdoc />
+    public event EventHandler? Initialized;
 }

@@ -9,24 +9,6 @@ namespace SampSharp.SourceGenerator.Marshalling.ShapeGenerators;
 
 public class StatefulManagedToUnmanaged(IMarshalShapeGenerator innerGenerator) : IMarshalShapeGenerator
 {
-    public bool UsesNativeIdentifier => true;
-
-    public TypeSyntax GetNativeType(IdentifierStubContext context)
-    {
-        return context.NativeType!.TypeName;
-    }
-
-    public IEnumerable<StatementSyntax> Generate(MarshalPhase phase, IdentifierStubContext context)
-    {
-        return phase switch
-        {
-            MarshalPhase.Setup => Setup(context),
-            MarshalPhase.Marshal => Marshal(context),
-            MarshalPhase.PinnedMarshal => PinnedMarshal(context),
-            _ => innerGenerator.Generate(phase, context)
-        };
-    }
-
     private static IEnumerable<StatementSyntax> PinnedMarshal(IdentifierStubContext context)
     {
         // native = marshaller.ToUnmanaged();
@@ -67,5 +49,23 @@ public class StatefulManagedToUnmanaged(IMarshalShapeGenerator innerGenerator) :
         }
 
         yield return local;
+    }
+
+    public bool UsesNativeIdentifier => true;
+
+    public TypeSyntax GetNativeType(IdentifierStubContext context)
+    {
+        return context.NativeType!.TypeName;
+    }
+
+    public IEnumerable<StatementSyntax> Generate(MarshalPhase phase, IdentifierStubContext context)
+    {
+        return phase switch
+        {
+            MarshalPhase.Setup => Setup(context),
+            MarshalPhase.Marshal => Marshal(context),
+            MarshalPhase.PinnedMarshal => PinnedMarshal(context),
+            _ => innerGenerator.Generate(phase, context)
+        };
     }
 }

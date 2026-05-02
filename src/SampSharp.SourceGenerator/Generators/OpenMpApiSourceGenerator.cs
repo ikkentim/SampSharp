@@ -30,25 +30,6 @@ namespace SampSharp.SourceGenerator.Generators;
 [Generator]
 public class OpenMpApiSourceGenerator : IIncrementalGenerator
 {
-    public void Initialize(IncrementalGeneratorInitializationContext context)
-    {
-        var attributedStructs = context.SyntaxProvider.ForAttributeWithMetadataName(
-                Constants.ApiAttributeFQN,
-                static (s, _) => s is StructDeclarationSyntax str && str.IsPartial(), 
-                static (ctx, ct) => GetStructDeclaration(ctx, ct))
-            .Where(x => x is not null);
-
-        context.RegisterSourceOutput(attributedStructs, (ctx, info) =>
-        {
-            var unit = GenerateUnit(info);
-
-            var sourceText = unit.NormalizeWhitespace(elasticTrivia: true)
-                .GetText(Encoding.UTF8);
-
-            ctx.AddSource($"{info!.Symbol.Name}.g.cs", sourceText);
-        });
-    }
-
     private static CompilationUnitSyntax GenerateUnit(StructStubGenerationContext? info)
     {
         var modifiers = info!.Syntax.Modifiers;
@@ -274,5 +255,24 @@ public class OpenMpApiSourceGenerator : IIncrementalGenerator
             AddImplementingTypes(implementingTypes, nestedAttribute!, [..castPath, def], trace, structDecl);
 
         }
+    }
+
+    public void Initialize(IncrementalGeneratorInitializationContext context)
+    {
+        var attributedStructs = context.SyntaxProvider.ForAttributeWithMetadataName(
+                Constants.ApiAttributeFQN,
+                static (s, _) => s is StructDeclarationSyntax str && str.IsPartial(), 
+                static (ctx, ct) => GetStructDeclaration(ctx, ct))
+            .Where(x => x is not null);
+
+        context.RegisterSourceOutput(attributedStructs, (ctx, info) =>
+        {
+            var unit = GenerateUnit(info);
+
+            var sourceText = unit.NormalizeWhitespace(elasticTrivia: true)
+                .GetText(Encoding.UTF8);
+
+            ctx.AddSource($"{info!.Symbol.Name}.g.cs", sourceText);
+        });
     }
 }

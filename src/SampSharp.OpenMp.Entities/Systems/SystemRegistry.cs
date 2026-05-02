@@ -9,33 +9,6 @@ internal sealed class SystemRegistry(IServiceProvider serviceProvider) : ISystem
     private List<Action>? _handlers = [];
     private Type[]? _systemTypes;
 
-    public ReadOnlyMemory<ISystem> Get(Type type)
-    {
-        return _data?.TryGetValue(type, out var value) ?? false ? value : default(ReadOnlyMemory<ISystem>);
-    }
-
-    public ReadOnlyMemory<ISystem> Get<TSystem>() where TSystem : ISystem
-    {
-        return Get(typeof(TSystem));
-    }
-
-    public ReadOnlyMemory<Type> GetSystemTypes()
-    {
-        return _systemTypes?.AsMemory() ?? default;
-    }
-
-    public void Register(Action handler)
-    {
-        if (_handlers != null)
-        {
-            _handlers.Add(handler);
-        }
-        else
-        {
-            handler();
-        }
-    }
-
     public void LoadSystems()
     {
         if (_data != null)
@@ -102,6 +75,33 @@ internal sealed class SystemRegistry(IServiceProvider serviceProvider) : ISystem
             }
 
             _handlers = null;
+        }
+    }
+
+    public ReadOnlyMemory<ISystem> Get(Type type)
+    {
+        return _data?.TryGetValue(type, out var value) ?? false ? value : default(ReadOnlyMemory<ISystem>);
+    }
+
+    public ReadOnlyMemory<ISystem> Get<TSystem>() where TSystem : ISystem
+    {
+        return Get(typeof(TSystem));
+    }
+
+    public ReadOnlyMemory<Type> GetSystemTypes()
+    {
+        return _systemTypes?.AsMemory() ?? default;
+    }
+
+    public void Register(Action handler)
+    {
+        if (_handlers != null)
+        {
+            _handlers.Add(handler);
+        }
+        else
+        {
+            handler();
         }
     }
 }

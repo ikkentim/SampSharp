@@ -1,6 +1,4 @@
-﻿using JetBrains.Annotations;
-
-namespace SampSharp.Entities;
+﻿namespace SampSharp.Entities;
 
 /// <summary>
 /// An attribute which indicates the method should be invoked at a specified interval.

@@ -14,12 +14,6 @@ internal class SendOrPostCallbackItem : IDisposable
 
     public WaitHandle ExecutionCompleteWaitHandle => _asyncWaitHandle;
 
-    public void Dispose()
-    {
-        _asyncWaitHandle?.Dispose();
-        GC.SuppressFinalize(this);
-    }
-
     public void Set(ExecutionType executionType, SendOrPostCallback method, object? state, ObjectPool<SendOrPostCallbackItem>? returnToPool)
     {
         _executionType = executionType;
@@ -65,5 +59,11 @@ internal class SendOrPostCallbackItem : IDisposable
         {
             _pool?.Return(this);
         }
+    }
+
+    public void Dispose()
+    {
+        _asyncWaitHandle?.Dispose();
+        GC.SuppressFinalize(this);
     }
 }

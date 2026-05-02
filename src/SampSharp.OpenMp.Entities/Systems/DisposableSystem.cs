@@ -8,25 +8,6 @@ public abstract class DisposableSystem : ISystem, IDisposable
     private readonly List<IDisposable> _disposables = [];
     private bool _disposed;
 
-    /// <inheritdoc />
-    public void Dispose()
-    {
-        if (_disposed)
-        {
-            return;
-        }
-
-        try
-        {
-            OnDispose();
-        }
-        finally
-        {
-            _disposed = true;
-            GC.SuppressFinalize(this);
-        }
-    }
-
     /// <summary>
     /// Adds a disposable object to the list of objects to dispose when this system is disposed.
     /// </summary>
@@ -65,6 +46,25 @@ public abstract class DisposableSystem : ISystem, IDisposable
         if (errors?.Count > 0)
         {
             throw new AggregateException(errors);
+        }
+    }
+
+    /// <inheritdoc />
+    public void Dispose()
+    {
+        if (_disposed)
+        {
+            return;
+        }
+
+        try
+        {
+            OnDispose();
+        }
+        finally
+        {
+            _disposed = true;
+            GC.SuppressFinalize(this);
         }
     }
 }

@@ -134,6 +134,44 @@ public class TablistDialog : IDialog<TablistDialogResponse>, IEnumerable<Tablist
         }
     }
 
+    /// <summary>
+    /// Adds a row to the list with the specified <paramref name="columns" />.
+    /// </summary>
+    /// <param name="columns">The columns of the row to add.</param>
+    /// <exception cref="ArgumentNullException">Thrown if <paramref name="columns" /> is null.</exception>
+    public void Add(params string[] columns)
+    {
+        ArgumentNullException.ThrowIfNull(columns);
+
+        Rows.Add(columns);
+    }
+
+    /// <summary>
+    /// Adds a row to the list with the specified <paramref name="columns" /> and <paramref name="tag" />.
+    /// </summary>
+    /// <param name="columns">The columns of the row to add.</param>
+    /// <param name="tag">
+    /// The tag of the row to add. The tag can be used so associate data with this row which can be used retrieved when the user responds to the
+    /// dialog.
+    /// </param>
+    /// <exception cref="ArgumentNullException">Thrown if <paramref name="columns" /> is null.</exception>
+    public void Add(string[] columns, object tag)
+    {
+        ArgumentNullException.ThrowIfNull(columns);
+
+        Rows.Add(new TablistDialogRow(columns) { Tag = tag });
+    }
+
+    /// <summary>
+    /// Adds the specified row to the list.
+    /// </summary>
+    /// <param name="row">The row to add.</param>
+    /// <exception cref="ArgumentNullException">Thrown if <paramref name="row" /> is null.</exception>
+    public void Add(TablistDialogRow row)
+    {
+        Rows.Add(row);
+    }
+
     DialogStyle IDialog.Style => _header == null
         ? DialogStyle.Tablist
         : DialogStyle.TablistHeaders;
@@ -186,43 +224,5 @@ public class TablistDialog : IDialog<TablistDialogResponse>, IEnumerable<Tablist
     IEnumerator IEnumerable.GetEnumerator()
     {
         return GetEnumerator();
-    }
-
-    /// <summary>
-    /// Adds a row to the list with the specified <paramref name="columns" />.
-    /// </summary>
-    /// <param name="columns">The columns of the row to add.</param>
-    /// <exception cref="ArgumentNullException">Thrown if <paramref name="columns" /> is null.</exception>
-    public void Add(params string[] columns)
-    {
-        ArgumentNullException.ThrowIfNull(columns);
-
-        Rows.Add(columns);
-    }
-
-    /// <summary>
-    /// Adds a row to the list with the specified <paramref name="columns" /> and <paramref name="tag" />.
-    /// </summary>
-    /// <param name="columns">The columns of the row to add.</param>
-    /// <param name="tag">
-    /// The tag of the row to add. The tag can be used so associate data with this row which can be used retrieved when the user responds to the
-    /// dialog.
-    /// </param>
-    /// <exception cref="ArgumentNullException">Thrown if <paramref name="columns" /> is null.</exception>
-    public void Add(string[] columns, object tag)
-    {
-        ArgumentNullException.ThrowIfNull(columns);
-
-        Rows.Add(new TablistDialogRow(columns) { Tag = tag });
-    }
-
-    /// <summary>
-    /// Adds the specified row to the list.
-    /// </summary>
-    /// <param name="row">The row to add.</param>
-    /// <exception cref="ArgumentNullException">Thrown if <paramref name="row" /> is null.</exception>
-    public void Add(TablistDialogRow row)
-    {
-        Rows.Add(row);
     }
 }

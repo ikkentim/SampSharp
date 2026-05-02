@@ -39,17 +39,6 @@ public abstract partial class Extension : IDisposable
     protected bool IsDisposed => !_unmanagedCounterpart.HasValue;
 
     /// <summary>
-    /// Detaches this extension from the extensible it is currently applied to and destroys all resources held by this extension.
-    /// </summary>
-    public void Dispose()
-    {
-        Detach();
-
-        FreeUnmanagedResources();
-        GC.SuppressFinalize(this);
-    }
-
-    /// <summary>
     /// Finalizes an instance of the <see cref="Extension" /> class.
     /// </summary>
     ~Extension()
@@ -194,4 +183,15 @@ public abstract partial class Extension : IDisposable
     [LibraryImport("SampSharp", EntryPoint = "ManagedExtensionImpl_getHandle")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial nint GetHandle(nint handle);
+
+    /// <summary>
+    /// Detaches this extension from the extensible it is currently applied to and destroys all resources held by this extension.
+    /// </summary>
+    public void Dispose()
+    {
+        Detach();
+
+        FreeUnmanagedResources();
+        GC.SuppressFinalize(this);
+    }
 }
