@@ -146,7 +146,7 @@ public class OpenMpApiSourceGenerator : IIncrementalGenerator
             ..InterfaceMemberGenerator.GenerateNativeMethods(ctx)
         ]);
     }
-    
+
     /// <summary>
     /// Returns the struct generation context for a code gen context.
     /// </summary>

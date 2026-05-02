@@ -11,18 +11,18 @@ public sealed class ClassScanner
     private List<Type> _classAttributes = [];
     private List<Type> _classImplements = [];
     private List<Type> _classTypes = [];
+    private bool _includeAbstract;
     private bool _includeNonPublicMembers;
     private List<Type> _memberAttributes = [];
-    private bool _includeAbstract;
+
+    private ClassScanner()
+    {
+    }
 
     private BindingFlags MemberBindingFlags =>
         BindingFlags.Instance |
         BindingFlags.Public |
         (_includeNonPublicMembers ? BindingFlags.NonPublic : BindingFlags.Default);
-
-    private ClassScanner()
-    {
-    }
 
     /// <summary>
     /// Creates a new <see cref="ClassScanner" /> instance.
@@ -32,6 +32,7 @@ public sealed class ClassScanner
     {
         return new ClassScanner();
     }
+
     /// <summary>
     /// Includes the specified <paramref name="assembly" /> in the scan.
     /// </summary>

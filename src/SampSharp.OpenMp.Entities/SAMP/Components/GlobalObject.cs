@@ -9,8 +9,8 @@ namespace SampSharp.Entities.SAMP;
 public class GlobalObject : WorldEntity
 {
     private readonly IOmpEntityProvider _entityProvider;
-    private readonly IObjectsComponent _objects;
     private readonly IObject _object;
+    private readonly IObjectsComponent _objects;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="GlobalObject" /> class.
@@ -41,6 +41,51 @@ public class GlobalObject : WorldEntity
     /// Gets the draw distance of this object.
     /// </summary>
     public virtual float DrawDistance => _object.GetDrawDistance();
+
+    /// <summary>
+    /// Gets or sets a value indicating whether this global object collides with players' cameras.
+    /// </summary>
+    public virtual bool HasCameraCollision
+    {
+        get => _object.GetCameraCollision();
+        set => _object.SetCameraCollision(value);
+    }
+
+    /// <summary>
+    /// Gets the <see cref="Player" /> this object is attached to, or <see langword="null" /> if it is not attached to a player.
+    /// </summary>
+    public virtual Player? AttachedPlayer
+    {
+        get
+        {
+            var data = _object.GetAttachmentData();
+            return data.Type == AttachmentType.Player ? _entityProvider.GetPlayer(data.Id) : null;
+        }
+    }
+
+    /// <summary>
+    /// Gets the <see cref="Vehicle" /> this object is attached to, or <see langword="null" /> if it is not attached to a vehicle.
+    /// </summary>
+    public virtual Vehicle? AttachedVehicle
+    {
+        get
+        {
+            var data = _object.GetAttachmentData();
+            return data.Type == AttachmentType.Vehicle ? _entityProvider.GetVehicle(data.Id) : null;
+        }
+    }
+
+    /// <summary>
+    /// Gets the <see cref="GlobalObject" /> this object is attached to, or <see langword="null" /> if it is not attached to another object.
+    /// </summary>
+    public virtual GlobalObject? AttachedObject
+    {
+        get
+        {
+            var data = _object.GetAttachmentData();
+            return data.Type == AttachmentType.Object ? _entityProvider.GetObject(data.Id) : null;
+        }
+    }
 
     /// <summary>
     /// Moves this global object to the specified <paramref name="position" /> and <paramref name="rotation" /> with the specified <paramref name="speed" />.
@@ -124,57 +169,12 @@ public class GlobalObject : WorldEntity
     }
 
     /// <summary>
-    /// Gets or sets a value indicating whether this global object collides with players' cameras.
-    /// </summary>
-    public virtual bool HasCameraCollision
-    {
-        get => _object.GetCameraCollision();
-        set => _object.SetCameraCollision(value);
-    }
-
-    /// <summary>
     /// Gets the current movement data of this global object.
     /// </summary>
     /// <returns>The <see cref="ObjectMoveData" /> describing the current move target.</returns>
     public virtual ObjectMoveData GetMovingData()
     {
         return _object.GetMovingData();
-    }
-
-    /// <summary>
-    /// Gets the <see cref="Player" /> this object is attached to, or <see langword="null" /> if it is not attached to a player.
-    /// </summary>
-    public virtual Player? AttachedPlayer
-    {
-        get
-        {
-            var data = _object.GetAttachmentData();
-            return data.Type == AttachmentType.Player ? _entityProvider.GetPlayer(data.Id) : null;
-        }
-    }
-
-    /// <summary>
-    /// Gets the <see cref="Vehicle" /> this object is attached to, or <see langword="null" /> if it is not attached to a vehicle.
-    /// </summary>
-    public virtual Vehicle? AttachedVehicle
-    {
-        get
-        {
-            var data = _object.GetAttachmentData();
-            return data.Type == AttachmentType.Vehicle ? _entityProvider.GetVehicle(data.Id) : null;
-        }
-    }
-
-    /// <summary>
-    /// Gets the <see cref="GlobalObject" /> this object is attached to, or <see langword="null" /> if it is not attached to another object.
-    /// </summary>
-    public virtual GlobalObject? AttachedObject
-    {
-        get
-        {
-            var data = _object.GetAttachmentData();
-            return data.Type == AttachmentType.Object ? _entityProvider.GetObject(data.Id) : null;
-        }
     }
 
     /// <summary>

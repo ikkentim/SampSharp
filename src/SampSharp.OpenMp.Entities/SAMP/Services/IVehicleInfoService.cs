@@ -29,14 +29,14 @@ public interface IVehicleInfoService
     /// <param name="vehicleModel">The model of the vehicle.</param>
     /// <param name="componentId">The component to check.</param>
     /// <returns><see langword="true" /> if the component is valid for the vehicle model; <see langword="false" /> otherwise.</returns>
-    public bool IsValidComponentForVehicle(VehicleModelType vehicleModel, int componentId);
+    bool IsValidComponentForVehicle(VehicleModelType vehicleModel, int componentId);
 
     /// <summary>
     /// Gets a set of random colors for the specified <paramref name="vehicleModel" /> as they would naturally appear in the game.
     /// </summary>
     /// <param name="vehicleModel">The model of the vehicle.</param>
     /// <returns>The vehicle colors (color 1 - 4)</returns>
-    public (int, int, int, int) GetRandomVehicleColor(VehicleModelType vehicleModel);
+    (int, int, int, int) GetRandomVehicleColor(VehicleModelType vehicleModel);
 
     /// <summary>
     /// Gets the <see cref="Color" /> representation of the specified <paramref name="vehicleColor" />.
@@ -44,12 +44,12 @@ public interface IVehicleInfoService
     /// <param name="vehicleColor">The vehicle color.</param>
     /// <param name="alpha">The alpha value of the result.</param>
     /// <returns>A <see cref="Color" /> value representing the specified vehicle color.</returns>
-    public Color GetColorFromVehicleColor(int vehicleColor, uint alpha = 0xff);
+    Color GetColorFromVehicleColor(int vehicleColor, uint alpha = 0xff);
 
     /// <summary>
     /// Gets the number of passenger seats in the specified <paramref name="vehicleModel" />.
     /// </summary>
     /// <param name="vehicleModel">The model of the vehicle.</param>
     /// <returns>The number of passenger seats excluding the driver seat.</returns>
-    public int GetPassengerSeatCount(VehicleModelType vehicleModel);
+    int GetPassengerSeatCount(VehicleModelType vehicleModel);
 }

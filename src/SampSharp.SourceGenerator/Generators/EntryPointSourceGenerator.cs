@@ -189,6 +189,4 @@ public class EntryPointSourceGenerator : IIncrementalGenerator
 
         return sourceText;
     }
-
-
 }

@@ -3,6 +3,4 @@
 namespace TestMode.OpenMp.Entities;
 
 public class AdminComponent : Component
-{
-
-}
+{}

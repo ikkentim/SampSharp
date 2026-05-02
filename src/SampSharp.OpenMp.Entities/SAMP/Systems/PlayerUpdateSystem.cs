@@ -5,8 +5,8 @@ namespace SampSharp.Entities.SAMP;
 
 internal class PlayerUpdateSystem : DisposableSystem, IPlayerUpdateEventHandler
 {
-    private readonly IEventDispatcher _eventDispatcher;
     private readonly IOmpEntityProvider _entityProvider;
+    private readonly IEventDispatcher _eventDispatcher;
 
     public PlayerUpdateSystem(IEventDispatcher eventDispatcher, IOmpEntityProvider entityProvider, SampSharpEnvironment environment)
     {

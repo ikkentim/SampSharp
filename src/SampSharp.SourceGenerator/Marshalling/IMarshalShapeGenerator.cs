@@ -9,5 +9,5 @@ public interface IMarshalShapeGenerator
 
     TypeSyntax GetNativeType(IdentifierStubContext context);
 
-    public IEnumerable<StatementSyntax> Generate(MarshalPhase phase, IdentifierStubContext context);
+    IEnumerable<StatementSyntax> Generate(MarshalPhase phase, IdentifierStubContext context);
 }

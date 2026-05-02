@@ -2,6 +2,12 @@
 
 internal class TimerInfo
 {
+    public long IntervalTicks;
+    public Action Invoke;
+    public bool IsActive;
+    public long NextTick;
+    public TimerReference? Reference;
+
     public TimerInfo(long intervalTicks, long nextTick, Action invoke, bool isActive)
     {
         IntervalTicks = intervalTicks;
@@ -9,10 +15,4 @@ internal class TimerInfo
         Invoke = invoke;
         IsActive = isActive;
     }
-
-    public long IntervalTicks;
-    public long NextTick;
-    public Action Invoke;
-    public bool IsActive;
-    public TimerReference? Reference;
 }

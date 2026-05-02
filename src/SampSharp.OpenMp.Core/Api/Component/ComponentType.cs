@@ -16,5 +16,5 @@ public enum ComponentType
     /// <summary>
     /// The component is a pool component.
     /// </summary>
-    Pool,
+    Pool
 }

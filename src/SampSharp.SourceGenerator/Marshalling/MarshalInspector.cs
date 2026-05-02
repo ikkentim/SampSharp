@@ -78,7 +78,7 @@ public static class MarshalInspector
             });
     }
 
-    
+
     private static bool IsSpanByte(ITypeSymbol type)
     {
         return type is INamedTypeSymbol named && named.ToDisplayString() == Constants.SpanOfBytesFQN;
@@ -106,7 +106,7 @@ public static class MarshalInspector
             });
 
     }
-    
+
     private static IMethodSymbol? GetMethod(ITypeSymbol type, bool stateful, string name, bool returnsByRef, params Func<IParameterSymbol, bool>[] paramTypes)
     {
         return type

@@ -4,8 +4,8 @@ namespace SampSharp.Entities.SAMP;
 
 internal class GangZoneSystem : DisposableSystem, IGangZoneEventHandler
 {
-    private readonly IEventDispatcher _eventDispatcher;
     private readonly IOmpEntityProvider _entityProvider;
+    private readonly IEventDispatcher _eventDispatcher;
 
     public GangZoneSystem(IEventDispatcher eventDispatcher, IOmpEntityProvider entityProvider, SampSharpEnvironment environment)
     {

@@ -4,8 +4,8 @@ namespace SampSharp.Entities.SAMP;
 
 internal class PlayerSpawnSystem : DisposableSystem, IPlayerSpawnEventHandler
 {
-    private readonly IEventDispatcher _eventDispatcher;
     private readonly IOmpEntityProvider _entityProvider;
+    private readonly IEventDispatcher _eventDispatcher;
 
     public PlayerSpawnSystem(IEventDispatcher eventDispatcher, IOmpEntityProvider entityProvider, SampSharpEnvironment environment)
     {

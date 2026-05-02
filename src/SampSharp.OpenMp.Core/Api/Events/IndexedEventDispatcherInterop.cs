@@ -13,7 +13,7 @@ internal partial class IndexedEventDispatcherInterop
     [LibraryImport("SampSharp", EntryPoint = "IIndexedEventDispatcher_count_index")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial Size Count(nint dispatcherHandle, Size index);
-    
+
     [LibraryImport("SampSharp", EntryPoint = "IIndexedEventDispatcher_addEventHandler")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.Bool)]
@@ -28,5 +28,4 @@ internal partial class IndexedEventDispatcherInterop
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.Bool)]
     public static partial bool HasEventHandler(nint dispatcherHandle, nint handlerHandle, Size index, out EventPriority priority);
-
 }

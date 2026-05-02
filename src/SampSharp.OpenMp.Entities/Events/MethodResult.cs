@@ -13,6 +13,7 @@ public sealed record MethodResult(bool Value)
     /// Singleton "true" instance.
     /// </summary>
     public static MethodResult True { get; } = new(true);
+
     /// <summary>
     /// Singleton "false" instance.
     /// </summary>

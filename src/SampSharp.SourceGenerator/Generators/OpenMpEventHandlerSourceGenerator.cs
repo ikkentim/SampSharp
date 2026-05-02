@@ -180,7 +180,7 @@ public class OpenMpEventHandlerSourceGenerator : IIncrementalGenerator
                     XmlText("Gets the singleton instance of the "),
                     TriviaFactory.SeeElement(
                         IdentifierName(ClassEventHandlerMarshaller)),
-                    XmlText("."),
+                    XmlText(".")
                 ], []))
             .WithSemicolonToken(
                 Token(SyntaxKind.SemicolonToken));
@@ -368,7 +368,7 @@ public class OpenMpEventHandlerSourceGenerator : IIncrementalGenerator
             externReturnType: IntPtrType, 
             parameters: parameters);
     }
-    
+
     private static LocalFunctionStatementSyntax GenerateExternFunctionDelete(EventInterfaceStubGenerationContext ctx)
     {
         return GenerateExternFunction(

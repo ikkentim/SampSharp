@@ -4,12 +4,12 @@ namespace SampSharp.Entities.SAMP;
 
 internal class DialogService : IDialogService
 {
-    private readonly IEntityManager _entityManager;
-
     /// <summary>
     /// The dialog ID used by the dialog service.
     /// </summary>
     public const int DialogId = 10000;
+
+    private readonly IEntityManager _entityManager;
 
     public DialogService(IEntityManager entityManager)
     {
@@ -45,7 +45,7 @@ internal class DialogService : IDialogService
             responseHandler?.Invoke(translated);
         }
     }
-    
+
     public Task<TResponse> ShowAsync<TResponse>(Player player, IDialog<TResponse> dialog) where TResponse : struct
     {
         ArgumentNullException.ThrowIfNull(player);

@@ -11,7 +11,6 @@ namespace SampSharp.Entities.SAMP;
 /// <param name="handler">The response handler.</param>
 public class VisibleDialog(IDialog dialog, Action<DialogResult> handler) : Component
 {
-
     /// <summary>
     /// Gets the visible dialog.
     /// </summary>
@@ -26,7 +25,7 @@ public class VisibleDialog(IDialog dialog, Action<DialogResult> handler) : Compo
     /// Gets or sets a value indicating whether a response has been received.
     /// </summary>
     public bool ResponseReceived { get; set; }
-    
+
     /// <inheritdoc />
     protected override void OnDestroyComponent()
     {

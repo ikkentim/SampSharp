@@ -13,10 +13,10 @@ public abstract partial class Extension : IDisposable
     // Must keep a reference to this delegate to prevent it from being garbage collected
     // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
     private readonly Action _free;
+    private IExtensible? _appliedTo;
+    private GCHandle? _gcHandle;
 
     private nint? _unmanagedCounterpart;
-    private GCHandle? _gcHandle;
-    private IExtensible? _appliedTo;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Extension" /> class.
@@ -30,16 +30,6 @@ public abstract partial class Extension : IDisposable
 
         _gcHandle = handle;
         _unmanagedCounterpart = CreateUnmanaged(id, free, GCHandle.ToIntPtr(handle));
-    }
-
-    /// <summary>
-    /// Finalizes an instance of the <see cref="Extension" /> class.
-    /// </summary>
-    ~Extension()
-    {
-        // Theoretically, this should never be called, as one of the unmanaged resources is a GC handle pointing to this
-        // object. But just to be sure, we'll free the resources here as well.
-        FreeUnmanagedResources();
     }
 
     /// <summary>
@@ -57,6 +47,16 @@ public abstract partial class Extension : IDisposable
 
         FreeUnmanagedResources();
         GC.SuppressFinalize(this);
+    }
+
+    /// <summary>
+    /// Finalizes an instance of the <see cref="Extension" /> class.
+    /// </summary>
+    ~Extension()
+    {
+        // Theoretically, this should never be called, as one of the unmanaged resources is a GC handle pointing to this
+        // object. But just to be sure, we'll free the resources here as well.
+        FreeUnmanagedResources();
     }
 
     /// <summary>
@@ -190,7 +190,7 @@ public abstract partial class Extension : IDisposable
     [LibraryImport("SampSharp", EntryPoint = "ManagedExtensionImpl_delete")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial void Delete(nint handle);
-    
+
     [LibraryImport("SampSharp", EntryPoint = "ManagedExtensionImpl_getHandle")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial nint GetHandle(nint handle);

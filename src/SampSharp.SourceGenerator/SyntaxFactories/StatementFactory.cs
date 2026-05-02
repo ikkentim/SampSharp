@@ -58,6 +58,7 @@ public static class StatementFactory
                 method,
                 arguments));
     }
+
     public static ExpressionStatementSyntax Invoke(string target, string method, params ArgumentSyntax[] arguments)
     {
         return ExpressionStatement(

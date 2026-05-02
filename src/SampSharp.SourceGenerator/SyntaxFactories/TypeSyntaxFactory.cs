@@ -104,7 +104,7 @@ public static class TypeSyntaxFactory
 
         return result;
     }
-    
+
     public static TypeSyntax GenericType(string typeFQN, TypeSyntax typeArgument)
     {
         return GenericName(

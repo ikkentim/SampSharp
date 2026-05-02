@@ -8,8 +8,8 @@ namespace TestMode.UnitTests;
 
 public class PlayerObjectTests : TestBase
 {
-    private readonly IWorldService _worldService;
     private readonly PlayerObject _object;
+    private readonly IWorldService _worldService;
 
     public PlayerObjectTests()
     {
@@ -45,7 +45,7 @@ public class PlayerObjectTests : TestBase
         _object.RotationEuler = new Vector3(20, 30, 40);
         _object.RotationEuler.ShouldBe(new Vector3(20, 30, 40), tolerance: 0.8f);
     }
-    
+
     [Fact]
     public void Move_and_Stop_should_succeed()
     {
@@ -68,7 +68,7 @@ public class PlayerObjectTests : TestBase
     {
         _object.DisableCameraCollisions();
     }
-    
+
     [Fact]
     public void SetMaterial_should_succeed()
     {
@@ -116,7 +116,7 @@ public class PlayerObjectTests : TestBase
             obj.Destroy();
         }
     }
-      
+
     [Fact]
     public void IsMoving_should_return_correct_value()
     {

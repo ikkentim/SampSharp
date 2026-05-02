@@ -4,8 +4,8 @@ namespace SampSharp.Entities.SAMP;
 
 internal class CustomModelsSystem : DisposableSystem, IPlayerModelsEventHandler
 {
-    private readonly IEventDispatcher _eventDispatcher;
     private readonly IOmpEntityProvider _entityProvider;
+    private readonly IEventDispatcher _eventDispatcher;
 
     public CustomModelsSystem(IEventDispatcher eventDispatcher, IOmpEntityProvider entityProvider,
         SampSharpEnvironment environment)

@@ -10,8 +10,8 @@ namespace SampSharp.Entities.SAMP;
 public abstract class BaseGangZone : IdProvider
 {
     private readonly IOmpEntityProvider _entityProvider;
-    private readonly IGangZonesComponent _gangZones;
     private readonly IGangZone _gangZone;
+    private readonly IGangZonesComponent _gangZones;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="BaseGangZone" /> class.

@@ -105,6 +105,7 @@ public class FullyQualifiedTypeRewriter : CSharpSyntaxRewriter
 
         return base.VisitGenericName(node);
     }
+
     public override SyntaxNode? VisitInvocationExpression(InvocationExpressionSyntax node)
     {
         if (node.Expression is MemberAccessExpressionSyntax { Name: GenericNameSyntax memberGenericName } memberAccess)

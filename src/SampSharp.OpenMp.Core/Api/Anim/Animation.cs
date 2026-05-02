@@ -1819,7 +1819,7 @@ public static class Animation
         "RUNNINGMAN:DANCE_B15",
         "RUNNINGMAN:DANCE_B16",
         "RUNNINGMAN:DANCE_LOOP",
-        "SAMP:FISHINGIDLE",
+        "SAMP:FISHINGIDLE"
     ];
 
     private static readonly HashSet<string> _animLibs =

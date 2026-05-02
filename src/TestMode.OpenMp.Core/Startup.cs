@@ -13,6 +13,59 @@ public class Startup : IStartup,
     IPlayerConnectEventHandler,
     IPoolEventHandler<IPlayer>
 {
+    public bool OnConsoleText(string command, string parameters, ref ConsoleCommandSenderData sender)
+    {
+        if (command == "banana")
+        {
+            Console.WriteLine($"BANANA!!! {parameters}");
+            return true;
+        }
+        
+        Console.WriteLine($"cmd: {command}; params: {parameters}");
+
+        
+        return false;
+    }
+
+    public void OnRconLoginAttempt(IPlayer player, string password, bool success)
+    {
+        Console.WriteLine($"login attempt by player {player.GetName()}({player.Handle:X}) w/pw {password}; {success}");
+    }
+
+    public void OnConsoleCommandListRequest(FlatHashSetStringView commands)
+    {
+        commands.Emplace("banana");
+    }
+
+    public void OnTick(Microseconds elapsed, TimePoint now)
+    {
+    }
+
+    public void OnIncomingConnection(IPlayer player, string ipAddress, ushort port)
+    {
+    }
+
+    public void OnPlayerConnect(IPlayer player)
+    {
+        Console.WriteLine($"Player connected: {player.GetNetworkData().Value.networkID.address.ToAddress()}");
+    }
+
+    public void OnPlayerDisconnect(IPlayer player, PeerDisconnectReason reason)
+    {
+    }
+
+    public void OnPlayerClientInit(IPlayer player)
+    {
+    }
+
+    public void OnPoolEntryCreated(IPlayer entry)
+    {
+    }
+
+    public void OnPoolEntryDestroyed(IPlayer entry)
+    {
+    }
+
     public void Initialize(IStartupContext context)
     {
         context.UseOpenMpLogger();
@@ -129,58 +182,5 @@ public class Startup : IStartup,
         {
             Console.WriteLine($"TD: {td.GetID()}, prev mdl: {td.GetPreviewModel()}");
         }
-    }
-
-    public void OnTick(Microseconds elapsed, TimePoint now)
-    {
-    }
-    
-    public bool OnConsoleText(string command, string parameters, ref ConsoleCommandSenderData sender)
-    {
-        if (command == "banana")
-        {
-            Console.WriteLine($"BANANA!!! {parameters}");
-            return true;
-        }
-        
-        Console.WriteLine($"cmd: {command}; params: {parameters}");
-
-        
-        return false;
-    }
-
-    public void OnRconLoginAttempt(IPlayer player, string password, bool success)
-    {
-        Console.WriteLine($"login attempt by player {player.GetName()}({player.Handle:X}) w/pw {password}; {success}");
-    }
-
-    public void OnConsoleCommandListRequest(FlatHashSetStringView commands)
-    {
-        commands.Emplace("banana");
-    }
-
-    public void OnIncomingConnection(IPlayer player, string ipAddress, ushort port)
-    {
-    }
-
-    public void OnPlayerConnect(IPlayer player)
-    {
-        Console.WriteLine($"Player connected: {player.GetNetworkData().Value.networkID.address.ToAddress()}");
-    }
-
-    public void OnPlayerDisconnect(IPlayer player, PeerDisconnectReason reason)
-    {
-    }
-
-    public void OnPlayerClientInit(IPlayer player)
-    {
-    }
-
-    public void OnPoolEntryCreated(IPlayer entry)
-    {
-    }
-
-    public void OnPoolEntryDestroyed(IPlayer entry)
-    {
     }
 }

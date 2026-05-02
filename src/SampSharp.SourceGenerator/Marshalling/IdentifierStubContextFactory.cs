@@ -3,7 +3,7 @@
 namespace SampSharp.SourceGenerator.Marshalling;
 
 public class IdentifierStubContextFactory
-{    
+{
     //
     // stages:
     // during context building:

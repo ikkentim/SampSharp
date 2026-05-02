@@ -23,7 +23,7 @@ public class NumberedTypeSourceGenerator : IIncrementalGenerator
 
         context.RegisterSourceOutput(compilationAndStructs, static (spc, source) => Execute(source.Left, source.Right, spc));
     }
-    
+
     private static StructData GetSemanticTargetForGeneration(GeneratorAttributeSyntaxContext context)
     {
         var attributes = new AttributeData[context.Attributes.Length];

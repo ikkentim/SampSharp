@@ -173,7 +173,7 @@ public class TablistDialog : IDialog<TablistDialogResponse>, IEnumerable<Tablist
 
         return new TablistDialogResponse(dialogResult.Response, index, item);
     }
-    
+
     /// <summary>
     /// Returns an enumerator that iterates through the rows of this tablist dialog.
     /// </summary>

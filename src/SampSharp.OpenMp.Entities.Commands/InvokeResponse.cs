@@ -8,5 +8,5 @@ public enum InvokeResponse
     /// <summary>No command matches the input text.</summary>
     CommandNotFound,
     /// <summary>Command was found but its arguments could not be parsed.</summary>
-    InvalidArguments,
+    InvalidArguments
 }

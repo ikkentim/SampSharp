@@ -9,7 +9,7 @@ namespace TestMode.UnitTests;
 public class TextDrawTests : TestBase
 {
     private readonly TextDraw _textDraw;
-    
+
     public TextDrawTests()
     {
         _textDraw = Services.GetRequiredService<IWorldService>().CreateTextDraw(Vector2.One, "text");
@@ -33,7 +33,7 @@ public class TextDrawTests : TestBase
         _textDraw.Text = "new text";
         _textDraw.Text.ShouldBe("new text");
     }
-    
+
     [Fact]
     public void Show_should_succeed()
     {
@@ -45,7 +45,7 @@ public class TextDrawTests : TestBase
     {
         _textDraw.Show(Player);
     }
-    
+
     [Fact]
     public void Hide_should_succeed()
     {

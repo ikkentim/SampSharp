@@ -10,7 +10,6 @@ namespace SampSharp.Entities.SAMP;
 /// <param name="button2">The text on the right button. If the value is <see langword="null" />, the right button is hidden.</param>
 public class ListDialog(string caption, string? button1, string? button2 = null) : IDialog<ListDialogResponse>, IEnumerable<ListDialogRow>
 {
-
     /// <summary>
     /// Gets the rows of this dialog.
     /// </summary>

@@ -19,6 +19,7 @@ public static class TimePointMarshaller
             return TimePoint.FromDateTimeOffset(managed);
         }
     }
+
     public static class NativeToManaged
     {
         public static DateTimeOffset ConvertToManaged(TimePoint unmanaged)

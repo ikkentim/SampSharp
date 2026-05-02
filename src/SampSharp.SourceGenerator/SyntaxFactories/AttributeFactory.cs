@@ -12,11 +12,11 @@ namespace SampSharp.SourceGenerator.SyntaxFactories;
 /// </summary>
 public static class AttributeFactory
 {
-    private static readonly string GeneratedCodeFQN = $"global::{typeof(GeneratedCodeAttribute).FullName}";
     private const string SkipLocalsInitFQN = "global::System.Runtime.CompilerServices.SkipLocalsInitAttribute";
+    private const string UnmanagedCallersOnlyFQN = "global::System.Runtime.InteropServices.UnmanagedCallersOnlyAttribute";
+    private static readonly string GeneratedCodeFQN = $"global::{typeof(GeneratedCodeAttribute).FullName}";
     private static readonly string DllImportFQN = $"global::{typeof(DllImportAttribute).FullName}";
     private static readonly string CallingConventionFQN = $"global::{typeof(CallingConvention).FullName}";
-    private const string UnmanagedCallersOnlyFQN = "global::System.Runtime.InteropServices.UnmanagedCallersOnlyAttribute";
 
     public static AttributeListSyntax GeneratedCode()
     {
@@ -39,7 +39,7 @@ public static class AttributeFactory
                                         Literal(assemblyName.Version.ToString())))
                             ])))));
     }
-    
+
     public static AttributeListSyntax SkipLocalsInit()
     {
         return AttributeList(

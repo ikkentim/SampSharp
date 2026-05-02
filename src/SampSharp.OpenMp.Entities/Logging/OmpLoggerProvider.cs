@@ -9,21 +9,21 @@ namespace SampSharp.Entities.Logging;
 
 internal class OmpLoggerProvider(ILogger innerLogger, LogLevel minLogLevel) : ILoggerProvider
 {
-    private readonly ObjectPool<StringBuilder> _stringBuilders = new DefaultObjectPool<StringBuilder>(new StringBuilderPooledObjectPolicy());
     private readonly ConcurrentDictionary<string, Microsoft.Extensions.Logging.ILogger> _loggers = [];
-    
+    private readonly ObjectPool<StringBuilder> _stringBuilders = new DefaultObjectPool<StringBuilder>(new StringBuilderPooledObjectPolicy());
+
     public Microsoft.Extensions.Logging.ILogger CreateLogger(string categoryName)
     {
         return _loggers.GetOrAdd(categoryName, CreateNewLogger);
     }
 
-    private Microsoft.Extensions.Logging.ILogger CreateNewLogger(string name)
-    {
-        return new OmpLogger(innerLogger, minLogLevel, name, _stringBuilders);
-    }
-
     public void Dispose()
     {
         //
+    }
+
+    private Microsoft.Extensions.Logging.ILogger CreateNewLogger(string name)
+    {
+        return new OmpLogger(innerLogger, minLogLevel, name, _stringBuilders);
     }
 }

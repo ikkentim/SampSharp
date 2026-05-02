@@ -21,7 +21,7 @@ public static class BooleanMarshaller
             return managed;
         }
     }
-    
+
     public static class NativeToManaged
     {
         public static bool ConvertToManaged(BlittableBoolean unmanaged)
@@ -36,6 +36,7 @@ public static class BooleanMarshaller
         {
             return managed;
         }
+
         public static bool ConvertToManaged(BlittableBoolean unmanaged)
         {
             return unmanaged;

@@ -11,8 +11,8 @@ namespace TestMode.UnitTests;
 
 public class GlobalObjectTests : TestBase
 {
-    private readonly IWorldService _worldService;
     private readonly GlobalObject _object;
+    private readonly IWorldService _worldService;
 
     public GlobalObjectTests()
     {
@@ -40,7 +40,7 @@ public class GlobalObjectTests : TestBase
         _object.Position = new Vector3(20, 30, 40);
         _object.Position.ShouldBe(new Vector3(20, 30, 40));
     }
-    
+
     [Fact]
     public void IsMoving_should_return_correct_value()
     {
@@ -56,7 +56,7 @@ public class GlobalObjectTests : TestBase
         _object.RotationEuler = new Vector3(20, 30, 40);
         _object.RotationEuler.ShouldBe(new Vector3(20, 30, 40), 0.8f);
     }
-    
+
     [Fact]
     public void Move_and_Stop_should_succeed()
     {
@@ -79,13 +79,13 @@ public class GlobalObjectTests : TestBase
     {
         _object.DisableCameraCollisions();
     }
-    
+
     [Fact]
     public void SetMaterial_should_succeed()
     {
         _object.SetMaterial(0, 0, "none", "none", Color.White);
     }
-     
+
     [Fact]
     public void SetMaterialText_should_succeed()
     {

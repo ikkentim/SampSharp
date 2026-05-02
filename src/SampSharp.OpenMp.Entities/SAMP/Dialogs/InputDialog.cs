@@ -27,6 +27,11 @@ public class InputDialog : IDialog<InputDialogResponse>
     {
     }
 
+    /// <summary>
+    /// Gets or sets a value indicating whether the input is a password.
+    /// </summary>
+    public bool IsPassword { get; set; }
+
     /// <inheritdoc />
     public InputDialogResponse Translate(DialogResult dialogResult)
     {
@@ -36,11 +41,6 @@ public class InputDialog : IDialog<InputDialogResponse>
     DialogStyle IDialog.Style => IsPassword
         ? DialogStyle.Password
         : DialogStyle.Input;
-
-    /// <summary>
-    /// Gets or sets a value indicating whether the input is a password.
-    /// </summary>
-    public bool IsPassword { get; set; }
 
     /// <summary>
     /// Gets or sets the text above the input field in this dialog.

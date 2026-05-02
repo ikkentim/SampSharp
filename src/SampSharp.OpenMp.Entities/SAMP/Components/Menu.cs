@@ -8,8 +8,8 @@ namespace SampSharp.Entities.SAMP;
 /// </summary>
 public class Menu : IdProvider
 {
-    private readonly IMenusComponent _menus;
     private readonly IMenu _menu;
+    private readonly IMenusComponent _menus;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Menu" /> class.
@@ -68,6 +68,21 @@ public class Menu : IdProvider
         get => _menu.GetColumnHeader(1) ?? string.Empty;
         set => _menu.SetColumnHeader(value, 1);
     }
+
+    /// <summary>
+    /// Gets a value indicating whether this menu accepts input.
+    /// </summary>
+    public virtual bool IsEnabled => _menu.IsEnabled();
+
+    /// <summary>
+    /// Gets the number of rows in the left column of this menu.
+    /// </summary>
+    public virtual int Col0RowCount => _menu.GetRowCount(0);
+
+    /// <summary>
+    /// Gets the number of rows in the right column of this menu.
+    /// </summary>
+    public virtual int Col1RowCount => _menu.GetRowCount(1);
 
     /// <summary>
     /// Adds an item to this menu.
@@ -147,11 +162,6 @@ public class Menu : IdProvider
     }
 
     /// <summary>
-    /// Gets a value indicating whether this menu accepts input.
-    /// </summary>
-    public virtual bool IsEnabled => _menu.IsEnabled();
-
-    /// <summary>
     /// Gets the text of a specific menu cell.
     /// </summary>
     /// <param name="row">The row index.</param>
@@ -161,16 +171,6 @@ public class Menu : IdProvider
     {
         return _menu.GetCell((byte)column, (byte)row);
     }
-
-    /// <summary>
-    /// Gets the number of rows in the left column of this menu.
-    /// </summary>
-    public virtual int Col0RowCount => _menu.GetRowCount(0);
-
-    /// <summary>
-    /// Gets the number of rows in the right column of this menu.
-    /// </summary>
-    public virtual int Col1RowCount => _menu.GetRowCount(1);
 
     /// <inheritdoc />
     protected override void OnDestroyComponent()

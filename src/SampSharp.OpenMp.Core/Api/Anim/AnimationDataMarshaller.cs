@@ -15,7 +15,7 @@ public static unsafe class AnimationDataMarshaller
     public static class ManagedToNative
     {
         public static int BufferSize { get; } = Marshal.SizeOf<Native>();
-        
+
         public static BlittableStructRef<Native> ConvertToUnmanaged(AnimationData managed, Span<byte> callerAllocatedBuffer)
         {
             var native = ToNative(managed);
@@ -26,14 +26,14 @@ public static unsafe class AnimationDataMarshaller
 
             return new BlittableStructRef<Native>(ptr);
         }
-        
+
         private static Native ToNative(AnimationData managed)
         {
             return new Native(managed.Delta, managed.Loop, managed.LockX, managed.LockY, managed.Freeze, managed.Time, new HybridString16(managed.Library),
                 new HybridString24(managed.Name));
         }
     }
-    
+
     public static class NativeToManaged
     {
         public static AnimationData? ConvertToManaged(BlittableStructRef<Native> unmanaged)
@@ -47,7 +47,7 @@ public static unsafe class AnimationDataMarshaller
 
             return FromNative(native);
         }
-        
+
         private static AnimationData FromNative(Native native)
         {
             return new AnimationData(native.Delta, native.Loop, native.LockX, native.LockY, native.Freeze, native.Time, native.Lib.ToString(), native.Name.ToString());

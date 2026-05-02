@@ -8,7 +8,7 @@ public static class MarshallerHelper
     {
         return parameterSymbol?.Name ?? MarshallerConstants.LocalReturnValue;
     }
-    
+
     public static string GetMarshallerVar(IParameterSymbol? parameterSymbol)
     {
         return GetNativeExtraVar(parameterSymbol, "marshaller");
@@ -20,7 +20,7 @@ public static class MarshallerHelper
             ? $"{MarshallerConstants.LocalReturnValue}_native" 
             : $"__{parameterSymbol.Name}_native";
     }
-    
+
     public static string GetNativeExtraVar(IParameterSymbol? parameterSymbol, string extra)
     {
         return $"{GetNativeVar(parameterSymbol)}__{extra}";

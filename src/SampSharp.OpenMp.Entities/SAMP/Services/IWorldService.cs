@@ -72,7 +72,7 @@ public interface IWorldService
     /// <returns>The created gang zone.</returns>
     [Obsolete("Deprecated. Use CreateGangZone(Vector2, Vector2, EntityId) instead.")]
     GangZone CreateGangZone(float minX, float minY, float maxX, float maxY, EntityId parent = default);
-    
+
     /// <summary>
     /// Creates a gang zone in the world.
     /// </summary>

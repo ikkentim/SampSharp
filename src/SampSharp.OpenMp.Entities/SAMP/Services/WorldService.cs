@@ -5,16 +5,16 @@ namespace SampSharp.Entities.SAMP;
 
 internal class WorldService(SampSharpEnvironment environment, IEntityManager entityManager, IOmpEntityProvider entityProvider) : IWorldService
 {
-    private readonly ICore _core = environment.Core;
-    private readonly IPlayerPool _players = environment.Core.GetPlayers();
-    private readonly IVehiclesComponent _vehicles = environment.Components.QueryComponent<IVehiclesComponent>();
-    private readonly IObjectsComponent _objects = environment.Components.QueryComponent<IObjectsComponent>();
     private readonly IActorsComponent _actors = environment.Components.QueryComponent<IActorsComponent>();
+    private readonly ICore _core = environment.Core;
     private readonly IGangZonesComponent _gangZones = environment.Components.QueryComponent<IGangZonesComponent>();
     private readonly IMenusComponent _menus = environment.Components.QueryComponent<IMenusComponent>();
+    private readonly IObjectsComponent _objects = environment.Components.QueryComponent<IObjectsComponent>();
     private readonly IPickupsComponent _pickups = environment.Components.QueryComponent<IPickupsComponent>();
+    private readonly IPlayerPool _players = environment.Core.GetPlayers();
     private readonly ITextDrawsComponent _textDraws = environment.Components.QueryComponent<ITextDrawsComponent>();
     private readonly ITextLabelsComponent _textLabels = environment.Components.QueryComponent<ITextLabelsComponent>();
+    private readonly IVehiclesComponent _vehicles = environment.Components.QueryComponent<IVehiclesComponent>();
 
     public float Gravity
     {
@@ -50,7 +50,7 @@ internal class WorldService(SampSharpEnvironment environment, IEntityManager ent
     {
         return CreateGangZone(new Vector2(minX, minY), new Vector2(maxX, maxY), parent);
     }
-    
+
     public GangZone CreateGangZone(Vector2 min, Vector2 max, EntityId parent = default)
     {
         var native = _gangZones.Create(new GangZonePos(min, max));
@@ -240,21 +240,6 @@ internal class WorldService(SampSharpEnvironment environment, IEntityManager ent
         return component;
     }
 
-    private Vehicle CreateVehicle(bool isStatic, VehicleModelType type, Vector3 position, float rotation, int color1, int color2, int respawnDelay = -1, bool addSiren = false,
-        EntityId parent = default)
-    {
-        var respawnDelaySpan = respawnDelay < 0 ? TimeSpan.Zero : TimeSpan.FromSeconds(respawnDelay);
-        var native = _vehicles.Create(isStatic, (int)type, position, rotation, color1, color2, respawnDelaySpan, addSiren);
-
-        var entityId = EntityId.NewEntityId();
-        var component = entityManager.AddComponent<Vehicle>(entityId, parent, entityProvider, _vehicles, native);
-
-        var extension = new ComponentExtension(component);
-        native.AddExtension(extension);
-
-        return component;
-    }
-
     public void SetObjectsDefaultCameraCollision(bool disable)
     {
         _objects.SetDefaultCameraCollision(disable);
@@ -278,25 +263,25 @@ internal class WorldService(SampSharpEnvironment environment, IEntityManager ent
     {
         SendClientMessage(Color.White, message);
     }
-    
+
     public void SendClientMessage(string messageFormat, params object[] args)
     {
         var message = string.Format(messageFormat, args);
         SendClientMessage(message);
     }
-    
+
     public void SendPlayerMessageToPlayer(Player sender, string message)
     {
         ArgumentNullException.ThrowIfNull(sender);
         ArgumentNullException.ThrowIfNull(message);
         _players.SendChatMessageToAll(sender, message);
     }
-    
+
     public void SendDeathMessage(Player killer, Player killee, Weapon weapon)
     {
         _players.SendDeathMessageToAll(killer, killee, (int)weapon);
     }
-    
+
     public void GameText(string text, int time, int style)
     {
         GameText(text, TimeSpan.FromMilliseconds(time), style);
@@ -307,14 +292,29 @@ internal class WorldService(SampSharpEnvironment environment, IEntityManager ent
         // TODO: style enum?
         _players.SendGameTextToAll(text, time, style);
     }
-    
+
     public void CreateExplosion(Vector3 position, ExplosionType type, float radius)
     {
         _players.CreateExplosionForAll(position, (int)type, radius);
     }
-    
+
     public void SetWeather(int weather)
     {
         _core.SetWeather(weather);
+    }
+
+    private Vehicle CreateVehicle(bool isStatic, VehicleModelType type, Vector3 position, float rotation, int color1, int color2, int respawnDelay = -1, bool addSiren = false,
+        EntityId parent = default)
+    {
+        var respawnDelaySpan = respawnDelay < 0 ? TimeSpan.Zero : TimeSpan.FromSeconds(respawnDelay);
+        var native = _vehicles.Create(isStatic, (int)type, position, rotation, color1, color2, respawnDelaySpan, addSiren);
+
+        var entityId = EntityId.NewEntityId();
+        var component = entityManager.AddComponent<Vehicle>(entityId, parent, entityProvider, _vehicles, native);
+
+        var extension = new ComponentExtension(component);
+        native.AddExtension(extension);
+
+        return component;
     }
 }

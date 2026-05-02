@@ -8,8 +8,8 @@ namespace SampSharp.Entities.SAMP;
 /// </summary>
 public class TextDraw : IdProvider
 {
-    private readonly ITextDrawsComponent _textDraws;
     private readonly ITextDraw _textDraw;
+    private readonly ITextDrawsComponent _textDraws;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="TextDraw" /> class.

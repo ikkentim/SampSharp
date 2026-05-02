@@ -4,8 +4,8 @@ namespace SampSharp.Entities.SAMP;
 
 internal class PlayerConnectSystem : DisposableSystem, IPlayerConnectEventHandler
 {
-    private readonly IEventDispatcher _eventDispatcher;
     private readonly IOmpEntityProvider _entityProvider;
+    private readonly IEventDispatcher _eventDispatcher;
 
     public PlayerConnectSystem(IEventDispatcher eventDispatcher, IOmpEntityProvider entityProvider, SampSharpEnvironment environment)
     {

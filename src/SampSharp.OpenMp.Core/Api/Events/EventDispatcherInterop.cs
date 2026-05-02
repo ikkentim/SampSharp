@@ -20,7 +20,7 @@ internal partial class EventDispatcherInterop
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.Bool)]
     public static partial bool HasEventHandler(nint dispatcherHandle, nint handlerHandle, out EventPriority priority);
-    
+
     [LibraryImport("SampSharp", EntryPoint = "IEventDispatcher_count")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial Size Count(nint dispatcherHandle);
