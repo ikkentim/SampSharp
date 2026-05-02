@@ -12,6 +12,32 @@ namespace SampSharp.SourceGenerator.Generators;
 [Generator]
 public class EntryPointSourceGenerator : IIncrementalGenerator
 {
+    public void Initialize(IncrementalGeneratorInitializationContext context)
+    {
+        var provider = context.SyntaxProvider.CreateSyntaxProvider(
+                (node, _) => node is ClassDeclarationSyntax { BaseList: not null },
+                (ctx, ct) =>
+                {
+                    var classDeclaration = (ClassDeclarationSyntax)ctx.Node;
+                    var semanticModel = ctx.SemanticModel;
+
+                    if (semanticModel.GetDeclaredSymbol(classDeclaration, ct) is { } classSymbol)
+                    {
+                        var interf = semanticModel.Compilation.GetTypeByMetadataName("SampSharp.OpenMp.Core.IStartup");
+                        if (interf != null && classSymbol.AllInterfaces.Contains(interf))
+                        {
+                            return classDeclaration;
+                        }
+                    }
+
+                    return null;
+                })
+            .Where(cls => cls != null)
+            .Select((cls, _) => cls);
+
+        context.RegisterSourceOutput(provider, Execute);
+    }
+
     private static string GetFQN(ClassDeclarationSyntax classDeclaration)
     {
         // Start with the class name
@@ -162,31 +188,5 @@ public class EntryPointSourceGenerator : IIncrementalGenerator
             .GetText(Encoding.UTF8);
 
         return sourceText;
-    }
-
-    public void Initialize(IncrementalGeneratorInitializationContext context)
-    {
-        var provider = context.SyntaxProvider.CreateSyntaxProvider(
-                (node, _) => node is ClassDeclarationSyntax { BaseList: not null },
-                (ctx, ct) =>
-                {
-                    var classDeclaration = (ClassDeclarationSyntax)ctx.Node;
-                    var semanticModel = ctx.SemanticModel;
-
-                    if (semanticModel.GetDeclaredSymbol(classDeclaration, ct) is { } classSymbol)
-                    {
-                        var interf = semanticModel.Compilation.GetTypeByMetadataName("SampSharp.OpenMp.Core.IStartup");
-                        if (interf != null && classSymbol.AllInterfaces.Contains(interf))
-                        {
-                            return classDeclaration;
-                        }
-                    }
-
-                    return null;
-                })
-            .Where(cls => cls != null)
-            .Select((cls, _) => cls);
-
-        context.RegisterSourceOutput(provider, Execute);
     }
 }

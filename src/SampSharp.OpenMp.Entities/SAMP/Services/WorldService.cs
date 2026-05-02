@@ -16,21 +16,6 @@ internal class WorldService(SampSharpEnvironment environment, IEntityManager ent
     private readonly ITextLabelsComponent _textLabels = environment.Components.QueryComponent<ITextLabelsComponent>();
     private readonly IVehiclesComponent _vehicles = environment.Components.QueryComponent<IVehiclesComponent>();
 
-    private Vehicle CreateVehicle(bool isStatic, VehicleModelType type, Vector3 position, float rotation, int color1, int color2, int respawnDelay = -1, bool addSiren = false,
-        EntityId parent = default)
-    {
-        var respawnDelaySpan = respawnDelay < 0 ? TimeSpan.Zero : TimeSpan.FromSeconds(respawnDelay);
-        var native = _vehicles.Create(isStatic, (int)type, position, rotation, color1, color2, respawnDelaySpan, addSiren);
-
-        var entityId = EntityId.NewEntityId();
-        var component = entityManager.AddComponent<Vehicle>(entityId, parent, entityProvider, _vehicles, native);
-
-        var extension = new ComponentExtension(component);
-        native.AddExtension(extension);
-
-        return component;
-    }
-
     public float Gravity
     {
         get => _core.GetGravity();
@@ -316,5 +301,20 @@ internal class WorldService(SampSharpEnvironment environment, IEntityManager ent
     public void SetWeather(int weather)
     {
         _core.SetWeather(weather);
+    }
+
+    private Vehicle CreateVehicle(bool isStatic, VehicleModelType type, Vector3 position, float rotation, int color1, int color2, int respawnDelay = -1, bool addSiren = false,
+        EntityId parent = default)
+    {
+        var respawnDelaySpan = respawnDelay < 0 ? TimeSpan.Zero : TimeSpan.FromSeconds(respawnDelay);
+        var native = _vehicles.Create(isStatic, (int)type, position, rotation, color1, color2, respawnDelaySpan, addSiren);
+
+        var entityId = EntityId.NewEntityId();
+        var component = entityManager.AddComponent<Vehicle>(entityId, parent, entityProvider, _vehicles, native);
+
+        var extension = new ComponentExtension(component);
+        native.AddExtension(extension);
+
+        return component;
     }
 }

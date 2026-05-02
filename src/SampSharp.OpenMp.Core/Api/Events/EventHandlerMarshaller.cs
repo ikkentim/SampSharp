@@ -9,6 +9,12 @@ public abstract class EventHandlerMarshaller<TEventHandler> : IEventHandlerMarsh
 {
     private readonly Dictionary<TEventHandler, HandlerData> _handlers = [];
 
+    /// <inheritdoc />
+    public EventHandlerReference<TEventHandler> Marshal(TEventHandler handler)
+    {
+        return new EventHandlerReference<TEventHandler>(this, handler);
+    }
+
     internal nint IncreaseReferenceCount(TEventHandler handler)
     {
         if (_handlers.TryGetValue(handler, out var reference))
@@ -66,12 +72,6 @@ public abstract class EventHandlerMarshaller<TEventHandler> : IEventHandlerMarsh
     /// </summary>
     /// <param name="handle">The unmanaged handle to free.</param>
     protected abstract void Free(nint handle);
-
-    /// <inheritdoc />
-    public EventHandlerReference<TEventHandler> Marshal(TEventHandler handler)
-    {
-        return new EventHandlerReference<TEventHandler>(this, handler);
-    }
 
     private readonly record struct HandlerData(nint Handle, int RefCount, object Luggage);
 }

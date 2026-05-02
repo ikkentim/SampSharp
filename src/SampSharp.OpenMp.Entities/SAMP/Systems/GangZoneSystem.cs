@@ -14,12 +14,6 @@ internal class GangZoneSystem : DisposableSystem, IGangZoneEventHandler
         AddDisposable(environment.AddEventHandler<IGangZonesComponent, IGangZoneEventHandler>(x => x.GetEventDispatcher(), this));
     }
 
-    private void Dispatch(string globalName, string perPlayerName, IPlayer player, IGangZone zone)
-    {
-        var name = zone.GetLegacyPlayer().HasValue ? perPlayerName : globalName;
-        _eventDispatcher.Invoke(name, _entityProvider.GetEntity(player), _entityProvider.GetEntity(zone));
-    }
-
     public void OnPlayerEnterGangZone(IPlayer player, IGangZone zone) =>
         Dispatch("OnPlayerEnterGangZone", "OnPlayerEnterPlayerGangZone", player, zone);
 
@@ -28,4 +22,10 @@ internal class GangZoneSystem : DisposableSystem, IGangZoneEventHandler
 
     public void OnPlayerClickGangZone(IPlayer player, IGangZone zone) =>
         Dispatch("OnPlayerClickGangZone", "OnPlayerClickPlayerGangZone", player, zone);
+
+    private void Dispatch(string globalName, string perPlayerName, IPlayer player, IGangZone zone)
+    {
+        var name = zone.GetLegacyPlayer().HasValue ? perPlayerName : globalName;
+        _eventDispatcher.Invoke(name, _entityProvider.GetEntity(player), _entityProvider.GetEntity(zone));
+    }
 }

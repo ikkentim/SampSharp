@@ -16,6 +16,54 @@ internal sealed class EcsHostBuilder : Extension, IEcsHostBuilder
     private bool _systemsLoadingDisabled;
     private UnhandledExceptionHandler? _unhandledExceptionHandler;
 
+    public IEcsHostBuilder Configure(Action<IEcsBuilder> build)
+    {
+        ArgumentNullException.ThrowIfNull(build);
+        _ecsConfigurations.Add(build);
+        return this;
+    }
+
+    public IEcsHostBuilder ConfigureServices(Action<SampSharpEnvironment, IServiceCollection> build)
+    {
+        ArgumentNullException.ThrowIfNull(build);
+        _serviceConfigurations.Add(build);
+        return this;
+    }
+
+    public IEcsHostBuilder ConfigureServices(Action<IServiceCollection> build)
+    {
+        ArgumentNullException.ThrowIfNull(build);
+        return ConfigureServices((_, services) => build(services));
+    }
+
+    public IEcsHostBuilder ConfigureLogging(Action<ILoggingBuilder> builder)
+    {
+        ArgumentNullException.ThrowIfNull(builder);
+        _loggerConfigurations.Add(builder);
+        return this;
+    }
+
+    public IEcsHostBuilder ConfigureUnhandledExceptionhandler(UnhandledExceptionHandler handler)
+    {
+        ArgumentNullException.ThrowIfNull(handler);
+        _unhandledExceptionHandler = handler;
+        return this;
+    }
+
+    public IEcsHostBuilder UseServiceProviderFactory<TContainerBuilder>(IServiceProviderFactory<TContainerBuilder> serviceProviderFactory)
+        where TContainerBuilder : notnull
+    {
+        ArgumentNullException.ThrowIfNull(serviceProviderFactory);
+        _serviceProviderFactory = services => serviceProviderFactory.CreateServiceProvider(serviceProviderFactory.CreateBuilder(services));
+        return this;
+    }
+
+    public IEcsHostBuilder DisableDefaultSystemsLoading()
+    {
+        _systemsLoadingDisabled = true;
+        return this;
+    }
+
     internal EcsHost Build(IStartupContext context)
     {
         var serviceProvider = BuildServiceProvider(context);
@@ -102,53 +150,5 @@ internal sealed class EcsHostBuilder : Extension, IEcsHostBuilder
         }
 
         _serviceConfigurations.Clear();
-    }
-
-    public IEcsHostBuilder Configure(Action<IEcsBuilder> build)
-    {
-        ArgumentNullException.ThrowIfNull(build);
-        _ecsConfigurations.Add(build);
-        return this;
-    }
-
-    public IEcsHostBuilder ConfigureServices(Action<SampSharpEnvironment, IServiceCollection> build)
-    {
-        ArgumentNullException.ThrowIfNull(build);
-        _serviceConfigurations.Add(build);
-        return this;
-    }
-
-    public IEcsHostBuilder ConfigureServices(Action<IServiceCollection> build)
-    {
-        ArgumentNullException.ThrowIfNull(build);
-        return ConfigureServices((_, services) => build(services));
-    }
-
-    public IEcsHostBuilder ConfigureLogging(Action<ILoggingBuilder> builder)
-    {
-        ArgumentNullException.ThrowIfNull(builder);
-        _loggerConfigurations.Add(builder);
-        return this;
-    }
-
-    public IEcsHostBuilder ConfigureUnhandledExceptionhandler(UnhandledExceptionHandler handler)
-    {
-        ArgumentNullException.ThrowIfNull(handler);
-        _unhandledExceptionHandler = handler;
-        return this;
-    }
-
-    public IEcsHostBuilder UseServiceProviderFactory<TContainerBuilder>(IServiceProviderFactory<TContainerBuilder> serviceProviderFactory)
-        where TContainerBuilder : notnull
-    {
-        ArgumentNullException.ThrowIfNull(serviceProviderFactory);
-        _serviceProviderFactory = services => serviceProviderFactory.CreateServiceProvider(serviceProviderFactory.CreateBuilder(services));
-        return this;
-    }
-
-    public IEcsHostBuilder DisableDefaultSystemsLoading()
-    {
-        _systemsLoadingDisabled = true;
-        return this;
     }
 }

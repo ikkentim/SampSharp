@@ -6,14 +6,6 @@ namespace SampSharp.SourceGenerator.Marshalling.ShapeGenerators;
 
 public class StatefulFree(IMarshalShapeGenerator innerGenerator) : IMarshalShapeGenerator
 {
-    private static IEnumerable<StatementSyntax> CleanupCallerAllocated(IdentifierStubContext context)
-    {
-        // marshaller.Free();
-        yield return Invoke(
-            context.GetMarshallerId(),
-            ShapeConstants.MethodFree);
-    }
-
     public bool UsesNativeIdentifier => innerGenerator.UsesNativeIdentifier;
 
     public TypeSyntax GetNativeType(IdentifierStubContext context)
@@ -28,5 +20,13 @@ public class StatefulFree(IMarshalShapeGenerator innerGenerator) : IMarshalShape
             MarshalPhase.CleanupCallerAllocated => CleanupCallerAllocated(context),
             _ => innerGenerator.Generate(phase, context)
         };
+    }
+
+    private static IEnumerable<StatementSyntax> CleanupCallerAllocated(IdentifierStubContext context)
+    {
+        // marshaller.Free();
+        yield return Invoke(
+            context.GetMarshallerId(),
+            ShapeConstants.MethodFree);
     }
 }

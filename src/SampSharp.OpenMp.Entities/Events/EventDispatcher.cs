@@ -35,6 +35,69 @@ internal class EventDispatcher : IEventDispatcher, IEventService
         systemRegistry.Register(() => LoadTargetSites(systemRegistry));
     }
 
+    public void UseMiddleware(string name, Func<EventDelegate, EventDelegate> middleware)
+    {
+        ArgumentNullException.ThrowIfNull(name);
+        ArgumentNullException.ThrowIfNull(middleware);
+
+        var @event = GetOrCreateEvent(name);
+        @event.ClearCache();
+        @event.Middleware.Add(middleware);
+    }
+
+    public object? Invoke(string name, params ReadOnlySpan<object> arguments)
+    {
+        ArgumentNullException.ThrowIfNull(name);
+
+        if (!_events.TryGetValue(name, out var @event))
+        {
+            return null;
+        }
+
+        if(!@event.Cache.TryGetValue(NullValue.Instance, out var invoke))
+        {
+            invoke = CreateEventInvoke(@event, null);
+            @event.Cache.TryAdd(NullValue.Instance, invoke);
+        }
+
+        return invoke(arguments);
+    }
+
+    [return: NotNullIfNotNull(nameof(defaultValue))]
+    public T? InvokeAs<T>(string name, T defaultValue, params ReadOnlySpan<object> arguments)
+    {
+        ArgumentNullException.ThrowIfNull(name);
+
+        if (!_events.TryGetValue(name, out var @event))
+        {
+            return defaultValue;
+        }
+
+        var defaultKey = defaultValue ?? (object)NullValue.Instance;
+        if(!@event.Cache.TryGetValue(defaultKey, out var invoke))
+        {
+            invoke = CreateEventInvoke(@event, defaultValue);
+            @event.Cache.TryAdd(defaultKey, invoke);
+        }
+
+        var result = invoke(arguments);
+
+        if(result is Task<T> task)
+        {
+            return task.IsCompleted ? task.Result : defaultValue;
+        }
+
+        if (typeof(T) == typeof(bool) && result is MethodResult m)
+        {
+            var value = m.Value;
+            return Unsafe.As<bool, T>(ref value);
+        }
+
+        return result is T resultAsT 
+            ? resultAsT 
+            : defaultValue;
+    }
+
     private Event GetOrCreateEvent(string name)
     {
         if (!_events.TryGetValue(name, out var @event))
@@ -199,69 +262,6 @@ internal class EventDispatcher : IEventDispatcher, IEventService
                 return null;
             }
         };
-    }
-
-    public void UseMiddleware(string name, Func<EventDelegate, EventDelegate> middleware)
-    {
-        ArgumentNullException.ThrowIfNull(name);
-        ArgumentNullException.ThrowIfNull(middleware);
-
-        var @event = GetOrCreateEvent(name);
-        @event.ClearCache();
-        @event.Middleware.Add(middleware);
-    }
-
-    public object? Invoke(string name, params ReadOnlySpan<object> arguments)
-    {
-        ArgumentNullException.ThrowIfNull(name);
-
-        if (!_events.TryGetValue(name, out var @event))
-        {
-            return null;
-        }
-
-        if(!@event.Cache.TryGetValue(NullValue.Instance, out var invoke))
-        {
-            invoke = CreateEventInvoke(@event, null);
-            @event.Cache.TryAdd(NullValue.Instance, invoke);
-        }
-
-        return invoke(arguments);
-    }
-
-    [return: NotNullIfNotNull(nameof(defaultValue))]
-    public T? InvokeAs<T>(string name, T defaultValue, params ReadOnlySpan<object> arguments)
-    {
-        ArgumentNullException.ThrowIfNull(name);
-
-        if (!_events.TryGetValue(name, out var @event))
-        {
-            return defaultValue;
-        }
-
-        var defaultKey = defaultValue ?? (object)NullValue.Instance;
-        if(!@event.Cache.TryGetValue(defaultKey, out var invoke))
-        {
-            invoke = CreateEventInvoke(@event, defaultValue);
-            @event.Cache.TryAdd(defaultKey, invoke);
-        }
-
-        var result = invoke(arguments);
-
-        if(result is Task<T> task)
-        {
-            return task.IsCompleted ? task.Result : defaultValue;
-        }
-
-        if (typeof(T) == typeof(bool) && result is MethodResult m)
-        {
-            var value = m.Value;
-            return Unsafe.As<bool, T>(ref value);
-        }
-
-        return result is T resultAsT 
-            ? resultAsT 
-            : defaultValue;
     }
 
 

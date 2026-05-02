@@ -19,17 +19,6 @@ internal class OmpLogger(ILogger inner, LogLevel minLogLevel, string name, Objec
         [OmpLogLevel.Error] = new LoggerTextWriter(inner, OmpLogLevel.Error)
     };
 
-    private static OmpLogLevel Convert(LogLevel level)
-    {
-        return level switch
-        {
-            LogLevel.Trace or LogLevel.Debug => OmpLogLevel.Debug,
-            LogLevel.Warning => OmpLogLevel.Warning,
-            LogLevel.Error or LogLevel.Critical => OmpLogLevel.Error,
-            _ => OmpLogLevel.Message
-        };
-    }
-
     public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception,
         Func<TState, Exception?, string> formatter)
     {
@@ -76,5 +65,16 @@ internal class OmpLogger(ILogger inner, LogLevel minLogLevel, string name, Objec
     public IDisposable? BeginScope<TState>(TState state) where TState : notnull
     {
         return null;
+    }
+
+    private static OmpLogLevel Convert(LogLevel level)
+    {
+        return level switch
+        {
+            LogLevel.Trace or LogLevel.Debug => OmpLogLevel.Debug,
+            LogLevel.Warning => OmpLogLevel.Warning,
+            LogLevel.Error or LogLevel.Critical => OmpLogLevel.Error,
+            _ => OmpLogLevel.Message
+        };
     }
 }

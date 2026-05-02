@@ -14,6 +14,11 @@ internal class DialogSystem : DisposableSystem, IPlayerDialogEventHandler
         AddDisposable(environment.AddEventHandler<IDialogsComponent, IPlayerDialogEventHandler>(x => x.GetEventDispatcher(), this));
     }
 
+    public void OnDialogResponse(IPlayer player, int dialogId, OpenMp.Core.Api.DialogResponse response, int listItem, string inputText)
+    {
+        _eventDispatcher.Invoke("OnDialogResponse", _entityProvider.GetEntity(player), dialogId, response, listItem, inputText);
+    }
+
     [Event]
     public void OnPlayerDisconnect(VisibleDialog player, DisconnectReason _)
     {
@@ -39,10 +44,5 @@ internal class DialogSystem : DisposableSystem, IPlayerDialogEventHandler
         }
 
         player.Destroy();
-    }
-
-    public void OnDialogResponse(IPlayer player, int dialogId, OpenMp.Core.Api.DialogResponse response, int listItem, string inputText)
-    {
-        _eventDispatcher.Invoke("OnDialogResponse", _entityProvider.GetEntity(player), dialogId, response, listItem, inputText);
     }
 }

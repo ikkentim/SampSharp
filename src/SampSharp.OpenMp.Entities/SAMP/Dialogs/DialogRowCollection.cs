@@ -18,6 +18,17 @@ public class DialogRowCollection<T> : IEnumerable<T> where T : IDialogRow
     /// </summary>
     public int Count => _rows.Count;
 
+    /// <inheritdoc />
+    public IEnumerator<T> GetEnumerator()
+    {
+        return _rows.GetEnumerator();
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
+
     /// <summary>
     /// Adds the specified row to the list.
     /// </summary>
@@ -63,16 +74,5 @@ public class DialogRowCollection<T> : IEnumerable<T> where T : IDialogRow
     public virtual bool Remove(T row)
     {
         return _rows.Remove(row);
-    }
-
-    /// <inheritdoc />
-    public IEnumerator<T> GetEnumerator()
-    {
-        return _rows.GetEnumerator();
-    }
-
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return GetEnumerator();
     }
 }

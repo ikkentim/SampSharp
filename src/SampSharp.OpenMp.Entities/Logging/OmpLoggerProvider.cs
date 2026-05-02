@@ -12,11 +12,6 @@ internal class OmpLoggerProvider(ILogger innerLogger, LogLevel minLogLevel) : IL
     private readonly ConcurrentDictionary<string, Microsoft.Extensions.Logging.ILogger> _loggers = [];
     private readonly ObjectPool<StringBuilder> _stringBuilders = new DefaultObjectPool<StringBuilder>(new StringBuilderPooledObjectPolicy());
 
-    private Microsoft.Extensions.Logging.ILogger CreateNewLogger(string name)
-    {
-        return new OmpLogger(innerLogger, minLogLevel, name, _stringBuilders);
-    }
-
     public Microsoft.Extensions.Logging.ILogger CreateLogger(string categoryName)
     {
         return _loggers.GetOrAdd(categoryName, CreateNewLogger);
@@ -25,5 +20,10 @@ internal class OmpLoggerProvider(ILogger innerLogger, LogLevel minLogLevel) : IL
     public void Dispose()
     {
         //
+    }
+
+    private Microsoft.Extensions.Logging.ILogger CreateNewLogger(string name)
+    {
+        return new OmpLogger(innerLogger, minLogLevel, name, _stringBuilders);
     }
 }

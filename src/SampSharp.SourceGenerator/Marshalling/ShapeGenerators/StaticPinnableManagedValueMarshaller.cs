@@ -7,6 +7,22 @@ namespace SampSharp.SourceGenerator.Marshalling.ShapeGenerators;
 
 public class StaticPinnableManagedValueMarshaller(IMarshalShapeGenerator innerGenerator) : IMarshalShapeGenerator
 {
+    public bool UsesNativeIdentifier => false;
+
+    public TypeSyntax GetNativeType(IdentifierStubContext context)
+    {
+        return PointerType(PredefinedType(Token(SyntaxKind.VoidKeyword)));
+    }
+
+    public IEnumerable<StatementSyntax> Generate(MarshalPhase phase, IdentifierStubContext context)
+    {
+        return phase switch
+        {
+            MarshalPhase.Pin => GeneratePin(context),
+            _ => innerGenerator.Generate(phase, context)
+        };
+    }
+
     private static IEnumerable<StatementSyntax> GeneratePin(IdentifierStubContext context)
     {
         // fixed(void* __managed_native = managed.GetPinnableReference()) {}
@@ -32,21 +48,5 @@ public class StaticPinnableManagedValueMarshaller(IMarshalShapeGenerator innerGe
                                                 SingletonSeparatedList(
                                                     Argument(
                                                         IdentifierName(context.GetManagedId())))))))))), Block());
-    }
-
-    public bool UsesNativeIdentifier => false;
-
-    public TypeSyntax GetNativeType(IdentifierStubContext context)
-    {
-        return PointerType(PredefinedType(Token(SyntaxKind.VoidKeyword)));
-    }
-
-    public IEnumerable<StatementSyntax> Generate(MarshalPhase phase, IdentifierStubContext context)
-    {
-        return phase switch
-        {
-            MarshalPhase.Pin => GeneratePin(context),
-            _ => innerGenerator.Generate(phase, context)
-        };
     }
 }

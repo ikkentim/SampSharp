@@ -15,44 +15,6 @@ public class ListDialog(string caption, string? button1, string? button2 = null)
     /// </summary>
     public ListDialogRowCollection Rows { get; } = [];
 
-    /// <summary>
-    /// Adds a row to the list with the specified <paramref name="text" />.
-    /// </summary>
-    /// <param name="text">The text of the row to add.</param>
-    /// <exception cref="ArgumentNullException">Thrown if <paramref name="text" /> is null.</exception>
-    public void Add(string text)
-    {
-        ArgumentNullException.ThrowIfNull(text);
-
-        Rows.Add(text);
-    }
-
-    /// <summary>
-    /// Adds a row to the list with the specified <paramref name="text" /> and <paramref name="tag" />.
-    /// </summary>
-    /// <param name="text">The text of the row to add.</param>
-    /// <param name="tag">
-    /// The tag of the row to add. The tag can be used so associate data with this row which can be used retrieved when the user responds to the
-    /// dialog.
-    /// </param>
-    /// <exception cref="ArgumentNullException">Thrown if <paramref name="text" /> is null.</exception>
-    public void Add(string text, object? tag)
-    {
-        ArgumentNullException.ThrowIfNull(text);
-
-        Rows.Add(new ListDialogRow(text) { Tag = tag });
-    }
-
-    /// <summary>
-    /// Adds the specified row to the list.
-    /// </summary>
-    /// <param name="row">The row to add.</param>
-    /// <exception cref="ArgumentNullException">Thrown if <paramref name="row" /> is null.</exception>
-    public void Add(ListDialogRow row)
-    {
-        Rows.Add(row);
-    }
-
     DialogStyle IDialog.Style => DialogStyle.List;
 
     string IDialog.Content => Rows.RawText;
@@ -101,5 +63,43 @@ public class ListDialog(string caption, string? button1, string? button2 = null)
     IEnumerator IEnumerable.GetEnumerator()
     {
         return GetEnumerator();
+    }
+
+    /// <summary>
+    /// Adds a row to the list with the specified <paramref name="text" />.
+    /// </summary>
+    /// <param name="text">The text of the row to add.</param>
+    /// <exception cref="ArgumentNullException">Thrown if <paramref name="text" /> is null.</exception>
+    public void Add(string text)
+    {
+        ArgumentNullException.ThrowIfNull(text);
+
+        Rows.Add(text);
+    }
+
+    /// <summary>
+    /// Adds a row to the list with the specified <paramref name="text" /> and <paramref name="tag" />.
+    /// </summary>
+    /// <param name="text">The text of the row to add.</param>
+    /// <param name="tag">
+    /// The tag of the row to add. The tag can be used so associate data with this row which can be used retrieved when the user responds to the
+    /// dialog.
+    /// </param>
+    /// <exception cref="ArgumentNullException">Thrown if <paramref name="text" /> is null.</exception>
+    public void Add(string text, object? tag)
+    {
+        ArgumentNullException.ThrowIfNull(text);
+
+        Rows.Add(new ListDialogRow(text) { Tag = tag });
+    }
+
+    /// <summary>
+    /// Adds the specified row to the list.
+    /// </summary>
+    /// <param name="row">The row to add.</param>
+    /// <exception cref="ArgumentNullException">Thrown if <paramref name="row" /> is null.</exception>
+    public void Add(ListDialogRow row)
+    {
+        Rows.Add(row);
     }
 }

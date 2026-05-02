@@ -27,66 +27,6 @@ internal class TimerSystem : ITickingSystem, ITimerService
         systemRegistry.Register(CreateTimersFromAssemblies);
     }
 
-    internal static bool IsValidInterval(TimeSpan interval)
-    {
-        return interval >= TimeSpan.FromTicks(1);
-    }
-
-    private void CreateTimersFromAssemblies()
-    {
-        var tick = _lastTick;
-        // Find methods with TimerAttribute in any loaded system.
-        var events = ClassScanner.Create()
-            .IncludeTypes(_systemRegistry.GetSystemTypes().Span)
-            .IncludeNonPublicMembers()
-            .Implements<ISystem>()
-            .ScanMethods<TimerAttribute>();
-
-        // Create timer invokers and store timer info in registry.
-        foreach (var (target, method, attribute) in events)
-        {
-            if (_logger.IsEnabled(LogLevel.Debug))
-            {
-                _logger.LogDebug("Adding timer on {type}.{method}.", target, method.Name);
-            }
-         
-            if (!IsValidInterval(attribute.IntervalTimeSpan))
-            {
-                _logger.LogError("Timer {method} could not be registered the interval {interval} is invalid.", method, attribute.IntervalTimeSpan);
-                continue;
-            }
-
-            var service = _serviceProvider.GetService(target);
-
-            if (service == null)
-            {
-                _logger.LogDebug("Skipping timer registration because the service could not be loaded.");
-                continue;
-            }
-
-            var parameterInfos = method.GetParameters()
-                .Select(info => new MethodParameterSource(info) { IsService = true })
-                .ToArray();
-
-            var compiled = MethodInvokerFactory.Compile(method, parameterInfos);
-
-            if (attribute.IntervalTimeSpan < _lowIntervalThreshold)
-            {
-                _logger.LogWarning("Timer {type}.{method} has a low interval of {interval}.", target, method.Name, attribute.IntervalTimeSpan);
-            }
-
-            var timer = new TimerInfo(
-                intervalTicks: attribute.IntervalTimeSpan.Ticks, 
-                nextTick: tick + attribute.IntervalTimeSpan.Ticks, 
-                invoke: () => compiled(service, null, _serviceProvider, null), 
-                isActive: true);
-
-            timer.Reference = new TimerReference(timer, service, method);
-
-            _timers.Add(timer);
-        }
-    }
-
     public void Tick()
     {
         if (_timers.Count == 0)
@@ -167,5 +107,65 @@ internal class TimerSystem : ITickingSystem, ITimerService
         _timers.Add(invoker);
 
         return reference;
+    }
+
+    internal static bool IsValidInterval(TimeSpan interval)
+    {
+        return interval >= TimeSpan.FromTicks(1);
+    }
+
+    private void CreateTimersFromAssemblies()
+    {
+        var tick = _lastTick;
+        // Find methods with TimerAttribute in any loaded system.
+        var events = ClassScanner.Create()
+            .IncludeTypes(_systemRegistry.GetSystemTypes().Span)
+            .IncludeNonPublicMembers()
+            .Implements<ISystem>()
+            .ScanMethods<TimerAttribute>();
+
+        // Create timer invokers and store timer info in registry.
+        foreach (var (target, method, attribute) in events)
+        {
+            if (_logger.IsEnabled(LogLevel.Debug))
+            {
+                _logger.LogDebug("Adding timer on {type}.{method}.", target, method.Name);
+            }
+         
+            if (!IsValidInterval(attribute.IntervalTimeSpan))
+            {
+                _logger.LogError("Timer {method} could not be registered the interval {interval} is invalid.", method, attribute.IntervalTimeSpan);
+                continue;
+            }
+
+            var service = _serviceProvider.GetService(target);
+
+            if (service == null)
+            {
+                _logger.LogDebug("Skipping timer registration because the service could not be loaded.");
+                continue;
+            }
+
+            var parameterInfos = method.GetParameters()
+                .Select(info => new MethodParameterSource(info) { IsService = true })
+                .ToArray();
+
+            var compiled = MethodInvokerFactory.Compile(method, parameterInfos);
+
+            if (attribute.IntervalTimeSpan < _lowIntervalThreshold)
+            {
+                _logger.LogWarning("Timer {type}.{method} has a low interval of {interval}.", target, method.Name, attribute.IntervalTimeSpan);
+            }
+
+            var timer = new TimerInfo(
+                intervalTicks: attribute.IntervalTimeSpan.Ticks, 
+                nextTick: tick + attribute.IntervalTimeSpan.Ticks, 
+                invoke: () => compiled(service, null, _serviceProvider, null), 
+                isActive: true);
+
+            timer.Reference = new TimerReference(timer, service, method);
+
+            _timers.Add(timer);
+        }
     }
 }
