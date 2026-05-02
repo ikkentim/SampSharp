@@ -578,10 +578,10 @@ public class Vehicle : WorldEntity
     }
 
     /// <summary>
-    /// Gets the colours of this vehicle as a tuple of <c>(primary, secondary)</c> colour IDs.
+    /// Gets the colors of this vehicle as a tuple of <c>(primary, secondary)</c> colors IDs.
     /// </summary>
-    /// <returns>A tuple containing the primary and secondary colour IDs.</returns>
-    public virtual (int Primary, int Secondary) GetColours()
+    /// <returns>A tuple containing the primary and secondary color IDs.</returns>
+    public virtual (int Primary, int Secondary) GetColors()
     {
         return _vehicle.GetColour();
     }

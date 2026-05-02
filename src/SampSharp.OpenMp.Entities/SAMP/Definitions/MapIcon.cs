@@ -25,7 +25,7 @@ namespace SampSharp.Entities.SAMP;
 public enum MapIcon
 {
     /// <summary>
-    /// Can be used in any colour. Used for Single Player objectives.
+    /// Can be used in any color. Used for Single Player objectives.
     /// </summary>
     ColoredSquareTriangleDynamic = 0,
 

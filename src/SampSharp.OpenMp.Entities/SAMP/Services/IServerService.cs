@@ -292,5 +292,5 @@ public interface IServerService
     /// </summary>
     /// <param name="playerId">The player pool ID.</param>
     /// <returns>The default color.</returns>
-    Color GetDefaultColour(int playerId);
+    Color GetDefaultColor(int playerId);
 }

@@ -884,9 +884,10 @@ public class Player : WorldEntity
     /// Sets the weather for this player. If the clock is enabled, weather changes will interpolate gradually; otherwise they change instantly.
     /// </summary>
     /// <param name="weather">The weather ID to set.</param>
+    [Obsolete("Use Weather property instead.")]
     public virtual void SetWeather(int weather)
     {
-        _player.SetWeather(weather);
+        Weather = weather;
     }
 
     /// <summary>
@@ -1307,13 +1308,14 @@ public class Player : WorldEntity
     /// <param name="xMin">The minimum X coordinate.</param>
     /// <param name="yMax">The maximum Y coordinate.</param>
     /// <param name="yMin">The minimum Y coordinate.</param>
+    [Obsolete("Use WorldBounds property instead. Pass values as Vector4(xMax, xMin, yMax, yMin).")]
     public virtual void SetWorldBounds(float xMax, float xMin, float yMax, float yMin)
     {
-        _player.SetWorldBounds(new Vector4(xMax, xMin, yMax, yMin));
+        WorldBounds = new Vector4(xMax, xMin, yMax, yMin);
     }
 
     /// <summary>
-    /// Changes the color of this player's name tag and radar blip for another <see cref="Player" />.
+    /// Changes the color of the specified <paramref name="player"/>'s name tag and radar blip for this player.
     /// </summary>
     /// <param name="player">The <see cref="Player" /> whose marker color will be changed.</param>
     /// <param name="color">The new marker <see cref="Color" />.</param>
@@ -1761,46 +1763,32 @@ public class Player : WorldEntity
     }
 
     /// <summary>
-    /// Toggles ghost mode for this player. Other players will pass through them as if they were not there. (open.mp only)
+    /// Gets or sets a value indicating whether ghost mode is enabled for this player. (open.mp only)
     /// </summary>
-    /// <param name="enable"><see langword="true" /> to enable ghost mode; <see langword="false" /> to disable.</param>
-    public virtual void ToggleGhostMode(bool enable)
+    /// <remarks>When enabled, other players will pass through this player as if they were not there.</remarks>
+    public virtual bool IsGhostModeEnabled
     {
-        _player.ToggleGhostMode(enable);
+        get => _player.IsGhostModeEnabled();
+        set => _player.ToggleGhostMode(value);
     }
 
     /// <summary>
-    /// Gets a value indicating whether ghost mode is enabled for this player. (open.mp only)
+    /// Gets or sets a value indicating whether this player is allowed to use weapons. (open.mp only)
     /// </summary>
-    public virtual bool IsGhostModeEnabled => _player.IsGhostModeEnabled();
-
-    /// <summary>
-    /// Allows or disallows this player to use weapons. (open.mp only)
-    /// </summary>
-    /// <param name="allow"><see langword="true" /> to allow weapons; <see langword="false" /> to disallow.</param>
-    public virtual void AllowWeapons(bool allow)
+    public virtual bool AreWeaponsAllowed
     {
-        _player.AllowWeapons(allow);
+        get => _player.AreWeaponsAllowed();
+        set => _player.AllowWeapons(value);
     }
 
     /// <summary>
-    /// Gets a value indicating whether this player is allowed to use weapons. (open.mp only)
+    /// Gets or sets a value indicating whether map-click teleporting is allowed for this player. (open.mp only)
     /// </summary>
-    public virtual bool AreWeaponsAllowed => _player.AreWeaponsAllowed();
-
-    /// <summary>
-    /// Allows or disallows this player to teleport by clicking on the map. (open.mp only)
-    /// </summary>
-    /// <param name="allow"><see langword="true" /> to allow teleporting; <see langword="false" /> to disallow.</param>
-    public virtual void AllowTeleport(bool allow)
+    public virtual bool IsTeleportAllowed
     {
-        _player.AllowTeleport(allow);
+        get => _player.IsTeleportAllowed();
+        set => _player.AllowTeleport(value);
     }
-
-    /// <summary>
-    /// Gets a value indicating whether map-click teleporting is allowed for this player. (open.mp only)
-    /// </summary>
-    public virtual bool IsTeleportAllowed => _player.IsTeleportAllowed();
 
     /// <summary>
     /// Hides the game text in the specified style/slot for this player.
@@ -1910,17 +1898,19 @@ public class Player : WorldEntity
     }
 
     /// <summary>
-    /// Enumerates the players for whom this player is currently streamed in.
+    /// Gets a lazy sequence of players for whom this player is currently streamed in.
     /// </summary>
-    /// <returns>A lazy sequence of <see cref="Player" /> components.</returns>
-    public virtual IEnumerable<Player> StreamedForPlayers()
+    public virtual IEnumerable<Player> StreamedForPlayers
     {
-        foreach (var raw in _player.StreamedForPlayers())
+        get
         {
-            var component = _entityProvider.GetComponent(raw);
-            if (component != null)
+            foreach (var raw in _player.StreamedForPlayers())
             {
-                yield return component;
+                var component = _entityProvider.GetComponent(raw);
+                if (component != null)
+                {
+                    yield return component;
+                }
             }
         }
     }
@@ -1948,7 +1938,7 @@ public class Player : WorldEntity
         _player.TryQueryExtension<IPlayerCustomModelsData>(out var data) ? data : null;
 
     /// <summary>
-    /// Gets the active custom skin model ID for this player, or <see langword="null" /> if no custom skin is set.
+    /// Gets or sets the active custom skin model ID for this player, or <see langword="null" /> if no custom skin is set.
     /// </summary>
     public virtual uint? CustomSkin
     {
@@ -1957,16 +1947,14 @@ public class Player : WorldEntity
             var skin = CustomModelsData?.GetCustomSkin() ?? 0;
             return skin == 0 ? null : skin;
         }
-    }
-
-    /// <summary>
-    /// Sets the custom skin model for this player.
-    /// </summary>
-    /// <param name="skinModel">The custom skin model ID.</param>
-    public virtual void SetCustomSkin(uint skinModel)
-    {
-        var data = CustomModelsData ?? throw new InvalidOperationException("Custom models component is not loaded");
-        data.SetCustomSkin(skinModel);
+        set
+        {
+            if (value.HasValue)
+            {
+                var data = CustomModelsData ?? throw new InvalidOperationException("Custom models component is not loaded");
+                data.SetCustomSkin(value.Value);
+            }
+        }
     }
 
     /// <summary>

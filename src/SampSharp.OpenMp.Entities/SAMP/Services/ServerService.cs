@@ -422,7 +422,7 @@ internal class ServerService : IServerService
         return _players.IsNickNameCharacterAllowed(character);
     }
 
-    public Color GetDefaultColour(int playerId)
+    public Color GetDefaultColor(int playerId)
     {
         return _players.GetDefaultColour(playerId);
     }
