@@ -71,7 +71,7 @@ public class GlobalObjectTests : TestBase
         var result = _object.Move(new Vector3(200, 0, 0), 10, Vector3.Zero);
         _object.Stop();
 
-        result.ShouldBe(10000);
+        result.ShouldBe(TimeSpan.FromSeconds(2));
     }
 
     [Fact]

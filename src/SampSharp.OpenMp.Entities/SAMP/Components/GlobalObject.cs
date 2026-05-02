@@ -93,15 +93,15 @@ public class GlobalObject : WorldEntity
     /// <param name="position">The position to move this object to as a <see cref="Vector3" />.</param>
     /// <param name="speed">The speed at which to move this object.</param>
     /// <param name="rotation">The rotation to move this object to as a <see cref="Vector3" />.</param>
-    /// <returns>The time in milliseconds for the object to complete the move.</returns>
-    public virtual int Move(Vector3 position, float speed, Vector3 rotation)
+    /// <returns>The time for the object to complete the move.</returns>
+    public virtual TimeSpan Move(Vector3 position, float speed, Vector3 rotation)
     {
-        var time = (position - Position).Length() / speed * 1000f;
+        var time = (position - Position).Length() / speed;
 
         var moveDat = new ObjectMoveData(position, rotation, speed);
         _object.Move(ref moveDat);
 
-        return (int)time;
+        return TimeSpan.FromSeconds((int)time);
     }
 
     /// <summary>
@@ -109,8 +109,8 @@ public class GlobalObject : WorldEntity
     /// </summary>
     /// <param name="position">The position to move this object to as a <see cref="Vector3" />.</param>
     /// <param name="speed">The speed at which to move this object.</param>
-    /// <returns>The time in milliseconds for the object to complete the move.</returns>
-    public virtual int Move(Vector3 position, float speed)
+    /// <returns>The time for the object to complete the move.</returns>
+    public virtual TimeSpan Move(Vector3 position, float speed)
     {
         return Move(position, speed, new Vector3(-1000));
     }

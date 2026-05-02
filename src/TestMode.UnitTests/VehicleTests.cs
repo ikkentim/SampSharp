@@ -348,7 +348,6 @@ public class VehicleTests : TestBase
     {
         // doesn't roundtrip; the setter send a packet to the driver.
         _vehicle.SetAngularVelocity(new Vector3(5, 6, 7));
-        
     }
 
     [Fact]
