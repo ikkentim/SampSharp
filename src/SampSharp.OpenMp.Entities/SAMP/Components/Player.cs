@@ -1762,6 +1762,7 @@ public class Player : WorldEntity
         _player.UnsetMapIcon(iconId);
     }
 
+    // TODO: Is ghost mode only available for open-mp clients? If available for SA-MP clients, remove the 'open.mp only' note from the docs.
     /// <summary>
     /// Gets or sets a value indicating whether ghost mode is enabled for this player. (open.mp only)
     /// </summary>
@@ -1773,7 +1774,7 @@ public class Player : WorldEntity
     }
 
     /// <summary>
-    /// Gets or sets a value indicating whether this player is allowed to use weapons. (open.mp only)
+    /// Gets or sets a value indicating whether this player is allowed to use weapons.
     /// </summary>
     public virtual bool AreWeaponsAllowed
     {
