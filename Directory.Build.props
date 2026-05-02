@@ -23,6 +23,7 @@
     <PropertyGroup Condition="'$(IsDeliverable)' == 'True'">
         <PackageProjectUrl>https://github.com/ikkentim/SampSharp</PackageProjectUrl>
         <PackageIcon>sampsharp.png</PackageIcon>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageTags>gta samp sampsharp</PackageTags>
         <PackageId>$(AssemblyName)</PackageId>
@@ -32,6 +33,7 @@
 
     <ItemGroup Condition="'$(IsDeliverable)' == 'True'">
         <None Include="$(MSBuildThisFileDirectory)\art\sampsharp.png" Pack="true" PackagePath="\" />
+        <None Include="README.md" Pack="true" PackagePath="\" />
     </ItemGroup>
 
     <!-- Versioning -->
