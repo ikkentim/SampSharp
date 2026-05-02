@@ -178,22 +178,22 @@ public abstract class BaseGangZone : IdProvider
     }
 
     /// <summary>
-    /// Gets the colour with which this gang zone is shown for the specified <paramref name="player" />.
+    /// Gets the color with which this gang zone is shown for the specified <paramref name="player" />.
     /// </summary>
     /// <param name="player">The player.</param>
-    /// <returns>The per-player gang zone colour.</returns>
-    public virtual Color GetColourForPlayer(Player player)
+    /// <returns>The per-player gang zone color.</returns>
+    public virtual Color GetColorForPlayer(Player player)
     {
         ArgumentNullException.ThrowIfNull(player);
         return _gangZone.GetColourForPlayer(player);
     }
 
     /// <summary>
-    /// Gets the flashing colour for this gang zone as seen by the specified <paramref name="player" />.
+    /// Gets the flashing color for this gang zone as seen by the specified <paramref name="player" />.
     /// </summary>
     /// <param name="player">The player.</param>
-    /// <returns>The per-player flashing colour.</returns>
-    public virtual Color GetFlashingColourForPlayer(Player player)
+    /// <returns>The per-player flashing color.</returns>
+    public virtual Color GetFlashingColorForPlayer(Player player)
     {
         ArgumentNullException.ThrowIfNull(player);
         return _gangZone.GetFlashingColourForPlayer(player);

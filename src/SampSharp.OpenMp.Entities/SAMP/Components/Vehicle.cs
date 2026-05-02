@@ -371,26 +371,12 @@ public class Vehicle : WorldEntity
     /// <summary>
     /// Gets the primary color of this vehicle.
     /// </summary>
-    public virtual int Color1
-    {
-        get
-        {
-            _vehicle.GetColour(out var pair);
-            return pair.First;
-        }
-    }
+    public virtual int Color1 => Colors.Primary;
 
     /// <summary>
     /// Gets the secondary color of this vehicle.
     /// </summary>
-    public virtual int Color2
-    {
-        get
-        {
-            _vehicle.GetColour(out var pair);
-            return pair.Second;
-        }
-    }
+    public virtual int Color2 => Colors.Secondary;
 
     /// <summary>
     /// Calculates the distance between this vehicle and the specified <paramref name="point" />.
@@ -466,18 +452,30 @@ public class Vehicle : WorldEntity
     /// </summary>
     /// <param name="color1">The primary color ID to set.</param>
     /// <param name="color2">The secondary color ID to set.</param>
+    [Obsolete("Use Colors property instead.")]
     public virtual void ChangeColor(int color1, int color2)
     {
-        _vehicle.SetColour(color1, color2);
+        Colors = (color1, color2);
+    }
+
+    /// <summary>
+    /// Gets or sets the paintjob of this vehicle. For solid colors, use <see cref="ChangeColor" /> instead.
+    /// </summary>
+    /// <remarks>Use 3 to remove the paintjob.</remarks>
+    public virtual int Paintjob
+    {
+        get => _vehicle.GetPaintJob();
+        set => _vehicle.SetPaintJob(value);
     }
 
     /// <summary>
     /// Changes the paintjob of this vehicle. For solid colors, use <see cref="ChangeColor" /> instead.
     /// </summary>
     /// <param name="paintjobId">The paintjob ID to apply. Use 3 to remove the paintjob.</param>
+    [Obsolete("Use Paintjob property instead.")]
     public virtual void ChangePaintjob(int paintjobId)
     {
-        _vehicle.SetPaintJob(paintjobId);
+        Paintjob = paintjobId;
     }
 
     /// <summary>
@@ -542,48 +540,47 @@ public class Vehicle : WorldEntity
     }
 
     /// <summary>
-    /// Replaces the spawn data of this vehicle (model, position, rotation, colors, siren, interior, respawn delay).
+    /// Gets or sets the spawn data of this vehicle (model, position, rotation, colors, siren, interior, respawn delay).
     /// </summary>
-    /// <param name="data">The new spawn data.</param>
-    public virtual void SetSpawnData(VehicleSpawnInfo data)
+    public virtual VehicleSpawnInfo SpawnData
     {
-        var raw = new VehicleSpawnData(
-            respawnDelay: data.RespawnDelay,
-            modelID: data.ModelId,
-            position: data.Position,
-            zRotation: data.ZRotation,
-            colour1: data.PrimaryColor,
-            colour2: data.SecondaryColor,
-            siren: data.HasSiren,
-            interior: data.Interior);
-        _vehicle.SetSpawnData(ref raw);
+        get
+        {
+            var raw = _vehicle.GetSpawnData();
+            return new VehicleSpawnInfo(
+                ModelId: raw.modelID,
+                Position: raw.position,
+                ZRotation: raw.zRotation,
+                PrimaryColor: raw.colour1,
+                SecondaryColor: raw.colour2,
+                HasSiren: raw.siren,
+                Interior: raw.interior,
+                RespawnDelay: raw.respawnDelay);
+        }
+        set
+        {
+            var raw = new VehicleSpawnData(
+                respawnDelay: value.RespawnDelay,
+                modelID: value.ModelId,
+                position: value.Position,
+                zRotation: value.ZRotation,
+                colour1: value.PrimaryColor,
+                colour2: value.SecondaryColor,
+                siren: value.HasSiren,
+                interior: value.Interior);
+            _vehicle.SetSpawnData(ref raw);
+        }
     }
 
-    /// <summary>
-    /// Gets the current spawn data of this vehicle.
-    /// </summary>
-    /// <returns>The spawn data.</returns>
-    public virtual VehicleSpawnInfo GetSpawnData()
-    {
-        var raw = _vehicle.GetSpawnData();
-        return new VehicleSpawnInfo(
-            ModelId: raw.modelID,
-            Position: raw.position,
-            ZRotation: raw.zRotation,
-            PrimaryColor: raw.colour1,
-            SecondaryColor: raw.colour2,
-            HasSiren: raw.siren,
-            Interior: raw.interior,
-            RespawnDelay: raw.respawnDelay);
-    }
+
 
     /// <summary>
-    /// Gets the colours of this vehicle as a tuple of <c>(primary, secondary)</c> colour IDs.
+    /// Gets or sets the colors of this vehicle as a tuple of <c>(primary, secondary)</c> colors IDs.
     /// </summary>
-    /// <returns>A tuple containing the primary and secondary colour IDs.</returns>
-    public virtual (int Primary, int Secondary) GetColours()
+    public virtual (int Primary, int Secondary) Colors
     {
-        return _vehicle.GetColour();
+        get => _vehicle.GetColour();
+        set => _vehicle.SetColour(value.Primary, value.Secondary);
     }
 
     /// <summary>
