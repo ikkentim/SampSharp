@@ -3,7 +3,7 @@ name: CI - Component x64 (Linux)
 on:
   push:
     branches:
-      - master
+      - main
       - release/1.*
     paths:
       - .github/workflows/component-linux.yml
@@ -13,7 +13,7 @@ on:
   
   pull_request:
     branches:
-      - master
+      - main
       - release/1.*
     paths:
       - .github/workflows/component-linux.yml
