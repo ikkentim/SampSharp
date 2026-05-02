@@ -29,7 +29,7 @@ internal class PlayerChangeSystem : DisposableSystem, IPlayerChangeEventHandler
         _eventDispatcher.Invoke("OnPlayerInteriorChange", _entityProvider.GetEntity(player), newInterior, oldInterior);
     }
 
-    public void OnPlayerStateChange(IPlayer player, SampSharp.OpenMp.Core.Api.PlayerState newState, SampSharp.OpenMp.Core.Api.PlayerState oldState)
+    public void OnPlayerStateChange(IPlayer player, OpenMp.Core.Api.PlayerState newState, OpenMp.Core.Api.PlayerState oldState)
     {
         _eventDispatcher.Invoke("OnPlayerStateChange", _entityProvider.GetEntity(player), newState, oldState);
     }

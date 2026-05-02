@@ -112,8 +112,8 @@ public class PlayerObject : WorldEntity
         ArgumentNullException.ThrowIfNull(text);
         ArgumentNullException.ThrowIfNull(fontface);
         
-        _playerObject.SetMaterialText((uint)materialIndex, text, (SampSharp.OpenMp.Core.Api.ObjectMaterialSize)materialSize, fontface, fontSize, bold, foreColor, backColor,
-            (SampSharp.OpenMp.Core.Api.ObjectMaterialTextAlign)textAlignment);
+        _playerObject.SetMaterialText((uint)materialIndex, text, (OpenMp.Core.Api.ObjectMaterialSize)materialSize, fontface, fontSize, bold, foreColor, backColor,
+            (OpenMp.Core.Api.ObjectMaterialTextAlign)textAlignment);
     }
 
     /// <summary>

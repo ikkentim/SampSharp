@@ -17,7 +17,7 @@ internal class VehicleInfoService : IVehicleInfoService
 
     public Vector3 GetModelInfo(VehicleModelType vehicleModel, VehicleModelInfoType infoType)
     {
-        VehicleData.GetVehicleModelInfo((int)vehicleModel, (SampSharp.OpenMp.Core.Api.VehicleModelInfoType)infoType, out var outInfo);
+        VehicleData.GetVehicleModelInfo((int)vehicleModel, (OpenMp.Core.Api.VehicleModelInfoType)infoType, out var outInfo);
         return outInfo;
     }
 

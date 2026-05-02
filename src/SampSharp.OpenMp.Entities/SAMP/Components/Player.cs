@@ -1477,7 +1477,7 @@ public class Player : WorldEntity
     public virtual void StartRecordingPlayerData(PlayerRecordingType recordingType, string recordingName)
     {
         ArgumentNullException.ThrowIfNull(recordingName);
-        RecordingData.Start((SampSharp.OpenMp.Core.Api.PlayerRecordingType)recordingType, recordingName);
+        RecordingData.Start((OpenMp.Core.Api.PlayerRecordingType)recordingType, recordingName);
     }
 
     /// <summary>

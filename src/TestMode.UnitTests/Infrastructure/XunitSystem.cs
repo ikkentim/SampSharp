@@ -2,11 +2,7 @@
 using System.Reflection;
 using SampSharp.Entities;
 using SampSharp.Entities.SAMP;
-using Shouldly;
-using Xunit.Runner.Common;
 using Xunit.Runner.InProc.SystemConsole;
-using Xunit.Sdk;
-using Xunit.v3;
 
 namespace TestMode.UnitTests;
 

@@ -1,8 +1,6 @@
 ﻿using System.Numerics;
-using System.Runtime.InteropServices;
 using Microsoft.Extensions.DependencyInjection;
 using SampSharp.Entities.SAMP;
-using SampSharp.OpenMp.Core.Api;
 using Shouldly;
 using Xunit;
 

@@ -1,5 +1,4 @@
-﻿using System.Net;
-using System.Numerics;
+﻿using System.Numerics;
 using SampSharp.OpenMp.Core;
 using SampSharp.OpenMp.Core.Api;
 using SampSharp.OpenMp.Core.RobinHood;

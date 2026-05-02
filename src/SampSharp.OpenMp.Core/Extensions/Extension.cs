@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using SampSharp.OpenMp.Core.Api;
 
@@ -183,14 +184,14 @@ public abstract partial class Extension : IDisposable
     }
 
     [LibraryImport("SampSharp", EntryPoint = "ManagedExtensionImpl_create")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial nint CreateUnmanaged(UID id, nint freePointer, nint handle);
 
     [LibraryImport("SampSharp", EntryPoint = "ManagedExtensionImpl_delete")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial void Delete(nint handle);
     
     [LibraryImport("SampSharp", EntryPoint = "ManagedExtensionImpl_getHandle")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial nint GetHandle(nint handle);
 }

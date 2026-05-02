@@ -35,7 +35,7 @@ public static class VehicleData
     /// <param name="outInfo">The output parameter to store the retrieved information.</param>
     /// <returns><see langword="true" /> if the information was successfully retrieved; otherwise, <see langword="false" />.</returns>
     [DllImport("SampSharp", EntryPoint = "vehicles_getVehicleModelInfo")]
-    public static extern bool GetVehicleModelInfo(int model, SampSharp.OpenMp.Core.Api.VehicleModelInfoType type, out Vector3 outInfo);
+    public static extern bool GetVehicleModelInfo(int model, VehicleModelInfoType type, out Vector3 outInfo);
 
     /// <summary>
     /// Gets random colors for a vehicle.

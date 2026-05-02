@@ -308,7 +308,7 @@ internal class ServerService : IServerService
     {
         ArgumentNullException.ThrowIfNull(command);
 
-        var snd = new ConsoleCommandSenderData(SampSharp.OpenMp.Core.Api.ConsoleCommandSender.Console, 0);
+        var snd = new ConsoleCommandSenderData(OpenMp.Core.Api.ConsoleCommandSender.Console, 0);
         _console.Send(command, ref snd);
     }
 

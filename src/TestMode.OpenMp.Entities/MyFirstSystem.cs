@@ -5,7 +5,6 @@ using SampSharp.Entities.SAMP;
 using SampSharp.Entities.SAMP.Commands;
 using SampSharp.OpenMp.Core;
 using SampSharp.OpenMp.Core.Api;
-using PlayerRecordingType = SampSharp.Entities.SAMP.PlayerRecordingType;
 
 namespace TestMode.OpenMp.Entities;
 
