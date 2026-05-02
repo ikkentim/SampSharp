@@ -2,12 +2,6 @@
 
 internal sealed class EntityNode
 {
-    // An entity has a 0-1 parent, 0-n children and 0-n components
-    public EntityNode(ComponentStore components)
-    {
-        Components = components;
-    }
-
     public readonly ComponentStore Components;
 
     public int ChildCount;
@@ -15,7 +9,15 @@ internal sealed class EntityNode
     public EntityId Id;
     public EntityNode? Next;
     public EntityNode? Parent;
+
     public EntityNode? Previous;
+
+    // An entity has a 0-1 parent, 0-n children and 0-n components
+    public EntityNode(ComponentStore components)
+    {
+        Components = components;
+    }
+
     public bool IsEmpty => ChildCount == 0 && Components.IsEmpty;
 
     public void AppendChild(EntityNode child)

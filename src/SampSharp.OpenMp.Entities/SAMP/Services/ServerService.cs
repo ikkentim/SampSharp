@@ -7,14 +7,14 @@ namespace SampSharp.Entities.SAMP;
 
 internal class ServerService : IServerService
 {
-    private readonly ILogger<ServerService> _logger;
     private readonly IActorsComponent _actors;
-    private readonly IPlayerPool _players;
-    private readonly IConfig _config;
-    private readonly ICore _core;
-    private readonly IVehiclesComponent _vehicles;
     private readonly IClassesComponent _classes;
+    private readonly IConfig _config;
     private readonly IConsoleComponent _console;
+    private readonly ICore _core;
+    private readonly ILogger<ServerService> _logger;
+    private readonly IPlayerPool _players;
+    private readonly IVehiclesComponent _vehicles;
 
     public ServerService(SampSharpEnvironment environment, ILogger<ServerService> logger)
     {
@@ -308,7 +308,7 @@ internal class ServerService : IServerService
     {
         ArgumentNullException.ThrowIfNull(command);
 
-        var snd = new ConsoleCommandSenderData(SampSharp.OpenMp.Core.Api.ConsoleCommandSender.Console, 0);
+        var snd = new ConsoleCommandSenderData(OpenMp.Core.Api.ConsoleCommandSender.Console, 0);
         _console.Send(command, ref snd);
     }
 

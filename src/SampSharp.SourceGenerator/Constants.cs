@@ -13,21 +13,6 @@ public static class Constants
     public const string SpanOfBytesFQN = "System.Span<byte>";
 
     /// <summary>
-    /// System.Delegate
-    /// </summary>
-    public static readonly string DelegateFQN = typeof(Delegate).FullName!;
-
-    /// <summary>
-    /// System.Runtime.InteropServices.Marshal
-    /// </summary>
-    public static readonly string MarshalFQN = typeof(Marshal).FullName!;
-
-    /// <summary>
-    /// System.IEquatable{T}
-    /// </summary>
-    public static readonly string IEquatableFQN = typeof(IEquatable<>).FullName!.Split('`')[0];
-
-    /// <summary>
     /// System.Runtime.InteropServices.Marshalling.MarshalUsingAttribute
     /// </summary>
     public const string MarshalUsingAttributeFQN = "System.Runtime.InteropServices.Marshalling.MarshalUsingAttribute";
@@ -46,9 +31,9 @@ public static class Constants
     /// System.Runtime.InteropServices.Marshalling.CustomMarshallerAttribute.GenericPlaceholder
     /// </summary>
     public const string GenericPlaceholderFQN = "System.Runtime.InteropServices.Marshalling.CustomMarshallerAttribute.GenericPlaceholder";
-    
+
     // SampSharp.OpenMp.Core
-    
+
     /// <summary>
     /// SampSharp.OpenMp.Core.OpenMpApiAttribute
     /// </summary>
@@ -78,7 +63,7 @@ public static class Constants
     /// SampSharp.OpenMp.Core.NumberedTypeGeneratorAttribute
     /// </summary>
     public const string NumberedTypeGeneratorAttributeFQN = "SampSharp.OpenMp.Core.NumberedTypeGeneratorAttribute";
-    
+
     /// <summary>
     /// SampSharp.OpenMp.Core.StartupContext
     /// </summary>
@@ -95,7 +80,7 @@ public static class Constants
     public const string UnmanagedInterfaceFQN = "SampSharp.OpenMp.Core.IUnmanagedInterface";
 
     // SampSharp.OpenMp.Core.Std
-    
+
     /// <summary>
     /// SampSharp.OpenMp.Core.Std.StringViewMarshaller
     /// </summary>
@@ -117,7 +102,7 @@ public static class Constants
     /// SampSharp.OpenMp.Core.Api.IEventHandler{TEventHandler}
     /// </summary>
     public const string EventHandlerFQN = "SampSharp.OpenMp.Core.Api.IEventHandler";
-    
+
     /// <summary>
     /// SampSharp.OpenMp.Core.Api.EventHandlerMarshaller{TEventHandler}
     /// </summary>
@@ -127,4 +112,19 @@ public static class Constants
     /// SampSharp.OpenMp.Core.Api.IEventHandlerMarshaller{TEventHandler}
     /// </summary>
     public const string IEventHandlerMarshallerFQN = "SampSharp.OpenMp.Core.Api.IEventHandlerMarshaller";
+
+    /// <summary>
+    /// System.Delegate
+    /// </summary>
+    public static readonly string DelegateFQN = typeof(Delegate).FullName!;
+
+    /// <summary>
+    /// System.Runtime.InteropServices.Marshal
+    /// </summary>
+    public static readonly string MarshalFQN = typeof(Marshal).FullName!;
+
+    /// <summary>
+    /// System.IEquatable{T}
+    /// </summary>
+    public static readonly string IEquatableFQN = typeof(IEquatable<>).FullName!.Split('`')[0];
 }

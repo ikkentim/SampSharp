@@ -9,8 +9,8 @@ namespace SampSharp.Entities.SAMP;
 /// </summary>
 public abstract class BasePickup : WorldEntity
 {
-    private readonly IPickupsComponent _pickups;
     private readonly IPickup _pickup;
+    private readonly IPickupsComponent _pickups;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="BasePickup" /> class.
@@ -110,13 +110,13 @@ public abstract class BasePickup : WorldEntity
             _pickups.AsPool().Release(Id);
         }
     }
-    
+
     /// <inheritdoc />
     public override string ToString()
     {
         return $"(Id: {Id}, Model: {Model})";
     }
-    
+
     /// <summary>
     /// Performs an implicit conversion from <see cref="BasePickup" /> to <see cref="IPickup" />.
     /// </summary>

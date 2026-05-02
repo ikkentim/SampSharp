@@ -4,8 +4,8 @@ namespace SampSharp.Entities.SAMP;
 
 internal class TextDrawSystem : DisposableSystem, ITextDrawEventHandler
 {
-    private readonly IEventDispatcher _eventDispatcher;
     private readonly IOmpEntityProvider _entityProvider;
+    private readonly IEventDispatcher _eventDispatcher;
 
     public TextDrawSystem(IEventDispatcher eventDispatcher, IOmpEntityProvider entityProvider, SampSharpEnvironment environment)
     {

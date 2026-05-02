@@ -27,7 +27,7 @@ public static unsafe class BanEntryMarshaller
 
             return new BlittableStructRef<Native>(ptr);
         }
-        
+
         private static Native ToNative(BanEntry entry)
         {
             return new Native(new HybridString46(entry.Address), 
@@ -50,7 +50,7 @@ public static unsafe class BanEntryMarshaller
 
             return FromNative(native);
         }
-        
+
         private static BanEntry FromNative(Native native)
         {
             return new BanEntry(native.AddressString.ToString(),

@@ -253,5 +253,4 @@ public static class CastMembersGenerator
             externReturnType: IntPtrType, 
             parameters: [new HelperSyntaxFactory.ParamForwardInfo("ptr", IntPtrType, RefKind.None)]);
     }
-
 }

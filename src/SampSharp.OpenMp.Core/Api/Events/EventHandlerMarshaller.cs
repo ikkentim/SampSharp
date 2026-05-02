@@ -52,7 +52,7 @@ public abstract class EventHandlerMarshaller<TEventHandler> : IEventHandlerMarsh
             RefCount = reference.RefCount - 1
         };
     }
-    
+
     internal nint? GetReference(TEventHandler handler)
     {
         return _handlers.TryGetValue(handler, out var reference) 
@@ -74,5 +74,4 @@ public abstract class EventHandlerMarshaller<TEventHandler> : IEventHandlerMarsh
     protected abstract void Free(nint handle);
 
     private readonly record struct HandlerData(nint Handle, int RefCount, object Luggage);
-
 }

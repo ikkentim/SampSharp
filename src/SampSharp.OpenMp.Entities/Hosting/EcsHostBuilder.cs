@@ -9,13 +9,13 @@ namespace SampSharp.Entities;
 [Extension(0xb0eac2ea9239714c)]
 internal sealed class EcsHostBuilder : Extension, IEcsHostBuilder
 {
-    private readonly List<Action<SampSharpEnvironment, IServiceCollection>> _serviceConfigurations = [];
     private readonly List<Action<IEcsBuilder>> _ecsConfigurations = [];
     private readonly List<Action<ILoggingBuilder>> _loggerConfigurations = [];
+    private readonly List<Action<SampSharpEnvironment, IServiceCollection>> _serviceConfigurations = [];
+    private Func<IServiceCollection, IServiceProvider>? _serviceProviderFactory;
     private bool _systemsLoadingDisabled;
     private UnhandledExceptionHandler? _unhandledExceptionHandler;
-    private Func<IServiceCollection, IServiceProvider>? _serviceProviderFactory;
-    
+
     public IEcsHostBuilder Configure(Action<IEcsBuilder> build)
     {
         ArgumentNullException.ThrowIfNull(build);

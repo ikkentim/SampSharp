@@ -8,8 +8,8 @@ namespace SampSharp.Entities.SAMP;
 /// </summary>
 public class PlayerTextDraw : IdProvider
 {
-    private readonly IPlayerTextDrawData _playerTextDraws;
     private readonly IPlayerTextDraw _playerTextDraw;
+    private readonly IPlayerTextDrawData _playerTextDraws;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="PlayerTextDraw" /> class.

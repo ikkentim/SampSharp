@@ -4,8 +4,8 @@ namespace SampSharp.Entities.SAMP;
 
 internal class PickupSystem : DisposableSystem, IPickupEventHandler
 {
-    private readonly IEventDispatcher _eventDispatcher;
     private readonly IOmpEntityProvider _entityProvider;
+    private readonly IEventDispatcher _eventDispatcher;
 
     public PickupSystem(IEventDispatcher eventDispatcher, IOmpEntityProvider entityProvider, SampSharpEnvironment environment)
     {
@@ -13,7 +13,7 @@ internal class PickupSystem : DisposableSystem, IPickupEventHandler
         _entityProvider = entityProvider;
         AddDisposable(environment.AddEventHandler<IPickupsComponent, IPickupEventHandler>(x => x.GetEventDispatcher(), this));
     }
-    
+
     public void OnPlayerPickUpPickup(IPlayer player, IPickup pickup)
     {
         var name = pickup.GetLegacyPlayer().HasValue

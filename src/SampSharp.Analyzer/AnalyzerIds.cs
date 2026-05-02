@@ -12,7 +12,7 @@ public static class AnalyzerIds
         DiagnosticSeverity.Error, 
         true, 
         "Type {0} must have the 'ExtensionAttribute'.");
-    
+
     public static readonly DiagnosticDescriptor Sash0002GenericEventHandlerUnsupported = new(
         "SASH0002", 
         "Unsupported generic parameters in open.mp event handler",
@@ -21,7 +21,7 @@ public static class AnalyzerIds
         DiagnosticSeverity.Error, 
         true, 
         "open.mp event handler type '{0}' must not contain generic parameters.");
-    
+
     public static readonly DiagnosticDescriptor Sash0003ApiStructMustBeReadonlyPartial = new(
         "SASH0003", 
         "open.mp api struct must be readonly partial",
@@ -48,7 +48,7 @@ public static class AnalyzerIds
         DiagnosticSeverity.Error, 
         true, 
         "open.mp api struct require the 'AllowUnsafeBlocks' option to be set to true.");
-    
+
     public static readonly DiagnosticDescriptor Sash0006ApiStructBaseTypeMustBeApiStruct = new(
         "SASH0006", 
         "open.mp api struct base types must be open.mp api structs",
@@ -57,7 +57,7 @@ public static class AnalyzerIds
         DiagnosticSeverity.Error, 
         true, 
         "base type '{0}' in base type list of open.mp api struct '{1}' is not an open.mp api struct.");
-     
+
     public static readonly DiagnosticDescriptor Sash0007ApiStructMustNotContainFields = new(
         "SASH0007", 
         "open.mp api struct may not contain fields",
@@ -75,5 +75,4 @@ public static class AnalyzerIds
         DiagnosticSeverity.Error, 
         true, 
         "open.mp event handler function '{0}' returns a value by ref while also using a marshaller which is not supported.");
-
 }

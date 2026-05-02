@@ -7,6 +7,7 @@ internal class SafeEventHandlerRegistration<TComponent, TEventHandler>(SampSharp
     where TEventHandler : class, IEventHandler<TEventHandler>
 {
     private bool _disposed;
+
     public void Dispose()
     {
         if (_disposed)
@@ -40,6 +41,7 @@ internal class SafeEventHandlerRegistration<TEventHandler>(SampSharpEnvironment 
     where TEventHandler : class, IEventHandler<TEventHandler>
 {
     private bool _disposed;
+
     public void Dispose()
     {
         if (_disposed)

@@ -20,8 +20,8 @@ internal class ConsoleSystem : DisposableSystem, IConsoleEventHandler
         var player = sender.Player.HasValue 
             ? _entityProvider.GetComponent(sender.Player.Value) 
             : null;
-        var isCustom = sender.Sender == SampSharp.OpenMp.Core.Api.ConsoleCommandSender.Custom;
-        var isConsole = sender.Sender == SampSharp.OpenMp.Core.Api.ConsoleCommandSender.Console;
+        var isCustom = sender.Sender == OpenMp.Core.Api.ConsoleCommandSender.Custom;
+        var isConsole = sender.Sender == OpenMp.Core.Api.ConsoleCommandSender.Console;
 
         return _eventDispatcher.InvokeAs("OnConsoleText", false, command, parameters, new ConsoleCommandSender(player, isConsole, isCustom));
     }

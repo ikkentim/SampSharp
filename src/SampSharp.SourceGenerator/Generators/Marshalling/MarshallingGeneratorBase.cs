@@ -56,7 +56,7 @@ public abstract class MarshallingGeneratorBase(MarshalDirection direction)
             ? GenerateInvocationWithMarshallingManagedToUnmanaged(ctx) 
             : GenerateInvocationWithMarshallingUnmanagedToManaged(ctx);
     }
-    
+
     private BlockSyntax GenerateInvocationWithMarshallingManagedToUnmanaged(MarshallingStubGenerationContext ctx)
     {
         // The generated method consists of the following content:
@@ -350,7 +350,7 @@ public abstract class MarshallingGeneratorBase(MarshalDirection direction)
 
         return invoke;
     }
-    
+
     private static MarshallingPhases CollectPhases(MarshallingStubGenerationContext ctx)
     {
         var setup = Phase(ctx, MarshalPhase.Setup, MarshallingCodeGenDocumentation.COMMENT_SETUP);
@@ -385,7 +385,7 @@ public abstract class MarshallingGeneratorBase(MarshalDirection direction)
 
         return HelperSyntaxFactory.WithPInvokeParameterRefToken(Argument(expr), ctx.RefKind);
     }
-    
+
     private static SyntaxList<StatementSyntax> Phase(
         MarshallingStubGenerationContext ctx,
         MarshalPhase phase,
@@ -418,5 +418,4 @@ public abstract class MarshallingGeneratorBase(MarshalDirection direction)
         SyntaxList<StatementSyntax> GuaranteedUnmarshal,
         SyntaxList<StatementSyntax> CleanupCallee,
         SyntaxList<StatementSyntax> CleanupCaller);
-
 }

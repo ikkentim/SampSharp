@@ -21,14 +21,14 @@ public class GangZoneTests : TestBase
     {
         _gangZone?.Destroy();
     }
-    
+
     [Fact]
     public void CreateGangZone_should_set_properties()
     {
         _gangZone.Min.ShouldBe(new Vector2(10, 11));
         _gangZone.Max.ShouldBe(new Vector2(20, 21));
     }
-    
+
     [Fact]
     public void Min_should_be_correct()
     {
@@ -47,18 +47,19 @@ public class GangZoneTests : TestBase
         _gangZone.Color = new Color(1, 2, 3, 4);
         _gangZone.Color.ShouldBe(new Color(1, 2, 3, 4));
     }
-    
+
     [Fact]
     public void Show_should_work()
     {
         _gangZone.Show();
     }
+
     [Fact]
     public void Hide_should_work()
     {
         _gangZone.Hide();
     }
-    
+
     [Fact]
     public void Show_should_work_for_player()
     {
@@ -71,7 +72,7 @@ public class GangZoneTests : TestBase
         _gangZone.Show(Player);
         _gangZone.Hide(Player);
     }
-    
+
     [Fact]
     public void Flash_should_work()
     {
@@ -83,7 +84,7 @@ public class GangZoneTests : TestBase
     {
         _gangZone.Flash(Player, Color.White);
     }
-    
+
     [Fact]
     public void StopFlash_should_work()
     {

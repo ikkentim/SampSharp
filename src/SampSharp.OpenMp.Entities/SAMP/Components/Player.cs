@@ -10,8 +10,18 @@ namespace SampSharp.Entities.SAMP;
 /// </summary>
 public class Player : WorldEntity
 {
+    private static readonly PlayerState[] _deadStates = [PlayerState.None, PlayerState.Spectating, PlayerState.Wasted];
     private readonly IOmpEntityProvider _entityProvider;
     private readonly IPlayer _rawPlayer;
+
+    /// <summary>
+    /// Constructs an instance of <see cref="Player" />, should be used internally.
+    /// </summary>
+    protected Player(IOmpEntityProvider entityProvider, IPlayer player) : base((IEntity)player)
+    {
+        _entityProvider = entityProvider;
+        _rawPlayer = player;
+    }
 
     /// <summary>
     /// Safe accessor for the underlying <see cref="IPlayer" /> handle. Throws
@@ -31,15 +41,6 @@ public class Player : WorldEntity
                     "Player has disconnected; native IPlayer handle is no longer valid.");
             return _rawPlayer;
         }
-    }
-
-    /// <summary>
-    /// Constructs an instance of <see cref="Player" />, should be used internally.
-    /// </summary>
-    protected Player(IOmpEntityProvider entityProvider, IPlayer player) : base((IEntity)player)
-    {
-        _entityProvider = entityProvider;
-        _rawPlayer = player;
     }
 
     private IPlayerCheckpointData CheckpointData
@@ -82,6 +83,7 @@ public class Player : WorldEntity
             return data;
         }
     }
+
     private IPlayerMenuData MenuData
     {
         get
@@ -162,25 +164,6 @@ public class Player : WorldEntity
         get => _player.GetName();
         [Obsolete("Use SetName(string) instead")]
         set => SetName(value);
-    }
-
-    /// <summary>
-    /// Sets the name of this player.
-    /// </summary>
-    /// <param name="name">The new player name.</param>
-    /// <exception cref="InvalidPlayerNameException">Thrown if the <paramref name="name" /> is invalid or already in use.</exception>
-    public virtual void SetName(string name)
-    {
-        ArgumentNullException.ThrowIfNull(name);
-
-        var result = _player.SetName(name);
-        switch (result)
-        {
-            case EPlayerNameStatus.Invalid:
-                throw new InvalidPlayerNameException("Player name is invalid");
-            case EPlayerNameStatus.Taken:
-                throw new InvalidPlayerNameException("Player name is already in use");
-        }
     }
 
     /// <summary>
@@ -521,8 +504,6 @@ public class Player : WorldEntity
     /// </summary>
     public virtual bool IsAdmin => ConsoleData.HasConsoleAccess();
 
-    private static readonly PlayerState[] _deadStates = [PlayerState.None, PlayerState.Spectating, PlayerState.Wasted];
-
     /// <summary>
     /// Gets a value indicating whether this player is alive.
     /// </summary>
@@ -638,6 +619,156 @@ public class Player : WorldEntity
     /// Gets the game camera zoom level for this player.
     /// </summary>
     public virtual float CameraZoom => _player.GetAimData().camZoom;
+
+    /// <summary>
+    /// Gets or sets this player's gravity.
+    /// </summary>
+    public virtual float Gravity
+    {
+        get => _player.GetGravity();
+        set => _player.SetGravity(value);
+    }
+
+    /// <summary>
+    /// Gets a value indicating whether this player is using the official Rockstar/SA-MP client (as opposed to open.mp, mobile/PSP, or an unofficial fork).
+    /// </summary>
+    public virtual bool IsUsingOfficialClient => _player.IsUsingOfficialClient();
+
+    /// <summary>
+    /// Gets a value indicating whether this player is using the open.mp client.
+    /// </summary>
+    public virtual bool IsUsingOmp => _player.GetClientVersion() == ClientVersion.openmp;
+
+    /// <summary>
+    /// Gets this player's <see cref="ClientVersion" />.
+    /// </summary>
+    public virtual ClientVersion ClientVersion => _player.GetClientVersion();
+
+    // TODO: Is ghost mode only available for open-mp clients? If available for SA-MP clients, remove the 'open.mp only' note from the docs.
+    /// <summary>
+    /// Gets or sets a value indicating whether ghost mode is enabled for this player. (open.mp only)
+    /// </summary>
+    /// <remarks>When enabled, other players will pass through this player as if they were not there.</remarks>
+    public virtual bool IsGhostModeEnabled
+    {
+        get => _player.IsGhostModeEnabled();
+        set => _player.ToggleGhostMode(value);
+    }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether this player is allowed to use weapons.
+    /// </summary>
+    public virtual bool AreWeaponsAllowed
+    {
+        get => _player.AreWeaponsAllowed();
+        set => _player.AllowWeapons(value);
+    }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether map-click teleporting is allowed for this player.
+    /// </summary>
+    public virtual bool IsTeleportAllowed
+    {
+        get => _player.IsTeleportAllowed();
+        set => _player.AllowTeleport(value);
+    }
+
+    /// <summary>
+    /// Gets or sets the world bounds for this player as <c>(maxX, minX, maxY, minY)</c>.
+    /// </summary>
+    public virtual Vector4 WorldBounds
+    {
+        get => _player.GetWorldBounds();
+        set => _player.SetWorldBounds(value);
+    }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether widescreen mode is enabled for this player.
+    /// </summary>
+    public virtual bool HasWidescreen
+    {
+        get => _player.HasWidescreen();
+        set => _player.UseWidescreen(value);
+    }
+
+    /// <summary>
+    /// Gets or sets the current weather for this player.
+    /// </summary>
+    public virtual int Weather
+    {
+        get => _player.GetWeather();
+        set => _player.SetWeather(value);
+    }
+
+    /// <summary>
+    /// Gets a lazy sequence of players for whom this player is currently streamed in.
+    /// </summary>
+    public virtual IEnumerable<Player> StreamedForPlayers
+    {
+        get
+        {
+            foreach (var raw in _player.StreamedForPlayers())
+            {
+                var component = _entityProvider.GetComponent(raw);
+                if (component != null)
+                {
+                    yield return component;
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Gets the number of default world objects that have been removed for this player.
+    /// </summary>
+    public virtual int DefaultObjectsRemoved => _player.GetDefaultObjectsRemoved();
+
+    /// <summary>
+    /// Gets a value indicating whether this player is in the process of being kicked.
+    /// </summary>
+    public virtual bool IsBeingKicked => _player.GetKickStatus();
+
+    private IPlayerCustomModelsData? CustomModelsData =>
+        _player.TryQueryExtension<IPlayerCustomModelsData>(out var data) ? data : null;
+
+    /// <summary>
+    /// Gets or sets the active custom skin model ID for this player, or <see langword="null" /> if no custom skin is set.
+    /// </summary>
+    public virtual uint? CustomSkin
+    {
+        get
+        {
+            var skin = CustomModelsData?.GetCustomSkin() ?? 0;
+            return skin == 0 ? null : skin;
+        }
+        set
+        {
+            if (value.HasValue)
+            {
+                var data = CustomModelsData ?? throw new InvalidOperationException("Custom models component is not loaded");
+                data.SetCustomSkin(value.Value);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Sets the name of this player.
+    /// </summary>
+    /// <param name="name">The new player name.</param>
+    /// <exception cref="InvalidPlayerNameException">Thrown if the <paramref name="name" /> is invalid or already in use.</exception>
+    public virtual void SetName(string name)
+    {
+        ArgumentNullException.ThrowIfNull(name);
+
+        var result = _player.SetName(name);
+        switch (result)
+        {
+            case EPlayerNameStatus.Invalid:
+                throw new InvalidPlayerNameException("Player name is invalid");
+            case EPlayerNameStatus.Taken:
+                throw new InvalidPlayerNameException("Player name is already in use");
+        }
+    }
 
     /// <summary>
     /// Configures spawn information for this player, including team, skin, position, and weapons.
@@ -768,30 +899,6 @@ public class Player : WorldEntity
     {
         _player.RemoveWeapon((byte)weapon);
     }
-
-    /// <summary>
-    /// Gets or sets this player's gravity.
-    /// </summary>
-    public virtual float Gravity
-    {
-        get => _player.GetGravity();
-        set => _player.SetGravity(value);
-    }
-
-    /// <summary>
-    /// Gets a value indicating whether this player is using the official Rockstar/SA-MP client (as opposed to open.mp, mobile/PSP, or an unofficial fork).
-    /// </summary>
-    public virtual bool IsUsingOfficialClient => _player.IsUsingOfficialClient();
-
-    /// <summary>
-    /// Gets a value indicating whether this player is using the open.mp client.
-    /// </summary>
-    public virtual bool IsUsingOmp => _player.GetClientVersion() == ClientVersion.openmp;
-
-    /// <summary>
-    /// Gets this player's <see cref="ClientVersion" />.
-    /// </summary>
-    public virtual ClientVersion ClientVersion => _player.GetClientVersion();
 
     /// <summary>
     /// Sets the armed weapon of this player.
@@ -1477,7 +1584,7 @@ public class Player : WorldEntity
     public virtual void StartRecordingPlayerData(PlayerRecordingType recordingType, string recordingName)
     {
         ArgumentNullException.ThrowIfNull(recordingName);
-        RecordingData.Start((SampSharp.OpenMp.Core.Api.PlayerRecordingType)recordingType, recordingName);
+        RecordingData.Start((OpenMp.Core.Api.PlayerRecordingType)recordingType, recordingName);
     }
 
     /// <summary>
@@ -1762,35 +1869,6 @@ public class Player : WorldEntity
         _player.UnsetMapIcon(iconId);
     }
 
-    // TODO: Is ghost mode only available for open-mp clients? If available for SA-MP clients, remove the 'open.mp only' note from the docs.
-    /// <summary>
-    /// Gets or sets a value indicating whether ghost mode is enabled for this player. (open.mp only)
-    /// </summary>
-    /// <remarks>When enabled, other players will pass through this player as if they were not there.</remarks>
-    public virtual bool IsGhostModeEnabled
-    {
-        get => _player.IsGhostModeEnabled();
-        set => _player.ToggleGhostMode(value);
-    }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether this player is allowed to use weapons.
-    /// </summary>
-    public virtual bool AreWeaponsAllowed
-    {
-        get => _player.AreWeaponsAllowed();
-        set => _player.AllowWeapons(value);
-    }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether map-click teleporting is allowed for this player.
-    /// </summary>
-    public virtual bool IsTeleportAllowed
-    {
-        get => _player.IsTeleportAllowed();
-        set => _player.AllowTeleport(value);
-    }
-
     /// <summary>
     /// Hides the game text in the specified style/slot for this player.
     /// </summary>
@@ -1824,24 +1902,6 @@ public class Player : WorldEntity
     }
 
     /// <summary>
-    /// Gets or sets the world bounds for this player as <c>(maxX, minX, maxY, minY)</c>.
-    /// </summary>
-    public virtual Vector4 WorldBounds
-    {
-        get => _player.GetWorldBounds();
-        set => _player.SetWorldBounds(value);
-    }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether widescreen mode is enabled for this player.
-    /// </summary>
-    public virtual bool HasWidescreen
-    {
-        get => _player.HasWidescreen();
-        set => _player.UseWidescreen(value);
-    }
-
-    /// <summary>
     /// Clears all in-progress AI tasks for this player.
     /// </summary>
     /// <param name="forceSync">If <see langword="true" />, the clear is synchronized to streamed-in players.</param>
@@ -1857,15 +1917,6 @@ public class Player : WorldEntity
     public virtual void SetWorldTime(TimeSpan time)
     {
         _player.SetWorldTime(time);
-    }
-
-    /// <summary>
-    /// Gets or sets the current weather for this player.
-    /// </summary>
-    public virtual int Weather
-    {
-        get => _player.GetWeather();
-        set => _player.SetWeather(value);
     }
 
     /// <summary>
@@ -1899,63 +1950,12 @@ public class Player : WorldEntity
     }
 
     /// <summary>
-    /// Gets a lazy sequence of players for whom this player is currently streamed in.
-    /// </summary>
-    public virtual IEnumerable<Player> StreamedForPlayers
-    {
-        get
-        {
-            foreach (var raw in _player.StreamedForPlayers())
-            {
-                var component = _entityProvider.GetComponent(raw);
-                if (component != null)
-                {
-                    yield return component;
-                }
-            }
-        }
-    }
-
-    /// <summary>
-    /// Gets the number of default world objects that have been removed for this player.
-    /// </summary>
-    public virtual int DefaultObjectsRemoved => _player.GetDefaultObjectsRemoved();
-
-    /// <summary>
-    /// Gets a value indicating whether this player is in the process of being kicked.
-    /// </summary>
-    public virtual bool IsBeingKicked => _player.GetKickStatus();
-
-    /// <summary>
     /// Grants or revokes RCON (console) access for this player at runtime.
     /// </summary>
     /// <param name="enable"><see langword="true" /> to grant access; <see langword="false" /> to revoke.</param>
     public virtual void SetConsoleAccessibility(bool enable)
     {
         ConsoleData.SetConsoleAccessibility(enable);
-    }
-
-    private IPlayerCustomModelsData? CustomModelsData =>
-        _player.TryQueryExtension<IPlayerCustomModelsData>(out var data) ? data : null;
-
-    /// <summary>
-    /// Gets or sets the active custom skin model ID for this player, or <see langword="null" /> if no custom skin is set.
-    /// </summary>
-    public virtual uint? CustomSkin
-    {
-        get
-        {
-            var skin = CustomModelsData?.GetCustomSkin() ?? 0;
-            return skin == 0 ? null : skin;
-        }
-        set
-        {
-            if (value.HasValue)
-            {
-                var data = CustomModelsData ?? throw new InvalidOperationException("Custom models component is not loaded");
-                data.SetCustomSkin(value.Value);
-            }
-        }
     }
 
     /// <summary>

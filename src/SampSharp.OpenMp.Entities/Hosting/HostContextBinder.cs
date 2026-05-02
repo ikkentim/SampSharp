@@ -9,6 +9,14 @@ internal class HostContextBinder(IStartupContext context, EcsHostBuilder hostBui
 {
     private EcsHost? _host;
 
+    public void Dispose()
+    {
+        context.Initialized -= OnContextInitialized;
+        context.Cleanup -= OnContextCleanup;
+
+        _host?.Dispose();
+    }
+
     public void Bind()
     {
         context.Initialized += OnContextInitialized;
@@ -25,13 +33,5 @@ internal class HostContextBinder(IStartupContext context, EcsHostBuilder hostBui
     private void OnContextCleanup(object? sender, EventArgs e)
     {
         Dispose();
-    }
-
-    public void Dispose()
-    {
-        context.Initialized -= OnContextInitialized;
-        context.Cleanup -= OnContextCleanup;
-
-        _host?.Dispose();
     }
 }

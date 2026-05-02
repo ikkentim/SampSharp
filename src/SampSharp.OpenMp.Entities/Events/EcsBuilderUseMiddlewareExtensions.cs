@@ -11,7 +11,7 @@ public static class EcsBuilderUseMiddlewareExtensions
 {
     private static readonly MethodInfo _getServiceInfo =
         typeof(EcsBuilderUseMiddlewareExtensions).GetMethod(nameof(GetService), BindingFlags.NonPublic | BindingFlags.Static)!;
-    
+
     /// <summary>
     /// Adds a middleware to the handler of the event with the specified <paramref name="name" />.
     /// </summary>

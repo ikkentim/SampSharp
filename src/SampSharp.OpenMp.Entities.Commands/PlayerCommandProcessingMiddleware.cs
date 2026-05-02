@@ -36,6 +36,6 @@ public class PlayerCommandProcessingMiddleware
         bool b => b,
         int i => i != 0,
         MethodResult mr => mr.Value,
-        _ => true,
+        _ => true
     };
 }

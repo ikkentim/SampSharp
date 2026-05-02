@@ -37,7 +37,7 @@ public static class HelperSyntaxFactory
             .WithSemicolonToken(Token(SyntaxKind.SemicolonToken))
             .WithLeadingTrivia(Comment(MarshallingCodeGenDocumentation.COMMENT_P_INVOKE));
     }
-    
+
     public static ParameterListSyntax ToParameterListSyntax(ImmutableArray<IParameterSymbol> parameters)
     {
         return ToParameterListSyntax([], parameters.Select(x => new ParamForwardInfo(x.Name, TypeNameGlobal(x.Type), x.RefKind)));

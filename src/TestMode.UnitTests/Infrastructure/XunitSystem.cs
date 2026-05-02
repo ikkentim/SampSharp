@@ -2,24 +2,21 @@
 using System.Reflection;
 using SampSharp.Entities;
 using SampSharp.Entities.SAMP;
-using Shouldly;
-using Xunit.Runner.Common;
 using Xunit.Runner.InProc.SystemConsole;
-using Xunit.Sdk;
-using Xunit.v3;
 
 namespace TestMode.UnitTests;
 
 public class XunitSystem : ISystem
 {
-    public static Player Player { get; private set; } = null!;
-    public static IServiceProvider ServiceProvider { get; private set; } = null!;
     private bool _started;
 
     public XunitSystem(IServiceProvider serviceProvider)
     {
         ServiceProvider = serviceProvider;
     }
+
+    public static Player Player { get; private set; } = null!;
+    public static IServiceProvider ServiceProvider { get; private set; } = null!;
 
     [Event]
     public void OnGameModeInit(IServerService serverService)

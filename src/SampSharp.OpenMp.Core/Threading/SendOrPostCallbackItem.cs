@@ -7,9 +7,19 @@ internal class SendOrPostCallbackItem : IDisposable
     private readonly ManualResetEvent _asyncWaitHandle = new(false);
     private ExecutionType _executionType;
     private SendOrPostCallback? _method;
-    private object? _state;
     private ObjectPool<SendOrPostCallbackItem>? _pool;
-    
+    private object? _state;
+
+    public Exception? Exception { get; private set; }
+
+    public WaitHandle ExecutionCompleteWaitHandle => _asyncWaitHandle;
+
+    public void Dispose()
+    {
+        _asyncWaitHandle?.Dispose();
+        GC.SuppressFinalize(this);
+    }
+
     public void Set(ExecutionType executionType, SendOrPostCallback method, object? state, ObjectPool<SendOrPostCallbackItem>? returnToPool)
     {
         _executionType = executionType;
@@ -26,10 +36,6 @@ internal class SendOrPostCallbackItem : IDisposable
         _state = null;
         _pool = null;
     }
-
-    public Exception? Exception { get; private set; }
-        
-    public WaitHandle ExecutionCompleteWaitHandle => _asyncWaitHandle;
 
     public void Execute()
     {
@@ -59,11 +65,5 @@ internal class SendOrPostCallbackItem : IDisposable
         {
             _pool?.Return(this);
         }
-    }
-
-    public void Dispose()
-    {
-        _asyncWaitHandle?.Dispose();
-        GC.SuppressFinalize(this);
     }
 }

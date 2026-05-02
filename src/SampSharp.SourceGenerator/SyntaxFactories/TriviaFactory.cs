@@ -69,7 +69,7 @@ public static class TriviaFactory
                     XmlCrefAttribute(
                         NameMemberCref(
                             StripGenericParameters(crefType)))));
-    } 
+    }
 
     public static XmlNodeSyntax CElement(string c)
     {
@@ -81,14 +81,14 @@ public static class TriviaFactory
             XmlElementEndTag(
                 XmlName("c"))
         );
-    } 
+    }
 
     public static SyntaxTriviaList DocsStructConstructor(TypeSyntax structType, params ParameterDoc[] parameters)
     {
         var summary = List([
             XmlText("Initializes a new instance of the "),
             SeeElement(structType),
-            XmlText(" struct."),
+            XmlText(" struct.")
         ]);
 
         return Docs(summary, parameters);
@@ -98,7 +98,7 @@ public static class TriviaFactory
     {
         return Docs(
             List<XmlNodeSyntax>([
-                XmlText("Determines whether the specified values are equal."),
+                XmlText("Determines whether the specified values are equal.")
             ]), [
                 new ParameterDoc("lhs", "The value on the left side of the operator."),
                 new ParameterDoc("rhs", "The value on the right side of the operator.")
@@ -106,7 +106,7 @@ public static class TriviaFactory
                 CElement("true"),
                 XmlText(" if the values are equal; otherwise, "),
                 CElement("false"),
-                XmlText("."),
+                XmlText(".")
             ]));
     }
 
@@ -114,7 +114,7 @@ public static class TriviaFactory
     {
         return Docs(
             List<XmlNodeSyntax>([
-                XmlText("Determines whether the specified values are not equal."),
+                XmlText("Determines whether the specified values are not equal.")
             ]), [
                 new ParameterDoc("lhs", "The value on the left side of the operator."),
                 new ParameterDoc("rhs", "The value on the right side of the operator.")
@@ -122,7 +122,7 @@ public static class TriviaFactory
                 CElement("true"),
                 XmlText(" if the values are not equal; otherwise, "),
                 CElement("false"),
-                XmlText("."),
+                XmlText(".")
             ]));
     }
 
@@ -134,13 +134,13 @@ public static class TriviaFactory
                 SeeElement(from),
                 XmlText(" to a "),
                 SeeElement(to),
-                XmlText("."),
+                XmlText(".")
             ]), [
                 new ParameterDoc("value", List([
                     XmlText("The "),
                     SeeElement(from),
                     XmlText(" to cast.")
-                    ])),
+                    ]))
             ], List([
                 XmlText("The converted "),
                 SeeElement(to),
@@ -225,13 +225,6 @@ public static class TriviaFactory
         );
     }
 
-    public readonly record struct ParameterDoc(string Name, SyntaxList<XmlNodeSyntax> Content)
-    {
-        public ParameterDoc(string name, string text) : this(name, SingletonList<XmlNodeSyntax>(XmlText(text)))
-        {
-        }
-    }
-
     public static SyntaxTrivia NullableEnable()
     {
         return Trivia(
@@ -239,11 +232,19 @@ public static class TriviaFactory
                 Token(SyntaxKind.EnableKeyword),
                 true));
     }
+
     public static SyntaxTrivia NullableDisable()
     {
         return Trivia(
             NullableDirectiveTrivia(
                 Token(SyntaxKind.DisableKeyword),
                 false));
+    }
+
+    public readonly record struct ParameterDoc(string Name, SyntaxList<XmlNodeSyntax> Content)
+    {
+        public ParameterDoc(string name, string text) : this(name, SingletonList<XmlNodeSyntax>(XmlText(text)))
+        {
+        }
     }
 }

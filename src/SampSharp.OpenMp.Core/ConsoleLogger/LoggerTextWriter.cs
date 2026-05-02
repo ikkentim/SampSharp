@@ -14,7 +14,7 @@ public class LoggerTextWriter(ILogger logger, LogLevel logLevel) : TextWriter
 
     /// <inheritdoc />
     public override Encoding Encoding => Encoding.UTF8;
-    
+
     /// <inheritdoc />
     public override void Write(char value)
     {
@@ -27,7 +27,7 @@ public class LoggerTextWriter(ILogger logger, LogLevel logLevel) : TextWriter
             _buffer.Append(value);
         }
     }
-    
+
     /// <inheritdoc />
     public override void Write(string? value)
     {
@@ -48,7 +48,7 @@ public class LoggerTextWriter(ILogger logger, LogLevel logLevel) : TextWriter
             _buffer.Append(value);
         }
     }
-    
+
     /// <inheritdoc />
     public override void WriteLine(string? value)
     {
@@ -77,13 +77,13 @@ public class LoggerTextWriter(ILogger logger, LogLevel logLevel) : TextWriter
             WriteLineToLogger(value);
         }
     }
-    
+
     /// <inheritdoc />
     public override void WriteLine()
     {
         WriteBuffer();
     }
-    
+
     /// <inheritdoc />
     public override void Flush()
     {

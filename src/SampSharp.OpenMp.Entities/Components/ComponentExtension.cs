@@ -9,7 +9,6 @@ namespace SampSharp.Entities;
 [Extension(0x53d3b0b0bbb28a7f)]
 public sealed class ComponentExtension(Component component) : Extension
 {
-
     /// <summary>
     /// Gets the component to which this extension is bound.
     /// </summary>

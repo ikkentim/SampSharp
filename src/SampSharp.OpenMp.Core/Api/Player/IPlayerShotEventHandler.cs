@@ -6,7 +6,6 @@
 [OpenMpEventHandler]
 public partial interface IPlayerShotEventHandler
 {
-
     /// <summary>
     /// Called when a player fires a shot that does not hit any target.
     /// </summary>

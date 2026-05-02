@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Threading;
 using Microsoft.CodeAnalysis;
@@ -149,7 +146,7 @@ public class OpenMpApiSourceGenerator : IIncrementalGenerator
             ..InterfaceMemberGenerator.GenerateNativeMethods(ctx)
         ]);
     }
-    
+
     /// <summary>
     /// Returns the struct generation context for a code gen context.
     /// </summary>

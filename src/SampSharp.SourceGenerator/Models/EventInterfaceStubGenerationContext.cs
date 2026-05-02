@@ -13,7 +13,7 @@ public record EventInterfaceStubGenerationContext(
     string NativeTypeName)
 {
     public TypeSyntax Type { get; } = GetSelfType(Symbol, Syntax);
-    
+
     private static TypeSyntax GetSelfType(ISymbol symbol, InterfaceDeclarationSyntax syntax)
     {
         if (syntax.TypeParameterList == null)

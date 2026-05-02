@@ -9,8 +9,8 @@ namespace SampSharp.Entities.SAMP;
 public class TextLabel : WorldEntity
 {
     private readonly IOmpEntityProvider _entityProvider;
-    private readonly ITextLabelsComponent _textLabels;
     private readonly ITextLabel _textLabel;
+    private readonly ITextLabelsComponent _textLabels;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="TextLabel" /> class.
@@ -83,6 +83,16 @@ public class TextLabel : WorldEntity
     }
 
     /// <summary>
+    /// Gets the <see cref="Player" /> this text label is attached to, or <see langword="null" /> if it is not attached to a player.
+    /// </summary>
+    public virtual Player? AttachedPlayer => _entityProvider.GetPlayer(_textLabel.GetAttachmentData().PlayerId);
+
+    /// <summary>
+    /// Gets the <see cref="Vehicle" /> this text label is attached to, or <see langword="null" /> if it is not attached to a vehicle.
+    /// </summary>
+    public virtual Vehicle? AttachedVehicle => _entityProvider.GetVehicle(_textLabel.GetAttachmentData().VehicleId);
+
+    /// <summary>
     /// Attaches this text label to the specified <paramref name="player" />.
     /// </summary>
     /// <param name="player">The <see cref="Player" /> to attach this text label to.</param>
@@ -134,16 +144,6 @@ public class TextLabel : WorldEntity
         ArgumentNullException.ThrowIfNull(text);
         _textLabel.SetColourAndText(color, text);
     }
-
-    /// <summary>
-    /// Gets the <see cref="Player" /> this text label is attached to, or <see langword="null" /> if it is not attached to a player.
-    /// </summary>
-    public virtual Player? AttachedPlayer => _entityProvider.GetPlayer(_textLabel.GetAttachmentData().PlayerId);
-
-    /// <summary>
-    /// Gets the <see cref="Vehicle" /> this text label is attached to, or <see langword="null" /> if it is not attached to a vehicle.
-    /// </summary>
-    public virtual Vehicle? AttachedVehicle => _entityProvider.GetVehicle(_textLabel.GetAttachmentData().VehicleId);
 
     /// <summary>
     /// Checks whether this text label is streamed in for the specified <paramref name="player" />.

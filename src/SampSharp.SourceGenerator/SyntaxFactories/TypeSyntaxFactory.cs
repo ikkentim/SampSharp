@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -105,7 +104,7 @@ public static class TypeSyntaxFactory
 
         return result;
     }
-    
+
     public static TypeSyntax GenericType(string typeFQN, TypeSyntax typeArgument)
     {
         return GenericName(

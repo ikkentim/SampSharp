@@ -4,8 +4,8 @@ namespace SampSharp.Entities.SAMP;
 
 internal class VehicleSystem : DisposableSystem, IVehicleEventHandler
 {
-    private readonly IEventDispatcher _eventDispatcher;
     private readonly IOmpEntityProvider _entityProvider;
+    private readonly IEventDispatcher _eventDispatcher;
 
     public VehicleSystem(IEventDispatcher eventDispatcher, IOmpEntityProvider entityProvider, SampSharpEnvironment environment)
     {
@@ -13,7 +13,7 @@ internal class VehicleSystem : DisposableSystem, IVehicleEventHandler
         _entityProvider = entityProvider;
         AddDisposable(environment.AddEventHandler<IVehiclesComponent, IVehicleEventHandler>(x => x.GetEventDispatcher(), this));
     }
-    
+
     public void OnVehicleStreamIn(IVehicle vehicle, IPlayer player)
     {
         _eventDispatcher.Invoke("OnVehicleStreamIn", 

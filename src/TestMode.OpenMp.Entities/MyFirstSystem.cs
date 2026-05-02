@@ -5,13 +5,13 @@ using SampSharp.Entities.SAMP;
 using SampSharp.Entities.SAMP.Commands;
 using SampSharp.OpenMp.Core;
 using SampSharp.OpenMp.Core.Api;
-using PlayerRecordingType = SampSharp.Entities.SAMP.PlayerRecordingType;
 
 namespace TestMode.OpenMp.Entities;
 
 public class MyFirstSystem : ISystem
 {
     private int _ticks;
+
     [Timer(1000)]
     public void OnTimer()
     {
@@ -27,7 +27,7 @@ public class MyFirstSystem : ISystem
         logger.LogInformation("whoop!");
 
         var vehicle = world.CreateVehicle(VehicleModelType.Landstalker, new Vector3(0, 6, 15), 45, 4, 4);
-        vehicle.ChangeColor(5, 12);
+        vehicle.Colors = (5, 12);
         vehicle.Bonnet = true;
         vehicle.SetNumberPlate("SampSharp");
 
@@ -118,19 +118,19 @@ public class MyFirstSystem : ISystem
 
         player.SendClientMessage($"Weapon state: {weaponState}, anim: {anim}, cfv: {cfv}, cm: {cm}, keys: {keys}, ud: {ud}, lr: {lr}, lib: {lib}, name: {name}");
     }
-    
+
     [Event]
     public void OnVehicleSpawn(Vehicle vehicle)
     {
         Console.WriteLine($"Vehicle {vehicle.Id} spawned!");
     }
-    
+
     [Event]
     public void OnVehicleStreamIn(Vehicle vehicle, Player player)
     {
         Console.WriteLine($"Vehicle {vehicle.Id} streams in for player {player}");
     }
-    
+
     [Event]
     public void OnVehicleStreamOut(Vehicle vehicle, Player player)
     {

@@ -4,8 +4,8 @@ namespace SampSharp.Entities.SAMP;
 
 internal class MenuSystem : DisposableSystem, IMenuEventHandler
 {
-    private readonly IEventDispatcher _eventDispatcher;
     private readonly IOmpEntityProvider _entityProvider;
+    private readonly IEventDispatcher _eventDispatcher;
 
     public MenuSystem(IEventDispatcher eventDispatcher, IOmpEntityProvider entityProvider, SampSharpEnvironment environment)
     {

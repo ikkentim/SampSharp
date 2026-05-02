@@ -1,6 +1,5 @@
 ﻿using System.Numerics;
 using SampSharp.OpenMp.Core.Api;
-using SampSharp.OpenMp.Core.Std.Chrono;
 
 namespace SampSharp.Entities.SAMP;
 
@@ -10,8 +9,8 @@ namespace SampSharp.Entities.SAMP;
 public class Vehicle : WorldEntity
 {
     private readonly IOmpEntityProvider _entityProvider;
-    private readonly IVehiclesComponent _vehicles;
     private readonly IVehicle _vehicle;
+    private readonly IVehiclesComponent _vehicles;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Vehicle" /> class.
@@ -379,6 +378,138 @@ public class Vehicle : WorldEntity
     public virtual int Color2 => Colors.Secondary;
 
     /// <summary>
+    /// Gets or sets the paintjob of this vehicle. For solid colors, use <see cref="ChangeColor" /> instead.
+    /// </summary>
+    /// <remarks>Use 3 to remove the paintjob.</remarks>
+    public virtual int Paintjob
+    {
+        get => _vehicle.GetPaintJob();
+        set => _vehicle.SetPaintJob(value);
+    }
+
+    /// <summary>
+    /// Gets or sets the spawn data of this vehicle (model, position, rotation, colors, siren, interior, respawn delay).
+    /// </summary>
+    public virtual VehicleSpawnInfo SpawnData
+    {
+        get
+        {
+            var raw = _vehicle.GetSpawnData();
+            return new VehicleSpawnInfo(
+                ModelId: raw.modelID,
+                Position: raw.position,
+                ZRotation: raw.zRotation,
+                PrimaryColor: raw.colour1,
+                SecondaryColor: raw.colour2,
+                HasSiren: raw.siren,
+                Interior: raw.interior,
+                RespawnDelay: raw.respawnDelay);
+        }
+        set
+        {
+            var raw = new VehicleSpawnData(
+                respawnDelay: value.RespawnDelay,
+                modelID: value.ModelId,
+                position: value.Position,
+                zRotation: value.ZRotation,
+                colour1: value.PrimaryColor,
+                colour2: value.SecondaryColor,
+                siren: value.HasSiren,
+                interior: value.Interior);
+            _vehicle.SetSpawnData(ref raw);
+        }
+    }
+
+
+    /// <summary>
+    /// Gets or sets the colors of this vehicle as a tuple of <c>(primary, secondary)</c> colors IDs.
+    /// </summary>
+    public virtual (int Primary, int Secondary) Colors
+    {
+        get => _vehicle.GetColour();
+        set => _vehicle.SetColour(value.Primary, value.Secondary);
+    }
+
+    /// <summary>
+    /// Gets the current numberplate text of this vehicle.
+    /// </summary>
+    public virtual string NumberPlate => _vehicle.GetPlate();
+
+    /// <summary>
+    /// Gets a value indicating whether this vehicle is dead (destroyed).
+    /// </summary>
+    public virtual bool IsDead => _vehicle.IsDead();
+
+    /// <summary>
+    /// Gets a value indicating whether this vehicle is currently in the process of respawning.
+    /// </summary>
+    public virtual bool IsRespawning => _vehicle.IsRespawning();
+
+    /// <summary>
+    /// Gets or sets the respawn delay for this vehicle.
+    /// </summary>
+    public virtual TimeSpan RespawnDelay
+    {
+        get => _vehicle.GetRespawnDelay();
+        set => _vehicle.SetRespawnDelay(value);
+    }
+
+    /// <summary>
+    /// Gets a value indicating whether this vehicle has ever been occupied.
+    /// </summary>
+    public virtual bool HasBeenOccupied => _vehicle.HasBeenOccupied();
+
+    /// <summary>
+    /// Gets a value indicating whether this vehicle is currently occupied.
+    /// </summary>
+    public virtual bool IsOccupied => _vehicle.IsOccupied();
+
+    /// <summary>
+    /// Gets the timestamp at which this vehicle was last occupied.
+    /// </summary>
+    public virtual DateTimeOffset LastOccupiedTime => _vehicle.GetLastOccupiedTime();
+
+    /// <summary>
+    /// Gets the timestamp at which this vehicle was last spawned.
+    /// </summary>
+    public virtual DateTimeOffset LastSpawnTime => _vehicle.GetLastSpawnTime();
+
+    /// <summary>
+    /// Gets the player pool ID of the last driver of this vehicle.
+    /// </summary>
+    public virtual int LastDriverPoolID => _vehicle.GetLastDriverPoolID();
+
+    /// <summary>
+    /// Gets a value indicating whether this vehicle is a trailer (i.e. is being towed by another vehicle).
+    /// </summary>
+    public virtual bool IsTrailer => _vehicle.IsTrailer();
+
+    /// <summary>
+    /// Gets the cab (towing vehicle) currently towing this vehicle, or <see langword="null" /> if there is none.
+    /// </summary>
+    public virtual Vehicle? Cab => _entityProvider.GetComponent(_vehicle.GetCab());
+
+    /// <summary>
+    /// Gets the current driver of this vehicle, or <see langword="null" /> if there is none.
+    /// </summary>
+    public virtual Player? Driver => _entityProvider.GetComponent(_vehicle.GetDriver());
+
+    /// <summary>
+    /// Gets the current Hydra (jet) thrust angle of this vehicle.
+    /// </summary>
+    public virtual uint HydraThrustAngle => _vehicle.GetHydraThrustAngle();
+
+    /// <summary>
+    /// Gets the current train speed of this vehicle.
+    /// </summary>
+    public virtual float TrainSpeed => _vehicle.GetTrainSpeed();
+
+    /// <summary>
+    /// Gets the current state of this vehicle's landing gear.
+    /// </summary>
+    public virtual byte LandingGearState => _vehicle.GetLandingGearState();
+
+    /// <summary>
     /// Calculates the distance between this vehicle and the specified <paramref name="point" />.
     /// </summary>
     /// <param name="point">The point to calculate the distance to as a <see cref="Vector3" />.</param>
@@ -459,16 +590,6 @@ public class Vehicle : WorldEntity
     }
 
     /// <summary>
-    /// Gets or sets the paintjob of this vehicle. For solid colors, use <see cref="ChangeColor" /> instead.
-    /// </summary>
-    /// <remarks>Use 3 to remove the paintjob.</remarks>
-    public virtual int Paintjob
-    {
-        get => _vehicle.GetPaintJob();
-        set => _vehicle.SetPaintJob(value);
-    }
-
-    /// <summary>
     /// Changes the paintjob of this vehicle. For solid colors, use <see cref="ChangeColor" /> instead.
     /// </summary>
     /// <param name="paintjobId">The paintjob ID to apply. Use 3 to remove the paintjob.</param>
@@ -540,114 +661,6 @@ public class Vehicle : WorldEntity
     }
 
     /// <summary>
-    /// Gets or sets the spawn data of this vehicle (model, position, rotation, colors, siren, interior, respawn delay).
-    /// </summary>
-    public virtual VehicleSpawnInfo SpawnData
-    {
-        get
-        {
-            var raw = _vehicle.GetSpawnData();
-            return new VehicleSpawnInfo(
-                ModelId: raw.modelID,
-                Position: raw.position,
-                ZRotation: raw.zRotation,
-                PrimaryColor: raw.colour1,
-                SecondaryColor: raw.colour2,
-                HasSiren: raw.siren,
-                Interior: raw.interior,
-                RespawnDelay: raw.respawnDelay);
-        }
-        set
-        {
-            var raw = new VehicleSpawnData(
-                respawnDelay: value.RespawnDelay,
-                modelID: value.ModelId,
-                position: value.Position,
-                zRotation: value.ZRotation,
-                colour1: value.PrimaryColor,
-                colour2: value.SecondaryColor,
-                siren: value.HasSiren,
-                interior: value.Interior);
-            _vehicle.SetSpawnData(ref raw);
-        }
-    }
-
-
-
-    /// <summary>
-    /// Gets or sets the colors of this vehicle as a tuple of <c>(primary, secondary)</c> colors IDs.
-    /// </summary>
-    public virtual (int Primary, int Secondary) Colors
-    {
-        get => _vehicle.GetColour();
-        set => _vehicle.SetColour(value.Primary, value.Secondary);
-    }
-
-    /// <summary>
-    /// Gets the current numberplate text of this vehicle.
-    /// </summary>
-    public virtual string NumberPlate => _vehicle.GetPlate();
-
-    /// <summary>
-    /// Gets a value indicating whether this vehicle is dead (destroyed).
-    /// </summary>
-    public virtual bool IsDead => _vehicle.IsDead();
-
-    /// <summary>
-    /// Gets a value indicating whether this vehicle is currently in the process of respawning.
-    /// </summary>
-    public virtual bool IsRespawning => _vehicle.IsRespawning();
-
-    /// <summary>
-    /// Gets or sets the respawn delay for this vehicle.
-    /// </summary>
-    public virtual TimeSpan RespawnDelay
-    {
-        get => _vehicle.GetRespawnDelay();
-        set => _vehicle.SetRespawnDelay(value);
-    }
-
-    /// <summary>
-    /// Gets a value indicating whether this vehicle has ever been occupied.
-    /// </summary>
-    public virtual bool HasBeenOccupied => _vehicle.HasBeenOccupied();
-
-    /// <summary>
-    /// Gets a value indicating whether this vehicle is currently occupied.
-    /// </summary>
-    public virtual bool IsOccupied => _vehicle.IsOccupied();
-
-    /// <summary>
-    /// Gets the timestamp at which this vehicle was last occupied.
-    /// </summary>
-    public virtual DateTimeOffset LastOccupiedTime => _vehicle.GetLastOccupiedTime();
-
-    /// <summary>
-    /// Gets the timestamp at which this vehicle was last spawned.
-    /// </summary>
-    public virtual DateTimeOffset LastSpawnTime => _vehicle.GetLastSpawnTime();
-
-    /// <summary>
-    /// Gets the player pool ID of the last driver of this vehicle.
-    /// </summary>
-    public virtual int LastDriverPoolID => _vehicle.GetLastDriverPoolID();
-
-    /// <summary>
-    /// Gets a value indicating whether this vehicle is a trailer (i.e. is being towed by another vehicle).
-    /// </summary>
-    public virtual bool IsTrailer => _vehicle.IsTrailer();
-
-    /// <summary>
-    /// Gets the cab (towing vehicle) currently towing this vehicle, or <see langword="null" /> if there is none.
-    /// </summary>
-    public virtual Vehicle? Cab => _entityProvider.GetComponent(_vehicle.GetCab());
-
-    /// <summary>
-    /// Gets the current driver of this vehicle, or <see langword="null" /> if there is none.
-    /// </summary>
-    public virtual Player? Driver => _entityProvider.GetComponent(_vehicle.GetDriver());
-
-    /// <summary>
     /// Enumerates the current passengers of this vehicle.
     /// </summary>
     /// <returns>A lazy sequence of <see cref="Player" /> components.</returns>
@@ -687,21 +700,6 @@ public class Vehicle : WorldEntity
     {
         _vehicle.SetSiren(enable);
     }
-
-    /// <summary>
-    /// Gets the current Hydra (jet) thrust angle of this vehicle.
-    /// </summary>
-    public virtual uint HydraThrustAngle => _vehicle.GetHydraThrustAngle();
-
-    /// <summary>
-    /// Gets the current train speed of this vehicle.
-    /// </summary>
-    public virtual float TrainSpeed => _vehicle.GetTrainSpeed();
-
-    /// <summary>
-    /// Gets the current state of this vehicle's landing gear.
-    /// </summary>
-    public virtual byte LandingGearState => _vehicle.GetLandingGearState();
 
     /// <summary>
     /// Adds a carriage to this train at the specified position in the carriage chain.

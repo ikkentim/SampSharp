@@ -15,7 +15,7 @@ internal class ActorSystem : DisposableSystem, IActorEventHandler
         AddDisposable(environment.AddEventHandler<IActorsComponent, IActorEventHandler>(x => x.GetEventDispatcher(), this));
     }
 
-    public void OnPlayerGiveDamageActor(IPlayer player, IActor actor, float amount, uint weapon, SampSharp.OpenMp.Core.Api.BodyPart part)
+    public void OnPlayerGiveDamageActor(IPlayer player, IActor actor, float amount, uint weapon, OpenMp.Core.Api.BodyPart part)
     {
         _eventDispatcher.Invoke("OnPlayerGiveDamageActor",
             _entityProvider.GetEntity(player),

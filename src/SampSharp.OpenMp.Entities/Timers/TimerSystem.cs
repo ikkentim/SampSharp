@@ -1,19 +1,4 @@
-﻿// SampSharp
-// Copyright 2022 Tim Potze
-// 
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-// 
-//     http://www.apache.org/licenses/LICENSE-2.0
-// 
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using Microsoft.Extensions.Logging;
 using SampSharp.Entities.Utilities;
 using SampSharp.OpenMp.Core;
@@ -23,9 +8,9 @@ namespace SampSharp.Entities;
 internal class TimerSystem : ITickingSystem, ITimerService
 {
     private static readonly TimeSpan _lowIntervalThreshold = TimeSpan.FromSeconds(1.0 / 50); // 50Hz
+    private readonly ILogger<TimerSystem> _logger;
 
     private readonly IServiceProvider _serviceProvider;
-    private readonly ILogger<TimerSystem> _logger;
     private readonly ISystemRegistry _systemRegistry;
 
     private readonly List<TimerInfo> _timers = [];
@@ -40,6 +25,46 @@ internal class TimerSystem : ITickingSystem, ITimerService
         _lastTick = Stopwatch.GetTimestamp();
         
         systemRegistry.Register(CreateTimersFromAssemblies);
+    }
+
+    public void Tick()
+    {
+        if (_timers.Count == 0)
+        {
+            return;
+        }
+
+        var timestamp = Stopwatch.GetTimestamp();
+
+        // Don't user foreach for performance reasons
+        // ReSharper disable once ForCanBeConvertedToForeach
+        for (var i = 0; i < _timers.Count; i++)
+        {
+            var timer = _timers[i];
+
+            while (timer.NextTick <= timestamp)
+            {
+                try
+                {
+                    timer.Invoke();
+                }
+                catch (Exception ex)
+                {
+                    var context = "timer";
+
+                    if (timer.Reference?.Method != null)
+                    {
+                        context = $"timer {timer.Reference.Method.DeclaringType}.{timer.Reference.Method.Name}";
+                    }
+
+                    SampSharpExceptionHandler.HandleException(context, ex);
+                }
+
+                timer.NextTick += timer.IntervalTicks;
+            }
+        }
+
+        _lastTick = timestamp;
     }
 
     public TimerReference Delay(Action<IServiceProvider> action, TimeSpan delay)
@@ -82,46 +107,6 @@ internal class TimerSystem : ITickingSystem, ITimerService
         _timers.Add(invoker);
 
         return reference;
-    }
-
-    public void Tick()
-    {
-        if (_timers.Count == 0)
-        {
-            return;
-        }
-
-        var timestamp = Stopwatch.GetTimestamp();
-
-        // Don't user foreach for performance reasons
-        // ReSharper disable once ForCanBeConvertedToForeach
-        for (var i = 0; i < _timers.Count; i++)
-        {
-            var timer = _timers[i];
-
-            while (timer.NextTick <= timestamp)
-            {
-                try
-                {
-                    timer.Invoke();
-                }
-                catch (Exception ex)
-                {
-                    var context = "timer";
-
-                    if (timer.Reference?.Method != null)
-                    {
-                        context = $"timer {timer.Reference.Method.DeclaringType}.{timer.Reference.Method.Name}";
-                    }
-
-                    SampSharpExceptionHandler.HandleException(context, ex);
-                }
-
-                timer.NextTick += timer.IntervalTicks;
-            }
-        }
-
-        _lastTick = timestamp;
     }
 
     internal static bool IsValidInterval(TimeSpan interval)

@@ -18,7 +18,7 @@ public interface ISystemRegistry
     /// <typeparam name="TSystem">The type of the systems to get.</typeparam>
     /// <returns>A segment of memory containing instances of systems of the specified type.</returns>
     ReadOnlyMemory<ISystem> Get<TSystem>() where TSystem : ISystem;
-    
+
     /// <summary>
     /// Gets all implementation types of registered systems in this system registry.
     /// </summary>

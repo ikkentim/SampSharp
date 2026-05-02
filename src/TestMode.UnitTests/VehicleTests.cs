@@ -37,7 +37,7 @@ public class VehicleTests : TestBase
         _vehicle.Position = new Vector3(1, 2, 3);
         _vehicle.Position.ShouldBe(new Vector3(1, 2, 3));
     }
-    
+
     [Fact]
     public void Alarm_should_roundtrip_true()
     {
@@ -58,162 +58,189 @@ public class VehicleTests : TestBase
         _vehicle.Bonnet = true;
         _vehicle.Bonnet.ShouldBeTrue();
     }
+
     [Fact]
     public void Bonnet_should_roundtrip_false()
     {
         _vehicle.Bonnet = false;
         _vehicle.Bonnet.ShouldBeFalse();
     }
+
     [Fact]
     public void Boot_should_roundtrip_true()
     {
         _vehicle.Boot = true;
         _vehicle.Boot.ShouldBeTrue();
     }
+
     [Fact]
     public void Boot_should_roundtrip_false()
     {
         _vehicle.Boot = false;
         _vehicle.Boot.ShouldBeFalse();
     }
+
     [Fact]
     public void Doors_should_roundtrip_true()
     {
         _vehicle.Doors = true;
         _vehicle.Doors.ShouldBeTrue();
     }
+
     [Fact]
     public void Doors_should_roundtrip_false()
     {
         _vehicle.Doors = false;
         _vehicle.Doors.ShouldBeFalse();
     }
+
     [Fact]
     public void Engine_should_roundtrip_true()
     {
         _vehicle.Engine = true;
         _vehicle.Engine.ShouldBeTrue();
     }
+
     [Fact]
     public void Engine_should_roundtrip_false()
     {
         _vehicle.Engine = false;
         _vehicle.Engine.ShouldBeFalse();
     }
+
     [Fact]
     public void Objective_should_roundtrip_true()
     {
         _vehicle.Objective = true;
         _vehicle.Objective.ShouldBeTrue();
     }
+
     [Fact]
     public void Objective_should_roundtrip_false()
     {
         _vehicle.Objective = false;
         _vehicle.Objective.ShouldBeFalse();
     }
+
     [Fact]
     public void Lights_should_roundtrip_true()
     {
         _vehicle.Lights = true;
         _vehicle.Lights.ShouldBeTrue();
     }
+
     [Fact]
     public void Lights_should_roundtrip_false()
     {
         _vehicle.Lights = false;
         _vehicle.Lights.ShouldBeFalse();
     }
+
     [Fact]
     public void IsBackLeftDoorOpen_should_roundtrip_true()
     {
         _vehicle.IsBackLeftDoorOpen = true;
         _vehicle.IsBackLeftDoorOpen.ShouldBeTrue();
     }
+
     [Fact]
     public void IsBackLeftDoorOpen_should_roundtrip_false()
     {
         _vehicle.IsBackLeftDoorOpen = false;
         _vehicle.IsBackLeftDoorOpen.ShouldBeFalse();
     }
+
     [Fact]
     public void IsBackLeftWindowClosed_should_roundtrip_true()
     {
         _vehicle.IsBackLeftWindowClosed = true;
         _vehicle.IsBackLeftWindowClosed.ShouldBeTrue();
     }
+
     [Fact]
     public void IsBackLeftWindowClosed_should_roundtrip_false()
     {
         _vehicle.IsBackLeftWindowClosed = false;
         _vehicle.IsBackLeftWindowClosed.ShouldBeFalse();
     }
+
     [Fact]
     public void IsBackRightDoorOpen_should_roundtrip_true()
     {
         _vehicle.IsBackRightDoorOpen = true;
         _vehicle.IsBackRightDoorOpen.ShouldBeTrue();
     }
+
     [Fact]
     public void IsBackRightDoorOpen_should_roundtrip_false()
     {
         _vehicle.IsBackRightDoorOpen = false;
         _vehicle.IsBackRightDoorOpen.ShouldBeFalse();
     }
+
     [Fact]
     public void IsBackRightWindowClosed_should_roundtrip_true()
     {
         _vehicle.IsBackRightWindowClosed = true;
         _vehicle.IsBackRightWindowClosed.ShouldBeTrue();
     }
+
     [Fact]
     public void IsBackRightWindowClosed_should_roundtrip_false()
     {
         _vehicle.IsBackRightWindowClosed = false;
         _vehicle.IsBackRightWindowClosed.ShouldBeFalse();
     }
+
     [Fact]
     public void IsDriverDoorOpen_should_roundtrip_true()
     {
         _vehicle.IsDriverDoorOpen = true;
         _vehicle.IsDriverDoorOpen.ShouldBeTrue();
     }
+
     [Fact]
     public void IsDriverDoorOpen_should_roundtrip_false()
     {
         _vehicle.IsDriverDoorOpen = false;
         _vehicle.IsDriverDoorOpen.ShouldBeFalse();
     }
+
     [Fact]
     public void IsDriverWindowClosed_should_roundtrip_true()
     {
         _vehicle.IsDriverWindowClosed = true;
         _vehicle.IsDriverWindowClosed.ShouldBeTrue();
     }
+
     [Fact]
     public void IsDriverWindowClosed_should_roundtrip_false()
     {
         _vehicle.IsDriverWindowClosed = false;
         _vehicle.IsDriverWindowClosed.ShouldBeFalse();
     }
+
     [Fact]
     public void IsPassengerDoorOpen_should_roundtrip_true()
     {
         _vehicle.IsPassengerDoorOpen = true;
         _vehicle.IsPassengerDoorOpen.ShouldBeTrue();
     }
+
     [Fact]
     public void IsPassengerDoorOpen_should_roundtrip_false()
     {
         _vehicle.IsPassengerDoorOpen = false;
         _vehicle.IsPassengerDoorOpen.ShouldBeFalse();
     }
+
     [Fact]
     public void IsPassengerWindowClosed_should_roundtrip_true()
     {
         _vehicle.IsPassengerWindowClosed = true;
         _vehicle.IsPassengerWindowClosed.ShouldBeTrue();
     }
+
     [Fact]
     public void IsPassengerWindowClosed_should_roundtrip_false()
     {
@@ -239,6 +266,7 @@ public class VehicleTests : TestBase
         _vehicle.AddComponent(1025);
         _vehicle.GetComponentInSlot(CarModType.Wheels).ShouldBe(1025);
     }
+
     [Fact]
     public void ChangePaintjob_should_succeed()
     {
@@ -308,13 +336,13 @@ public class VehicleTests : TestBase
         lights.ShouldBe(15);
         tires.ShouldBe(16);
     }
-    
+
     [Fact]
     public void Respawn_should_succeed()
     {
         _vehicle.Respawn();
     }
-    
+
     [Fact]
     public void SetAngularVelocity_should_succeed()
     {
@@ -341,7 +369,7 @@ public class VehicleTests : TestBase
     {
         _vehicle.HasTrailer.ShouldBeFalse();
     }
-    
+
     [Fact]
     public void Velocity_setter_should_succeed()
     {
@@ -380,6 +408,7 @@ public class VehicleTests : TestBase
         _vehicle.RotationEuler = new Vector3(0, 0, 90);
         _vehicle.RotationEuler.ShouldBe(new Vector3(0, 0, 90));
     }
+
     [Fact]
     public void RemoveComponent_should_succeed()
     {
@@ -419,5 +448,4 @@ public class VehicleTests : TestBase
 
         _vehicle.SetParametersForPlayer(Player, parameters);
     }
-
 }

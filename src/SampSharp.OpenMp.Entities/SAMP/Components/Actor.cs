@@ -8,8 +8,8 @@ namespace SampSharp.Entities.SAMP;
 /// </summary>
 public class Actor : WorldEntity
 {
-    private readonly IActorsComponent _actors;
     private readonly IActor _actor;
+    private readonly IActorsComponent _actors;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Actor" /> class.

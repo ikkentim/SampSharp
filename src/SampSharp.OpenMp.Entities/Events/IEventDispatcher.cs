@@ -1,5 +1,4 @@
-﻿using System.Buffers;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 
 namespace SampSharp.Entities;
 
@@ -31,5 +30,5 @@ public interface IEventDispatcher
     /// <param name="arguments">The arguments of the event.</param>
     /// <returns>The result as returned by an event handler or <paramref name="defaultValue" /> if no non-null value was returned.</returns>
     [return: NotNullIfNotNull(nameof(defaultValue))]
-    public T? InvokeAs<T>(string name, T defaultValue, params ReadOnlySpan<object> arguments);
+    T? InvokeAs<T>(string name, T defaultValue, params ReadOnlySpan<object> arguments);
 }

@@ -17,10 +17,11 @@ internal class EventDispatcher : IEventDispatcher, IEventService
         typeof(string)
     ];
 
-    private readonly Dictionary<string, Event> _events = new();
-    private readonly IServiceProvider _serviceProvider;
     private readonly IEntityManager _entityManager;
+
+    private readonly Dictionary<string, Event> _events = new();
     private readonly ILogger<EventDispatcher> _logger;
+    private readonly IServiceProvider _serviceProvider;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="EventDispatcher" /> class.
@@ -61,7 +62,7 @@ internal class EventDispatcher : IEventDispatcher, IEventService
 
         return invoke(arguments);
     }
-    
+
     [return: NotNullIfNotNull(nameof(defaultValue))]
     public T? InvokeAs<T>(string name, T defaultValue, params ReadOnlySpan<object> arguments)
     {

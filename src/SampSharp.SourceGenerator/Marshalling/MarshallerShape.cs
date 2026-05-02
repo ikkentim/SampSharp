@@ -13,5 +13,5 @@ public enum MarshallerShape
     ToManaged = 0x10,
     GuaranteedUnmarshal = 0x20,
     Free = 0x40,
-    OnInvoked = 0x80,
+    OnInvoked = 0x80
 }

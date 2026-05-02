@@ -5,8 +5,8 @@ namespace SampSharp.Entities.SAMP;
 
 internal class PlayerClickSystem : DisposableSystem, IPlayerClickEventHandler
 {
-    private readonly IEventDispatcher _eventDispatcher;
     private readonly IOmpEntityProvider _entityProvider;
+    private readonly IEventDispatcher _eventDispatcher;
 
     public PlayerClickSystem(IEventDispatcher eventDispatcher, IOmpEntityProvider entityProvider, SampSharpEnvironment environment)
     {
@@ -20,7 +20,7 @@ internal class PlayerClickSystem : DisposableSystem, IPlayerClickEventHandler
         _eventDispatcher.Invoke("OnPlayerClickMap", _entityProvider.GetEntity(player), pos);
     }
 
-    public void OnPlayerClickPlayer(IPlayer player, IPlayer clicked, SampSharp.OpenMp.Core.Api.PlayerClickSource source)
+    public void OnPlayerClickPlayer(IPlayer player, IPlayer clicked, OpenMp.Core.Api.PlayerClickSource source)
     {
         _eventDispatcher.Invoke("OnPlayerClickPlayer", _entityProvider.GetEntity(player), _entityProvider.GetEntity(clicked), source);
     }

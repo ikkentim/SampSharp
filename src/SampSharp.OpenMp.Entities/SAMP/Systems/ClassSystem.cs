@@ -4,8 +4,8 @@ namespace SampSharp.Entities.SAMP;
 
 internal class ClassSystem : DisposableSystem, IClassEventHandler
 {
-    private readonly IEventDispatcher _eventDispatcher;
     private readonly IOmpEntityProvider _entityProvider;
+    private readonly IEventDispatcher _eventDispatcher;
 
     public ClassSystem(IEventDispatcher eventDispatcher, IOmpEntityProvider entityProvider, SampSharpEnvironment environment)
     {

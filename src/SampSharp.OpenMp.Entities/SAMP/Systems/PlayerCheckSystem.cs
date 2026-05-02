@@ -4,8 +4,8 @@ namespace SampSharp.Entities.SAMP;
 
 internal class PlayerCheckSystem : DisposableSystem, IPlayerCheckEventHandler
 {
-    private readonly IEventDispatcher _eventDispatcher;
     private readonly IOmpEntityProvider _entityProvider;
+    private readonly IEventDispatcher _eventDispatcher;
 
     public PlayerCheckSystem(IEventDispatcher eventDispatcher, IOmpEntityProvider entityProvider, SampSharpEnvironment environment)
     {

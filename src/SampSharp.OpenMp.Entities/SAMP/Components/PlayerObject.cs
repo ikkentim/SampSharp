@@ -9,8 +9,8 @@ namespace SampSharp.Entities.SAMP;
 public class PlayerObject : WorldEntity
 {
     private readonly IOmpEntityProvider _entityProvider;
-    private readonly IPlayerObjectData _playerObjects;
     private readonly IPlayerObject _playerObject;
+    private readonly IPlayerObjectData _playerObjects;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="PlayerObject" /> class.
@@ -41,6 +41,39 @@ public class PlayerObject : WorldEntity
     /// Gets the draw distance of this player object.
     /// </summary>
     public virtual float DrawDistance => _playerObject.GetDrawDistance();
+
+    /// <summary>
+    /// Gets or sets a value indicating whether this player object collides with the player's camera.
+    /// </summary>
+    public virtual bool HasCameraCollision
+    {
+        get => _playerObject.GetCameraCollision();
+        set => _playerObject.SetCameraCollision(value);
+    }
+
+    /// <summary>
+    /// Gets the <see cref="Player" /> this player object is attached to, or <see langword="null" /> if it is not attached to a player.
+    /// </summary>
+    public virtual Player? AttachedPlayer
+    {
+        get
+        {
+            var data = _playerObject.GetAttachmentData();
+            return data.Type == AttachmentType.Player ? _entityProvider.GetPlayer(data.Id) : null;
+        }
+    }
+
+    /// <summary>
+    /// Gets the <see cref="Vehicle" /> this player object is attached to, or <see langword="null" /> if it is not attached to a vehicle.
+    /// </summary>
+    public virtual Vehicle? AttachedVehicle
+    {
+        get
+        {
+            var data = _playerObject.GetAttachmentData();
+            return data.Type == AttachmentType.Vehicle ? _entityProvider.GetVehicle(data.Id) : null;
+        }
+    }
 
     /// <summary>
     /// Moves this player object to the specified <paramref name="position" /> and <paramref name="rotation" /> with the specified <paramref name="speed" />.
@@ -112,8 +145,8 @@ public class PlayerObject : WorldEntity
         ArgumentNullException.ThrowIfNull(text);
         ArgumentNullException.ThrowIfNull(fontface);
         
-        _playerObject.SetMaterialText((uint)materialIndex, text, (SampSharp.OpenMp.Core.Api.ObjectMaterialSize)materialSize, fontface, fontSize, bold, foreColor, backColor,
-            (SampSharp.OpenMp.Core.Api.ObjectMaterialTextAlign)textAlignment);
+        _playerObject.SetMaterialText((uint)materialIndex, text, (OpenMp.Core.Api.ObjectMaterialSize)materialSize, fontface, fontSize, bold, foreColor, backColor,
+            (OpenMp.Core.Api.ObjectMaterialTextAlign)textAlignment);
     }
 
     /// <summary>
@@ -125,45 +158,12 @@ public class PlayerObject : WorldEntity
     }
 
     /// <summary>
-    /// Gets or sets a value indicating whether this player object collides with the player's camera.
-    /// </summary>
-    public virtual bool HasCameraCollision
-    {
-        get => _playerObject.GetCameraCollision();
-        set => _playerObject.SetCameraCollision(value);
-    }
-
-    /// <summary>
     /// Gets the current movement data of this player object.
     /// </summary>
     /// <returns>The <see cref="ObjectMoveData" /> describing the current move target.</returns>
     public virtual ObjectMoveData GetMovingData()
     {
         return _playerObject.GetMovingData();
-    }
-
-    /// <summary>
-    /// Gets the <see cref="Player" /> this player object is attached to, or <see langword="null" /> if it is not attached to a player.
-    /// </summary>
-    public virtual Player? AttachedPlayer
-    {
-        get
-        {
-            var data = _playerObject.GetAttachmentData();
-            return data.Type == AttachmentType.Player ? _entityProvider.GetPlayer(data.Id) : null;
-        }
-    }
-
-    /// <summary>
-    /// Gets the <see cref="Vehicle" /> this player object is attached to, or <see langword="null" /> if it is not attached to a vehicle.
-    /// </summary>
-    public virtual Vehicle? AttachedVehicle
-    {
-        get
-        {
-            var data = _playerObject.GetAttachmentData();
-            return data.Type == AttachmentType.Vehicle ? _entityProvider.GetVehicle(data.Id) : null;
-        }
     }
 
     /// <summary>

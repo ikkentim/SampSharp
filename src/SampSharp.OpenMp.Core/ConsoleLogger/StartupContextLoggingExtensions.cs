@@ -19,5 +19,4 @@ public static class StartupContextLoggingExtensions
 
         return context;
     }
-
 }

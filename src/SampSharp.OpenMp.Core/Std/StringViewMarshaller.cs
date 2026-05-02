@@ -82,7 +82,7 @@ public static unsafe class StringViewMarshaller
             }
         }
     }
-    
+
     public static class NativeToManaged
     {
         public static string? ConvertToManaged(StringView unmanaged)

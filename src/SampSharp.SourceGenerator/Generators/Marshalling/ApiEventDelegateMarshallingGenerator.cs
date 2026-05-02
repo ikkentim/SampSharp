@@ -11,6 +11,7 @@ namespace SampSharp.SourceGenerator.Generators.Marshalling;
 public class ApiEventDelegateMarshallingGenerator() : MarshallingGeneratorBase(MarshalDirection.UnmanagedToManaged)
 {
     private const string LocalHandler = "handler";
+
     public ExpressionSyntax GenerateDelegateExpression(MarshallingStubGenerationContext ctx)
     {
         ExpressionSyntax expr;

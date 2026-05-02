@@ -16,7 +16,7 @@ public record StructStubGenerationContext(
     List<MemberDeclarationSyntax> PublicMembers)
 {
     public TypeSyntax Type { get; } = GetSelfType(Symbol, Syntax);
-    
+
     private static TypeSyntax GetSelfType(ISymbol symbol, StructDeclarationSyntax syntax)
     {
         if (syntax.TypeParameterList == null)

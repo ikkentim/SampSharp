@@ -10,7 +10,7 @@ internal class EcsHost(IServiceProvider serviceProvider, UnhandledExceptionHandl
     private IServiceProvider? _serviceProvider = serviceProvider;
 
     public IServiceProvider ServiceProvider => _serviceProvider ?? throw new InvalidOperationException();
-    
+
     public void Start(IStartupContext context)
     {
         context.UseSynchronizationContext();
