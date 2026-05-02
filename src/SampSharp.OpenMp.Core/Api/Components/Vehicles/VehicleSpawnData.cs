@@ -11,6 +11,21 @@ namespace SampSharp.OpenMp.Core.Api;
 public readonly struct VehicleSpawnData
 {
     /// <summary>
+    /// Initializes a new instance of the <see cref="VehicleSpawnData" /> struct.
+    /// </summary>
+    public VehicleSpawnData(Seconds respawnDelay, int modelID, Vector3 position, float zRotation, int colour1, int colour2, BlittableBoolean siren, int interior)
+    {
+        this.respawnDelay = respawnDelay;
+        this.modelID = modelID;
+        this.position = position;
+        this.zRotation = zRotation;
+        this.colour1 = colour1;
+        this.colour2 = colour2;
+        this.siren = siren;
+        this.interior = interior;
+    }
+
+    /// <summary>
     /// Gets the respawn delay for the vehicle.
     /// </summary>
     public readonly Seconds respawnDelay;

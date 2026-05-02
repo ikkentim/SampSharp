@@ -85,7 +85,7 @@ public interface IWorldService
     /// <summary>
     /// Creates a gang zone logically scoped to a single player. The gang zone is created in the global pool and
     /// bound to the specified <paramref name="owner" /> via <c>SetLegacyPlayer</c>. Use
-    /// <see cref="GangZone.Show(Player)" /> / <see cref="GangZone.Hide(Player)" /> to control per-player visibility.
+    /// <see cref="BaseGangZone.Show(Player)" /> / <see cref="BaseGangZone.Hide(Player)" /> to control per-player visibility.
     /// </summary>
     /// <param name="owner">The player that owns this gang zone.</param>
     /// <param name="min">The minimum position.</param>
@@ -96,12 +96,12 @@ public interface IWorldService
 
     /// <summary>
     /// Enables or disables enter/leave checking for the specified <paramref name="zone" />. When enabled,
-    /// <see cref="GangZone.IsPlayerInside(Player)" /> returns the live containment state and the gang-zone
+    /// <see cref="BaseGangZone.IsPlayerInside(Player)" /> returns the live containment state and the gang-zone
     /// enter/leave events fire.
     /// </summary>
     /// <param name="zone">The gang zone to configure.</param>
     /// <param name="enable"><see langword="true" /> to enable checking; <see langword="false" /> to disable.</param>
-    void UseGangZoneCheck(GangZone zone, bool enable);
+    void UseGangZoneCheck(BaseGangZone zone, bool enable);
 
     /// <summary>
     /// Creates a pickup in the world.
@@ -117,7 +117,7 @@ public interface IWorldService
     /// <summary>
     /// Creates a pickup logically scoped to a single player. The pickup is created in the global pool and bound
     /// to the specified <paramref name="owner" /> via <c>SetLegacyPlayer</c>. Per-player visibility (hiding from
-    /// other players) is the caller's responsibility through <see cref="Pickup.SetHiddenForPlayer" />.
+    /// other players) is the caller's responsibility through <see cref="BasePickup.SetHiddenForPlayer" />.
     /// </summary>
     /// <param name="owner">The player that owns this pickup.</param>
     /// <param name="model">The model of the pickup.</param>

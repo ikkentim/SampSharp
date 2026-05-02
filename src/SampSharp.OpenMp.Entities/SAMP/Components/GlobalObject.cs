@@ -8,14 +8,16 @@ namespace SampSharp.Entities.SAMP;
 /// </summary>
 public class GlobalObject : WorldEntity
 {
+    private readonly IOmpEntityProvider _entityProvider;
     private readonly IObjectsComponent _objects;
     private readonly IObject _object;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="GlobalObject" /> class.
     /// </summary>
-    protected GlobalObject(IObjectsComponent objects, IObject @object) : base((IEntity)@object)
+    protected GlobalObject(IOmpEntityProvider entityProvider, IObjectsComponent objects, IObject @object) : base((IEntity)@object)
     {
+        _entityProvider = entityProvider;
         _objects = objects;
         _object = @object;
     }
@@ -122,18 +124,13 @@ public class GlobalObject : WorldEntity
     }
 
     /// <summary>
-    /// Sets whether this global object collides with players' cameras.
+    /// Gets or sets a value indicating whether this global object collides with players' cameras.
     /// </summary>
-    /// <param name="enable"><see langword="true" /> to enable camera collision; <see langword="false" /> to disable.</param>
-    public virtual void SetCameraCollision(bool enable)
+    public virtual bool HasCameraCollision
     {
-        _object.SetCameraCollision(enable);
+        get => _object.GetCameraCollision();
+        set => _object.SetCameraCollision(value);
     }
-
-    /// <summary>
-    /// Gets a value indicating whether this global object collides with players' cameras.
-    /// </summary>
-    public virtual bool HasCameraCollision => _object.GetCameraCollision();
 
     /// <summary>
     /// Gets the current movement data of this global object.
@@ -145,12 +142,39 @@ public class GlobalObject : WorldEntity
     }
 
     /// <summary>
-    /// Gets the attachment data of this global object.
+    /// Gets the <see cref="Player" /> this object is attached to, or <see langword="null" /> if it is not attached to a player.
     /// </summary>
-    /// <returns>The <see cref="ObjectAttachmentData" /> describing the current attachment.</returns>
-    public virtual ObjectAttachmentData GetAttachmentData()
+    public virtual Player? AttachedPlayer
     {
-        return _object.GetAttachmentData();
+        get
+        {
+            var data = _object.GetAttachmentData();
+            return data.Type == AttachmentType.Player ? _entityProvider.GetPlayer(data.Id) : null;
+        }
+    }
+
+    /// <summary>
+    /// Gets the <see cref="Vehicle" /> this object is attached to, or <see langword="null" /> if it is not attached to a vehicle.
+    /// </summary>
+    public virtual Vehicle? AttachedVehicle
+    {
+        get
+        {
+            var data = _object.GetAttachmentData();
+            return data.Type == AttachmentType.Vehicle ? _entityProvider.GetVehicle(data.Id) : null;
+        }
+    }
+
+    /// <summary>
+    /// Gets the <see cref="GlobalObject" /> this object is attached to, or <see langword="null" /> if it is not attached to another object.
+    /// </summary>
+    public virtual GlobalObject? AttachedObject
+    {
+        get
+        {
+            var data = _object.GetAttachmentData();
+            return data.Type == AttachmentType.Object ? _entityProvider.GetObject(data.Id) : null;
+        }
     }
 
     /// <summary>

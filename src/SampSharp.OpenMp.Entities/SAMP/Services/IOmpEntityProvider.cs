@@ -125,7 +125,7 @@ public interface IOmpEntityProvider
     /// </summary>
     /// <param name="gangZone">The gang zone to get the component for.</param>
     /// <returns>The gang zone component.</returns>
-    GangZone? GetComponent(IGangZone gangZone);
+    BaseGangZone? GetComponent(IGangZone gangZone);
 
     /// <summary>
     /// Gets the component for the specified menu.
@@ -146,7 +146,7 @@ public interface IOmpEntityProvider
     /// </summary>
     /// <param name="pickup">The pickup to get the component for.</param>
     /// <returns>The pickup component.</returns>
-    Pickup? GetComponent(IPickup pickup);
+    BasePickup? GetComponent(IPickup pickup);
 
     /// <summary>
     /// Gets the component for the specified player.
@@ -227,7 +227,7 @@ public interface IOmpEntityProvider
     /// </summary>
     /// <param name="id">The identifier of the gang zone.</param>
     /// <returns>The gang zone with the specified identifier or <see langword="null" /> if no gang zone could be found.</returns>
-    GangZone? GetGangZone(int id);
+    BaseGangZone? GetGangZone(int id);
 
     /// <summary>
     /// Gets the menu with the specified identifier.
@@ -248,7 +248,7 @@ public interface IOmpEntityProvider
     /// </summary>
     /// <param name="id">The identifier of the pickup.</param>
     /// <returns>The pickup with the specified identifier or <see langword="null" /> if no pickup could be found.</returns>
-    Pickup? GetPickup(int id);
+    BasePickup? GetPickup(int id);
 
     /// <summary>
     /// Gets the player with the specified identifier.

@@ -79,7 +79,7 @@ internal class WorldService(SampSharpEnvironment environment, IEntityManager ent
         return component;
     }
 
-    public void UseGangZoneCheck(GangZone zone, bool enable)
+    public void UseGangZoneCheck(BaseGangZone zone, bool enable)
     {
         ArgumentNullException.ThrowIfNull(zone);
         _gangZones.UseGangZoneCheck(zone, enable);
@@ -129,7 +129,7 @@ internal class WorldService(SampSharpEnvironment environment, IEntityManager ent
     {
         var native = _objects.Create(modelId, position, rotation, drawDistance);
         var entityId = EntityId.NewEntityId();
-        var component = entityManager.AddComponent<GlobalObject>(entityId, parent, _objects, native);
+        var component = entityManager.AddComponent<GlobalObject>(entityId, parent, entityProvider, _objects, native);
 
         var extension = new ComponentExtension(component);
         native.AddExtension(extension);
@@ -147,7 +147,7 @@ internal class WorldService(SampSharpEnvironment environment, IEntityManager ent
 
         var native = playerObjectData.Create(modelId, position, rotation, drawDistance);
         var entityId = EntityId.NewEntityId();
-        var component = entityManager.AddComponent<PlayerObject>(entityId, parent, playerObjectData, native);
+        var component = entityManager.AddComponent<PlayerObject>(entityId, parent, entityProvider, playerObjectData, native);
 
         var extension = new ComponentExtension(component);
         native.AddExtension(extension);

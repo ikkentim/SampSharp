@@ -121,7 +121,7 @@ internal class OmpEntityProvider(SampSharpEnvironment environment, IEntityManage
         return component;
     }
 
-    public GangZone? GetComponent(IGangZone gangZone)
+    public BaseGangZone? GetComponent(IGangZone gangZone)
     {
         if (gangZone == null)
         {
@@ -131,14 +131,16 @@ internal class OmpEntityProvider(SampSharpEnvironment environment, IEntityManage
         var ext = gangZone.TryGetExtension<ComponentExtension>();
         if (ext == null)
         {
-            var component = entityManager.AddComponent<GangZone>(EntityId.NewEntityId(), this, _gangZones, gangZone);
+            BaseGangZone component = gangZone.GetLegacyPlayer().HasValue
+                ? entityManager.AddComponent<PlayerGangZone>(EntityId.NewEntityId(), this, _gangZones, gangZone)
+                : entityManager.AddComponent<GangZone>(EntityId.NewEntityId(), this, _gangZones, gangZone);
             ext = new ComponentExtension(component);
             gangZone.AddExtension(ext);
 
             return component;
         }
 
-        return (GangZone)ext.Component;
+        return (BaseGangZone)ext.Component;
     }
 
     public Menu? GetComponent(IMenu menu)
@@ -168,7 +170,7 @@ internal class OmpEntityProvider(SampSharpEnvironment environment, IEntityManage
         var ext = @object.TryGetExtension<ComponentExtension>();
         if (ext == null)
         {
-            var component = entityManager.AddComponent<GlobalObject>(EntityId.NewEntityId(), _objects, @object);
+            var component = entityManager.AddComponent<GlobalObject>(EntityId.NewEntityId(), this, _objects, @object);
             ext = new ComponentExtension(component);
             @object.AddExtension(ext);
 
@@ -178,7 +180,7 @@ internal class OmpEntityProvider(SampSharpEnvironment environment, IEntityManage
         return (GlobalObject)ext.Component;
     }
 
-    public Pickup? GetComponent(IPickup pickup)
+    public BasePickup? GetComponent(IPickup pickup)
     {
         if (pickup == null)
         {
@@ -188,14 +190,16 @@ internal class OmpEntityProvider(SampSharpEnvironment environment, IEntityManage
         var ext = pickup.TryGetExtension<ComponentExtension>();
         if (ext == null)
         {
-            var component = entityManager.AddComponent<Pickup>(EntityId.NewEntityId(), _pickups, pickup);
+            BasePickup component = pickup.GetLegacyPlayer().HasValue
+                ? entityManager.AddComponent<PlayerPickup>(EntityId.NewEntityId(), _pickups, pickup)
+                : entityManager.AddComponent<Pickup>(EntityId.NewEntityId(), _pickups, pickup);
             ext = new ComponentExtension(component);
             pickup.AddExtension(ext);
 
             return component;
         }
 
-        return (Pickup)ext.Component;
+        return (BasePickup)ext.Component;
     }
 
     public Player? GetComponent(IPlayer player)
@@ -238,7 +242,7 @@ internal class OmpEntityProvider(SampSharpEnvironment environment, IEntityManage
                 return null;
             }
 
-            var component = entityManager.AddComponent<PlayerObject>(EntityId.NewEntityId(), data, playerObject);
+            var component = entityManager.AddComponent<PlayerObject>(EntityId.NewEntityId(), this, data, playerObject);
             ext = new ComponentExtension(component);
             playerObject.AddExtension(ext);
             return component;
@@ -394,12 +398,12 @@ internal class OmpEntityProvider(SampSharpEnvironment environment, IEntityManage
         return GetComponent(_npcs.Create(name));
     }
 
-    public GangZone? GetGangZone(int id)
+    public BaseGangZone? GetGangZone(int id)
     {
         return GetComponent(_gangZones.AsPool().Get(id));
     }
 
-    public Pickup? GetPickup(int id)
+    public BasePickup? GetPickup(int id)
     {
         return GetComponent(_pickups.AsPool().Get(id));
     }

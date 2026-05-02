@@ -10,12 +10,14 @@ namespace SampSharp.Entities.SAMP;
 /// <remarks>
 /// open.mp does not have a dedicated per-player pickup creation API; under the hood this is
 /// a regular pickup with <c>SetLegacyPlayer</c> set to the owner. Per-player visibility is
-/// controlled through <see cref="Pickup.SetHiddenForPlayer" /> /
-/// <see cref="Pickup.IsHiddenForPlayer" />.
+/// controlled through <see cref="BasePickup.SetHiddenForPlayer" /> /
+/// <see cref="BasePickup.IsHiddenForPlayer" />.
 /// </remarks>
-public class PlayerPickup : Pickup
+public class PlayerPickup : BasePickup
 {
-    /// <summary>Constructs an instance of PlayerPickup, should be used internally.</summary>
+    /// <summary>
+    /// Initializes a new instance of the <see cref="PlayerPickup" /> class.
+    /// </summary>
     protected PlayerPickup(IPickupsComponent pickups, IPickup pickup) : base(pickups, pickup)
     {
     }

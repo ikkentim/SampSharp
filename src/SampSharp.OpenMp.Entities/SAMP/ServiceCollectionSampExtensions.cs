@@ -12,7 +12,6 @@ internal static class ServiceCollectionSampExtensions
             .AddSingleton<IVehicleInfoService, VehicleInfoService>()
             .AddSingleton<IDialogService, DialogService>()
             .AddSingleton<ICustomModelsService, CustomModelsService>()
-            .AddSingleton<IFixesService, FixesService>()
             .AddSingleton<IConfigService, ConfigService>()
             .AddSingleton<INpcService, NpcService>()
             .AddSystem<CheckpointSystem>()

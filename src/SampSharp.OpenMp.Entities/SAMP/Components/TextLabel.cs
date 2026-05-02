@@ -125,24 +125,25 @@ public class TextLabel : WorldEntity
     }
 
     /// <summary>
-    /// Updates the colour and text of this text label in a single operation.
+    /// Updates the color and text of this text label in a single operation.
     /// </summary>
-    /// <param name="color">The new colour.</param>
+    /// <param name="color">The new color.</param>
     /// <param name="text">The new text.</param>
-    public virtual void SetColourAndText(Color color, string text)
+    public virtual void SetColorAndText(Color color, string text)
     {
         ArgumentNullException.ThrowIfNull(text);
         _textLabel.SetColourAndText(color, text);
     }
 
     /// <summary>
-    /// Gets the raw attachment data of this text label.
+    /// Gets the <see cref="Player" /> this text label is attached to, or <see langword="null" /> if it is not attached to a player.
     /// </summary>
-    /// <returns>The <see cref="TextLabelAttachmentData" /> describing the current attachment.</returns>
-    public virtual TextLabelAttachmentData GetAttachmentData()
-    {
-        return _textLabel.GetAttachmentData();
-    }
+    public virtual Player? AttachedPlayer => _entityProvider.GetPlayer(_textLabel.GetAttachmentData().PlayerId);
+
+    /// <summary>
+    /// Gets the <see cref="Vehicle" /> this text label is attached to, or <see langword="null" /> if it is not attached to a vehicle.
+    /// </summary>
+    public virtual Vehicle? AttachedVehicle => _entityProvider.GetVehicle(_textLabel.GetAttachmentData().VehicleId);
 
     /// <summary>
     /// Checks whether this text label is streamed in for the specified <paramref name="player" />.

@@ -8,14 +8,16 @@ namespace SampSharp.Entities.SAMP;
 /// </summary>
 public class PlayerObject : WorldEntity
 {
+    private readonly IOmpEntityProvider _entityProvider;
     private readonly IPlayerObjectData _playerObjects;
     private readonly IPlayerObject _playerObject;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="PlayerObject" /> class.
     /// </summary>
-    protected PlayerObject(IPlayerObjectData playerObjects, IPlayerObject playerObject) : base((IEntity)playerObject)
+    protected PlayerObject(IOmpEntityProvider entityProvider, IPlayerObjectData playerObjects, IPlayerObject playerObject) : base((IEntity)playerObject)
     {
+        _entityProvider = entityProvider;
         _playerObjects = playerObjects;
         _playerObject = playerObject;
     }
@@ -123,18 +125,13 @@ public class PlayerObject : WorldEntity
     }
 
     /// <summary>
-    /// Sets whether this player object collides with the player's camera.
+    /// Gets or sets a value indicating whether this player object collides with the player's camera.
     /// </summary>
-    /// <param name="enable"><see langword="true" /> to enable camera collision; <see langword="false" /> to disable.</param>
-    public virtual void SetCameraCollision(bool enable)
+    public virtual bool HasCameraCollision
     {
-        _playerObject.SetCameraCollision(enable);
+        get => _playerObject.GetCameraCollision();
+        set => _playerObject.SetCameraCollision(value);
     }
-
-    /// <summary>
-    /// Gets a value indicating whether this player object collides with the player's camera.
-    /// </summary>
-    public virtual bool HasCameraCollision => _playerObject.GetCameraCollision();
 
     /// <summary>
     /// Gets the current movement data of this player object.
@@ -146,12 +143,27 @@ public class PlayerObject : WorldEntity
     }
 
     /// <summary>
-    /// Gets the attachment data of this player object.
+    /// Gets the <see cref="Player" /> this player object is attached to, or <see langword="null" /> if it is not attached to a player.
     /// </summary>
-    /// <returns>The <see cref="ObjectAttachmentData" /> describing the current attachment.</returns>
-    public virtual ObjectAttachmentData GetAttachmentData()
+    public virtual Player? AttachedPlayer
     {
-        return _playerObject.GetAttachmentData();
+        get
+        {
+            var data = _playerObject.GetAttachmentData();
+            return data.Type == AttachmentType.Player ? _entityProvider.GetPlayer(data.Id) : null;
+        }
+    }
+
+    /// <summary>
+    /// Gets the <see cref="Vehicle" /> this player object is attached to, or <see langword="null" /> if it is not attached to a vehicle.
+    /// </summary>
+    public virtual Vehicle? AttachedVehicle
+    {
+        get
+        {
+            var data = _playerObject.GetAttachmentData();
+            return data.Type == AttachmentType.Vehicle ? _entityProvider.GetVehicle(data.Id) : null;
+        }
     }
 
     /// <summary>

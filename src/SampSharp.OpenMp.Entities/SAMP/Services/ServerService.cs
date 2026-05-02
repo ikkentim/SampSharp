@@ -390,15 +390,12 @@ internal class ServerService : IServerService
         fld = true;
     }
 
-    public void HideGameTextForAll(int style)
+    public void HideGameText(int style)
     {
-        foreach (var player in _players.Entries())
-        {
-            player.HideGameText(style);
-        }
+        _players.HideGameTextForAll(style);
     }
 
-    public void SendEmptyDeathMessageToAll()
+    public void SendEmptyDeathMessage()
     {
         _players.SendEmptyDeathMessageToAll();
     }

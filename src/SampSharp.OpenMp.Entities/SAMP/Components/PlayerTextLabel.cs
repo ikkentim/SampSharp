@@ -120,24 +120,25 @@ public class PlayerTextLabel : WorldEntity
     }
 
     /// <summary>
-    /// Updates the colour and text of this player text label in a single operation.
+    /// Updates the color and text of this player text label in a single operation.
     /// </summary>
-    /// <param name="color">The new colour.</param>
+    /// <param name="color">The new color.</param>
     /// <param name="text">The new text.</param>
-    public virtual void SetColourAndText(Color color, string text)
+    public virtual void SetColorAndText(Color color, string text)
     {
         ArgumentNullException.ThrowIfNull(text);
         _playerTextLabel.SetColourAndText(color, text);
     }
 
     /// <summary>
-    /// Gets the raw attachment data of this player text label.
+    /// Gets the <see cref="Player" /> this text label is attached to, or <see langword="null" /> if it is not attached to a player.
     /// </summary>
-    /// <returns>The <see cref="TextLabelAttachmentData" /> describing the current attachment.</returns>
-    public virtual TextLabelAttachmentData GetAttachmentData()
-    {
-        return _playerTextLabel.GetAttachmentData();
-    }
+    public virtual Player? AttachedPlayer => _entityProvider.GetPlayer(_playerTextLabel.GetAttachmentData().PlayerId);
+
+    /// <summary>
+    /// Gets the <see cref="Vehicle" /> this text label is attached to, or <see langword="null" /> if it is not attached to a vehicle.
+    /// </summary>
+    public virtual Vehicle? AttachedVehicle => _entityProvider.GetVehicle(_playerTextLabel.GetAttachmentData().VehicleId);
 
     /// <inheritdoc />
     protected override void OnDestroyComponent()

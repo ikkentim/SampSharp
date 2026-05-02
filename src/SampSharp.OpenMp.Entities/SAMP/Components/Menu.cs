@@ -163,14 +163,14 @@ public class Menu : IdProvider
     }
 
     /// <summary>
-    /// Gets the number of rows in the specified column.
+    /// Gets the number of rows in the left column of this menu.
     /// </summary>
-    /// <param name="column">The column index.</param>
-    /// <returns>The number of rows.</returns>
-    public virtual int GetRowCount(int column)
-    {
-        return _menu.GetRowCount((byte)column);
-    }
+    public virtual int Col0RowCount => _menu.GetRowCount(0);
+
+    /// <summary>
+    /// Gets the number of rows in the right column of this menu.
+    /// </summary>
+    public virtual int Col1RowCount => _menu.GetRowCount(1);
 
     /// <inheritdoc />
     protected override void OnDestroyComponent()

@@ -542,21 +542,39 @@ public class Vehicle : WorldEntity
     }
 
     /// <summary>
-    /// Replaces the spawn data of this vehicle (model, position, rotation, colours, siren, interior, respawn delay).
+    /// Replaces the spawn data of this vehicle (model, position, rotation, colors, siren, interior, respawn delay).
     /// </summary>
     /// <param name="data">The new spawn data.</param>
-    public virtual void SetSpawnData(VehicleSpawnData data)
+    public virtual void SetSpawnData(VehicleSpawnInfo data)
     {
-        _vehicle.SetSpawnData(ref data);
+        var raw = new VehicleSpawnData(
+            respawnDelay: data.RespawnDelay,
+            modelID: data.ModelId,
+            position: data.Position,
+            zRotation: data.ZRotation,
+            colour1: data.PrimaryColor,
+            colour2: data.SecondaryColor,
+            siren: data.HasSiren,
+            interior: data.Interior);
+        _vehicle.SetSpawnData(ref raw);
     }
 
     /// <summary>
     /// Gets the current spawn data of this vehicle.
     /// </summary>
     /// <returns>The spawn data.</returns>
-    public virtual VehicleSpawnData GetSpawnData()
+    public virtual VehicleSpawnInfo GetSpawnData()
     {
-        return _vehicle.GetSpawnData();
+        var raw = _vehicle.GetSpawnData();
+        return new VehicleSpawnInfo(
+            ModelId: raw.modelID,
+            Position: raw.position,
+            ZRotation: raw.zRotation,
+            PrimaryColor: raw.colour1,
+            SecondaryColor: raw.colour2,
+            HasSiren: raw.siren,
+            Interior: raw.interior,
+            RespawnDelay: raw.respawnDelay);
     }
 
     /// <summary>

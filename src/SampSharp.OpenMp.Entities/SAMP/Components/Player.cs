@@ -1835,23 +1835,22 @@ public class Player : WorldEntity
     }
 
     /// <summary>
-    /// Gets the world bounds previously set for this player as <c>(maxX, minX, maxY, minY)</c>.
+    /// Gets or sets the world bounds for this player as <c>(maxX, minX, maxY, minY)</c>.
     /// </summary>
-    public virtual Vector4 WorldBounds => _player.GetWorldBounds();
-
-    /// <summary>
-    /// Enables or disables widescreen mode for this player.
-    /// </summary>
-    /// <param name="enable"><see langword="true" /> to enable widescreen mode; <see langword="false" /> to disable.</param>
-    public virtual void UseWidescreen(bool enable)
+    public virtual Vector4 WorldBounds
     {
-        _player.UseWidescreen(enable);
+        get => _player.GetWorldBounds();
+        set => _player.SetWorldBounds(value);
     }
 
     /// <summary>
-    /// Gets a value indicating whether widescreen mode is enabled for this player.
+    /// Gets or sets a value indicating whether widescreen mode is enabled for this player.
     /// </summary>
-    public virtual bool HasWidescreen => _player.HasWidescreen();
+    public virtual bool HasWidescreen
+    {
+        get => _player.HasWidescreen();
+        set => _player.UseWidescreen(value);
+    }
 
     /// <summary>
     /// Clears all in-progress AI tasks for this player.
@@ -1872,12 +1871,12 @@ public class Player : WorldEntity
     }
 
     /// <summary>
-    /// Gets the current weather for this player.
+    /// Gets or sets the current weather for this player.
     /// </summary>
-    /// <returns>The weather identifier.</returns>
-    public virtual int GetWeather()
+    public virtual int Weather
     {
-        return _player.GetWeather();
+        get => _player.GetWeather();
+        set => _player.SetWeather(value);
     }
 
     /// <summary>
@@ -1949,9 +1948,16 @@ public class Player : WorldEntity
         _player.TryQueryExtension<IPlayerCustomModelsData>(out var data) ? data : null;
 
     /// <summary>
-    /// Gets the active custom skin model ID for this player, or 0 if no custom skin is set.
+    /// Gets the active custom skin model ID for this player, or <see langword="null" /> if no custom skin is set.
     /// </summary>
-    public virtual uint CustomSkin => CustomModelsData?.GetCustomSkin() ?? 0;
+    public virtual uint? CustomSkin
+    {
+        get
+        {
+            var skin = CustomModelsData?.GetCustomSkin() ?? 0;
+            return skin == 0 ? null : skin;
+        }
+    }
 
     /// <summary>
     /// Sets the custom skin model for this player.
