@@ -75,12 +75,6 @@
     <AnalysisLevel>latest</AnalysisLevel>
   </PropertyGroup>
 
-  <ItemGroup Condition="'$(IsTestProject)' != 'True' and '$(MSBuildProjectExtension)' == '.csproj'">
-      <PackageReference Include="SonarAnalyzer.CSharp">
-        <PrivateAssets>all</PrivateAssets>
-        <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-      </PackageReference>
-  </ItemGroup>
 
   <!-- Symbols / source linking  -->
   <PropertyGroup Label="Symbols" Condition="'$(IsLibrary)' == 'True'">
