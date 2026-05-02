@@ -1782,7 +1782,7 @@ public class Player : WorldEntity
     }
 
     /// <summary>
-    /// Gets or sets a value indicating whether map-click teleporting is allowed for this player. (open.mp only)
+    /// Gets or sets a value indicating whether map-click teleporting is allowed for this player.
     /// </summary>
     public virtual bool IsTeleportAllowed
     {
