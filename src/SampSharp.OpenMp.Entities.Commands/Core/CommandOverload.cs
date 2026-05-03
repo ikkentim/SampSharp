@@ -14,7 +14,8 @@ public class CommandOverload
         ParameterInfo[] parameters,
         Type declaringSystemType,
         CommandParameterInfo[] parsedParameters,
-        MethodInvoker? invoker = null)
+        MethodInvoker? invoker = null,
+        int prefixParameterCount = 0)
     {
         if (method == null)
         {
@@ -41,6 +42,7 @@ public class CommandOverload
         DeclaringSystemType = declaringSystemType;
         ParsedParameters = parsedParameters;
         CompiledInvoker = invoker;
+        PrefixParameterCount = prefixParameterCount;
     }
 
     /// <summary>The method that implements this command overload.</summary>
@@ -60,6 +62,9 @@ public class CommandOverload
 
     /// <summary>The pre-compiled method invoker (compiled at discovery time).</summary>
     public MethodInvoker? CompiledInvoker { get; }
+
+    /// <summary>The number of prefix parameters (e.g., Player for player commands, ConsoleCommandSender for console commands).</summary>
+    public int PrefixParameterCount { get; }
 
     /// <summary>The return type of the method.</summary>
     public Type ReturnType => Method.ReturnType;

@@ -175,7 +175,8 @@ public class CommandScanner
             parameters: parameters,
             declaringSystemType: systemType,
             parsedParameters: parsedParams!,
-            invoker: invoker);
+            invoker: invoker,
+            prefixParameterCount: prefixParameters);
 
         return true;
     }

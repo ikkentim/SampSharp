@@ -58,15 +58,16 @@ public class CommandExecutor
         // Build the combined argument array (prefix + parsed)
         var args = new object?[parameters.Length];
 
-        // Copy prefix arguments (player/console sender)
-        for (int i = 0; i < prefixArgs.Length && i < parameters.Length; i++)
+        // Copy prefix arguments (player/console sender) - only copy as many as the command expects
+        int prefixCount = Math.Min(overload.PrefixParameterCount, prefixArgs.Length);
+        for (int i = 0; i < prefixCount; i++)
         {
             args[i] = prefixArgs[i];
         }
 
         // Copy parsed arguments after prefix
         int parsedIdx = 0;
-        int argStartIndex = prefixArgs.Length;
+        int argStartIndex = overload.PrefixParameterCount;
         while (parsedIdx < parsedArgs.Length && argStartIndex < parameters.Length)
         {
             args[argStartIndex++] = parsedArgs[parsedIdx++];
