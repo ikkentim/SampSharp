@@ -1,20 +1,52 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using SampSharp.Entities.SAMP.Commands.Core;
+using SampSharp.Entities.SAMP.Commands.Console;
+using SampSharp.Entities.SAMP.Commands.Help;
+using SampSharp.Entities.SAMP.Commands.Player;
+using SampSharp.Entities.SAMP.Commands.Services;
 
 namespace SampSharp.Entities.SAMP.Commands;
 
-/// <summary>Extensions to register the player-commands subsystem.</summary>
+/// <summary>Extensions to register the commands subsystem.</summary>
 public static class EcsBuilderCommandsExtensions
 {
     /// <summary>
     /// Registers <see cref="IPlayerCommandService" /> with the default
-    /// <see cref="PlayerCommandService" /> implementation. Uses
-    /// <see cref="ServiceCollectionDescriptorExtensions.TryAddSingleton(IServiceCollection, Type, Type)" />
+    /// <see cref="PlayerCommandService" /> implementation (NEW system).
+    /// Uses <see cref="ServiceCollectionDescriptorExtensions.TryAddSingleton(IServiceCollection, Type, Type)" />
     /// so a custom <see cref="IPlayerCommandService" /> registered earlier wins.
     /// </summary>
     public static IServiceCollection AddPlayerCommands(this IServiceCollection services)
     {
+        services.AddCommandsSystem();
+
         services.TryAddSingleton<IPlayerCommandService, PlayerCommandService>();
+        return services;
+    }
+
+    /// <summary>
+    /// Registers the new Commands system infrastructure:
+    /// - CommandRegistry (for command storage/lookup)
+    /// - CommandDispatcher (for parsing and matching)
+    /// - ICommandEnumerator (for help/discovery)
+    /// - Service implementations (naming, permissions, help, error handling)
+    /// - ConsoleBridgeSystem (handles console command registration and dispatch)
+    /// </summary>
+    public static IServiceCollection AddCommandsSystem(this IServiceCollection services)
+    {
+        services.TryAddSingleton<CommandRegistry>();
+        services.TryAddSingleton<CommandDispatcher>();
+        services.TryAddSingleton<ICommandNameProvider, DefaultCommandNameProvider>();
+        services.TryAddSingleton<IPermissionChecker, DefaultPermissionChecker>();
+        services.TryAddSingleton<ICommandNotFoundHandler, DefaultCommandNotFoundHandler>();
+        services.TryAddSingleton<ICommandHelpProvider, DefaultCommandHelpProvider>();
+        services.TryAddSingleton<ICommandEnumerator>(sp =>
+            new DefaultCommandEnumerator(sp.GetRequiredService<CommandRegistry>(), sp.GetService<ICommandNameProvider>()));
+
+        // Register the console bridge system for handling console command events
+        services.AddSystem<ConsoleBridgeSystem>();
+
         return services;
     }
 

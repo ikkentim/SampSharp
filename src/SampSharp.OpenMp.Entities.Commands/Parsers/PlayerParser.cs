@@ -3,13 +3,13 @@ using Microsoft.Extensions.DependencyInjection;
 namespace SampSharp.Entities.SAMP.Commands.Parsers;
 
 /// <summary>
-/// Parses a <see cref="Player" /> reference. Accepts either:
+/// Parses a <see cref="SampSharp.Entities.SAMP.Player" /> reference. Accepts either:
 /// <list type="bullet">
 ///     <item>integer playerid (e.g. <c>/kick 5</c>)</item>
 ///     <item>full player name (case-insensitive)</item>
 ///     <item>name prefix — picks the player with the lowest playerid among matches</item>
 /// </list>
-/// Returns the matched <see cref="EntityId" /> so the command pipeline can convert it to a <see cref="Player" /> component.
+/// Returns the matched <see cref="EntityId" /> so the command pipeline can convert it to a <see cref="SampSharp.Entities.SAMP.Player" /> component.
 /// </summary>
 public class PlayerParser : ICommandParameterParser
 {
@@ -37,9 +37,9 @@ public class PlayerParser : ICommandParameterParser
         }
 
         var entityManager = services.GetRequiredService<IEntityManager>();
-        var players = entityManager.GetComponents<Player>();
+        var players = entityManager.GetComponents<SampSharp.Entities.SAMP.Player>();
 
-        Player? bestCandidate = null;
+        SampSharp.Entities.SAMP.Player? bestCandidate = null;
         foreach (var player in players)
         {
             if (!player.IsComponentAlive) continue;
@@ -55,6 +55,6 @@ public class PlayerParser : ICommandParameterParser
         }
 
         result = bestCandidate?.Entity;
-        return bestCandidate != null;
+        return bestCandidate is not null;
     }
 }
