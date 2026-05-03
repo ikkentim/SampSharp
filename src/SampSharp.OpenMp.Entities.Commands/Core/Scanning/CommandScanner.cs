@@ -63,9 +63,7 @@ public class CommandScanner
                 name: commandName,
                 group: commandGroup,
                 overloads: new[] { overload },
-                aliases: aliases,
-                playerCommand: true,
-                consoleCommand: false);
+                aliases: aliases);
 
             registry.Register(definition);
         }
@@ -100,7 +98,7 @@ public class CommandScanner
             if (method.GetParameters().Length > 0)
             {
                 var firstParam = method.GetParameters()[0];
-                if (firstParam.ParameterType ==  typeof(ConsoleCommandSender))
+                if (firstParam.ParameterType == typeof(ConsoleCommandSender))
                 {
                     prefixParams = 1;
                 }
@@ -122,9 +120,7 @@ public class CommandScanner
                 name: commandName,
                 group: commandGroup,
                 overloads: new[] { overload },
-                aliases: aliases,
-                playerCommand: false,
-                consoleCommand: true);
+                aliases: aliases);
 
             registry.Register(definition);
         }
@@ -171,13 +167,58 @@ public class CommandScanner
             return false;
         }
 
+        // Compile the method invoker at discovery time
+        var invoker = CompileMethodInvoker(method, parameters, prefixParameters, parsedParams!);
+
         overload = new CommandOverload(
             method: method,
             parameters: parameters,
             declaringSystemType: systemType,
-            parsedParameters: parsedParams!);
+            parsedParameters: parsedParams!,
+            invoker: invoker);
 
         return true;
+    }
+
+    /// <summary>Compiles a MethodInvoker for the given method using expression trees.</summary>
+    private MethodInvoker CompileMethodInvoker(
+        MethodInfo method,
+        ParameterInfo[] parameters,
+        int prefixParameterCount,
+        CommandParameterInfo[] parsedParameters)
+    {
+        // Build MethodParameterSource array
+        var sources = new MethodParameterSource[parameters.Length];
+        var parsedParamsByIndex = parsedParameters.ToDictionary(p => p.ParameterIndex);
+
+        for (int i = 0; i < parameters.Length; i++)
+        {
+            var paramInfo = parameters[i];
+            var source = new MethodParameterSource(paramInfo);
+
+            // Check if this is a parsed parameter
+            if (parsedParamsByIndex.ContainsKey(i))
+            {
+                // This parameter is parsed from input
+                source.ParameterIndex = i;
+            }
+            // Check if it's a component (depends on EntityId)
+            else if (typeof(Component).IsAssignableFrom(paramInfo.ParameterType) && prefixParameterCount > 0)
+            {
+                // Component will be resolved from EntityId in args[0]
+                source.IsComponent = true;
+            }
+            else
+            {
+                // This is a DI service parameter
+                source.IsService = true;
+            }
+
+            sources[i] = source;
+        }
+
+        // Compile using expression trees
+        return MethodInvokerFactory.Compile(method, sources, uninvokedReturnValue: null, retBoolToResult: true);
     }
 
     /// <summary>Validates that a return type is supported by the command system.</summary>

@@ -120,7 +120,6 @@ public class SampleCommandsSystem : ISystem
         player.SendClientMessage("--- Available Commands ---");
 
         var playerCommands = enumerator.GetAllCommands()
-            .Where(c => c.IsPlayerCommand)
             .OrderBy(c => c.Name)
             .ToList();
 
@@ -156,5 +155,12 @@ public class SampleCommandsSystem : ISystem
     public void PingCommand(Player player, IEntityManager entityManager)
     {
         player.SendClientMessage($"Your ping: {player.Ping}ms");
+    }
+
+    [ConsoleCommand(Name = "add_numbers")]
+    [Alias("add")]
+    public void AddCommand(int a, int b)
+    {
+        Console.WriteLine($"{a} + {b} = {a + b}");
     }
 }

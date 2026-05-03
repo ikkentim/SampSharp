@@ -1,6 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using SampSharp.OpenMp.Core.Api;
 using SampSharp.Entities.SAMP.Commands.Core;
+using SampSharp.Entities.SAMP.Commands.Core.Execution;
 using SampSharp.Entities.SAMP.Commands.Core.Scanning;
 using SampSharp.Entities.SAMP.Commands.Services;
 
@@ -14,6 +15,9 @@ public class ConsoleCommandService
 {
     private readonly CommandRegistry _registry = new();
     private readonly CommandDispatcher _dispatcher = new();
+    private readonly CommandExecutor _executor;
+    private readonly IEntityManager _entityManager;
+    private readonly ISystemRegistry _systemRegistry;
     private readonly ICommandNotFoundHandler _notFoundHandler;
 
     public ConsoleCommandService(
@@ -31,6 +35,9 @@ public class ConsoleCommandService
             throw new ArgumentNullException(nameof(systemRegistry));
         }
 
+        _entityManager = entityManager;
+        _systemRegistry = systemRegistry;
+        _executor = new CommandExecutor(entityManager);
         _notFoundHandler = notFoundHandler ?? new DefaultCommandNotFoundHandler();
 
         // Scan for console commands
@@ -55,7 +62,6 @@ public class ConsoleCommandService
 
         inputText = inputText.Trim();
 
-        // Wrap the sender data
         // Dispatch the command
         var result = _dispatcher.Dispatch(_registry, inputText, new object[] { senderData });
 
@@ -63,7 +69,8 @@ public class ConsoleCommandService
         switch (result.Response)
         {
             case DispatchResponse.Success:
-                return null; // Success - no message needed
+                // Execute the command
+                return ExecuteCommand(services, result, senderData) ? null : "Failed to execute command.";
 
             case DispatchResponse.InvalidArguments:
                 return result.UsageMessage ?? "Invalid arguments";
@@ -74,6 +81,50 @@ public class ConsoleCommandService
             case DispatchResponse.CommandNotFound:
             default:
                 return _notFoundHandler.GetCommandNotFoundMessage(inputText);
+        }
+    }
+
+    private bool ExecuteCommand(IServiceProvider services, DispatchResult dispatchResult, ConsoleCommandSender senderData)
+    {
+        var command = dispatchResult.CommandDefinition;
+        var overload = dispatchResult.CommandOverload;
+        var parsedArgs = dispatchResult.ParsedArguments ?? Array.Empty<object?>();
+
+        if (command == null || overload == null)
+        {
+            return false;
+        }
+
+        // Get the system instance
+        var system = services.GetService(overload.DeclaringSystemType) as ISystem;
+        if (system == null)
+        {
+            return false;
+        }
+
+        try
+        {
+            // Execute the command
+            var result = _executor.Execute(
+                overload,
+                new object[] { senderData },
+                parsedArgs,
+                services,
+                system);
+
+            // Interpret the result
+            var success = result switch
+            {
+                bool b => b,
+                int i => i != 0,
+                _ => true
+            };
+
+            return success;
+        }
+        catch (Exception)
+        {
+            return false;
         }
     }
 

@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -30,35 +31,40 @@ public class CommandDispatcher
 
         inputText = inputText.Trim();
 
-        // Parse the command line to extract command path and remaining arguments
-        var (commandPath, remainingArgs) = ParseCommandLine(inputText);
-        if (string.IsNullOrWhiteSpace(commandPath))
+        // Split input into tokens and try to find the command by matching from longest to shortest path
+        var tokens = inputText.Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+        if (tokens.Length == 0)
         {
             return DispatchResult.CreateNotFound();
         }
 
-        // Look up the command in the registry
-        var pathParts = commandPath.Split(' ');
-        var command = registry.TryFindByPath(pathParts);
+        // Try to find the command in the registry
+        // TryFindByPath returns how many tokens were consumed
+        var command = registry.TryFindByPath(tokens, out int consumedTokenCount);
         if (command == null)
         {
             return DispatchResult.CreateNotFound();
         }
+
+        // Remaining tokens become the arguments
+        var remainingTokens = tokens.Skip(consumedTokenCount).ToArray();
+        var remainingArgs = remainingTokens.Length > 0
+            ? string.Join(" ", remainingTokens)
+            : "";
 
         // Try to match parameters for each overload
         string? bestUsageMessage = null;
 
         foreach (var overload in command.Overloads)
         {
-            var matchResult = TryMatchParameters(overload, remainingArgs.Trim());
+            var matchResult = TryMatchParameters(overload, remainingArgs);
             if (matchResult.matched)
             {
                 // Successfully matched this overload
                 var result = DispatchResult.CreateSuccess();
                 result.CommandDefinition = command;
                 result.CommandOverload = overload;
-                // Store the parsed arguments for later use
-                result.Message = null; // Can be used to store parsed args later if needed
+                result.ParsedArguments = matchResult.parsedArguments;
                 return result;
             }
 
@@ -78,39 +84,9 @@ public class CommandDispatcher
     }
 
     /// <summary>
-    /// Parses the command line into command path and remaining arguments.
-    /// Handles multi-word command groups and aliases.
-    /// </summary>
-    private (string commandPath, string remainingArgs) ParseCommandLine(string inputText)
-    {
-        // Split by whitespace to get individual tokens
-        var parts = inputText.Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
-        if (parts.Length == 0)
-        {
-            return ("", "");
-        }
-
-        // Try to match the longest possible command path
-        // This allows multi-word commands like "admin money give"
-        for (int i = parts.Length; i > 0; i--)
-        {
-            var potentialCommand = string.Join(" ", parts.Take(i));
-
-            var remaining = i < parts.Length
-                ? string.Join(" ", parts.Skip(i))
-                : "";
-
-            // Return the potential command; the registry lookup will verify if it exists
-            return (potentialCommand, remaining);
-        }
-
-        return ("", "");
-    }
-
-    /// <summary>
     /// Tries to match the remaining arguments against the overload's parameters.
     /// </summary>
-    private (bool matched, string? usageMessage) TryMatchParameters(
+    private (bool matched, string? usageMessage, object?[]? parsedArguments) TryMatchParameters(
         CommandOverload overload,
         string remainingArgs)
     {
@@ -121,11 +97,11 @@ public class CommandDispatcher
         {
             if (string.IsNullOrWhiteSpace(remainingArgs))
             {
-                return (true, null);
+                return (true, null, new object[0]);
             }
 
             // Has args but command takes none - invalid
-            return (false, GenerateUsageMessage(overload));
+            return (false, GenerateUsageMessage(overload), null);
         }
 
         // Count required vs optional parameters
@@ -138,7 +114,7 @@ public class CommandDispatcher
         // Check if we have enough tokens (minimum required)
         if (tokens.Count < requiredCount)
         {
-            return (false, GenerateUsageMessage(overload));
+            return (false, GenerateUsageMessage(overload), null);
         }
 
         // Check if we have too many tokens (maximum required+optional)
@@ -148,7 +124,7 @@ public class CommandDispatcher
 
         if (!isLastParamString && tokens.Count > parameters.Length)
         {
-            return (false, GenerateUsageMessage(overload));
+            return (false, GenerateUsageMessage(overload), null);
         }
 
         // Try to parse all parameters
@@ -163,7 +139,7 @@ public class CommandDispatcher
             }
             else if (param.IsRequired)
             {
-                return (false, GenerateUsageMessage(overload));
+                return (false, GenerateUsageMessage(overload), null);
             }
             else
             {
@@ -173,7 +149,7 @@ public class CommandDispatcher
         }
 
         // Successfully matched
-        return (true, null);
+        return (true, null, parsedValues.ToArray());
     }
 
     /// <summary>Generates a usage message for a command overload.</summary>

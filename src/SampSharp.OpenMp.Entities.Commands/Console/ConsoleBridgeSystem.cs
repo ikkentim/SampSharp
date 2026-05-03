@@ -22,7 +22,7 @@ internal class ConsoleBridgeSystem : ISystem
     public void OnConsoleCommandListRequest(ConsoleCommandCollection commands)
     {
         var registry = _commandService.GetRegistry();
-        foreach (var command in registry.GetConsoleCommands())
+        foreach (var command in registry.GetAll())
         {
             commands.Add(command.Name);
 

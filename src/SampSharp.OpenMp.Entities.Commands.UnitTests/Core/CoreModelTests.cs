@@ -164,9 +164,7 @@ public class CommandRegistryTests
             group: null,
             overloads: new[] { overload },
             aliases: null,
-            permissions: null,
-            playerCommand: true,
-            consoleCommand: false);
+            permissions: null);
 
         registry.Register(definition);
 
@@ -178,7 +176,7 @@ public class CommandRegistryTests
     {
         var registry = new CommandRegistry();
         var overload = new CommandOverload(_testMethod, _testMethod.GetParameters(), typeof(CommandRegistryTests), new CommandParameterInfo[0]);
-        var definition = new CommandDefinition("kick", null, new[] { overload }, null, null, true, false);
+        var definition = new CommandDefinition("kick", null, new[] { overload });
         registry.Register(definition);
 
         var found = registry.TryFind("kick");
@@ -198,36 +196,10 @@ public class CommandRegistryTests
     {
         var registry = new CommandRegistry();
         var overload = new CommandOverload(_testMethod, _testMethod.GetParameters(), typeof(CommandRegistryTests), new CommandParameterInfo[0]);
-        registry.Register(new CommandDefinition("test1", null, new[] { overload }, null, null, true, false));
-        registry.Register(new CommandDefinition("test2", null, new[] { overload }, null, null, true, false));
+        registry.Register(new CommandDefinition("test1", null, new[] { overload }));
+        registry.Register(new CommandDefinition("test2", null, new[] { overload }));
 
         registry.GetAll().Count().ShouldBe(2);
-    }
-
-    [Fact]
-    public void GetPlayerCommands_ReturnsOnlyPlayerCommands()
-    {
-        var registry = new CommandRegistry();
-        var overload = new CommandOverload(_testMethod, _testMethod.GetParameters(), typeof(CommandRegistryTests), new CommandParameterInfo[0]);
-        registry.Register(new CommandDefinition("player_cmd", null, new[] { overload }, null, null, playerCommand: true, consoleCommand: false));
-        registry.Register(new CommandDefinition("console_cmd", null, new[] { overload }, null, null, playerCommand: false, consoleCommand: true));
-
-        var playerCommands = registry.GetPlayerCommands();
-        playerCommands.Count().ShouldBe(1);
-        playerCommands.First().Name.ShouldBe("player_cmd");
-    }
-
-    [Fact]
-    public void GetConsoleCommands_ReturnsOnlyConsoleCommands()
-    {
-        var registry = new CommandRegistry();
-        var overload = new CommandOverload(_testMethod, _testMethod.GetParameters(), typeof(CommandRegistryTests), new CommandParameterInfo[0]);
-        registry.Register(new CommandDefinition("player_cmd", null, new[] { overload }, null, null, playerCommand: true, consoleCommand: false));
-        registry.Register(new CommandDefinition("console_cmd", null, new[] { overload }, null, null, playerCommand: false, consoleCommand: true));
-
-        var consoleCommands = registry.GetConsoleCommands();
-        consoleCommands.Count().ShouldBe(1);
-        consoleCommands.First().Name.ShouldBe("console_cmd");
     }
 
     private void DummyCommand() { }

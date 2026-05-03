@@ -13,7 +13,8 @@ public class CommandOverload
         MethodInfo method,
         ParameterInfo[] parameters,
         Type declaringSystemType,
-        CommandParameterInfo[] parsedParameters)
+        CommandParameterInfo[] parsedParameters,
+        MethodInvoker? invoker = null)
     {
         if (method == null)
         {
@@ -39,6 +40,7 @@ public class CommandOverload
         MethodParameters = parameters;
         DeclaringSystemType = declaringSystemType;
         ParsedParameters = parsedParameters;
+        CompiledInvoker = invoker;
     }
 
     /// <summary>The method that implements this command overload.</summary>
@@ -55,6 +57,9 @@ public class CommandOverload
     /// These are in the order they appear in the method signature.
     /// </summary>
     public CommandParameterInfo[] ParsedParameters { get; }
+
+    /// <summary>The pre-compiled method invoker (compiled at discovery time).</summary>
+    public MethodInvoker? CompiledInvoker { get; }
 
     /// <summary>The return type of the method.</summary>
     public Type ReturnType => Method.ReturnType;

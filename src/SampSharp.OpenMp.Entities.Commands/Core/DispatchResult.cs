@@ -61,4 +61,7 @@ public class DispatchResult
 
     /// <summary>The executed command overload (if matched).</summary>
     public CommandOverload? CommandOverload { get; set; }
+
+    /// <summary>Parsed argument values for the command (if successfully matched).</summary>
+    public object?[]? ParsedArguments { get; set; }
 }

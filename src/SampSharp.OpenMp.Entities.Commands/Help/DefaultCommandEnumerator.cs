@@ -102,8 +102,6 @@ public class DefaultCommandEnumerator : ICommandEnumerator
         return new CommandEnumerator(
             name: definition.Name,
             group: definition.Group,
-            isPlayerCommand: definition.IsPlayerCommand,
-            isConsoleCommand: definition.IsConsoleCommand,
             aliases: definition.Aliases.ToList().AsReadOnly(),
             overloads: definition.Overloads.ToList().AsReadOnly(),
             permissions: definition.Permissions.ToList().AsReadOnly(),

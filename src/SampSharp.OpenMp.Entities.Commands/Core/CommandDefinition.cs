@@ -16,9 +16,7 @@ public class CommandDefinition
         CommandGroup? group,
         CommandOverload[] overloads,
         CommandAlias[]? aliases = null,
-        string[]? permissions = null,
-        bool playerCommand = false,
-        bool consoleCommand = false)
+        string[]? permissions = null)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
@@ -35,8 +33,6 @@ public class CommandDefinition
         _overloads = overloads;
         _aliases = aliases ?? [];
         _permissions = permissions ?? [];
-        IsPlayerCommand = playerCommand;
-        IsConsoleCommand = consoleCommand;
     }
 
     /// <summary>The command name (without leading slash or group prefix).</summary>
@@ -53,12 +49,6 @@ public class CommandDefinition
 
     /// <summary>Required permissions for this command.</summary>
     public IReadOnlyList<string> Permissions => _permissions;
-
-    /// <summary>Whether this command can be invoked by players.</summary>
-    public bool IsPlayerCommand { get; }
-
-    /// <summary>Whether this command can be invoked via console.</summary>
-    public bool IsConsoleCommand { get; }
 
     /// <summary>The full command path (group + name), e.g., "admin money give".</summary>
     public string FullName => Group.HasValue

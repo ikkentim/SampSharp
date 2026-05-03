@@ -100,6 +100,7 @@ public class PlayerCommandService : IPlayerCommandService
     {
         var command = dispatchResult.CommandDefinition;
         var overload = dispatchResult.CommandOverload;
+        var parsedArgs = dispatchResult.ParsedArguments ?? Array.Empty<object?>();
 
         if (command == null || overload == null)
         {
@@ -133,7 +134,7 @@ public class PlayerCommandService : IPlayerCommandService
             var result = _executor.Execute(
                 overload,
                 new object[] { player },
-                new object[] { }, // TODO: Parse arguments properly
+                parsedArgs,
                 services,
                 system);
 

@@ -68,9 +68,17 @@ public class CommandRegistry
         return null;
     }
 
-    /// <summary>Tries to find a command by its full path, matching command groups.</summary>
+    /// <summary>Tries to find a command by its full path, matching command groups or aliases.</summary>
     public CommandDefinition? TryFindByPath(IEnumerable<string> pathParts)
     {
+        return TryFindByPath(pathParts, out _);
+    }
+
+    /// <summary>Tries to find a command by its full path, matching command groups or aliases. 
+    /// Returns how many path parts were consumed.</summary>
+    public CommandDefinition? TryFindByPath(IEnumerable<string> pathParts, out int consumedParts)
+    {
+        consumedParts = 0;
         if (pathParts == null)
         {
             return null;
@@ -88,7 +96,15 @@ public class CommandRegistry
             var partial = string.Join(" ", parts.Take(i)).ToLowerInvariant();
             if (_commandsByName.TryGetValue(partial, out var cmd))
             {
+                consumedParts = i;
                 return cmd;
+            }
+
+            // Also check aliases (useful for single-word commands)
+            if (_aliasMap.TryGetValue(partial, out var aliased))
+            {
+                consumedParts = i;
+                return aliased;
             }
         }
 
@@ -97,14 +113,6 @@ public class CommandRegistry
 
     /// <summary>Gets all registered commands.</summary>
     public IReadOnlyList<CommandDefinition> GetAll() => _allCommands.AsReadOnly();
-
-    /// <summary>Gets all player commands.</summary>
-    public IEnumerable<CommandDefinition> GetPlayerCommands()
-        => _allCommands.Where(c => c.IsPlayerCommand);
-
-    /// <summary>Gets all console commands.</summary>
-    public IEnumerable<CommandDefinition> GetConsoleCommands()
-        => _allCommands.Where(c => c.IsConsoleCommand);
 
     /// <summary>Gets all commands in a specific group.</summary>
     public IEnumerable<CommandDefinition> GetCommandsInGroup(CommandGroup group)

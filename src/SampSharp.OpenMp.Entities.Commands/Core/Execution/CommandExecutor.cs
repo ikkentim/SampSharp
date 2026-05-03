@@ -6,23 +6,21 @@ namespace SampSharp.Entities.SAMP.Commands.Core.Execution;
 
 /// <summary>
 /// Executes a command by invoking the associated method with parsed parameters.
-/// Handles DI, component resolution, and async results.
+/// Uses pre-compiled MethodInvoker from CommandOverload for high performance.
 /// </summary>
 public class CommandExecutor
 {
     private readonly IEntityManager _entityManager;
-    private readonly Lazy<Dictionary<MethodInfo, MethodInvoker>> _invokerCache;
 
     public CommandExecutor(IEntityManager entityManager)
     {
         _entityManager = entityManager ?? throw new ArgumentNullException(nameof(entityManager));
-        _invokerCache = new Lazy<Dictionary<MethodInfo, MethodInvoker>>(() => new());
     }
 
     /// <summary>
     /// Executes a command overload with the given parameters.
     /// </summary>
-    /// <param name="overload">The command overload to execute.</param>
+    /// <param name="overload">The command overload to execute (with pre-compiled invoker).</param>
     /// <param name="prefixArgs">Prefix arguments (e.g., Player for player commands).</param>
     /// <param name="parsedArgs">Parsed arguments from command input.</param>
     /// <param name="services">Service provider for DI resolution.</param>
@@ -50,97 +48,33 @@ public class CommandExecutor
             throw new ArgumentNullException(nameof(system));
         }
 
-        var method = overload.Method;
+        if (overload.CompiledInvoker == null)
+        {
+            throw new InvalidOperationException("Command overload has no compiled invoker. Invoker should be compiled at discovery time.");
+        }
+
         var parameters = overload.MethodParameters;
 
-        // Build the argument array for the invoker
+        // Build the combined argument array (prefix + parsed)
         var args = new object?[parameters.Length];
 
-        // Copy prefix arguments
-        for (int i = 0; i < prefixArgs.Length; i++)
+        // Copy prefix arguments (player/console sender)
+        for (int i = 0; i < prefixArgs.Length && i < parameters.Length; i++)
         {
             args[i] = prefixArgs[i];
         }
 
-        // Copy parsed arguments
+        // Copy parsed arguments after prefix
         int parsedIdx = 0;
-        foreach (var parsedParam in overload.ParsedParameters)
+        int argStartIndex = prefixArgs.Length;
+        while (parsedIdx < parsedArgs.Length && argStartIndex < parameters.Length)
         {
-            args[parsedParam.ParameterIndex] = parsedIdx < parsedArgs.Length ? parsedArgs[parsedIdx++] : null;
+            args[argStartIndex++] = parsedArgs[parsedIdx++];
         }
 
-        // Fill in DI parameters
-        for (int i = 0; i < parameters.Length; i++)
-        {
-            if (args[i] != null)
-            {
-                continue; // Already filled (prefix or parsed)
-            }
-
-            var paramType = parameters[i].ParameterType;
-
-            // Check if it's a component type attached to the first parameter (player)
-            if (typeof(Component).IsAssignableFrom(paramType) && prefixArgs.Length > 0 &&
-                prefixArgs[0] is EntityId playerId)
-            {
-                // Use reflection to call GetComponent<T>(EntityId)
-                var getComponentMethod = typeof(IEntityManager).GetMethod("GetComponent");
-                var genericMethod = getComponentMethod!.MakeGenericMethod(paramType);
-                var component = genericMethod.Invoke(_entityManager, new object[] { playerId });
-
-                if (component == null)
-                {
-                    // Component not found - command unavailable
-                    return null;
-                }
-                args[i] = component;
-            }
-            else
-            {
-                // Try to resolve from DI container
-                try
-                {
-                    args[i] = services.GetService(paramType);
-                }
-                catch
-                {
-                    // Cannot resolve - leave as null
-                }
-            }
-        }
-
-        // Get or compile the invoker
-        var invoker = GetOrCompileInvoker(method, parameters);
-
-        // Invoke the method
-        var result = invoker(system, args, services, _entityManager);
+        // Invoke using the pre-compiled MethodInvoker
+        var result = overload.CompiledInvoker(system, args, services, _entityManager);
 
         return result;
-    }
-
-    /// <summary>
-    /// Gets or compiles a MethodInvoker for the given method.
-    /// </summary>
-    private MethodInvoker GetOrCompileInvoker(MethodInfo method, ParameterInfo[] parameters)
-    {
-        var cache = _invokerCache.Value;
-
-        if (cache.TryGetValue(method, out var invoker))
-        {
-            return invoker;
-        }
-
-        // Compile new invoker using expression trees
-        var sources = parameters.Select((p, i) =>
-            new MethodParameterSource(p)
-            {
-                ParameterIndex = i,
-                IsComponent = typeof(Component).IsAssignableFrom(p.ParameterType)
-            }).ToArray();
-
-        var compiled = MethodInvokerFactory.Compile(method, sources);
-        cache[method] = compiled;
-
-        return compiled;
     }
 }

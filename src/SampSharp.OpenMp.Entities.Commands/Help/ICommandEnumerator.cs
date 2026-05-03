@@ -52,16 +52,6 @@ public class CommandEnumerator
     public CommandGroup? Group { get; }
 
     /// <summary>
-    /// Gets whether this is a player command.
-    /// </summary>
-    public bool IsPlayerCommand { get; }
-
-    /// <summary>
-    /// Gets whether this is a console command.
-    /// </summary>
-    public bool IsConsoleCommand { get; }
-
-    /// <summary>
     /// Gets all aliases for this command.
     /// </summary>
     public IReadOnlyList<CommandAlias> Aliases { get; }
@@ -89,8 +79,6 @@ public class CommandEnumerator
     public CommandEnumerator(
         string name,
         CommandGroup? group,
-        bool isPlayerCommand,
-        bool isConsoleCommand,
         IReadOnlyList<CommandAlias> aliases,
         IReadOnlyList<CommandOverload> overloads,
         IReadOnlyList<string> permissions,
@@ -99,8 +87,6 @@ public class CommandEnumerator
     {
         Name = name;
         Group = group;
-        IsPlayerCommand = isPlayerCommand;
-        IsConsoleCommand = isConsoleCommand;
         Aliases = aliases;
         Overloads = overloads;
         Permissions = permissions;
