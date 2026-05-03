@@ -1,5 +1,6 @@
+using System.Linq;
 using System.Reflection;
-using FluentAssertions;
+using Shouldly;
 using SampSharp.Entities.SAMP.Commands.Core;
 using SampSharp.Entities.SAMP.Commands.Help;
 using SampSharp.Entities.SAMP.Commands.Services;
@@ -22,7 +23,7 @@ public class CommandEnumeratorTests
     public void GetAllCommands_EmptyRegistry_ReturnsEmpty()
     {
         var commands = _enumerator.GetAllCommands();
-        commands.Should().HaveCount(0);
+        commands.Count().ShouldBe(0);
     }
 
     [Fact]
@@ -32,13 +33,13 @@ public class CommandEnumeratorTests
             nameof(TestCommand),
             System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)!;
 
-        var overload = new CommandOverload(testMethod, typeof(void), new CommandParameter[0]);
-        var definition = new CommandDefinition("test", null, new[] { overload }, null, true, false);
+        var overload = new CommandOverload(testMethod, testMethod.GetParameters(), typeof(CommandEnumeratorTests), new CommandParameterInfo[0]);
+        var definition = new CommandDefinition("test", null, new[] { overload }, null, null, true, false);
         _registry.Register(definition);
 
         var commands = _enumerator.GetAllCommands();
-        commands.Should().HaveCount(1);
-        commands.First().Name.Should().Be("test");
+        commands.Count().ShouldBe(1);
+        commands.First().Name.ShouldBe("test");
     }
 
     [Fact]
@@ -48,21 +49,21 @@ public class CommandEnumeratorTests
             nameof(TestCommand),
             System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)!;
 
-        var overload = new CommandOverload(testMethod, typeof(void), new CommandParameter[0]);
-        var definition = new CommandDefinition("kick", null, new[] { overload }, null, true, false);
+        var overload = new CommandOverload(testMethod, testMethod.GetParameters(), typeof(CommandEnumeratorTests), new CommandParameterInfo[0]);
+        var definition = new CommandDefinition("kick", null, new[] { overload }, null, null, true, false);
         _registry.Register(definition);
 
         var command = _enumerator.FindCommand("kick");
-        command.Should().NotBeNull();
-        command!.Name.Should().Be("kick");
-        command.IsPlayerCommand.Should().BeTrue();
+        command.ShouldNotBeNull();
+        command!.Name.ShouldBe("kick");
+        command.IsPlayerCommand.ShouldBeTrue();
     }
 
     [Fact]
     public void FindCommand_NonExistentCommand_ReturnsNull()
     {
         var command = _enumerator.FindCommand("nonexistent");
-        command.Should().BeNull();
+        command.ShouldBeNull();
     }
 
     [Fact]
@@ -73,13 +74,13 @@ public class CommandEnumeratorTests
             nameof(TestCommand),
             System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)!;
 
-        var overload = new CommandOverload(testMethod, typeof(void), new CommandParameter[0]);
-        var definition = new CommandDefinition("ban", group, new[] { overload }, null, true, false);
+        var overload = new CommandOverload(testMethod, testMethod.GetParameters(), typeof(CommandEnumeratorTests), new CommandParameterInfo[0]);
+        var definition = new CommandDefinition("ban", group, new[] { overload }, null, null, true, false);
         _registry.Register(definition);
 
         var commands = _enumerator.GetCommandsInGroup(group);
-        commands.Should().HaveCount(1);
-        commands.First().Name.Should().Be("ban");
+        commands.Count().ShouldBe(1);
+        commands.First().Name.ShouldBe("ban");
     }
 
     [Fact]
@@ -89,12 +90,12 @@ public class CommandEnumeratorTests
             nameof(TestCommand),
             System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)!;
 
-        var overload = new CommandOverload(testMethod, typeof(void), new CommandParameter[0]);
-        var definition = new CommandDefinition("kick", null, new[] { overload }, null, true, false);
+        var overload = new CommandOverload(testMethod, testMethod.GetParameters(), typeof(CommandEnumeratorTests), new CommandParameterInfo[0]);
+        var definition = new CommandDefinition("kick", null, new[] { overload }, null, null, true, false);
         _registry.Register(definition);
 
         var results = _enumerator.SearchCommands("kick");
-        results.Should().HaveCount(1);
+        results.Count().ShouldBe(1);
     }
 
     [Fact]
@@ -104,14 +105,14 @@ public class CommandEnumeratorTests
             nameof(TestCommand),
             System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)!;
 
-        var overload = new CommandOverload(testMethod, typeof(void), new CommandParameter[0]);
-        var definition = new CommandDefinition("test", null, new[] { overload }, null, true, false);
+        var overload = new CommandOverload(testMethod, testMethod.GetParameters(), typeof(CommandEnumeratorTests), new CommandParameterInfo[0]);
+        var definition = new CommandDefinition("test", null, new[] { overload }, null, null, true, false);
         _registry.Register(definition);
 
         var command = _enumerator.FindCommand("test");
-        command.Should().NotBeNull();
-        command!.HelpText.Should().Contain("test");
-        command.HelpText.Should().Contain("Command:");
+        command.ShouldNotBeNull();
+        command!.HelpText.ShouldContain("test");
+        command.HelpText.ShouldContain("Command:");
     }
 
     [Fact]
@@ -121,14 +122,14 @@ public class CommandEnumeratorTests
             nameof(TestCommand),
             System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)!;
 
-        var overload = new CommandOverload(testMethod, typeof(void), new CommandParameter[0]);
+        var overload = new CommandOverload(testMethod, testMethod.GetParameters(), typeof(CommandEnumeratorTests), new CommandParameterInfo[0]);
         var aliases = new[] { new CommandAlias("k"), new CommandAlias("remove") };
-        var definition = new CommandDefinition("kick", null, new[] { overload }, aliases, true, false);
+        var definition = new CommandDefinition("kick", null, new[] { overload }, aliases, null, true, false);
         _registry.Register(definition);
 
         var command = _enumerator.FindCommand("kick");
-        command.Should().NotBeNull();
-        command!.HelpText.Should().Contain("Aliases:");
+        command.ShouldNotBeNull();
+        command!.HelpText.ShouldContain("Aliases:");
     }
 
     private void TestCommand() { }
@@ -149,7 +150,7 @@ public class CommandGroupEnumeratorTests
     public void GetAllCommandGroups_EmptyRegistry_ReturnsEmpty()
     {
         var groups = _enumerator.GetAllCommandGroups();
-        groups.Should().HaveCount(0);
+        groups.Count().ShouldBe(0);
     }
 
     [Fact]
@@ -160,13 +161,13 @@ public class CommandGroupEnumeratorTests
             nameof(TestCommand),
             System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)!;
 
-        var overload = new CommandOverload(testMethod, typeof(void), new CommandParameter[0]);
-        var definition = new CommandDefinition("ban", group, new[] { overload }, null, true, false);
+        var overload = new CommandOverload(testMethod, testMethod.GetParameters(), typeof(CommandGroupEnumeratorTests), new CommandParameterInfo[0]);
+        var definition = new CommandDefinition("ban", group, new[] { overload }, null, null, true, false);
         _registry.Register(definition);
 
         var groups = _enumerator.GetAllCommandGroups();
-        groups.Should().HaveCount(1);
-        groups.First().Name.Should().Contain("admin");
+        groups.Count().ShouldBe(1);
+        groups.First().Name.ShouldContain("admin");
     }
 
     [Fact]
@@ -177,12 +178,12 @@ public class CommandGroupEnumeratorTests
             nameof(TestCommand),
             System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)!;
 
-        var overload = new CommandOverload(testMethod, typeof(void), new CommandParameter[0]);
-        var definition = new CommandDefinition("ban", group, new[] { overload }, null, true, false);
+        var overload = new CommandOverload(testMethod, testMethod.GetParameters(), typeof(CommandGroupEnumeratorTests), new CommandParameterInfo[0]);
+        var definition = new CommandDefinition("ban", group, new[] { overload }, null, null, true, false);
         _registry.Register(definition);
 
         var groups = _enumerator.GetAllCommandGroups();
-        groups.First().Commands.Should().HaveCount(1);
+        groups.First().Commands.Count().ShouldBe(1);
     }
 
     private void TestCommand() { }
