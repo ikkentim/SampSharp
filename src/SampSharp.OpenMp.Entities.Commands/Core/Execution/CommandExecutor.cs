@@ -35,9 +35,20 @@ public class CommandExecutor
         IServiceProvider services,
         ISystem system)
     {
-        if (overload == null) throw new ArgumentNullException(nameof(overload));
-        if (services == null) throw new ArgumentNullException(nameof(services));
-        if (system == null) throw new ArgumentNullException(nameof(system));
+        if (overload == null)
+        {
+            throw new ArgumentNullException(nameof(overload));
+        }
+
+        if (services == null)
+        {
+            throw new ArgumentNullException(nameof(services));
+        }
+
+        if (system == null)
+        {
+            throw new ArgumentNullException(nameof(system));
+        }
 
         var method = overload.Method;
         var parameters = overload.MethodParameters;
@@ -62,7 +73,9 @@ public class CommandExecutor
         for (int i = 0; i < parameters.Length; i++)
         {
             if (args[i] != null)
+            {
                 continue; // Already filled (prefix or parsed)
+            }
 
             var paramType = parameters[i].ParameterType;
 
@@ -113,7 +126,9 @@ public class CommandExecutor
         var cache = _invokerCache.Value;
 
         if (cache.TryGetValue(method, out var invoker))
+        {
             return invoker;
+        }
 
         // Compile new invoker using expression trees
         var sources = parameters.Select((p, i) =>

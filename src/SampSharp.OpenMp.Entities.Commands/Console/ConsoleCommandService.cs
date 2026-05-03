@@ -21,8 +21,15 @@ public class ConsoleCommandService
         ISystemRegistry systemRegistry,
         ICommandNotFoundHandler? notFoundHandler = null)
     {
-        if (entityManager == null) throw new ArgumentNullException(nameof(entityManager));
-        if (systemRegistry == null) throw new ArgumentNullException(nameof(systemRegistry));
+        if (entityManager == null)
+        {
+            throw new ArgumentNullException(nameof(entityManager));
+        }
+
+        if (systemRegistry == null)
+        {
+            throw new ArgumentNullException(nameof(systemRegistry));
+        }
 
         _notFoundHandler = notFoundHandler ?? new DefaultCommandNotFoundHandler();
 
@@ -42,7 +49,9 @@ public class ConsoleCommandService
     public string? Invoke(IServiceProvider services, ConsoleCommandSender senderData, string inputText)
     {
         if (string.IsNullOrWhiteSpace(inputText))
+        {
             return "Invalid command.";
+        }
 
         inputText = inputText.Trim();
 

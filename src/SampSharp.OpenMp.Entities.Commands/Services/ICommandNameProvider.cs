@@ -27,7 +27,9 @@ public interface ICommandNameProvider
     string GetUsageMessage(string commandName, string? group, CommandParameterInfo[][] allOverloads, string? usageMessageKey = null)
     {
         if (allOverloads.Length == 1)
+        {
             return GetUsageMessage(commandName, group, allOverloads[0], usageMessageKey);
+        }
 
         var messages = allOverloads.Select(p => GetUsageMessage(commandName, group, p, usageMessageKey)).ToList();
         return $"Usage: {string.Join(" -or- ", messages)}";

@@ -11,7 +11,9 @@ public readonly struct CommandAlias : IEquatable<CommandAlias>
     public CommandAlias(string name)
     {
         if (string.IsNullOrWhiteSpace(name))
+        {
             throw new ArgumentException("Alias name cannot be empty.", nameof(name));
+        }
 
         Name = name;
     }

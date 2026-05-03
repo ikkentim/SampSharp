@@ -21,9 +21,14 @@ public class CommandDefinition
         bool consoleCommand = false)
     {
         if (string.IsNullOrWhiteSpace(name))
+        {
             throw new ArgumentException("Command name cannot be empty.", nameof(name));
+        }
+
         if (overloads == null || overloads.Length == 0)
+        {
             throw new ArgumentException("Command must have at least one overload.", nameof(overloads));
+        }
 
         Name = name;
         Group = group;
@@ -69,7 +74,10 @@ public class CommandDefinition
     {
         // Try exact match first
         var exact = _overloads.FirstOrDefault(o => o.ParsedParameters.Length == parameterCount);
-        if (exact != null) return exact;
+        if (exact != null)
+        {
+            return exact;
+        }
 
         // Try overload with optional parameters that can satisfy the count
         return _overloads.FirstOrDefault(o =>
@@ -84,7 +92,10 @@ public class CommandDefinition
     public string GetDisplayName()
     {
         if (Group.HasValue)
+        {
             return $"/{Group.Value.FullName} {Name}";
+        }
+
         return $"/{Name}";
     }
 }

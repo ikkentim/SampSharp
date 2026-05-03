@@ -48,15 +48,21 @@ public class PlayerCommandService : IPlayerCommandService
     public bool Invoke(IServiceProvider services, EntityId player, string inputText)
     {
         if (string.IsNullOrWhiteSpace(inputText))
+        {
             return false;
+        }
 
         // Strip leading /
         if (!inputText.StartsWith('/'))
+        {
             return false;
+        }
 
         var commandText = inputText[1..].Trim();
         if (string.IsNullOrWhiteSpace(commandText))
+        {
             return false;
+        }
 
         // Dispatch the command to find matching overload
         var dispatchResult = _dispatcher.Dispatch(_registry, commandText, new object[] { player });
@@ -96,7 +102,9 @@ public class PlayerCommandService : IPlayerCommandService
         var overload = dispatchResult.CommandOverload;
 
         if (command == null || overload == null)
+        {
             return false;
+        }
 
         // Check permissions
         var permAttr = overload.Method.GetCustomAttributes(typeof(Attributes.RequiresPermissionAttribute), false)
@@ -115,7 +123,9 @@ public class PlayerCommandService : IPlayerCommandService
         // Get the system instance
         var system = services.GetService(overload.DeclaringSystemType) as ISystem;
         if (system == null)
+        {
             return false;
+        }
 
         try
         {

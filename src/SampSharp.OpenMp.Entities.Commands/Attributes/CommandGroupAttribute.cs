@@ -15,7 +15,9 @@ public class CommandGroupAttribute : Attribute
     public CommandGroupAttribute(string part)
     {
         if (string.IsNullOrWhiteSpace(part))
+        {
             throw new ArgumentException("Group part cannot be empty.", nameof(part));
+        }
 
         Parts = new[] { part };
     }
@@ -24,10 +26,14 @@ public class CommandGroupAttribute : Attribute
     public CommandGroupAttribute(params string[] parts)
     {
         if (parts == null || parts.Length == 0)
+        {
             throw new ArgumentException("At least one group part must be specified.", nameof(parts));
+        }
 
         if (parts.Any(string.IsNullOrWhiteSpace))
+        {
             throw new ArgumentException("Group parts cannot be empty.", nameof(parts));
+        }
 
         Parts = parts;
     }

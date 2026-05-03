@@ -8,10 +8,16 @@ public class WordParser : ICommandParameterParser
     {
         result = null;
         inputText = inputText.TrimStart();
-        if (inputText.Length == 0) return false;
+        if (inputText.Length == 0)
+        {
+            return false;
+        }
 
         var index = inputText.IndexOf(' ');
-        if (index == 0) return false;
+        if (index == 0)
+        {
+            return false;
+        }
 
         var str = index < 0 ? inputText : inputText[..index];
         inputText = inputText[str.Length..];

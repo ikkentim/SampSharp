@@ -16,12 +16,16 @@ public class CommandRegistry
     public void Register(CommandDefinition definition)
     {
         if (definition == null)
+        {
             throw new ArgumentNullException(nameof(definition));
+        }
 
         // Register by full name (or short name if no group)
         var key = definition.FullName.ToLowerInvariant();
         if (_commandsByName.ContainsKey(key))
+        {
             throw new InvalidOperationException($"Command '{definition.FullName}' is already registered.");
+        }
 
         _commandsByName[key] = definition;
         _allCommands.Add(definition);
@@ -31,7 +35,9 @@ public class CommandRegistry
         {
             var aliasKey = alias.Name.ToLowerInvariant();
             if (_aliasMap.ContainsKey(aliasKey))
+            {
                 throw new InvalidOperationException($"Alias '{alias.Name}' is already registered.");
+            }
 
             _aliasMap[aliasKey] = definition;
         }
@@ -41,17 +47,23 @@ public class CommandRegistry
     public CommandDefinition? TryFind(string nameOrAlias)
     {
         if (string.IsNullOrWhiteSpace(nameOrAlias))
+        {
             return null;
+        }
 
         var key = nameOrAlias.ToLowerInvariant();
 
         // Try as full/short name first
         if (_commandsByName.TryGetValue(key, out var cmd))
+        {
             return cmd;
+        }
 
         // Try as alias
         if (_aliasMap.TryGetValue(key, out var aliased))
+        {
             return aliased;
+        }
 
         return null;
     }
@@ -60,18 +72,24 @@ public class CommandRegistry
     public CommandDefinition? TryFindByPath(IEnumerable<string> pathParts)
     {
         if (pathParts == null)
+        {
             return null;
+        }
 
         var parts = pathParts.ToList();
         if (parts.Count == 0)
+        {
             return null;
+        }
 
         // Build possible full names from longest to shortest match
         for (int i = parts.Count; i > 0; i--)
         {
             var partial = string.Join(" ", parts.Take(i)).ToLowerInvariant();
             if (_commandsByName.TryGetValue(partial, out var cmd))
+            {
                 return cmd;
+            }
         }
 
         return null;

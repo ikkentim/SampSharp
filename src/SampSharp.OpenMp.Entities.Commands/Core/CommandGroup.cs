@@ -12,7 +12,9 @@ public readonly struct CommandGroup : IEquatable<CommandGroup>
     public CommandGroup(params string[] parts)
     {
         if (parts == null || parts.Length == 0)
+        {
             throw new ArgumentException("Command group must have at least one part.", nameof(parts));
+        }
 
         _parts = parts.ToArray();
     }
@@ -22,7 +24,9 @@ public readonly struct CommandGroup : IEquatable<CommandGroup>
     {
         var partsList = parts?.ToArray() ?? [];
         if (partsList.Length == 0)
+        {
             throw new ArgumentException("Command group must have at least one part.", nameof(parts));
+        }
 
         _parts = partsList;
     }
@@ -40,7 +44,9 @@ public readonly struct CommandGroup : IEquatable<CommandGroup>
     public CommandGroup GetParent(int depth)
     {
         if (depth < 1 || depth > _parts.Length)
+        {
             throw new ArgumentOutOfRangeException(nameof(depth));
+        }
 
         return new CommandGroup(_parts.Take(depth).ToArray());
     }
@@ -56,7 +62,9 @@ public readonly struct CommandGroup : IEquatable<CommandGroup>
     public CommandGroup Stack(string part)
     {
         if (string.IsNullOrWhiteSpace(part))
+        {
             throw new ArgumentException("Group part cannot be empty.", nameof(part));
+        }
 
         var combined = _parts.Append(part).ToArray();
         return new CommandGroup(combined);

@@ -15,10 +15,25 @@ public class CommandOverload
         Type declaringSystemType,
         CommandParameterInfo[] parsedParameters)
     {
-        if (method == null) throw new ArgumentNullException(nameof(method));
-        if (parameters == null) throw new ArgumentNullException(nameof(parameters));
-        if (declaringSystemType == null) throw new ArgumentNullException(nameof(declaringSystemType));
-        if (parsedParameters == null) throw new ArgumentNullException(nameof(parsedParameters));
+        if (method == null)
+        {
+            throw new ArgumentNullException(nameof(method));
+        }
+
+        if (parameters == null)
+        {
+            throw new ArgumentNullException(nameof(parameters));
+        }
+
+        if (declaringSystemType == null)
+        {
+            throw new ArgumentNullException(nameof(declaringSystemType));
+        }
+
+        if (parsedParameters == null)
+        {
+            throw new ArgumentNullException(nameof(parsedParameters));
+        }
 
         Method = method;
         MethodParameters = parameters;
@@ -53,13 +68,17 @@ public class CommandOverload
     public Type GetEffectiveReturnType()
     {
         if (ReturnType == typeof(Task) || ReturnType == typeof(ValueTask))
+        {
             return typeof(void);
+        }
 
         if (ReturnType.IsGenericType)
         {
             var genericDef = ReturnType.GetGenericTypeDefinition();
             if (genericDef == typeof(Task<>) || genericDef == typeof(ValueTask<>))
+            {
                 return ReturnType.GetGenericArguments()[0];
+            }
         }
 
         return ReturnType;

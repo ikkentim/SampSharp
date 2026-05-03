@@ -15,7 +15,9 @@ public class RequiresPermissionAttribute : Attribute
     public RequiresPermissionAttribute(string permission)
     {
         if (string.IsNullOrWhiteSpace(permission))
+        {
             throw new ArgumentException("Permission cannot be empty.", nameof(permission));
+        }
 
         Permissions = new[] { permission };
     }
@@ -24,10 +26,14 @@ public class RequiresPermissionAttribute : Attribute
     public RequiresPermissionAttribute(params string[] permissions)
     {
         if (permissions == null || permissions.Length == 0)
+        {
             throw new ArgumentException("At least one permission must be specified.", nameof(permissions));
+        }
 
         if (permissions.Any(string.IsNullOrWhiteSpace))
+        {
             throw new ArgumentException("Permissions cannot be empty.", nameof(permissions));
+        }
 
         Permissions = permissions;
     }

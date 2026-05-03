@@ -42,16 +42,26 @@ public class PlayerParser : ICommandParameterParser
         SampSharp.Entities.SAMP.Player? bestCandidate = null;
         foreach (var player in players)
         {
-            if (!player.IsComponentAlive) continue;
+            if (!player.IsComponentAlive)
+            {
+                continue;
+            }
+
             var name = player.Name;
             if (name.Equals(word, StringComparison.OrdinalIgnoreCase))
             {
                 result = player.Entity;
                 return true;
             }
-            if (!name.StartsWith(word, StringComparison.OrdinalIgnoreCase)) continue;
+            if (!name.StartsWith(word, StringComparison.OrdinalIgnoreCase))
+            {
+                continue;
+            }
+
             if (bestCandidate == null || player.Id < bestCandidate.Id)
+            {
                 bestCandidate = player;
+            }
         }
 
         result = bestCandidate?.Entity;

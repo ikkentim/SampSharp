@@ -15,7 +15,9 @@ public class AliasAttribute : Attribute
     public AliasAttribute(string alias)
     {
         if (string.IsNullOrWhiteSpace(alias))
+        {
             throw new ArgumentException("Alias cannot be empty.", nameof(alias));
+        }
 
         Aliases = new[] { alias };
     }
@@ -24,10 +26,14 @@ public class AliasAttribute : Attribute
     public AliasAttribute(params string[] aliases)
     {
         if (aliases == null || aliases.Length == 0)
+        {
             throw new ArgumentException("At least one alias must be specified.", nameof(aliases));
+        }
 
         if (aliases.Any(string.IsNullOrWhiteSpace))
+        {
             throw new ArgumentException("Aliases cannot be empty.", nameof(aliases));
+        }
 
         Aliases = aliases;
     }

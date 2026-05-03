@@ -31,14 +31,20 @@ public class DefaultCommandEnumerator : ICommandEnumerator
 
     public IEnumerable<CommandEnumerator> GetCommandsInGroup(CommandGroup group)
     {
-        if (group == null) throw new ArgumentNullException(nameof(group));
+        if (group == null)
+        {
+            throw new ArgumentNullException(nameof(group));
+        }
+
         return _allCommands.Value.Where(c => c.Group?.Equals(group) ?? false);
     }
 
     public IEnumerable<CommandEnumerator> SearchCommands(string searchTerm)
     {
         if (string.IsNullOrWhiteSpace(searchTerm))
+        {
             return Enumerable.Empty<CommandEnumerator>();
+        }
 
         var lowerTerm = searchTerm.ToLowerInvariant();
         return _allCommands.Value.Where(c =>
@@ -50,7 +56,9 @@ public class DefaultCommandEnumerator : ICommandEnumerator
     public CommandEnumerator? FindCommand(string name)
     {
         if (string.IsNullOrWhiteSpace(name))
+        {
             return null;
+        }
 
         var definition = _registry.TryFind(name);
         return definition != null ? BuildCommandEnumerator(definition) : null;
@@ -73,7 +81,9 @@ public class DefaultCommandEnumerator : ICommandEnumerator
         {
             var enumerator = BuildGroupEnumerator(group);
             if (enumerator != null)
+            {
                 result.Add(enumerator);
+            }
         }
 
         return result.AsReadOnly();
@@ -105,7 +115,9 @@ public class DefaultCommandEnumerator : ICommandEnumerator
     {
         var commands = GetCommandsInGroup(group).ToList();
         if (commands.Count == 0)
+        {
             return null;
+        }
 
         var subgroups = new List<CommandGroupEnumerator>();
         var immediateSubgroups = FindImmediateSubgroups(group);
@@ -114,7 +126,9 @@ public class DefaultCommandEnumerator : ICommandEnumerator
         {
             var subgroupEnum = BuildGroupEnumerator(subgroup);
             if (subgroupEnum != null)
+            {
                 subgroups.Add(subgroupEnum);
+            }
         }
 
         return new CommandGroupEnumerator(
@@ -140,13 +154,19 @@ public class DefaultCommandEnumerator : ICommandEnumerator
         var lines = new List<string> { $"Command: {definition.Name}" };
 
         if (definition.Group != null)
+        {
             lines.Add($"Group: {definition.Group}");
+        }
 
         if (definition.Aliases.Count > 0)
+        {
             lines.Add($"Aliases: {string.Join(", ", definition.Aliases.Select(a => a.Name))}");
+        }
 
         if (definition.Permissions.Count > 0)
+        {
             lines.Add($"Requires: {string.Join(", ", definition.Permissions)}");
+        }
 
         if (definition.Overloads.Count > 0)
         {

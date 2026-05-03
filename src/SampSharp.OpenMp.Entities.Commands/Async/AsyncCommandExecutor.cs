@@ -32,7 +32,9 @@ public static class AsyncCommandExecutor
 
         // Handle null/void return
         if (result == null)
+        {
             return taskResult;
+        }
 
         var resultType = result.GetType();
 
@@ -152,18 +154,27 @@ public static class AsyncCommandExecutor
     public static bool ToSuccessValue(AsyncTaskResult asyncResult)
     {
         if (asyncResult.IsRunning)
+        {
             return true; // Fire-and-forget: treat as success
+        }
 
         if (!asyncResult.IsSuccess)
+        {
             return false;
+        }
 
         // If there's a value, check if it's truthy
         if (asyncResult.Value != null)
         {
             if (asyncResult.Value is bool b)
+            {
                 return b;
+            }
+
             if (asyncResult.Value is int i)
+            {
                 return i != 0;
+            }
         }
 
         return true;

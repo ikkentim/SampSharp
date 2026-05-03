@@ -19,23 +19,31 @@ public class CommandDispatcher
     public DispatchResult Dispatch(CommandRegistry registry, string inputText, object[] prefix)
     {
         if (registry == null)
+        {
             throw new ArgumentNullException(nameof(registry));
+        }
 
         if (string.IsNullOrWhiteSpace(inputText))
+        {
             return DispatchResult.CreateNotFound();
+        }
 
         inputText = inputText.Trim();
 
         // Parse the command line to extract command path and remaining arguments
         var (commandPath, remainingArgs) = ParseCommandLine(inputText);
         if (string.IsNullOrWhiteSpace(commandPath))
+        {
             return DispatchResult.CreateNotFound();
+        }
 
         // Look up the command in the registry
         var pathParts = commandPath.Split(' ');
         var command = registry.TryFindByPath(pathParts);
         if (command == null)
+        {
             return DispatchResult.CreateNotFound();
+        }
 
         // Try to match parameters for each overload
         string? bestUsageMessage = null;
@@ -78,7 +86,9 @@ public class CommandDispatcher
         // Split by whitespace to get individual tokens
         var parts = inputText.Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
         if (parts.Length == 0)
+        {
             return ("", "");
+        }
 
         // Try to match the longest possible command path
         // This allows multi-word commands like "admin money give"
@@ -110,7 +120,9 @@ public class CommandDispatcher
         if (parameters.Length == 0)
         {
             if (string.IsNullOrWhiteSpace(remainingArgs))
+            {
                 return (true, null);
+            }
 
             // Has args but command takes none - invalid
             return (false, GenerateUsageMessage(overload));
@@ -125,7 +137,9 @@ public class CommandDispatcher
 
         // Check if we have enough tokens (minimum required)
         if (tokens.Count < requiredCount)
+        {
             return (false, GenerateUsageMessage(overload));
+        }
 
         // Check if we have too many tokens (maximum required+optional)
         // Note: For the last parameter, if it's a StringParser, it consumes all remaining
@@ -133,7 +147,9 @@ public class CommandDispatcher
             parameters[^1].Parser.GetType().Name == "StringParser";
 
         if (!isLastParamString && tokens.Count > parameters.Length)
+        {
             return (false, GenerateUsageMessage(overload));
+        }
 
         // Try to parse all parameters
         string remaining = remainingArgs;
@@ -165,10 +181,14 @@ public class CommandDispatcher
     {
         var command = overload.Method.Name.ToLowerInvariant();
         if (command.EndsWith("command"))
+        {
             command = command[..^7];
+        }
 
         if (overload.ParsedParameters.Length == 0)
+        {
             return $"Usage: /{command}";
+        }
 
         var args = string.Join(" ", overload.ParsedParameters.Select(p =>
             p.IsRequired ? $"<{p.Name}>" : $"[{p.Name}]"));

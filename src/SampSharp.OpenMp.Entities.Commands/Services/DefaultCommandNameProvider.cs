@@ -17,7 +17,9 @@ public class DefaultCommandNameProvider : ICommandNameProvider
         var prefix = group != null ? $"{group} {commandName}" : commandName;
 
         if (parameters.Length == 0)
+        {
             return $"Usage: /{prefix}";
+        }
 
         var args = string.Join(" ", parameters.Select(p =>
             p.IsRequired ? $"<{p.Name}>" : $"[{p.Name}]"));

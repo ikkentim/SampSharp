@@ -50,10 +50,14 @@ public class CommandScanner
             // Each [PlayerCommand] attribute is a separate overload
             var commandName = attribute.Name ?? GetCommandName(method);
             if (string.IsNullOrWhiteSpace(commandName))
+            {
                 continue;
+            }
 
             if (!TryBuildOverload(method, systemType, parserFactory, 1, out var overload))
+            {
                 continue;
+            }
 
             var definition = new CommandDefinition(
                 name: commandName,
@@ -96,17 +100,23 @@ public class CommandScanner
             if (method.GetParameters().Length > 0)
             {
                 var firstParam = method.GetParameters()[0];
-                if (firstParam.ParameterType.Name == "ConsoleCommandSender")
+                if (firstParam.ParameterType ==  typeof(ConsoleCommandSender))
+                {
                     prefixParams = 1;
+                }
             }
 
             // Build the overload
             var commandName = attribute.Name ?? GetCommandName(method);
             if (string.IsNullOrWhiteSpace(commandName))
+            {
                 continue;
+            }
 
             if (!TryBuildOverload(method, systemType, parserFactory, prefixParams, out var overload))
+            {
                 continue;
+            }
 
             var definition = new CommandDefinition(
                 name: commandName,
@@ -145,15 +155,21 @@ public class CommandScanner
 
         var parameters = method.GetParameters();
         if (parameters.Length < prefixParameters)
+        {
             return false;
+        }
 
         // Validate return type: bool, int, void, Task, Task<T>
         if (!IsValidReturnType(method.ReturnType))
+        {
             return false;
+        }
 
         // Collect parsed parameters (skip prefix, handle DI)
         if (!TryCollectParameters(parameters, prefixParameters, parserFactory, out var parsedParams))
+        {
             return false;
+        }
 
         overload = new CommandOverload(
             method: method,
@@ -169,18 +185,24 @@ public class CommandScanner
     {
         // void, bool, int
         if (returnType == typeof(void) || returnType == typeof(bool) || returnType == typeof(int))
+        {
             return true;
+        }
 
         // Task, ValueTask
         if (returnType == typeof(Task) || returnType == typeof(ValueTask))
+        {
             return true;
+        }
 
         // Task<T>, ValueTask<T>
         if (returnType.IsGenericType)
         {
             var genericDef = returnType.GetGenericTypeDefinition();
             if (genericDef == typeof(Task<>) || genericDef == typeof(ValueTask<>))
+            {
                 return true;
+            }
         }
 
         return false;
@@ -196,7 +218,9 @@ public class CommandScanner
         result = null;
 
         if (parameters.Length < prefixParameters)
+        {
             return false;
+        }
 
         var list = new List<CommandParameterInfo>();
         int parameterIndex = prefixParameters;
@@ -248,7 +272,10 @@ public class CommandScanner
     {
         var name = method.Name.ToLowerInvariant();
         if (name.EndsWith("command", StringComparison.Ordinal))
+        {
             name = name[..^7];
+        }
+
         return name;
     }
 }
