@@ -147,40 +147,38 @@ public readonly partial struct IConfig
         return (pair.First, pair.Second);
     }
 
+    private partial void EnumOptions(nint callback);
+
     /// <summary>
-    /// Enumerates all config options.
+    /// Gets all available options and their type.
     /// </summary>
-    /// <param name="callback">
-    /// The callback to invoke for each option. Return <see langword="true" /> to continue enumeration;
-    /// <see langword="false" /> to stop.
-    /// </param>
-    public unsafe void EnumOptions(Func<string?, ConfigOptionType, bool> callback)
+    public IReadOnlyDictionary<string, ConfigOptionType> GetOptions()
     {
-        // enumOptions invokes the callback synchronously before returning, so pinning the GCHandle for the
-        // duration of the call is sufficient.
-        var gcHandle = GCHandle.Alloc(callback);
-        try
-        {
-            delegate* unmanaged[Cdecl]<nint, StringView, ConfigOptionType, BlittableBoolean> fnPtr = &OptionEnumeratorCallbackProxy;
-            __PInvoke(_handle, (nint)fnPtr, GCHandle.ToIntPtr(gcHandle));
-        }
-        finally
-        {
-            gcHandle.Free();
-        }
+        var result = new Dictionary<string, ConfigOptionType>();
 
-        // Local P/Invoke
-        [DllImport("SampSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "IConfig_enumOptions", ExactSpelling = true)]
-        static extern void __PInvoke(nint handle_, nint callback, nint userData);
+        Delegate del = (ConfigEnumDelegate)Callback;
+        var fnPtr = Marshal.GetFunctionPointerForDelegate(del);
+
+        EnumOptions(fnPtr);
+
+        GC.KeepAlive(del);
+
+        return result;
+
+        bool Callback(StringView value, ConfigOptionType type)
+        {
+            var str = value.ToString();
+
+            if (str is not null)
+            {
+                result[str] = type;
+            }
+
+            return true;
+        }
     }
 
-    [UnmanagedCallersOnly(CallConvs = [typeof(CallConvCdecl)])]
-    private static BlittableBoolean OptionEnumeratorCallbackProxy(nint userData, StringView name, ConfigOptionType type)
-    {
-        var callback = GCHandle.FromIntPtr(userData).Target as Func<string?, ConfigOptionType, bool>
-            ?? throw new InvalidOperationException("Enumeration callback GCHandle target is null or invalid.");
-        return callback(name, type);
-    }
+    private delegate bool ConfigEnumDelegate(StringView value, ConfigOptionType type);
 
     /// <summary>
     /// Get a variable as a boolean.
