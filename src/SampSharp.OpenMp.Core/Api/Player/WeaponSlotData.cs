@@ -29,5 +29,21 @@ public readonly struct WeaponSlotData
     /// </summary>
     public readonly int Ammo;
 
-    // TODO: WeaponInfo related extensions from open.mp-sdk.
+    /// <summary>
+    /// The static <see cref="WeaponInfo" /> entry for this weapon ID.
+    /// Returns a sentinel (<see cref="PlayerWeaponType.None" />, slot <c>-1</c>) for invalid IDs.
+    /// </summary>
+    public WeaponInfo Info => WeaponInfo.Get(Id);
+
+    /// <summary>
+    /// The slot this weapon occupies (0-12), or <c>-1</c> if the weapon ID
+    /// doesn't map to a real weapon. Mirrors <c>WeaponSlotData::slot</c> in the open.mp SDK.
+    /// </summary>
+    public int Slot => WeaponInfo.Get(Id).Slot;
+
+    /// <summary>
+    /// True if this weapon shoots bullets (and so consumes ammo, can be reloaded, etc.).
+    /// Mirrors <c>WeaponSlotData::shootable</c> in the open.mp SDK.
+    /// </summary>
+    public bool Shootable => WeaponInfo.Get(Id).Type == PlayerWeaponType.Bullet;
 }
