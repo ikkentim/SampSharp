@@ -34,4 +34,11 @@ public interface IConfigService
     /// <param name="key">The config key.</param>
     /// <returns>The value type.</returns>
     ConfigOptionType GetValueType(string key);
+
+    /// <summary>
+    /// Retrieves a read-only collection of available configuration options and their associated types.
+    /// </summary>
+    /// <returns>An <see cref="IReadOnlyDictionary{TKey, TValue}"/> containing the names and types of all available configuration
+    /// options.</returns>
+    IReadOnlyDictionary<string, ConfigOptionType> GetOptions();
 }

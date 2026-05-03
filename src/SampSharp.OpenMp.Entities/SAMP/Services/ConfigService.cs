@@ -56,4 +56,9 @@ internal class ConfigService(SampSharpEnvironment environment) : IConfigService
         ArgumentNullException.ThrowIfNull(key);
         return _config.GetValueType(key);
     }
+
+    public IReadOnlyDictionary<string, ConfigOptionType> GetOptions()
+    {
+        return _config.GetOptions();
+    }
 }
