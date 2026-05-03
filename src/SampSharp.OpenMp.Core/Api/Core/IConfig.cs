@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using SampSharp.OpenMp.Core.Std;
 
 namespace SampSharp.OpenMp.Core.Api;
@@ -146,7 +147,38 @@ public readonly partial struct IConfig
         return (pair.First, pair.Second);
     }
 
-    // TODO: public partial void enumOptions(OptionEnumeratorCallback& callback); // enumerator callback not available
+    private partial void EnumOptions(nint callback);
+
+    /// <summary>
+    /// Gets all available options and their type.
+    /// </summary>
+    public IReadOnlyDictionary<string, ConfigOptionType> GetOptions()
+    {
+        var result = new Dictionary<string, ConfigOptionType>();
+
+        Delegate del = (ConfigEnumDelegate)Callback;
+        var fnPtr = Marshal.GetFunctionPointerForDelegate(del);
+
+        EnumOptions(fnPtr);
+
+        GC.KeepAlive(del);
+
+        return result;
+
+        bool Callback(StringView value, ConfigOptionType type)
+        {
+            var str = value.ToString();
+
+            if (str is not null)
+            {
+                result[str] = type;
+            }
+
+            return true;
+        }
+    }
+
+    private delegate bool ConfigEnumDelegate(StringView value, ConfigOptionType type);
 
     /// <summary>
     /// Get a variable as a boolean.
