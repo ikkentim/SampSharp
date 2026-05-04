@@ -17,25 +17,10 @@ public class CommandOverload
         MethodInvoker invoker,
         int prefixParameterCount)
     {
-        if (method == null)
-        {
-            throw new ArgumentNullException(nameof(method));
-        }
-
-        if (parameters == null)
-        {
-            throw new ArgumentNullException(nameof(parameters));
-        }
-
-        if (declaringSystemType == null)
-        {
-            throw new ArgumentNullException(nameof(declaringSystemType));
-        }
-
-        if (parsedParameters == null)
-        {
-            throw new ArgumentNullException(nameof(parsedParameters));
-        }
+        ArgumentNullException.ThrowIfNull(method);
+        ArgumentNullException.ThrowIfNull(parameters);
+        ArgumentNullException.ThrowIfNull(declaringSystemType);
+        ArgumentNullException.ThrowIfNull(parsedParameters);
 
         Method = method;
         MethodParameters = parameters;
@@ -69,9 +54,9 @@ public class CommandOverload
     /// <summary>The return type of the method.</summary>
     public Type ReturnType => Method.ReturnType;
 
-    /// <summary>Whether this method returns a Task or Task&lt;T&gt;.</summary>
+    /// <summary>Whether this method returns a Task/ValueTask.</summary>
     public bool IsAsync => ReturnType.IsGenericType
-        ? (ReturnType.GetGenericTypeDefinition() == typeof(Task<>))
+        ? (ReturnType.GetGenericTypeDefinition() == typeof(Task<>) || ReturnType.GetGenericTypeDefinition() == typeof(ValueTask<>))
         : ReturnType == typeof(Task) || ReturnType == typeof(ValueTask);
 
     /// <summary>For Task&lt;T&gt;, returns T. For Task/ValueTask, returns void. Otherwise returns the actual return type.</summary>

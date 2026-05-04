@@ -25,9 +25,15 @@ public class DefaultCommandEnumerator : ICommandEnumerator
         _allGroups = new Lazy<IReadOnlyList<CommandGroupEnumerator>>(() => BuildAllGroups());
     }
 
-    public IEnumerable<CommandEnumerator> GetAllCommands() => _allCommands.Value;
+    public IEnumerable<CommandEnumerator> GetAllCommands()
+    {
+        return _allCommands.Value;
+    }
 
-    public IEnumerable<CommandGroupEnumerator> GetAllCommandGroups() => _allGroups.Value;
+    public IEnumerable<CommandGroupEnumerator> GetAllCommandGroups()
+    {
+        return _allGroups.Value;
+    }
 
     public IEnumerable<CommandEnumerator> GetCommandsInGroup(CommandGroup group)
     {

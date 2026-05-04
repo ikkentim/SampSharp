@@ -20,7 +20,9 @@ public interface ICommandNotFoundHandler
     /// <param name="usageMessage">The usage message for the command.</param>
     /// <returns>A localized error message combining usage information.</returns>
     string GetInvalidArgumentsMessage(string commandText, string usageMessage)
-        => usageMessage;
+    {
+        return usageMessage;
+    }
 
     /// <summary>
     /// Gets the "permission denied" message (player commands only).
@@ -28,5 +30,7 @@ public interface ICommandNotFoundHandler
     /// <param name="commandText">The command text that was entered (without slash for player commands).</param>
     /// <returns>A localized error message.</returns>
     string GetPermissionDeniedMessage(string commandText)
-        => "You do not have permission to use this command.";
+    {
+        return "You do not have permission to use this command.";
+    }
 }

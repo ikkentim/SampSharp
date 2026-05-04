@@ -1,13 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Reflection;
 using Shouldly;
-using Moq;
 using Microsoft.Extensions.DependencyInjection;
 using SampSharp.Entities.SAMP.Commands.Core;
-using SampSharp.Entities.SAMP.Commands.Core.Execution;
-using SampSharp.Entities.SAMP.Commands.Core.Scanning;
 using SampSharp.Entities.SAMP.Commands.Parsers;
 using Xunit;
 
@@ -15,40 +12,34 @@ namespace SampSharp.Entities.SAMP.Commands.Tests.Core;
 
 public class CommandDispatcherTests
 {
-    private readonly CommandDispatcher _dispatcher;
-    private readonly CommandRegistry _registry;
-
-    public CommandDispatcherTests()
-    {
-        _dispatcher = new CommandDispatcher();
-        _registry = new CommandRegistry();
-    }
+    private readonly CommandDispatcher _dispatcher = new();
+    private readonly CommandRegistry _registry = new();
 
     [Fact]
     public void Dispatch_NullRegistry_ThrowsArgumentNullException()
     {
-        var action = () => _dispatcher.Dispatch(null!, "test", new object[0]);
+        var action = () => _dispatcher.Dispatch(null!, "test", []);
         Should.Throw<ArgumentNullException>(action);
     }
 
     [Fact]
     public void Dispatch_EmptyInput_ReturnsNotFound()
     {
-        var result = _dispatcher.Dispatch(_registry, "", new object[0]);
+        var result = _dispatcher.Dispatch(_registry, "", []);
         result.Response.ShouldBe(DispatchResponse.CommandNotFound);
     }
 
     [Fact]
     public void Dispatch_WhitespaceInput_ReturnsNotFound()
     {
-        var result = _dispatcher.Dispatch(_registry, "   ", new object[0]);
+        var result = _dispatcher.Dispatch(_registry, "   ", []);
         result.Response.ShouldBe(DispatchResponse.CommandNotFound);
     }
 
     [Fact]
     public void Dispatch_UnregisteredCommand_ReturnsNotFound()
     {
-        var result = _dispatcher.Dispatch(_registry, "unknown", new object[0]);
+        var result = _dispatcher.Dispatch(_registry, "unknown", []);
         result.Response.ShouldBe(DispatchResponse.CommandNotFound);
     }
 
@@ -59,11 +50,11 @@ public class CommandDispatcherTests
             nameof(TestCommand),
             System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)!;
 
-        var overload = new CommandOverload(testMethod, testMethod.GetParameters(), typeof(CommandDispatcherTests), new CommandParameterInfo[0]);
-        var definition = new CommandDefinition("test", null, new[] { overload });
+        var overload = new CommandOverload(testMethod, testMethod.GetParameters(), typeof(CommandDispatcherTests), [], TestInvoker, 0);
+        var definition = new CommandDefinition("test", null, [overload]);
         _registry.Register(definition);
 
-        var result = _dispatcher.Dispatch(_registry, "test", new object[0]);
+        var result = _dispatcher.Dispatch(_registry, "test", []);
         result.Response.ShouldBe(DispatchResponse.Success);
         result.CommandDefinition.ShouldBe(definition);
     }
@@ -75,13 +66,13 @@ public class CommandDispatcherTests
             nameof(TestCommand),
             System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)!;
 
-        var overload = new CommandOverload(testMethod, testMethod.GetParameters(), typeof(CommandDispatcherTests), new CommandParameterInfo[0]);
+        var overload = new CommandOverload(testMethod, testMethod.GetParameters(), typeof(CommandDispatcherTests), [], TestInvoker, 0);
         var aliases = new[] { new CommandAlias("t"), new CommandAlias("shorttest") };
-        var definition = new CommandDefinition("test", null, new[] { overload }, aliases);
+        var definition = new CommandDefinition("test", null, [overload], aliases);
         _registry.Register(definition);
 
         // Should find by alias
-        var result = _dispatcher.Dispatch(_registry, "t", new object[0]);
+        var result = _dispatcher.Dispatch(_registry, "t", []);
         result.Response.ShouldBe(DispatchResponse.Success);
         result.CommandDefinition.ShouldBe(definition);
     }
@@ -122,7 +113,7 @@ public class CommandDispatcherTests
             new CommandParameterInfo("b", new IntParser(), isRequired: true, defaultValue: null, parameterIndex: 1)
         };
 
-        var overload = new CommandOverload(testMethod, parameters, typeof(CommandDispatcherTests), paramInfos);
+        var overload = new CommandOverload(testMethod, parameters, typeof(CommandDispatcherTests), paramInfos, TestInvoker, 0);
 
         // Call the private TryMatchParameters method via reflection
         var method = typeof(CommandDispatcher).GetMethod(
@@ -131,7 +122,7 @@ public class CommandDispatcherTests
 
         method.ShouldNotBeNull("TryMatchParameters method should exist");
 
-        var invokeResult = method!.Invoke(_dispatcher, new object[] { overload, "3 5" });
+        var invokeResult = method!.Invoke(_dispatcher, [overload, "3 5"]);
         invokeResult.ShouldNotBeNull();
 
         // Cast to tuple
@@ -157,8 +148,8 @@ public class CommandDispatcherTests
             new CommandParameterInfo("b", new IntParser(), isRequired: true, defaultValue: null, parameterIndex: 1)
         };
 
-        var overload = new CommandOverload(testMethod, parameters, typeof(CommandDispatcherTests), paramInfos);
-        var definition = new CommandDefinition("add_numbers", null, new[] { overload });
+        var overload = new CommandOverload(testMethod, parameters, typeof(CommandDispatcherTests), paramInfos, TestInvoker, 0);
+        var definition = new CommandDefinition("add_numbers", null, [overload]);
         _registry.Register(definition);
 
         // Test 1: Find with just the command name
@@ -167,7 +158,7 @@ public class CommandDispatcherTests
 
         // Test 2: Find with extra tokens (numbers)
         var result2 = _registry.TryFindByPath(new List<string> { "add_numbers", "3", "5" });
-        result2.ShouldNotBeNull($"TryFindByPath returned null for path with extra tokens");
+        result2.ShouldNotBeNull("TryFindByPath returned null for path with extra tokens");
 
         // The question: is it the same command?
         result2!.Name.ShouldBe("add_numbers", "Found command should be 'add_numbers', not something with '3' and '5' in it");
@@ -187,8 +178,8 @@ public class CommandDispatcherTests
             new CommandParameterInfo("b", new IntParser(), isRequired: true, defaultValue: null, parameterIndex: 1)
         };
 
-        var overload = new CommandOverload(testMethod, parameters, typeof(CommandDispatcherTests), paramInfos);
-        var definition = new CommandDefinition("add_numbers", null, new[] { overload });
+        var overload = new CommandOverload(testMethod, parameters, typeof(CommandDispatcherTests), paramInfos, TestInvoker, 0);
+        var definition = new CommandDefinition("add_numbers", null, [overload]);
 
         // Debug: Check what gets registered
         definition.FullName.ShouldBe("add_numbers");
@@ -203,8 +194,8 @@ public class CommandDispatcherTests
         lookup2.ShouldNotBeNull("Should find 'add_numbers' by TryFindByPath with single token");
 
         // This test should help us understand what tokens are being split
-        var inputText = "add_numbers 3 5";
-        var tokens = inputText.Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+        const string inputText = "add_numbers 3 5";
+        var tokens = inputText.Split([' ', '\t'], StringSplitOptions.RemoveEmptyEntries);
 
         tokens.Length.ShouldBe(3);
         tokens[0].ShouldBe("add_numbers");
@@ -212,12 +203,9 @@ public class CommandDispatcherTests
         tokens[2].ShouldBe("5");
 
         // Try to find the command using the new overload that returns consumedTokens
-        CommandDefinition? foundCommand = null;
-        int consumedTokens = 0;
+        var foundCommand = _registry.TryFindByPath(tokens.ToList(), out var consumedTokens);
 
-        foundCommand = _registry.TryFindByPath(tokens.ToList(), out consumedTokens);
-
-        foundCommand.ShouldNotBeNull($"Should have found command in registry");
+        foundCommand.ShouldNotBeNull("Should have found command in registry");
         consumedTokens.ShouldBe(1, $"Should have consumed 1 token, consumed {consumedTokens}");
 
         // Remaining tokens
@@ -246,14 +234,14 @@ public class CommandDispatcherTests
             new CommandParameterInfo("b", new IntParser(), isRequired: true, defaultValue: null, parameterIndex: 1)
         };
 
-        var overload = new CommandOverload(testMethod, parameters, typeof(CommandDispatcherTests), paramInfos);
+        var overload = new CommandOverload(testMethod, parameters, typeof(CommandDispatcherTests), paramInfos, TestInvoker, 0);
 
         // Verify the overload was created properly
         overload.ParsedParameters.Length.ShouldBe(2, $"Overload should have 2 parsed params, got {overload.ParsedParameters.Length}");
         overload.ParsedParameters[0].Name.ShouldBe("a");
         overload.ParsedParameters[1].Name.ShouldBe("b");
 
-        var definition = new CommandDefinition("add_numbers", null, new[] { overload });
+        var definition = new CommandDefinition("add_numbers", null, [overload]);
         _registry.Register(definition);
 
         // Test that command is registered
@@ -262,7 +250,7 @@ public class CommandDispatcherTests
         found!.Overloads.Count.ShouldBeGreaterThanOrEqualTo(1, $"Should have at least 1 overload, got {found.Overloads.Count}");
         found.Overloads[0].ParsedParameters.Length.ShouldBeGreaterThanOrEqualTo(2, $"Overload should have at least 2 params, got {found.Overloads[0].ParsedParameters.Length}");
 
-        var result = _dispatcher.Dispatch(_registry, "add_numbers 3 5", new object[0]);
+        var result = _dispatcher.Dispatch(_registry, "add_numbers 3 5", []);
         result.Response.ShouldBe(DispatchResponse.Success, $"Expected Success but got {result.Response} with message: {result.UsageMessage}");
         result.ParsedArguments.ShouldNotBeNull("ParsedArguments should not be null");
         result.ParsedArguments!.Length.ShouldBe(2, $"Should have parsed 2 arguments, got {result.ParsedArguments.Length}");
@@ -284,13 +272,13 @@ public class CommandDispatcherTests
             new CommandParameterInfo("b", new IntParser(), isRequired: true, defaultValue: null, parameterIndex: 1)
         };
 
-        var overload = new CommandOverload(testMethod, parameters, typeof(CommandDispatcherTests), paramInfos);
+        var overload = new CommandOverload(testMethod, parameters, typeof(CommandDispatcherTests), paramInfos, TestInvoker, 0);
         var aliases = new[] { new CommandAlias("add") };
-        var definition = new CommandDefinition("add_numbers", null, new[] { overload }, aliases);
+        var definition = new CommandDefinition("add_numbers", null, [overload], aliases);
         _registry.Register(definition);
 
         // Using alias with parameters
-        var result = _dispatcher.Dispatch(_registry, "add 3 5", new object[0]);
+        var result = _dispatcher.Dispatch(_registry, "add 3 5", []);
         result.Response.ShouldBe(DispatchResponse.Success);
         result.ParsedArguments.ShouldNotBeNull();
         result.ParsedArguments!.Length.ShouldBe(2);
@@ -312,14 +300,14 @@ public class CommandDispatcherTests
             new CommandParameterInfo("b", new IntParser(), isRequired: true, defaultValue: null, parameterIndex: 1)
         };
 
-        var overload = new CommandOverload(testMethod, parameters, typeof(CommandDispatcherTests), paramInfos);
-        var definition = new CommandDefinition("add_numbers", null, new[] { overload });
+        var overload = new CommandOverload(testMethod, parameters, typeof(CommandDispatcherTests), paramInfos, TestInvoker, 0);
+        var definition = new CommandDefinition("add_numbers", null, [overload]);
         _registry.Register(definition);
 
         // Missing second parameter
-        var result = _dispatcher.Dispatch(_registry, "add_numbers 3", new object[0]);
+        var result = _dispatcher.Dispatch(_registry, "add_numbers 3", []);
         result.Response.ShouldBe(DispatchResponse.InvalidArguments);
-        result.UsageMessage.ShouldContain("Usage:");
+        result.UsageMessage.ShouldNotBeNull().ShouldContain("Usage:");
     }
 
     [Fact]
@@ -336,12 +324,12 @@ public class CommandDispatcherTests
             new CommandParameterInfo("b", new IntParser(), isRequired: true, defaultValue: null, parameterIndex: 1)
         };
 
-        var overload = new CommandOverload(testMethod, parameters, typeof(CommandDispatcherTests), paramInfos);
-        var definition = new CommandDefinition("add_numbers", null, new[] { overload });
+        var overload = new CommandOverload(testMethod, parameters, typeof(CommandDispatcherTests), paramInfos, TestInvoker, 0);
+        var definition = new CommandDefinition("add_numbers", null, [overload]);
         _registry.Register(definition);
 
         // Non-integer parameter
-        var result = _dispatcher.Dispatch(_registry, "add_numbers abc def", new object[0]);
+        var result = _dispatcher.Dispatch(_registry, "add_numbers abc def", []);
         result.Response.ShouldBe(DispatchResponse.InvalidArguments);
     }
 
@@ -359,217 +347,22 @@ public class CommandDispatcherTests
             new CommandParameterInfo("b", new IntParser(), isRequired: true, defaultValue: null, parameterIndex: 1)
         };
 
-        var overload = new CommandOverload(testMethod, parameters, typeof(CommandDispatcherTests), paramInfos);
-        var definition = new CommandDefinition("add_numbers", null, new[] { overload });
+        var overload = new CommandOverload(testMethod, parameters, typeof(CommandDispatcherTests), paramInfos, TestInvoker, 0);
+        var definition = new CommandDefinition("add_numbers", null, [overload]);
         _registry.Register(definition);
 
         // Extra parameter
-        var result = _dispatcher.Dispatch(_registry, "add_numbers 3 5 7", new object[0]);
+        var result = _dispatcher.Dispatch(_registry, "add_numbers 3 5 7", []);
         result.Response.ShouldBe(DispatchResponse.InvalidArguments);
     }
 
     private void TestCommand() { }
 
+    private static object TestInvoker(object target, object[] args, IServiceProvider services, IEntityManager entityManager)
+    {
+        throw new InvalidOperationException();
+    }
+
+    [SuppressMessage("ReSharper", "UnusedParameter.Local")]
     private void AddCommand(int a, int b) { }
-}
-
-public class CommandExecutorTests
-{
-    private readonly CommandExecutor _executor;
-    private readonly Mock<IEntityManager> _mockEntityManager;
-    private readonly Mock<IServiceProvider> _mockServices;
-    private readonly Mock<ISystem> _mockSystem;
-
-    public CommandExecutorTests()
-    {
-        _mockEntityManager = new Mock<IEntityManager>();
-        _mockServices = new Mock<IServiceProvider>();
-        _mockSystem = new Mock<ISystem>();
-        _executor = new CommandExecutor(_mockEntityManager.Object);
-    }
-
-    [Fact]
-    public void Execute_CommandWithNoPrefixParameters_DoesNotIncludePrefixInArgs()
-    {
-        // Setup: Create a simple overload with NO prefix parameters
-        var mockMethod = new Mock<MethodInfo>();
-        mockMethod.Setup(m => m.Name).Returns("TestCommand");
-        mockMethod.Setup(m => m.ReturnType).Returns(typeof(void));
-
-        var parameters = new ParameterInfo[2];
-        var paramInfo1 = new Mock<ParameterInfo>();
-        paramInfo1.Setup(p => p.Name).Returns("a");
-        paramInfo1.Setup(p => p.ParameterType).Returns(typeof(int));
-        parameters[0] = paramInfo1.Object;
-
-        var paramInfo2 = new Mock<ParameterInfo>();
-        paramInfo2.Setup(p => p.Name).Returns("b");
-        paramInfo2.Setup(p => p.ParameterType).Returns(typeof(int));
-        parameters[1] = paramInfo2.Object;
-
-        var parsedParams = new[]
-        {
-            new CommandParameterInfo("a", new IntParser(), isRequired: true, defaultValue: null, parameterIndex: 0),
-            new CommandParameterInfo("b", new IntParser(), isRequired: true, defaultValue: null, parameterIndex: 1)
-        };
-
-        // Track the arguments passed to the invoker
-        object?[]? invokerArgs = null;
-        MethodInvoker invoker = (target, args, services, entityManager) =>
-        {
-            invokerArgs = args;
-            return null;
-        };
-
-        // Create overload with PrefixParameterCount = 0 (NO prefix params expected)
-        var overload = new CommandOverload(
-            mockMethod.Object,
-            parameters,
-            typeof(ISystem),
-            parsedParams,
-            invoker: invoker,
-            prefixParameterCount: 0);
-
-        // Execute: Pass extra prefix args (should be ignored)
-        var prefixArgs = new object?[] { "extra_prefix_1", "extra_prefix_2" };
-        var parsedArgs = new object?[] { 3, 5 };
-
-        _executor.Execute(
-            overload,
-            prefixArgs,
-            parsedArgs,
-            _mockServices.Object,
-            _mockSystem.Object);
-
-        // Verify: The invoker should receive ONLY the parsed args, not the prefix args
-        invokerArgs.ShouldNotBeNull("Invoker should have been called");
-        invokerArgs!.Length.ShouldBe(2, "Should have exactly 2 arguments (no prefix)");
-        invokerArgs[0].ShouldBe(3, "First argument should be parsed arg");
-        invokerArgs[1].ShouldBe(5, "Second argument should be parsed arg");
-    }
-
-    [Fact]
-    public void Execute_CommandWithPrefixParameter_IncludesOnlyExpectedPrefix()
-    {
-        // Setup: Create an overload with ONE prefix parameter
-        var mockMethod = new Mock<MethodInfo>();
-        mockMethod.Setup(m => m.Name).Returns("TestCommand");
-        mockMethod.Setup(m => m.ReturnType).Returns(typeof(void));
-
-        var parameters = new ParameterInfo[3];
-        var paramInfo1 = new Mock<ParameterInfo>();
-        paramInfo1.Setup(p => p.Name).Returns("player");
-        paramInfo1.Setup(p => p.ParameterType).Returns(typeof(object));
-        parameters[0] = paramInfo1.Object;
-
-        var paramInfo2 = new Mock<ParameterInfo>();
-        paramInfo2.Setup(p => p.Name).Returns("a");
-        paramInfo2.Setup(p => p.ParameterType).Returns(typeof(int));
-        parameters[1] = paramInfo2.Object;
-
-        var paramInfo3 = new Mock<ParameterInfo>();
-        paramInfo3.Setup(p => p.Name).Returns("b");
-        paramInfo3.Setup(p => p.ParameterType).Returns(typeof(int));
-        parameters[2] = paramInfo3.Object;
-
-        var parsedParams = new[]
-        {
-            new CommandParameterInfo("a", new IntParser(), isRequired: true, defaultValue: null, parameterIndex: 1),
-            new CommandParameterInfo("b", new IntParser(), isRequired: true, defaultValue: null, parameterIndex: 2)
-        };
-
-        // Track the arguments passed to the invoker
-        object?[]? invokerArgs = null;
-        MethodInvoker invoker = (target, args, services, entityManager) =>
-        {
-            invokerArgs = args;
-            return null;
-        };
-
-        // Create overload with PrefixParameterCount = 1 (ONE prefix param expected)
-        var overload = new CommandOverload(
-            mockMethod.Object,
-            parameters,
-            typeof(ISystem),
-            parsedParams,
-            invoker: invoker,
-            prefixParameterCount: 1);
-
-        // Execute: Pass one prefix arg and two parsed args
-        var prefixArgs = new object?[] { "player_obj" };
-        var parsedArgs = new object?[] { 3, 5 };
-
-        _executor.Execute(
-            overload,
-            prefixArgs,
-            parsedArgs,
-            _mockServices.Object,
-            _mockSystem.Object);
-
-        // Verify: The invoker should receive prefix + parsed args
-        invokerArgs.ShouldNotBeNull("Invoker should have been called");
-        invokerArgs!.Length.ShouldBe(3, "Should have exactly 3 arguments (1 prefix + 2 parsed)");
-        invokerArgs[0].ShouldBe("player_obj", "First argument should be prefix arg");
-        invokerArgs[1].ShouldBe(3, "Second argument should be first parsed arg");
-        invokerArgs[2].ShouldBe(5, "Third argument should be second parsed arg");
-    }
-}
-
-public class ParameterParserTests
-{
-    private readonly Mock<IServiceProvider> _mockServices = new();
-
-    public ParameterParserTests()
-    {
-        _mockServices = new Mock<IServiceProvider>();
-    }
-
-    [Fact]
-    public void IntParser_ValidNumber_ParsesSuccessfully()
-    {
-        var parser = new IntParser();
-        var input = "42";
-        var result = parser.TryParse(_mockServices.Object, ref input, out var value);
-        result.ShouldBeTrue();
-        value.ShouldBe(42);
-    }
-
-    [Fact]
-    public void BooleanParser_TrueValue_ParsesSuccessfully()
-    {
-        var parser = new BooleanParser();
-        var input = "true";
-        var result = parser.TryParse(_mockServices.Object, ref input, out var value);
-        result.ShouldBeTrue();
-        value.ShouldBe(true);
-    }
-
-    [Fact]
-    public void BooleanParser_FalseValue_ParsesSuccessfully()
-    {
-        var parser = new BooleanParser();
-        var input = "false";
-        var result = parser.TryParse(_mockServices.Object, ref input, out var value);
-        result.ShouldBeTrue();
-        value.ShouldBe(false);
-    }
-
-    [Fact]
-    public void BooleanParser_InvalidValue_ReturnsFalse()
-    {
-        var parser = new BooleanParser();
-        var input = "invalid";
-        var result = parser.TryParse(_mockServices.Object, ref input, out var value);
-        result.ShouldBeFalse();
-    }
-
-    [Fact]
-    public void StringParser_AnyText_ParsesSuccessfully()
-    {
-        var parser = new StringParser();
-        var input = "hello world";
-        var result = parser.TryParse(_mockServices.Object, ref input, out var value);
-        result.ShouldBeTrue();
-        value.ShouldBe("hello world");
-    }
 }

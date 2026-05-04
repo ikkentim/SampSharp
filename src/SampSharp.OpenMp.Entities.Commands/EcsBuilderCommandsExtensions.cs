@@ -35,14 +35,14 @@ public static class EcsBuilderCommandsExtensions
     /// </summary>
     public static IServiceCollection AddCommandsSystem(this IServiceCollection services)
     {
-        services.TryAddSingleton<CommandRegistry>();
-        services.TryAddSingleton<CommandDispatcher>();
         services.TryAddSingleton<ICommandNameProvider, DefaultCommandNameProvider>();
         services.TryAddSingleton<IPermissionChecker, DefaultPermissionChecker>();
         services.TryAddSingleton<ICommandNotFoundHandler, DefaultCommandNotFoundHandler>();
         services.TryAddSingleton<ICommandHelpProvider, DefaultCommandHelpProvider>();
         services.TryAddSingleton<ICommandEnumerator>(sp =>
             new DefaultCommandEnumerator(sp.GetRequiredService<CommandRegistry>(), sp.GetService<ICommandNameProvider>()));
+
+        services.TryAddSingleton<ConsoleCommandService>();
 
         // Register the console bridge system for handling console command events
         services.AddSystem<ConsoleBridgeSystem>();

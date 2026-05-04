@@ -13,9 +13,9 @@ internal class ConsoleBridgeSystem : ISystem
 {
     private readonly ConsoleCommandService _commandService;
 
-    public ConsoleBridgeSystem(IEntityManager entityManager, ISystemRegistry systemRegistry)
+    public ConsoleBridgeSystem(ConsoleCommandService commandService)
     {
-        _commandService = new ConsoleCommandService(entityManager, systemRegistry);
+        _commandService = commandService;
     }
 
     [Event]

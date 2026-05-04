@@ -10,7 +10,6 @@ namespace TestMode.OpenMp.Entities;
 /// <summary>
 /// Demonstrates the new Commands system with simple player and console commands.
 /// </summary>
-[CommandGroup("admin")]
 public class SampleCommandsSystem : ISystem
 {
     private readonly IEntityManager _entityManager;
@@ -115,11 +114,11 @@ public class SampleCommandsSystem : ISystem
     /// Player command: /help - shows available player commands (uses command enumeration API)
     /// </summary>
     [PlayerCommand(Name = "help")]
-    public void HelpCommand(Player player, ICommandEnumerator enumerator)
+    public void HelpCommand(Player player, IPlayerCommandService commands)
     {
         player.SendClientMessage("--- Available Commands ---");
 
-        var playerCommands = enumerator.GetAllCommands()
+        var playerCommands = commands.GetCommands().GetAllCommands()
             .OrderBy(c => c.Name)
             .ToList();
 

@@ -112,18 +112,22 @@ public class CommandRegistry
     }
 
     /// <summary>Gets all registered commands.</summary>
-    public IReadOnlyList<CommandDefinition> GetAll() => _allCommands.AsReadOnly();
+    public IReadOnlyList<CommandDefinition> GetAll()
+    {
+        return _allCommands.AsReadOnly();
+    }
 
     /// <summary>Gets all commands in a specific group.</summary>
     public IEnumerable<CommandDefinition> GetCommandsInGroup(CommandGroup group)
-        => _allCommands.Where(c => c.Group == group);
+    {
+        return _allCommands.Where(c => c.Group == group);
+    }
 
     /// <summary>Gets all command groups.</summary>
     public IEnumerable<CommandGroup> GetGroups()
-        => _allCommands
-            .Where(c => c.Group.HasValue)
-            .Select(c => c.Group.Value)
-            .Distinct();
+    {
+        return _allCommands.Where(c => c.Group.HasValue).Select(c => c.Group.Value).Distinct();
+    }
 
     /// <summary>Clears all registered commands.</summary>
     public void Clear()

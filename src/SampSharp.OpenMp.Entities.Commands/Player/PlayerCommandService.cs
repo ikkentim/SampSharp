@@ -1,20 +1,14 @@
-using Microsoft.Extensions.DependencyInjection;
-using SampSharp.Entities.SAMP;
 using SampSharp.Entities.SAMP.Commands.Async;
 using SampSharp.Entities.SAMP.Commands.Attributes;
 using SampSharp.Entities.SAMP.Commands.Core;
 using SampSharp.Entities.SAMP.Commands.Core.Execution;
 using SampSharp.Entities.SAMP.Commands.Core.Scanning;
+using SampSharp.Entities.SAMP.Commands.Help;
 using SampSharp.Entities.SAMP.Commands.Services;
-using SampSharp.Entities.Utilities;
 
 namespace SampSharp.Entities.SAMP.Commands.Player;
 
-/// <summary>
-/// Dispatches player commands from in-game chat input.
-/// Handles / prefix stripping, component resolution, and permission checking.
-/// </summary>
-public class PlayerCommandService : IPlayerCommandService
+internal class PlayerCommandService : IPlayerCommandService
 {
     private readonly CommandRegistry _registry = new();
     private readonly CommandDispatcher _dispatcher = new();
@@ -23,30 +17,34 @@ public class PlayerCommandService : IPlayerCommandService
     private readonly ICommandNameProvider _nameProvider;
     private readonly IPermissionChecker _permissionChecker;
     private readonly ICommandNotFoundHandler _notFoundHandler;
-    private readonly ISystemRegistry _systemRegistry;
     private readonly IUnhandledExceptionHandler _unhandledExceptionHandler;
 
     public PlayerCommandService(
         IEntityManager entityManager,
         ISystemRegistry systemRegistry,
-        ICommandNameProvider? nameProvider,
-        IPermissionChecker? permissionChecker,
-        ICommandNotFoundHandler? notFoundHandler,
+        ICommandNameProvider nameProvider,
+        IPermissionChecker permissionChecker,
+        ICommandNotFoundHandler notFoundHandler,
         IUnhandledExceptionHandler unhandledExceptionHandler)
     {
-        _entityManager = entityManager ?? throw new ArgumentNullException(nameof(entityManager));
-        _systemRegistry = systemRegistry ?? throw new ArgumentNullException(nameof(systemRegistry));
+        _entityManager = entityManager;
         _unhandledExceptionHandler = unhandledExceptionHandler;
+        _nameProvider = nameProvider;
+        _permissionChecker = permissionChecker;
+        _notFoundHandler = notFoundHandler;
 
         _executor = new CommandExecutor(entityManager);
-        _nameProvider = nameProvider ?? new DefaultCommandNameProvider();
-        _permissionChecker = permissionChecker ?? new DefaultPermissionChecker();
-        _notFoundHandler = notFoundHandler ?? new DefaultCommandNotFoundHandler();
+
 
         // Scan for player commands
         var scanner = new CommandScanner(entityManager, systemRegistry);
         var parserFactory = new DefaultCommandParameterParserFactory();
         scanner.ScanPlayerCommands(_registry, parserFactory);
+    }
+
+    public ICommandEnumerator GetCommands()
+    {
+        return new DefaultCommandEnumerator(_registry, _nameProvider);
     }
 
     public bool Invoke(IServiceProvider services, EntityId player, string inputText)
@@ -152,7 +150,6 @@ public class PlayerCommandService : IPlayerCommandService
             var success = result switch
             {
                 bool b => b,
-                int i => i != 0,
                 _ => true
             };
 
@@ -166,8 +163,14 @@ public class PlayerCommandService : IPlayerCommandService
     }
 
     /// <summary>Gets the command registry for access to registered commands.</summary>
-    public CommandRegistry GetRegistry() => _registry;
+    public CommandRegistry GetRegistry()
+    {
+        return _registry;
+    }
 
     /// <summary>Gets the command dispatcher.</summary>
-    public CommandDispatcher GetDispatcher() => _dispatcher;
+    public CommandDispatcher GetDispatcher()
+    {
+        return _dispatcher;
+    }
 }

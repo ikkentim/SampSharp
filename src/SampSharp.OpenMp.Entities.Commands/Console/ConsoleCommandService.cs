@@ -91,7 +91,7 @@ public class ConsoleCommandService
     {
         var command = dispatchResult.CommandDefinition;
         var overload = dispatchResult.CommandOverload;
-        var parsedArgs = dispatchResult.ParsedArguments ?? Array.Empty<object?>();
+        var parsedArgs = dispatchResult.ParsedArguments ?? [];
 
         if (command == null || overload == null)
         {
@@ -99,8 +99,7 @@ public class ConsoleCommandService
         }
 
         // Get the system instance
-        var system = services.GetService(overload.DeclaringSystemType) as ISystem;
-        if (system == null)
+        if (services.GetService(overload.DeclaringSystemType) is not ISystem system)
         {
             return false;
         }
@@ -118,7 +117,6 @@ public class ConsoleCommandService
             var success = result switch
             {
                 bool b => b,
-                int i => i != 0,
                 _ => true
             };
 
@@ -132,8 +130,14 @@ public class ConsoleCommandService
     }
 
     /// <summary>Gets the command registry for access to registered commands.</summary>
-    public CommandRegistry GetRegistry() => _registry;
+    public CommandRegistry GetRegistry()
+    {
+        return _registry;
+    }
 
     /// <summary>Gets the command dispatcher.</summary>
-    public CommandDispatcher GetDispatcher() => _dispatcher;
+    public CommandDispatcher GetDispatcher()
+    {
+        return _dispatcher;
+    }
 }

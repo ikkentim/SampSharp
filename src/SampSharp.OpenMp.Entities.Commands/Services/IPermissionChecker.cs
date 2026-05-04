@@ -21,5 +21,7 @@ public interface IPermissionChecker
     /// <param name="permissions">The permission(s) required (all must be satisfied).</param>
     /// <returns>True if the player has all required permissions; otherwise, false.</returns>
     bool HasPermission(EntityId player, IEnumerable<string> permissions)
-        => HasPermission(player, permissions.ToArray());
+    {
+        return HasPermission(player, permissions.ToArray());
+    }
 }
