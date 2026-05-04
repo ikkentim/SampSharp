@@ -1,5 +1,6 @@
 using System.Reflection;
 using SampSharp.Entities.SAMP.Commands.Attributes;
+using SampSharp.Entities.SAMP.Commands.Console;
 using SampSharp.Entities.Utilities;
 
 namespace SampSharp.Entities.SAMP.Commands.Core.Scanning;
@@ -43,9 +44,10 @@ public class CommandScanner
                 .Select(a => new CommandAlias(a))
                 .ToArray();
 
-            // Permission requirements
-            var permAttr = method.GetCustomAttribute<RequiresPermissionAttribute>();
-            var permissions = permAttr?.Permissions ?? [];
+            // Command tags (including permissions as tags)
+            var tags = method.GetCustomAttributes<CommandTagAttribute>()
+                .Select(t => new CommandTag(t.Key, t.Value))
+                .ToArray();
 
             // Each [PlayerCommand] attribute is a separate overload
             var commandName = attribute.Name ?? GetCommandName(method);
@@ -54,6 +56,10 @@ public class CommandScanner
                 continue;
             }
 
+            if (method.Name == "PingCommand")
+            {
+                System.Console.WriteLine();
+            }
             if (!TryBuildOverload(method, systemType, parserFactory, 1, out var overload))
             {
                 continue;
@@ -63,7 +69,8 @@ public class CommandScanner
                 name: commandName,
                 group: commandGroup,
                 overloads: new[] { overload },
-                aliases: aliases);
+                aliases: aliases,
+                tags: tags);
 
             registry.Register(definition);
         }
@@ -93,12 +100,17 @@ public class CommandScanner
                 .Select(a => new CommandAlias(a))
                 .ToArray();
 
-            // Console commands: check if first param is ConsoleCommandSender
+            // Command tags (including permissions as tags)
+            var tags = method.GetCustomAttributes<CommandTagAttribute>()
+                .Select(t => new CommandTag(t.Key, t.Value))
+                .ToArray();
+
+            // Console commands: check if first param is ConsoleCommandDispatchContext
             int prefixParams = 0;
             if (method.GetParameters().Length > 0)
             {
                 var firstParam = method.GetParameters()[0];
-                if (firstParam.ParameterType == typeof(ConsoleCommandSender))
+                if (firstParam.ParameterType == typeof(ConsoleCommandDispatchContext))
                 {
                     prefixParams = 1;
                 }
@@ -120,7 +132,8 @@ public class CommandScanner
                 name: commandName,
                 group: commandGroup,
                 overloads: new[] { overload },
-                aliases: aliases);
+                aliases: aliases,
+                tags: tags);
 
             registry.Register(definition);
         }
@@ -192,27 +205,33 @@ public class CommandScanner
         var sources = new MethodParameterSource[parameters.Length];
         var parsedParamsByIndex = parsedParameters.ToDictionary(p => p.ParameterIndex);
 
+        int j = 0; // Counter for args array index
+
         for (int i = 0; i < parameters.Length; i++)
         {
             var paramInfo = parameters[i];
             var source = new MethodParameterSource(paramInfo);
 
-            // Check if this is a parsed parameter
-            if (parsedParamsByIndex.ContainsKey(i))
+            // Check if this is a prefix parameter (Player component or ConsoleCommandDispatchContext)
+            if (i < prefixParameterCount)
             {
-                // This parameter is parsed from input
-                source.ParameterIndex = i;
+                source.ParameterIndex = j++;
             }
-            // Check if it's a component (depends on EntityId)
-            else if (typeof(Component).IsAssignableFrom(paramInfo.ParameterType) && prefixParameterCount > 0)
+            // Check if this is a parsed parameter
+            else if (parsedParamsByIndex.ContainsKey(i))
             {
-                // Component will be resolved from EntityId in args[0]
-                source.IsComponent = true;
+                source.ParameterIndex = j++;
             }
             else
             {
                 // This is a DI service parameter
                 source.IsService = true;
+            }
+
+            // Mark as component if applicable
+            if (paramInfo.ParameterType.IsAssignableTo(typeof(Component)))
+            {
+                source.IsComponent = true;
             }
 
             sources[i] = source;
@@ -271,6 +290,7 @@ public class CommandScanner
         for (int i = prefixParameters; i < parameters.Length; i++)
         {
             var param = parameters[i];
+
             var paramName = param.Name ?? $"param{i}";
 
             // Try to get a parser for this parameter

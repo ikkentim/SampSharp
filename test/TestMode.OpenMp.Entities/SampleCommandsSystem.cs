@@ -131,7 +131,7 @@ public class SampleCommandsSystem : ISystem
         foreach (var cmd in playerCommands)
         {
             var aliases = cmd.Aliases.Count > 0 ? $" ({string.Join(", ", cmd.Aliases.Select(a => $"/{a.Name}"))})" : "";
-            player.SendClientMessage($"/{cmd.Name}{aliases} - {cmd.UsageMessage}");
+            player.SendClientMessage($"/{cmd.Name}{aliases}");
         }
     }
 

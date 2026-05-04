@@ -9,7 +9,7 @@ namespace SampSharp.Entities.SAMP.Commands.Console;
 
 /// <summary>
 /// Dispatches console commands from the open.mp console.
-/// Handles ConsoleCommandSender context and command execution.
+/// Handles ConsoleCommandDispatchContext and command execution.
 /// </summary>
 public class ConsoleCommandService
 {
@@ -18,13 +18,13 @@ public class ConsoleCommandService
     private readonly CommandExecutor _executor;
     private readonly IEntityManager _entityManager;
     private readonly ISystemRegistry _systemRegistry;
+    private readonly ICommandUsageFormatter _usageFormatter;
     private readonly IUnhandledExceptionHandler _unhandledExceptionHandler;
-    private readonly ICommandNotFoundHandler _notFoundHandler;
 
     public ConsoleCommandService(
         IEntityManager entityManager,
         ISystemRegistry systemRegistry,
-        ICommandNotFoundHandler? notFoundHandler,
+        ICommandUsageFormatter usageFormatter,
         IUnhandledExceptionHandler unhandledExceptionHandler)
     {
         if (entityManager == null)
@@ -40,8 +40,8 @@ public class ConsoleCommandService
         _entityManager = entityManager;
         _systemRegistry = systemRegistry;
         _unhandledExceptionHandler = unhandledExceptionHandler;
+        _usageFormatter = usageFormatter ?? throw new ArgumentNullException(nameof(usageFormatter));
         _executor = new CommandExecutor(entityManager);
-        _notFoundHandler = notFoundHandler ?? new DefaultCommandNotFoundHandler();
 
         // Scan for console commands
         var scanner = new CommandScanner(entityManager, systemRegistry);
@@ -53,41 +53,47 @@ public class ConsoleCommandService
     /// Invokes a console command.
     /// </summary>
     /// <param name="services">Service provider for DI.</param>
-    /// <param name="senderData">Console command sender information from open.mp API.</param>
+    /// <param name="context">Console command dispatch context.</param>
     /// <param name="inputText">The command text (without leading slash).</param>
-    /// <returns>The response message to send back, or null for success.</returns>
-    public string? Invoke(IServiceProvider services, ConsoleCommandSender senderData, string inputText)
+    /// <returns>True if command was found and executed; false otherwise.</returns>
+    public bool Invoke(IServiceProvider services, ConsoleCommandDispatchContext context, string inputText)
     {
         if (string.IsNullOrWhiteSpace(inputText))
         {
-            return "Invalid command.";
+            return false;
         }
 
         inputText = inputText.Trim();
 
-        // Dispatch the command
-        var result = _dispatcher.Dispatch(_registry, inputText, new object[] { senderData });
+        // Dispatch the command (no permission checks for console)
+        var result = _dispatcher.Dispatch(_registry, services, inputText, [context], null);
 
         // Handle the result
         switch (result.Response)
         {
             case DispatchResponse.Success:
                 // Execute the command
-                return ExecuteCommand(services, result, senderData) ? null : "Failed to execute command.";
+                return ExecuteCommand(services, result, context);
 
             case DispatchResponse.InvalidArguments:
-                return result.UsageMessage ?? "Invalid arguments";
+                if (result.CommandDefinition != null)
+                {
+                    _usageFormatter.FormatUsageAsync(context, result.CommandDefinition).GetAwaiter().GetResult();
+                }
+                return true;
 
             case DispatchResponse.Error:
-                return result.Message ?? "An error occurred while executing the command.";
+                context.SendMessage(result.Message ?? "An error occurred while executing the command.");
+                return true;
 
             case DispatchResponse.CommandNotFound:
             default:
-                return _notFoundHandler.GetCommandNotFoundMessage(inputText);
+                _usageFormatter.FormatNotFoundAsync(context, inputText).GetAwaiter().GetResult();
+                return false;
         }
     }
 
-    private bool ExecuteCommand(IServiceProvider services, DispatchResult dispatchResult, ConsoleCommandSender senderData)
+    private bool ExecuteCommand(IServiceProvider services, DispatchResult dispatchResult, ConsoleCommandDispatchContext context)
     {
         var command = dispatchResult.CommandDefinition;
         var overload = dispatchResult.CommandOverload;
@@ -108,7 +114,7 @@ public class ConsoleCommandService
         {
             // Execute the command
             var result = _executor.Execute(
-                overload, [senderData],
+                overload, [context],
                 parsedArgs,
                 services,
                 system);

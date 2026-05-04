@@ -1,3 +1,7 @@
+using SampSharp.Entities.SAMP;
+using SampSharp.Entities.SAMP.Commands.Core;
+using PlayerComponent = SampSharp.Entities.SAMP.Player;
+
 namespace SampSharp.Entities.SAMP.Commands.Services;
 
 /// <summary>
@@ -6,9 +10,10 @@ namespace SampSharp.Entities.SAMP.Commands.Services;
 /// </summary>
 public class DefaultPermissionChecker : IPermissionChecker
 {
-    public bool HasPermission(EntityId player, params string[] permissions)
+    public bool HasPermission(PlayerComponent player, CommandDefinition command)
     {
         // Default: allow all permissions
         return true;
     }
 }
+

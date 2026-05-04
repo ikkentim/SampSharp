@@ -1,6 +1,9 @@
 using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
+using SampSharp.Entities.SAMP;
+using SampSharp.Entities.SAMP.Commands.Services;
+using PlayerComponent = SampSharp.Entities.SAMP.Player;
 
 namespace SampSharp.Entities.SAMP.Commands.Core;
 
@@ -11,15 +14,23 @@ namespace SampSharp.Entities.SAMP.Commands.Core;
 public class CommandDispatcher
 {
     /// <summary>
-    /// Dispatches a command from input text.
+    /// Dispatches a command from input text with full overload matching and permission checking.
     /// </summary>
     /// <param name="registry">The command registry containing all registered commands.</param>
+    /// <param name="services">The service provider for DI and permission checking.</param>
     /// <param name="inputText">The input text to parse (without leading / for player commands).</param>
-    /// <param name="prefix">Prefix arguments (e.g., [Player] for player commands, [ConsoleCommandSender] for console commands).</param>
+    /// <param name="prefixArgs">Prefix arguments (e.g., [Player] for player commands, [ConsoleCommandDispatchContext] for console commands).</param>
+    /// <param name="permissionChecker">Optional permission checker (for player commands only).</param>
     /// <returns>The dispatch result.</returns>
-    public DispatchResult Dispatch(CommandRegistry registry, string inputText, object[] prefix)
+    public DispatchResult Dispatch(
+        CommandRegistry registry,
+        IServiceProvider services,
+        string inputText,
+        object[] prefixArgs,
+        IPermissionChecker? permissionChecker = null)
     {
         ArgumentNullException.ThrowIfNull(registry);
+        ArgumentNullException.ThrowIfNull(services);
 
         if (string.IsNullOrWhiteSpace(inputText))
         {
@@ -29,7 +40,7 @@ public class CommandDispatcher
         inputText = inputText.Trim();
 
         // Split input into tokens and try to find the command by matching from longest to shortest path
-        var tokens = inputText.Split([' ', '\t'], StringSplitOptions.RemoveEmptyEntries); // TODO - optimize
+        var tokens = inputText.Split([' ', '\t'], StringSplitOptions.RemoveEmptyEntries);
         if (tokens.Length == 0)
         {
             return DispatchResult.CreateNotFound();
@@ -43,6 +54,15 @@ public class CommandDispatcher
             return DispatchResult.CreateNotFound();
         }
 
+        // Check permission if a permission checker is provided
+        if (permissionChecker != null && prefixArgs.Length > 0 && prefixArgs[0] is PlayerComponent player)
+        {
+            if (!permissionChecker.HasPermission(player, command))
+            {
+                return DispatchResult.CreatePermissionDenied();
+            }
+        }
+
         // Remaining tokens become the arguments
         var remainingTokens = tokens.Skip(consumedTokenCount).ToArray();
         var remainingArgs = remainingTokens.Length > 0
@@ -50,42 +70,68 @@ public class CommandDispatcher
             : "";
 
         // Try to match parameters for each overload
-        string? bestUsageMessage = null;
+        var bestMatch = FindBestOverload(command, remainingArgs, services);
 
-        foreach (var overload in command.Overloads)
+        if (bestMatch.matched)
         {
-            var matchResult = TryMatchParameters(overload, remainingArgs);
-            if (matchResult.matched)
-            {
-                // Successfully matched this overload
-                var result = DispatchResult.CreateSuccess();
-                result.CommandDefinition = command;
-                result.CommandOverload = overload;
-                result.ParsedArguments = matchResult.parsedArguments;
-                return result;
-            }
-
-            if (matchResult.usageMessage != null)
-            {
-                bestUsageMessage = matchResult.usageMessage;
-            }
+            // Successfully matched this overload
+            var result = DispatchResult.CreateSuccess();
+            result.CommandDefinition = command;
+            result.CommandOverload = bestMatch.overload;
+            result.ParsedArguments = bestMatch.parsedArguments;
+            return result;
         }
 
         // No overload matched
-        if (bestUsageMessage != null)
+        if (bestMatch.usageMessage != null)
         {
-            return DispatchResult.CreateInvalidArguments(bestUsageMessage);
+            var result = DispatchResult.CreateInvalidArguments(bestMatch.usageMessage);
+            result.CommandDefinition = command;
+            return result;
         }
 
         return DispatchResult.CreateNotFound();
     }
 
     /// <summary>
-    /// Tries to match the remaining arguments against the overload's parameters.
+    /// Finds the best matching overload for the given arguments.
+    /// Tries each overload and returns the one that consumes the least remaining input.
     /// </summary>
-    private (bool matched, string? usageMessage, object?[]? parsedArguments) TryMatchParameters(
+    private (bool matched, CommandOverload? overload, object?[]? parsedArguments, string? usageMessage) FindBestOverload(
+        CommandDefinition command,
+        string remainingArgs,
+        IServiceProvider services)
+    {
+        var bestMatch = (matched: false, overload: (CommandOverload?)null, parsedArguments: (object?[]?)null, remainingUnconsumed: int.MaxValue, usageMessage: (string?)null);
+
+        foreach (var overload in command.Overloads)
+        {
+            var matchResult = TryMatchParameters(overload, remainingArgs, services);
+            if (matchResult.matched)
+            {
+                // Check if this is a better match (less remaining input)
+                if (matchResult.remainingUnconsumed < bestMatch.remainingUnconsumed)
+                {
+                    bestMatch = (true, overload, matchResult.parsedArguments, matchResult.remainingUnconsumed, null);
+                }
+            }
+            else if (matchResult.usageMessage != null && bestMatch.usageMessage == null)
+            {
+                bestMatch.usageMessage = matchResult.usageMessage;
+            }
+        }
+
+        return (bestMatch.matched, bestMatch.overload, bestMatch.parsedArguments, bestMatch.usageMessage);
+    }
+
+    /// <summary>
+    /// Tries to match the remaining arguments against the overload's parameters.
+    /// Returns how many characters were unconsumed (for best-match selection).
+    /// </summary>
+    private (bool matched, string? usageMessage, object?[]? parsedArguments, int remainingUnconsumed) TryMatchParameters(
         CommandOverload overload,
-        string remainingArgs)
+        string remainingArgs,
+        IServiceProvider services)
     {
         var parameters = overload.ParsedParameters;
 
@@ -94,59 +140,78 @@ public class CommandDispatcher
         {
             if (string.IsNullOrWhiteSpace(remainingArgs))
             {
-                return (true, null, []);
+                return (true, null, [], 0);
             }
 
             // Has args but command takes none - invalid
-            return (false, GenerateUsageMessage(overload), null);
+            return (false, GenerateUsageMessage(overload), null, remainingArgs.Length);
         }
 
         // Count required vs optional parameters
         var requiredCount = parameters.Count(p => p.IsRequired);
-        var optionalCount = parameters.Length - requiredCount;
-
-        // Parse tokens from remaining args
-        var tokens = remainingArgs.Split([' ', '\t'], StringSplitOptions.RemoveEmptyEntries).ToList(); // todo - optimize
-
-        // Check if we have enough tokens (minimum required)
-        if (tokens.Count < requiredCount)
-        {
-            return (false, GenerateUsageMessage(overload), null);
-        }
-
-        // Check if we have too many tokens (maximum required+optional)
-        // Note: For the last parameter, if it's a StringParser, it consumes all remaining
-        var isLastParamString = parameters.Length > 0 &&
-            parameters[^1].Parser.GetType().Name == "StringParser";
-
-        if (!isLastParamString && tokens.Count > parameters.Length)
-        {
-            return (false, GenerateUsageMessage(overload), null);
-        }
 
         // Try to parse all parameters
         var remaining = remainingArgs;
         var parsedValues = new List<object?>();
+        var initialRemaining = remaining;
 
         foreach (var param in parameters)
         {
-            if (param.Parser.TryParse(new ServiceCollection().BuildServiceProvider(), ref remaining, out var value))
+            try
             {
-                parsedValues.Add(value);
+                if (param.Parser.TryParse(services, ref remaining, out var value))
+                {
+                    parsedValues.Add(value);
+                }
+                else if (param.IsRequired)
+                {
+                    return (false, GenerateUsageMessage(overload), null, initialRemaining.Length);
+                }
+                else
+                {
+                    // Optional parameter - use default
+                    parsedValues.Add(param.DefaultValue);
+                    // Don't advance 'remaining' for failed optional parse
+                }
             }
-            else if (param.IsRequired)
+            catch (Exception)
             {
-                return (false, GenerateUsageMessage(overload), null);
-            }
-            else
-            {
-                // Optional parameter - use default
+                // Parser threw exception - treat as parse failure
+                if (param.IsRequired)
+                {
+                    return (false, GenerateUsageMessage(overload), null, initialRemaining.Length);
+                }
+
                 parsedValues.Add(param.DefaultValue);
             }
         }
 
-        // Successfully matched
-        return (true, null, parsedValues.ToArray());
+        // Check if we have required minimum arguments before parsing
+        var requiredValid = true;
+        var testRemaining = remainingArgs;
+        var parsedRequiredCount = 0;
+
+        foreach (var param in parameters.Where(p => p.IsRequired))
+        {
+            if (param.Parser.TryParse(services, ref testRemaining, out _))
+            {
+                parsedRequiredCount++;
+            }
+            else
+            {
+                requiredValid = false;
+                break;
+            }
+        }
+
+        if (!requiredValid || parsedRequiredCount < requiredCount)
+        {
+            return (false, GenerateUsageMessage(overload), null, remainingArgs.Length);
+        }
+
+        // Successfully matched - calculate unconsumed length
+        var unconsumedLength = Math.Max(0, remaining.Length);
+        return (true, null, parsedValues.ToArray(), unconsumedLength);
     }
 
     /// <summary>Generates a usage message for a command overload.</summary>

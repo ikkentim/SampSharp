@@ -8,7 +8,7 @@ public class CommandDefinition
 {
     private readonly CommandOverload[] _overloads;
     private readonly CommandAlias[] _aliases;
-    private readonly string[] _permissions;
+    private readonly Dictionary<string, string> _tags;
 
     /// <summary>Initializes a new instance.</summary>
     public CommandDefinition(
@@ -16,7 +16,7 @@ public class CommandDefinition
         CommandGroup? group,
         CommandOverload[] overloads,
         CommandAlias[]? aliases = null,
-        string[]? permissions = null)
+        CommandTag[]? tags = null)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
@@ -32,7 +32,7 @@ public class CommandDefinition
         Group = group;
         _overloads = overloads;
         _aliases = aliases ?? [];
-        _permissions = permissions ?? [];
+        _tags = tags?.ToDictionary(t => t.Key, t => t.Value) ?? new Dictionary<string, string>();
     }
 
     /// <summary>The command name (without leading slash or group prefix).</summary>
@@ -47,8 +47,8 @@ public class CommandDefinition
     /// <summary>Aliases for this command (shorthand names).</summary>
     public IReadOnlyList<CommandAlias> Aliases => _aliases;
 
-    /// <summary>Required permissions for this command.</summary>
-    public IReadOnlyList<string> Permissions => _permissions;
+    /// <summary>Custom metadata tags attached to this command.</summary>
+    public IReadOnlyDictionary<string, string> Tags => _tags;
 
     /// <summary>The full command path (group + name), e.g., "admin money give".</summary>
     public string FullName => Group.HasValue

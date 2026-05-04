@@ -1,5 +1,6 @@
 using SampSharp.Entities.SAMP.Commands.Attributes;
 using SampSharp.Entities.SAMP.Commands.Help;
+using SampSharp.Entities.SAMP.Commands.Services;
 
 namespace SampSharp.Entities.SAMP.Commands;
 
@@ -8,7 +9,7 @@ namespace SampSharp.Entities.SAMP.Commands;
 /// </summary>
 public interface IPlayerCommandService
 {
-    ICommandEnumerator GetCommands();
+    Services.ICommandEnumerator GetCommands();
 
     /// <summary>Invokes a player command from the given chat input.</summary>
     /// <param name="services">Service provider used to resolve handler systems and DI parameters.</param>

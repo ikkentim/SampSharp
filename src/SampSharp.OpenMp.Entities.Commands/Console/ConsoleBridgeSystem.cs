@@ -40,18 +40,14 @@ internal class ConsoleBridgeSystem : ISystem
         // Build input text from command and args
         var inputText = string.IsNullOrEmpty(args) ? command : $"{command} {args}";
 
+        // Create a dispatch context with message handler to send responses back
+        var context = new ConsoleCommandDispatchContext(
+            player: sender.Player,
+            messageHandler: msg => System.Console.WriteLine(msg));
+
         // Dispatch through command service
-        var response = _commandService.Invoke(serviceProvider, sender, inputText);
+        var success = _commandService.Invoke(serviceProvider, context, inputText);
 
-        // If response is null, command succeeded silently
-        if (response != null)
-        {
-            System.Console.WriteLine(response);
-        }
-
-        // Return true if we handled it (found the command), false otherwise
-        // We determine this by whether we got a "not found" message
-        var registry = _commandService.GetRegistry();
-        return registry.TryFind(command) != null || (inputText.Contains(' ') && registry.TryFind(inputText.Split()[0]) != null);
+        return success;
     }
 }

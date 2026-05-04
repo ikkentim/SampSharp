@@ -21,7 +21,7 @@ public static class EcsBuilderCommandsExtensions
     {
         services.AddCommandsSystem();
 
-        services.TryAddSingleton<IPlayerCommandService, PlayerCommandService>();
+        services.TryAddSingleton<IPlayerCommandService>(sp => sp.GetRequiredService<PlayerCommandService>());
         return services;
     }
 
@@ -30,18 +30,21 @@ public static class EcsBuilderCommandsExtensions
     /// - CommandRegistry (for command storage/lookup)
     /// - CommandDispatcher (for parsing and matching)
     /// - ICommandEnumerator (for help/discovery)
-    /// - Service implementations (naming, permissions, help, error handling)
+    /// - ICommandUsageFormatter (for message formatting and delivery)
+    /// - IPermissionChecker (for permission validation)
+    /// - Service implementations (help, error handling)
     /// - ConsoleBridgeSystem (handles console command registration and dispatch)
     /// </summary>
     public static IServiceCollection AddCommandsSystem(this IServiceCollection services)
     {
-        services.TryAddSingleton<ICommandNameProvider, DefaultCommandNameProvider>();
+        services.TryAddSingleton<CommandRegistry>();
+        services.TryAddSingleton<ICommandUsageFormatter, DefaultCommandUsageFormatter>();
         services.TryAddSingleton<IPermissionChecker, DefaultPermissionChecker>();
-        services.TryAddSingleton<ICommandNotFoundHandler, DefaultCommandNotFoundHandler>();
         services.TryAddSingleton<ICommandHelpProvider, DefaultCommandHelpProvider>();
-        services.TryAddSingleton<ICommandEnumerator>(sp =>
-            new DefaultCommandEnumerator(sp.GetRequiredService<CommandRegistry>(), sp.GetService<ICommandNameProvider>()));
+        services.TryAddSingleton<Services.ICommandEnumerator>(sp =>
+            new Services.DefaultCommandEnumerator(sp.GetRequiredService<CommandRegistry>(), sp.GetRequiredService<IPermissionChecker>()));
 
+        services.TryAddSingleton<PlayerCommandService>();
         services.TryAddSingleton<ConsoleCommandService>();
 
         // Register the console bridge system for handling console command events

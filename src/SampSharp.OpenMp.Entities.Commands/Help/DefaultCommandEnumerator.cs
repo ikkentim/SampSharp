@@ -110,7 +110,7 @@ public class DefaultCommandEnumerator : ICommandEnumerator
             group: definition.Group,
             aliases: definition.Aliases.ToList().AsReadOnly(),
             overloads: definition.Overloads.ToList().AsReadOnly(),
-            permissions: definition.Permissions.ToList().AsReadOnly(),
+            permissions: definition.Tags.Select(t => t.Value).ToList().AsReadOnly(),
             usageMessage: usageMessage,
             helpText: helpText);
     }
@@ -167,9 +167,13 @@ public class DefaultCommandEnumerator : ICommandEnumerator
             lines.Add($"Aliases: {string.Join(", ", definition.Aliases.Select(a => a.Name))}");
         }
 
-        if (definition.Permissions.Count > 0)
+        if (definition.Tags.Count > 0)
         {
-            lines.Add($"Requires: {string.Join(", ", definition.Permissions)}");
+            var permTags = definition.Tags.Where(t => t.Key == "permission").Select(t => t.Value).ToList();
+            if (permTags.Count > 0)
+            {
+                lines.Add($"Requires: {string.Join(", ", permTags)}");
+            }
         }
 
         if (definition.Overloads.Count > 0)

@@ -14,8 +14,13 @@ public class CommandDispatcherTests
 {
     private readonly CommandDispatcher _dispatcher = new();
     private readonly CommandRegistry _registry = new();
+    private readonly IServiceProvider _serviceProvider;
 
-    [Fact]
+    public CommandDispatcherTests()
+    {
+        var services = new ServiceCollection();
+        _serviceProvider = services.BuildServiceProvider();
+    }
     public void Dispatch_NullRegistry_ThrowsArgumentNullException()
     {
         var action = () => _dispatcher.Dispatch(null!, "test", []);
@@ -25,21 +30,21 @@ public class CommandDispatcherTests
     [Fact]
     public void Dispatch_EmptyInput_ReturnsNotFound()
     {
-        var result = _dispatcher.Dispatch(_registry, "", []);
+        var result = _dispatcher.Dispatch(_registry, _serviceProvider, "", [], null);
         result.Response.ShouldBe(DispatchResponse.CommandNotFound);
     }
 
     [Fact]
     public void Dispatch_WhitespaceInput_ReturnsNotFound()
     {
-        var result = _dispatcher.Dispatch(_registry, "   ", []);
+        var result = _dispatcher.Dispatch(_registry, _serviceProvider, "   ", [], null);
         result.Response.ShouldBe(DispatchResponse.CommandNotFound);
     }
 
     [Fact]
     public void Dispatch_UnregisteredCommand_ReturnsNotFound()
     {
-        var result = _dispatcher.Dispatch(_registry, "unknown", []);
+        var result = _dispatcher.Dispatch(_registry, _serviceProvider, "unknown", [], null);
         result.Response.ShouldBe(DispatchResponse.CommandNotFound);
     }
 
@@ -54,7 +59,7 @@ public class CommandDispatcherTests
         var definition = new CommandDefinition("test", null, [overload]);
         _registry.Register(definition);
 
-        var result = _dispatcher.Dispatch(_registry, "test", []);
+        var result = _dispatcher.Dispatch(_registry, _serviceProvider, "test", [], null);
         result.Response.ShouldBe(DispatchResponse.Success);
         result.CommandDefinition.ShouldBe(definition);
     }
@@ -72,7 +77,7 @@ public class CommandDispatcherTests
         _registry.Register(definition);
 
         // Should find by alias
-        var result = _dispatcher.Dispatch(_registry, "t", []);
+        var result = _dispatcher.Dispatch(_registry, _serviceProvider, "t", [], null);
         result.Response.ShouldBe(DispatchResponse.Success);
         result.CommandDefinition.ShouldBe(definition);
     }
@@ -250,7 +255,7 @@ public class CommandDispatcherTests
         found!.Overloads.Count.ShouldBeGreaterThanOrEqualTo(1, $"Should have at least 1 overload, got {found.Overloads.Count}");
         found.Overloads[0].ParsedParameters.Length.ShouldBeGreaterThanOrEqualTo(2, $"Overload should have at least 2 params, got {found.Overloads[0].ParsedParameters.Length}");
 
-        var result = _dispatcher.Dispatch(_registry, "add_numbers 3 5", []);
+        var result = _dispatcher.Dispatch(_registry, _serviceProvider, "add_numbers 3 5", [], null);
         result.Response.ShouldBe(DispatchResponse.Success, $"Expected Success but got {result.Response} with message: {result.UsageMessage}");
         result.ParsedArguments.ShouldNotBeNull("ParsedArguments should not be null");
         result.ParsedArguments!.Length.ShouldBe(2, $"Should have parsed 2 arguments, got {result.ParsedArguments.Length}");
@@ -278,7 +283,7 @@ public class CommandDispatcherTests
         _registry.Register(definition);
 
         // Using alias with parameters
-        var result = _dispatcher.Dispatch(_registry, "add 3 5", []);
+        var result = _dispatcher.Dispatch(_registry, _serviceProvider, "add 3 5", [], null);
         result.Response.ShouldBe(DispatchResponse.Success);
         result.ParsedArguments.ShouldNotBeNull();
         result.ParsedArguments!.Length.ShouldBe(2);
@@ -305,7 +310,7 @@ public class CommandDispatcherTests
         _registry.Register(definition);
 
         // Missing second parameter
-        var result = _dispatcher.Dispatch(_registry, "add_numbers 3", []);
+        var result = _dispatcher.Dispatch(_registry, _serviceProvider, "add_numbers 3", [], null);
         result.Response.ShouldBe(DispatchResponse.InvalidArguments);
         result.UsageMessage.ShouldNotBeNull().ShouldContain("Usage:");
     }
@@ -329,7 +334,7 @@ public class CommandDispatcherTests
         _registry.Register(definition);
 
         // Non-integer parameter
-        var result = _dispatcher.Dispatch(_registry, "add_numbers abc def", []);
+        var result = _dispatcher.Dispatch(_registry, _serviceProvider, "add_numbers abc def", [], null);
         result.Response.ShouldBe(DispatchResponse.InvalidArguments);
     }
 
@@ -352,7 +357,7 @@ public class CommandDispatcherTests
         _registry.Register(definition);
 
         // Extra parameter
-        var result = _dispatcher.Dispatch(_registry, "add_numbers 3 5 7", []);
+        var result = _dispatcher.Dispatch(_registry, _serviceProvider, "add_numbers 3 5 7", [], null);
         result.Response.ShouldBe(DispatchResponse.InvalidArguments);
     }
 
