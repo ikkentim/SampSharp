@@ -52,12 +52,12 @@ public interface IServerService
     /// <param name="weapon2Ammo">The amount of ammunition of the second weapon for the player to spawn with.</param>
     /// <param name="weapon3">The third weapon for the player to spawn with.</param>
     /// <param name="weapon3Ammo">The amount of ammunition of the third weapon for the player to spawn with.</param>
-    /// <returns>The identifier of the class which was added.</returns>
+    /// <returns>The created player class component.</returns>
     /// <remarks>
     /// The maximum class ID is 319 (starting from 0, so a total of 320 classes). When this limit is reached, any more classes that are added will replace ID
     /// 319.
     /// </remarks>
-    int AddPlayerClass(int teamId, int modelId, Vector3 spawnPosition, float angle, Weapon weapon1 = Weapon.None, int weapon1Ammo = 0,
+    PlayerClass AddPlayerClass(int teamId, int modelId, Vector3 spawnPosition, float angle, Weapon weapon1 = Weapon.None, int weapon1Ammo = 0,
         Weapon weapon2 = Weapon.None, int weapon2Ammo = 0, Weapon weapon3 = Weapon.None, int weapon3Ammo = 0);
 
     /// <summary>
@@ -72,12 +72,12 @@ public interface IServerService
     /// <param name="weapon2Ammo">The amount of ammunition of the second weapon for the player to spawn with.</param>
     /// <param name="weapon3">The third weapon for the player to spawn with.</param>
     /// <param name="weapon3Ammo">The amount of ammunition of the third weapon for the player to spawn with.</param>
-    /// <returns>The identifier of the class which was added.</returns>
+    /// <returns>The created player class component.</returns>
     /// <remarks>
     /// The maximum class ID is 319 (starting from 0, so a total of 320 classes). When this limit is reached, any more classes that are added will replace ID
     /// 319.
     /// </remarks>
-    int AddPlayerClass(int modelId, Vector3 spawnPosition, float angle, Weapon weapon1 = Weapon.None, int weapon1Ammo = 0, Weapon weapon2 = Weapon.None,
+    PlayerClass AddPlayerClass(int modelId, Vector3 spawnPosition, float angle, Weapon weapon1 = Weapon.None, int weapon1Ammo = 0, Weapon weapon2 = Weapon.None,
         int weapon2Ammo = 0, Weapon weapon3 = Weapon.None, int weapon3Ammo = 0);
 
     /// <summary>

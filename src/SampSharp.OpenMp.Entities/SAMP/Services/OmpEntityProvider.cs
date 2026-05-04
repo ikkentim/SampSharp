@@ -7,6 +7,7 @@ namespace SampSharp.Entities.SAMP;
 internal class OmpEntityProvider(SampSharpEnvironment environment, IEntityManager entityManager) : IOmpEntityProvider
 {
     private readonly IActorsComponent _actors = environment.Components.QueryComponent<IActorsComponent>();
+    private readonly IClassesComponent _classes = environment.Components.QueryComponent<IClassesComponent>();
     private readonly IGangZonesComponent _gangZones = environment.Components.QueryComponent<IGangZonesComponent>();
     private readonly IMenusComponent _menus = environment.Components.QueryComponent<IMenusComponent>();
     private readonly INPCComponent _npcs = environment.Components.QueryComponent<INPCComponent>();
@@ -80,6 +81,31 @@ internal class OmpEntityProvider(SampSharpEnvironment environment, IEntityManage
     public EntityId GetEntity(IVehicle vehicle)
     {
         return GetComponent(vehicle)?.Entity ?? default;
+    }
+
+    public EntityId GetEntity(IClass playerClass)
+    {
+        return GetComponent(playerClass)?.Entity ?? default;
+    }
+
+    public PlayerClass? GetComponent(IClass playerClass)
+    {
+        if (playerClass == null)
+        {
+            return null;
+        }
+
+        var ext = playerClass.TryGetExtension<ComponentExtension>();
+        if (ext == null)
+        {
+            var component = entityManager.AddComponent<PlayerClass>(EntityId.NewEntityId(), _classes, playerClass);
+            ext = new ComponentExtension(component);
+            playerClass.AddExtension(ext);
+
+            return component;
+        }
+
+        return (PlayerClass)ext.Component;
     }
 
     public Actor? GetComponent(IActor actor)
@@ -371,6 +397,11 @@ internal class OmpEntityProvider(SampSharpEnvironment environment, IEntityManage
         }
 
         return (Vehicle)ext.Component;
+    }
+
+    public PlayerClass? GetPlayerClass(int id)
+    {
+        return GetComponent(_classes.AsPool().Get(id));
     }
 
     public Actor? GetActor(int id)

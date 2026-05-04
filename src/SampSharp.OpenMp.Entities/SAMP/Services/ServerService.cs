@@ -12,12 +12,14 @@ internal class ServerService : IServerService
     private readonly IConfig _config;
     private readonly IConsoleComponent _console;
     private readonly ICore _core;
+    private readonly IEntityManager _entityManager;
     private readonly ILogger<ServerService> _logger;
     private readonly IPlayerPool _players;
     private readonly IVehiclesComponent _vehicles;
 
-    public ServerService(SampSharpEnvironment environment, ILogger<ServerService> logger)
+    public ServerService(SampSharpEnvironment environment, IEntityManager entityManager, ILogger<ServerService> logger)
     {
+        _entityManager = entityManager;
         _logger = logger;
         _actors = environment.Components.QueryComponent<IActorsComponent>();
         _config = environment.Core.GetConfig();
@@ -90,9 +92,7 @@ internal class ServerService : IServerService
         }
     }
 
-    // TODO: convert classes to components
-
-    public int AddPlayerClass(int teamId, int modelId, Vector3 spawnPosition, float angle, Weapon weapon1 = Weapon.None, int weapon1Ammo = 0, Weapon weapon2 = Weapon.None,
+    public PlayerClass AddPlayerClass(int teamId, int modelId, Vector3 spawnPosition, float angle, Weapon weapon1 = Weapon.None, int weapon1Ammo = 0, Weapon weapon2 = Weapon.None,
         int weapon2Ammo = 0, Weapon weapon3 = Weapon.None, int weapon3Ammo = 0)
     {
         var slots = new WeaponSlotData[WeaponSlots.MAX_WEAPON_SLOTS];
@@ -105,10 +105,16 @@ internal class ServerService : IServerService
 
         var @class = _classes.Create(modelId, teamId, spawnPosition, angle, ref weapons);
 
-        return @class.GetID();
+        var entityId = EntityId.NewEntityId();
+        var component = _entityManager.AddComponent<PlayerClass>(entityId, _classes, @class);
+
+        var extension = new ComponentExtension(component);
+        @class.AddExtension(extension);
+
+        return component;
     }
 
-    public int AddPlayerClass(int modelId, Vector3 spawnPosition, float angle, Weapon weapon1 = Weapon.None, int weapon1Ammo = 0, Weapon weapon2 = Weapon.None, int weapon2Ammo = 0,
+    public PlayerClass AddPlayerClass(int modelId, Vector3 spawnPosition, float angle, Weapon weapon1 = Weapon.None, int weapon1Ammo = 0, Weapon weapon2 = Weapon.None, int weapon2Ammo = 0,
         Weapon weapon3 = Weapon.None, int weapon3Ammo = 0)
     {
         return AddPlayerClass(OpenMpConstants.TEAM_NONE, modelId, spawnPosition, angle, weapon1, weapon1Ammo, weapon2, weapon2Ammo, weapon3, weapon3Ammo);

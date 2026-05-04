@@ -107,6 +107,20 @@ public interface IOmpEntityProvider
     EntityId GetEntity(IVehicle vehicle);
 
     /// <summary>
+    /// Gets the component for the specified player class.
+    /// </summary>
+    /// <param name="playerClass">The player class to get the component for.</param>
+    /// <returns>The player class component.</returns>
+    PlayerClass? GetComponent(IClass playerClass);
+
+    /// <summary>
+    /// Gets the entity for the specified player class.
+    /// </summary>
+    /// <param name="playerClass">The player class to get the entity for.</param>
+    /// <returns>The player class entity.</returns>
+    EntityId GetEntity(IClass playerClass);
+
+    /// <summary>
     /// Gets the component for the specified actor.
     /// </summary>
     /// <param name="actor">The actor to get the component for.</param>
@@ -199,6 +213,13 @@ public interface IOmpEntityProvider
     /// <param name="vehicle">The vehicle to get the component for.</param>
     /// <returns>The vehicle component.</returns>
     Vehicle? GetComponent(IVehicle vehicle);
+
+    /// <summary>
+    /// Gets the player class with the specified identifier.
+    /// </summary>
+    /// <param name="id">The identifier of the player class.</param>
+    /// <returns>The player class with the specified identifier or <see langword="null" /> if no player class could be found.</returns>
+    PlayerClass? GetPlayerClass(int id);
 
     /// <summary>
     /// Gets the actor with the specified identifier.
