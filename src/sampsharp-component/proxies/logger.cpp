@@ -1,4 +1,5 @@
 #include <sdk.hpp>
+#include "../proxy-api.hpp"
 
 extern "C" SDK_EXPORT void __CDECL ILogger_printLn(ILogger * subject, const char * msg)
 {

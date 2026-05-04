@@ -1,4 +1,5 @@
 #include <sdk.hpp>
+#include "../proxy-api.hpp"
 
 template <typename T>
 struct IPoolHack : public IPool<T> {
