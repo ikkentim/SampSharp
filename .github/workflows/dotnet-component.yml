@@ -8,7 +8,7 @@ on:
     paths:
       - .github/workflows/dotnet-component.yml
       - src/SampSharp.*/**
-      - src/TestMode.*/**
+      - test/TestMode.*/**
       - SampSharp.slnx
       - Directory.Build.props
       - build.sh
@@ -20,7 +20,7 @@ on:
     paths:
       - .github/workflows/dotnet-component.yml
       - src/SampSharp.*/**
-      - src/TestMode.*/**
+      - test/TestMode.*/**
       - SampSharp.slnx
       - Directory.Build.props
       - build.sh

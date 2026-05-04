@@ -28,3 +28,4 @@ if errorlevel 1 exit /b 1
 
 echo.
 echo Open.mp component build complete. Output: %BUILDDIR%\artifacts
+exit /b 0

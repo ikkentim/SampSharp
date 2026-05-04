@@ -28,3 +28,4 @@ if errorlevel 1 exit /b 1
 
 echo.
 echo Legacy plugin build complete. Output: %ROOTDIR%\build\bin\SampSharp\Release
+exit /b 0

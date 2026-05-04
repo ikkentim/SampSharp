@@ -20,8 +20,8 @@
     <File Path="README.md" />
   </Folder>
   <Folder Name="/TestingModes/">
-    <Project Path="src/TestMode.OpenMp.Core/TestMode.OpenMp.Core.csproj" />
-    <Project Path="src/TestMode.OpenMp.Entities/TestMode.OpenMp.Entities.csproj" />
-    <Project Path="src/TestMode.UnitTests/TestMode.UnitTests.csproj" />
+    <Project Path="test/TestMode.OpenMp.Core/TestMode.OpenMp.Core.csproj" />
+    <Project Path="test/TestMode.OpenMp.Entities/TestMode.OpenMp.Entities.csproj" />
+    <Project Path="test/TestMode.UnitTests/TestMode.UnitTests.csproj" />
   </Folder>
 </Solution>
