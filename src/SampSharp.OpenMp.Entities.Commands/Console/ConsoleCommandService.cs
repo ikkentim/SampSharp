@@ -18,12 +18,14 @@ public class ConsoleCommandService
     private readonly CommandExecutor _executor;
     private readonly IEntityManager _entityManager;
     private readonly ISystemRegistry _systemRegistry;
+    private readonly IUnhandledExceptionHandler _unhandledExceptionHandler;
     private readonly ICommandNotFoundHandler _notFoundHandler;
 
     public ConsoleCommandService(
         IEntityManager entityManager,
         ISystemRegistry systemRegistry,
-        ICommandNotFoundHandler? notFoundHandler = null)
+        ICommandNotFoundHandler? notFoundHandler,
+        IUnhandledExceptionHandler unhandledExceptionHandler)
     {
         if (entityManager == null)
         {
@@ -37,6 +39,7 @@ public class ConsoleCommandService
 
         _entityManager = entityManager;
         _systemRegistry = systemRegistry;
+        _unhandledExceptionHandler = unhandledExceptionHandler;
         _executor = new CommandExecutor(entityManager);
         _notFoundHandler = notFoundHandler ?? new DefaultCommandNotFoundHandler();
 
@@ -106,8 +109,7 @@ public class ConsoleCommandService
         {
             // Execute the command
             var result = _executor.Execute(
-                overload,
-                new object[] { senderData },
+                overload, [senderData],
                 parsedArgs,
                 services,
                 system);
@@ -122,8 +124,9 @@ public class ConsoleCommandService
 
             return success;
         }
-        catch (Exception)
+        catch (Exception e)
         {
+            _unhandledExceptionHandler.Handle("console-command", e);
             return false;
         }
     }

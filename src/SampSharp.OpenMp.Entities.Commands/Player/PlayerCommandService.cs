@@ -1,6 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using SampSharp.Entities.SAMP;
 using SampSharp.Entities.SAMP.Commands.Async;
+using SampSharp.Entities.SAMP.Commands.Attributes;
 using SampSharp.Entities.SAMP.Commands.Core;
 using SampSharp.Entities.SAMP.Commands.Core.Execution;
 using SampSharp.Entities.SAMP.Commands.Core.Scanning;
@@ -23,16 +24,19 @@ public class PlayerCommandService : IPlayerCommandService
     private readonly IPermissionChecker _permissionChecker;
     private readonly ICommandNotFoundHandler _notFoundHandler;
     private readonly ISystemRegistry _systemRegistry;
+    private readonly IUnhandledExceptionHandler _unhandledExceptionHandler;
 
     public PlayerCommandService(
         IEntityManager entityManager,
         ISystemRegistry systemRegistry,
-        ICommandNameProvider? nameProvider = null,
-        IPermissionChecker? permissionChecker = null,
-        ICommandNotFoundHandler? notFoundHandler = null)
+        ICommandNameProvider? nameProvider,
+        IPermissionChecker? permissionChecker,
+        ICommandNotFoundHandler? notFoundHandler,
+        IUnhandledExceptionHandler unhandledExceptionHandler)
     {
         _entityManager = entityManager ?? throw new ArgumentNullException(nameof(entityManager));
         _systemRegistry = systemRegistry ?? throw new ArgumentNullException(nameof(systemRegistry));
+        _unhandledExceptionHandler = unhandledExceptionHandler;
 
         _executor = new CommandExecutor(entityManager);
         _nameProvider = nameProvider ?? new DefaultCommandNameProvider();
@@ -65,7 +69,7 @@ public class PlayerCommandService : IPlayerCommandService
         }
 
         // Dispatch the command to find matching overload
-        var dispatchResult = _dispatcher.Dispatch(_registry, commandText, new object[] { player });
+        var dispatchResult = _dispatcher.Dispatch(_registry, commandText, [player]);
 
         // Handle the dispatch result
         switch (dispatchResult.Response)
@@ -108,10 +112,9 @@ public class PlayerCommandService : IPlayerCommandService
         }
 
         // Check permissions
-        var permAttr = overload.Method.GetCustomAttributes(typeof(Attributes.RequiresPermissionAttribute), false)
-            .FirstOrDefault() as Attributes.RequiresPermissionAttribute;
 
-        if (permAttr != null)
+        if (overload.Method.GetCustomAttributes(typeof(RequiresPermissionAttribute), false)
+                .FirstOrDefault() is RequiresPermissionAttribute permAttr)
         {
             if (!_permissionChecker.HasPermission(player, permAttr.Permissions))
             {
@@ -122,6 +125,7 @@ public class PlayerCommandService : IPlayerCommandService
         }
 
         // Get the system instance
+        // TODO: - optimize GetService away
         var system = services.GetService(overload.DeclaringSystemType) as ISystem;
         if (system == null)
         {
@@ -132,8 +136,7 @@ public class PlayerCommandService : IPlayerCommandService
         {
             // Execute the command
             var result = _executor.Execute(
-                overload,
-                new object[] { player },
+                overload, [player],
                 parsedArgs,
                 services,
                 system);
@@ -157,8 +160,7 @@ public class PlayerCommandService : IPlayerCommandService
         }
         catch (Exception ex)
         {
-            var errMsg = $"Error executing command: {ex.Message}";
-            _entityManager.GetComponent<SampSharp.Entities.SAMP.Player>(player)?.SendClientMessage(errMsg);
+            _unhandledExceptionHandler.Handle("player-command", ex);
             return true;
         }
     }

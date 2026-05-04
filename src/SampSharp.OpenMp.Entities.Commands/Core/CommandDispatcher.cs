@@ -19,10 +19,7 @@ public class CommandDispatcher
     /// <returns>The dispatch result.</returns>
     public DispatchResult Dispatch(CommandRegistry registry, string inputText, object[] prefix)
     {
-        if (registry == null)
-        {
-            throw new ArgumentNullException(nameof(registry));
-        }
+        ArgumentNullException.ThrowIfNull(registry);
 
         if (string.IsNullOrWhiteSpace(inputText))
         {
@@ -32,7 +29,7 @@ public class CommandDispatcher
         inputText = inputText.Trim();
 
         // Split input into tokens and try to find the command by matching from longest to shortest path
-        var tokens = inputText.Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+        var tokens = inputText.Split([' ', '\t'], StringSplitOptions.RemoveEmptyEntries); // TODO - optimize
         if (tokens.Length == 0)
         {
             return DispatchResult.CreateNotFound();
@@ -40,7 +37,7 @@ public class CommandDispatcher
 
         // Try to find the command in the registry
         // TryFindByPath returns how many tokens were consumed
-        var command = registry.TryFindByPath(tokens, out int consumedTokenCount);
+        var command = registry.TryFindByPath(tokens, out var consumedTokenCount);
         if (command == null)
         {
             return DispatchResult.CreateNotFound();
@@ -97,7 +94,7 @@ public class CommandDispatcher
         {
             if (string.IsNullOrWhiteSpace(remainingArgs))
             {
-                return (true, null, new object[0]);
+                return (true, null, []);
             }
 
             // Has args but command takes none - invalid
@@ -109,7 +106,7 @@ public class CommandDispatcher
         var optionalCount = parameters.Length - requiredCount;
 
         // Parse tokens from remaining args
-        var tokens = remainingArgs.Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+        var tokens = remainingArgs.Split([' ', '\t'], StringSplitOptions.RemoveEmptyEntries).ToList(); // todo - optimize
 
         // Check if we have enough tokens (minimum required)
         if (tokens.Count < requiredCount)
@@ -128,7 +125,7 @@ public class CommandDispatcher
         }
 
         // Try to parse all parameters
-        string remaining = remainingArgs;
+        var remaining = remainingArgs;
         var parsedValues = new List<object?>();
 
         foreach (var param in parameters)
@@ -153,7 +150,7 @@ public class CommandDispatcher
     }
 
     /// <summary>Generates a usage message for a command overload.</summary>
-    private string GenerateUsageMessage(CommandOverload overload)
+    private static string GenerateUsageMessage(CommandOverload overload)
     {
         var command = overload.Method.Name.ToLowerInvariant();
         if (command.EndsWith("command"))

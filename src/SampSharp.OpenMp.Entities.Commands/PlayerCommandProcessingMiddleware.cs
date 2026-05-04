@@ -1,30 +1,42 @@
-using SampSharp.Entities;
-using SampSharp.Entities.SAMP;
-using SampSharp.Entities.SAMP.Commands.Core;
-
 namespace SampSharp.Entities.SAMP.Commands;
 
-/// <summary>
-/// Middleware for processing player command text via <see cref="IPlayerCommandService" />.
-/// </summary>
-public class PlayerCommandProcessingMiddleware : ISystem
+internal class PlayerCommandProcessingMiddleware
 {
-    private readonly IPlayerCommandService _playerCommandService;
-    private readonly IServiceProvider _services;
+    private readonly EventDelegate _next;
 
-    /// <summary>Initializes a new instance.</summary>
-    public PlayerCommandProcessingMiddleware(IPlayerCommandService playerCommandService, IServiceProvider services)
+    public PlayerCommandProcessingMiddleware(EventDelegate next)
     {
-        _playerCommandService = playerCommandService ?? throw new ArgumentNullException(nameof(playerCommandService));
-        _services = services ?? throw new ArgumentNullException(nameof(services));
+        _next = next;
     }
 
-    /// <summary>Handles OnPlayerCommandText events.</summary>
-    [Event]
-    public void OnPlayerCommandText(SampSharp.Entities.SAMP.Player player, string text)
+    /// <summary>Invokes the middleware.</summary>
+    public object? Invoke(EventContext context, IPlayerCommandService commandService)
     {
-        // Try to process the command
-        // Returns true if a handler claimed it, false otherwise
-        _playerCommandService.Invoke(_services, player.Entity, text);
+        var result = _next(context);
+
+        // Successful response → done. We treat anything truthy as "handled" (matches EventDispatcher semantics).
+        if (IsHandled(result))
+        {
+            return result;
+        }
+
+        if (context.Arguments is [EntityId player, string text, ..])
+        {
+            return commandService.Invoke(context.EventServices, player, text);
+        }
+
+        return result;
+    }
+
+    private static bool IsHandled(object? result)
+    {
+        return result switch
+        {
+            null => false,
+            bool b => b,
+            int i => i != 0,
+            MethodResult mr => mr.Value,
+            _ => true
+        };
     }
 }

@@ -21,12 +21,43 @@ public readonly struct CommandAlias : IEquatable<CommandAlias>
     /// <summary>The alias name (without leading slash).</summary>
     public string Name { get; }
 
-    public override bool Equals(object? obj) => obj is CommandAlias other && Equals(other);
-    public bool Equals(CommandAlias other) => Name == other.Name;
-    public override int GetHashCode() => Name.GetHashCode();
+    /// <inheritdoc />
+    public override bool Equals(object? obj)
+    {
+        return obj is CommandAlias other && Equals(other);
+    }
 
-    public override string ToString() => Name;
+    /// <inheritdoc />
+    public bool Equals(CommandAlias other)
+    {
+        return Name == other.Name;
+    }
 
-    public static bool operator ==(CommandAlias left, CommandAlias right) => left.Equals(right);
-    public static bool operator !=(CommandAlias left, CommandAlias right) => !left.Equals(right);
+    /// <inheritdoc />
+    public override int GetHashCode()
+    {
+        return Name.GetHashCode();
+    }
+
+    /// <inheritdoc />
+    public override string ToString()
+    {
+        return Name;
+    }
+
+    /// <summary>
+    /// Implementation of the equality operator.
+    /// </summary>
+    public static bool operator ==(CommandAlias left, CommandAlias right)
+    {
+        return left.Equals(right);
+    }
+
+    /// <summary>
+    /// Implementation of the inequality operator.
+    /// </summary>
+    public static bool operator !=(CommandAlias left, CommandAlias right)
+    {
+        return !left.Equals(right);
+    }
 }

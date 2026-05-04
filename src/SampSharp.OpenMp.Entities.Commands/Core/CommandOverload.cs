@@ -14,8 +14,8 @@ public class CommandOverload
         ParameterInfo[] parameters,
         Type declaringSystemType,
         CommandParameterInfo[] parsedParameters,
-        MethodInvoker? invoker = null,
-        int prefixParameterCount = 0)
+        MethodInvoker invoker,
+        int prefixParameterCount)
     {
         if (method == null)
         {
@@ -61,7 +61,7 @@ public class CommandOverload
     public CommandParameterInfo[] ParsedParameters { get; }
 
     /// <summary>The pre-compiled method invoker (compiled at discovery time).</summary>
-    public MethodInvoker? CompiledInvoker { get; }
+    public MethodInvoker CompiledInvoker { get; }
 
     /// <summary>The number of prefix parameters (e.g., Player for player commands, ConsoleCommandSender for console commands).</summary>
     public int PrefixParameterCount { get; }

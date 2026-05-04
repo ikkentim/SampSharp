@@ -19,7 +19,7 @@ public class AliasAttribute : Attribute
             throw new ArgumentException("Alias cannot be empty.", nameof(alias));
         }
 
-        Aliases = new[] { alias };
+        Aliases = [alias];
     }
 
     /// <summary>Initializes a new instance with multiple aliases.</summary>

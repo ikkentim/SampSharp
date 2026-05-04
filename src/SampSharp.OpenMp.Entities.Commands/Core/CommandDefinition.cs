@@ -57,7 +57,9 @@ public class CommandDefinition
 
     /// <summary>Checks if this command has the given alias.</summary>
     public bool HasAlias(string alias)
-        => _aliases.Any(a => a.Name == alias);
+    {
+        return _aliases.Any(a => a.Name == alias);
+    }
 
     /// <summary>Tries to find an overload that can handle the given parameter count.</summary>
     public CommandOverload? FindBestOverload(int parameterCount)
