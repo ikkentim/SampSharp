@@ -642,9 +642,8 @@ public class Player : WorldEntity
     /// </summary>
     public virtual string ClientVersionName => _player.GetClientVersionName();
 
-    // TODO: Is ghost mode only available for open-mp clients? If available for SA-MP clients, remove the 'open.mp only' note from the docs.
     /// <summary>
-    /// Gets or sets a value indicating whether ghost mode is enabled for this player. (open.mp only)
+    /// Gets or sets a value indicating whether ghost mode is enabled for this player.
     /// </summary>
     /// <remarks>When enabled, other players will pass through this player as if they were not there.</remarks>
     public virtual bool IsGhostModeEnabled
