@@ -13,6 +13,8 @@
         <ProjectReference Include="..\SampSharp.Analyzer\SampSharp.Analyzer.csproj" PrivateAssets="None" />
         <ProjectReference Include="..\SampSharp.CodeFixes\SampSharp.CodeFixes.csproj" PrivateAssets="None" />
         <ProjectReference Include="..\SampSharp.OpenMp.Core\SampSharp.OpenMp.Core.csproj" />
+        <ProjectReference Include="..\SampSharp.OpenMp.Entities\SampSharp.OpenMp.Entities.csproj" />
+        <ProjectReference Include="..\SampSharp.OpenMp.Entities.Commands\SampSharp.OpenMp.Entities.Commands.csproj" />
         <ProjectReference Include="..\SampSharp.SourceGenerator\SampSharp.SourceGenerator.csproj" PrivateAssets="None" />
     </ItemGroup>
 
