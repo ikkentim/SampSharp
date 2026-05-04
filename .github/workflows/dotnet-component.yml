@@ -49,3 +49,4 @@ jobs:
         name: sampsharp-component-nuget-packages
         path: build/artifacts/packages/
         if-no-files-found: error
+        retention-days: ${{ github.event_name == 'pull_request' && 14 || 90 }}
