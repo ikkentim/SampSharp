@@ -1,6 +1,6 @@
 # SampSharp.Sdk
 
-SampSharp.Sdk is the recommended starting point for developing open.mp gamemodes with SampSharp. It is a metapackage that bundles all of the core SampSharp libraries, analyzers, code fixes, and the source generator into a single convenient package reference.
+SampSharp.Sdk is the recommended starting point for developing open.mp gamemodes with SampSharp. It is a metapackage that bundles all of the core SampSharp libraries, the entity-component system (ECS) framework and command system, analyzers, code fixes, and the source generator into a single convenient package reference.
 
 ## About SampSharp
 
