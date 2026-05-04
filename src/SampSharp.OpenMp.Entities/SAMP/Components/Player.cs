@@ -2,6 +2,7 @@
 using System.Numerics;
 using JetBrains.Annotations;
 using SampSharp.OpenMp.Core.Api;
+using OmpPlayerClass = SampSharp.OpenMp.Core.Api.PlayerClass;
 
 namespace SampSharp.Entities.SAMP;
 
@@ -789,7 +790,7 @@ public class Player : WorldEntity
         weapons[1] = new WeaponSlotData((byte)weapon2, weapon2Ammo);
         weapons[2] = new WeaponSlotData((byte)weapon3, weapon3Ammo);
 
-        var info = new PlayerClass(team, skin, position, rotation, new WeaponSlots(weapons));
+        var info = new OmpPlayerClass(team, skin, position, rotation, new WeaponSlots(weapons));
 
         ClassData.SetSpawnInfo(ref info);
     }
