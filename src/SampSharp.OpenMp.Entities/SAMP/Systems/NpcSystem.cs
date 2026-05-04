@@ -145,7 +145,7 @@ internal class NpcSystem : DisposableSystem, INPCEventHandler
         _eventDispatcher.Invoke("OnNPCFinishNodePoint",
             _entityProvider.GetEntity(npc),
             nodeId,
-            (int)pointId);
+            pointId);
     }
 
     public void OnNPCFinishNode(INPC npc, int nodeId)

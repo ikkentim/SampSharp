@@ -20,6 +20,8 @@ namespace SampSharp.Entities.SAMP;
 /// </remarks>
 public class Npc : IdProvider
 {
+    private const int DefaultPositionCheckUpdateDelayMs = 500;
+
     private readonly INPC _npc;
     private readonly INPCComponent _npcs;
 
@@ -405,7 +407,7 @@ public class Npc : IdProvider
     {
         ArgumentNullException.ThrowIfNull(player);
         return _npc.MoveToPlayer(player, moveType, moveSpeed, stopRange,
-            posCheckUpdateDelay == default ? new Milliseconds(500) : (Milliseconds)posCheckUpdateDelay,
+            posCheckUpdateDelay == default ? new Milliseconds(DefaultPositionCheckUpdateDelayMs) : (Milliseconds)posCheckUpdateDelay,
             autoRestart);
     }
 
