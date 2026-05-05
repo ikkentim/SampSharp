@@ -117,8 +117,8 @@ public class SampleCommandsSystem : ISystem
     {
         player.SendClientMessage("--- Available Commands ---");
 
-        new DefaultCommandHelpProvider(commands.GetCommands().Registry);
-        var playerCommands = commands.GetCommands().GetAllCommands()
+        new DefaultCommandHelpProvider(commands.Commands.Registry);
+        var playerCommands = commands.Commands.GetAllCommands()
             .OrderBy(c => c.Name)
             .ToList();
 

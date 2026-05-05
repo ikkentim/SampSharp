@@ -5,7 +5,10 @@ namespace SampSharp.Entities.SAMP.Commands;
 /// </summary>
 public interface IPlayerCommandService
 {
-    ICommandEnumerator GetCommands();
+    /// <summary>
+    /// Gets an enumerator that iterates through the available commands.
+    /// </summary>
+    ICommandEnumerator Commands { get; }
 
     /// <summary>Invokes a player command from the given chat input.</summary>
     /// <param name="services">Service provider used to resolve handler systems and DI parameters.</param>

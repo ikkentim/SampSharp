@@ -8,35 +8,36 @@ public class DefaultConsoleCommandMessageService : IConsoleCommandMessageService
 {
     private readonly ICommandTextFormatter _formatter;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DefaultConsoleCommandMessageService"/> class with the specified command text formatter.
+    /// </summary>
+    /// <param name="formatter">A formatter used to format command text.</param>
     public DefaultConsoleCommandMessageService(ICommandTextFormatter formatter)
     {
+        ArgumentNullException.ThrowIfNull(formatter);
+
         _formatter = formatter;
     }
 
     /// <inheritdoc />
     public bool SendUsage(ConsoleCommandDispatchContext context, CommandDefinition command)
     {
-        var messages = new List<string>();
-
         if (command.Overloads.Count == 1)
         {
             var overload = command.Overloads.First();
             var text = _formatter.FormatCommandUsage(command.Name, command.Group?.ToString(), overload.ParsedParameters, includeSlash: false);
-            messages.Add($"Usage: {text}");
+
+            context.SendMessage($"Usage: {text}");
         }
         else
         {
-            messages.Add("Usage:");
+            context.SendMessage("Usage:");
             foreach (var overload in command.Overloads)
             {
                 var text = _formatter.FormatCommandUsage(command.Name, command.Group?.ToString(), overload.ParsedParameters, includeSlash: false);
-                messages.Add($"  {text}");
+                
+                context.SendMessage($"  {text}");
             }
-        }
-
-        foreach (var message in messages)
-        {
-            context.SendMessage(message);
         }
 
         return true;

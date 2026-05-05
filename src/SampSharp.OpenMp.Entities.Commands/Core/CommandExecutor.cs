@@ -10,7 +10,7 @@ internal class CommandExecutor
 
     public CommandExecutor(IEntityManager entityManager)
     {
-        _entityManager = entityManager ?? throw new ArgumentNullException(nameof(entityManager));
+        _entityManager = entityManager;
     }
 
     /// <summary>

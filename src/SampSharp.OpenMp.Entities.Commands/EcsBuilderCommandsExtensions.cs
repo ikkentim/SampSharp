@@ -6,12 +6,6 @@ namespace SampSharp.Entities.SAMP.Commands;
 /// <summary>Extensions to register the commands subsystem.</summary>
 public static class EcsBuilderCommandsExtensions
 {
-    /// <summary>
-    /// Registers <see cref="IPlayerCommandService" /> with the default
-    /// <see cref="PlayerCommandService" /> implementation (NEW system).
-    /// Uses <see cref="ServiceCollectionDescriptorExtensions.TryAddSingleton(IServiceCollection, Type, Type)" />
-    /// so a custom <see cref="IPlayerCommandService" /> registered earlier wins.
-    /// </summary>
     public static IServiceCollection AddPlayerCommands(this IServiceCollection services)
     {
         services.AddCommandsSystem();
@@ -26,9 +20,8 @@ public static class EcsBuilderCommandsExtensions
         services.TryAddSingleton<IPlayerCommandMessageService, DefaultPlayerCommandMessageService>();
         services.TryAddSingleton<IConsoleCommandMessageService, DefaultConsoleCommandMessageService>();
         services.TryAddSingleton<IPermissionChecker, DefaultPermissionChecker>();
-
-        services.TryAddSingleton<PlayerCommandService>();
-        services.TryAddSingleton<ConsoleCommandService>();
+        services.TryAddSingleton<IPlayerCommandService, PlayerCommandService>();
+        services.TryAddSingleton<IConsoleCommandService, ConsoleCommandService>();
 
         // Register the console bridge system for handling console command events
         services.AddSystem<ConsoleBridgeSystem>();

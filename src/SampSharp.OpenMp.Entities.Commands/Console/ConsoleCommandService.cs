@@ -4,7 +4,7 @@ namespace SampSharp.Entities.SAMP.Commands;
 /// Dispatches console commands from the open.mp console.
 /// Handles ConsoleCommandDispatchContext and command execution.
 /// </summary>
-internal class ConsoleCommandService
+internal class ConsoleCommandService : IConsoleCommandService
 {
     private readonly CommandDispatcher _dispatcher = new();
     private readonly CommandExecutor _executor;
@@ -12,11 +12,13 @@ internal class ConsoleCommandService
     private readonly IUnhandledExceptionHandler _unhandledExceptionHandler;
     private readonly IConsoleCommandMessageService _messageService;
 
+    public ICommandEnumerator Commands => field ??= new DefaultCommandEnumerator(_registry);
+
     public ConsoleCommandService(IEntityManager entityManager, ISystemRegistry systemRegistry, IConsoleCommandMessageService messageService,
         IUnhandledExceptionHandler unhandledExceptionHandler)
     {
         _unhandledExceptionHandler = unhandledExceptionHandler;
-        _messageService = messageService ?? throw new ArgumentNullException(nameof(messageService));
+        _messageService = messageService;
 
         _executor = new CommandExecutor(entityManager);
 
@@ -26,13 +28,6 @@ internal class ConsoleCommandService
         scanner.ScanConsoleCommands(_registry, parserFactory);
     }
 
-    /// <summary>
-    /// Invokes a console command.
-    /// </summary>
-    /// <param name="services">Service provider for DI.</param>
-    /// <param name="context">Console command dispatch context.</param>
-    /// <param name="inputText">The command text (without leading slash).</param>
-    /// <returns>True if command was found and executed; false otherwise.</returns>
     public bool Invoke(IServiceProvider services, ConsoleCommandDispatchContext context, string inputText)
     {
         if (string.IsNullOrWhiteSpace(inputText))
@@ -97,6 +92,12 @@ internal class ConsoleCommandService
             // Execute the command
             var result = _executor.Execute(overload, [context], parsedArgs, services, system);
 
+            // Handle async results
+            if (overload.IsAsync)
+            {
+                result = AsyncCommandExecutor.ExecuteAsync(result);
+            }
+
             // Interpret the result
             var success = result switch
             {
@@ -111,17 +112,5 @@ internal class ConsoleCommandService
             _unhandledExceptionHandler.Handle("console-command", e);
             return false;
         }
-    }
-
-    /// <summary>Gets the command registry for access to registered commands.</summary>
-    public ICommandRegistry GetRegistry()
-    {
-        return _registry;
-    }
-
-    /// <summary>Gets the command dispatcher.</summary>
-    public CommandDispatcher GetDispatcher()
-    {
-        return _dispatcher;
     }
 }

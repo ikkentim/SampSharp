@@ -16,7 +16,7 @@ internal class ConsoleBridgeSystem : ISystem
     [Event]
     public void OnConsoleCommandListRequest(ConsoleCommandCollection commands)
     {
-        var registry = _commandService.GetRegistry();
+        var registry = _commandService.Commands.Registry;
         foreach (var command in registry.GetAll())
         {
             commands.Add(command.Name);
@@ -36,7 +36,7 @@ internal class ConsoleBridgeSystem : ISystem
         var inputText = string.IsNullOrEmpty(args) ? command : $"{command} {args}";
 
         // Create a dispatch context with message handler to send responses back
-        var context = new ConsoleCommandDispatchContext(sender.Player, msg => Console.WriteLine(msg));
+        var context = new ConsoleCommandDispatchContext(sender.Player, msg => Console.WriteLine(msg)); // TODO: ConsoleCommandSender is missing a messageSender
 
         // Dispatch through command service
         var success = _commandService.Invoke(serviceProvider, context, inputText);

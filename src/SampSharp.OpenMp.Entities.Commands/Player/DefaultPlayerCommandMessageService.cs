@@ -1,5 +1,3 @@
-using PlayerComponent = SampSharp.Entities.SAMP.Player;
-
 namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>
@@ -10,12 +8,19 @@ public class DefaultPlayerCommandMessageService : IPlayerCommandMessageService
 {
     private readonly ICommandTextFormatter _formatter;
 
-    public DefaultPlayerCommandMessageService(ICommandTextFormatter? formatter = null)
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DefaultPlayerCommandMessageService"/> class with the specified command text formatter.
+    /// </summary>
+    /// <param name="formatter">A formatter used to format command text.</param>
+    public DefaultPlayerCommandMessageService(ICommandTextFormatter formatter)
     {
-        _formatter = formatter ?? new DefaultCommandTextFormatter();
+        ArgumentNullException.ThrowIfNull(formatter);
+
+        _formatter = formatter;
     }
 
-    public bool SendUsage(PlayerComponent player, CommandDefinition command)
+    /// <inheritdoc />
+    public void SendUsage(Player player, CommandDefinition command)
     {
         var messages = new List<string>();
 
@@ -39,21 +44,19 @@ public class DefaultPlayerCommandMessageService : IPlayerCommandMessageService
         {
             player.SendClientMessage(message);
         }
-
-        return true;
     }
 
-    public bool SendPermissionDenied(PlayerComponent player, CommandDefinition command)
+    /// <inheritdoc />
+    public bool SendPermissionDenied(Player player, CommandDefinition command)
     {
-        var message = _formatter.FormatPermissionDenied("");
+        var message = _formatter.FormatPermissionDenied(""); //  TODO input text
         player.SendClientMessage(message);
-        return true; // Treat as command not found (continue with SendCommandNotFound)
+        return true;// TODO: option to not print message
     }
 
-    public bool SendCommandNotFound(PlayerComponent player, string input)
+    /// <inheritdoc />
+    public bool SendCommandNotFound(Player player, string input)
     {
-        var message = _formatter.FormatCommandNotFound(input);
-        player.SendClientMessage(message);
-        return false; // Return false to stop processing
+        return false;
     }
 }

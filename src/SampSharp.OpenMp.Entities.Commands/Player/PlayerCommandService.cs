@@ -4,7 +4,6 @@ internal class PlayerCommandService : IPlayerCommandService
 {
     private readonly CommandDispatcher _dispatcher = new();
     private readonly IEntityManager _entityManager;
-    private readonly ICommandEnumerator _enumerator;
     private readonly CommandExecutor _executor;
     private readonly IPermissionChecker _permissionChecker;
     private readonly CommandRegistry _registry;
@@ -18,11 +17,10 @@ internal class PlayerCommandService : IPlayerCommandService
     {
         _entityManager = entityManager;
         _unhandledExceptionHandler = unhandledExceptionHandler;
-        _messageService = messageService ?? throw new ArgumentNullException(nameof(messageService));
-        _permissionChecker = permissionChecker ?? throw new ArgumentNullException(nameof(permissionChecker));
+        _messageService = messageService;
+        _permissionChecker = permissionChecker;
 
         _registry = new CommandRegistry();
-        _enumerator = new DefaultCommandEnumerator(_registry, new DefaultCommandTextFormatter());
 
         _executor = new CommandExecutor(entityManager);
 
@@ -32,10 +30,7 @@ internal class PlayerCommandService : IPlayerCommandService
         scanner.ScanPlayerCommands(_registry, parserFactory);
     }
 
-    public ICommandEnumerator GetCommands()
-    {
-        return _enumerator;
-    }
+    public ICommandEnumerator Commands => field ??= new DefaultCommandEnumerator(_registry);
 
     public bool Invoke(IServiceProvider services, EntityId player, string inputText)
     {
@@ -91,8 +86,8 @@ internal class PlayerCommandService : IPlayerCommandService
                     var playerComponent = _entityManager.GetComponent<Player>(player);
                     if (playerComponent != null)
                     {
-                        var continueAsNotFound = _messageService.SendPermissionDenied(playerComponent, dispatchResult.CommandDefinition!);
-                        if (continueAsNotFound)
+                        var messageShown = _messageService.SendPermissionDenied(playerComponent, dispatchResult.CommandDefinition!);
+                        if (!messageShown)
                         {
                             // Fall through to command not found logic
                             return HandleCommandNotFound(player, inputText);
@@ -174,8 +169,7 @@ internal class PlayerCommandService : IPlayerCommandService
             // Handle async results
             if (overload.IsAsync)
             {
-                var asyncResult = AsyncCommandExecutor.ExecuteAsync(result);
-                result = AsyncCommandExecutor.ToSuccessValue(asyncResult);
+                result = AsyncCommandExecutor.ExecuteAsync(result);
             }
 
             // Interpret the result
