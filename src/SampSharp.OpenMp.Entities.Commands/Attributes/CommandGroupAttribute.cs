@@ -1,6 +1,6 @@
 using JetBrains.Annotations;
 
-namespace SampSharp.Entities.SAMP.Commands.Attributes;
+namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>
 /// Marks a class or method as part of one or more command groups.
@@ -8,7 +8,6 @@ namespace SampSharp.Entities.SAMP.Commands.Attributes;
 /// For example, [CommandGroup("admin"), CommandGroup("money")] stacks to "admin money".
 /// </summary>
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
-[MeansImplicitUse]
 public class CommandGroupAttribute : Attribute
 {
     /// <summary>Initializes a new instance with a single group part.</summary>

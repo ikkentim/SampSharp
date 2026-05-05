@@ -1,18 +1,13 @@
 using JetBrains.Annotations;
 
-namespace SampSharp.Entities.SAMP.Commands.Attributes;
+namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>
 /// Attaches custom metadata to a command via key-value pairs.
 /// This attribute can be applied multiple times to add multiple tags.
-/// 
-/// Built-in tags:
-/// - "permission" (value is the permission key, used by IPermissionChecker for player commands)
-/// 
 /// Users can define custom tags for their own purposes.
 /// </summary>
 [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
-[MeansImplicitUse]
 public class CommandTagAttribute : Attribute
 {
     /// <summary>
@@ -22,15 +17,8 @@ public class CommandTagAttribute : Attribute
     /// <param name="value">The tag value.</param>
     public CommandTagAttribute(string key, string value)
     {
-        if (string.IsNullOrWhiteSpace(key))
-        {
-            throw new ArgumentException("Tag key cannot be empty.", nameof(key));
-        }
-
-        if (value == null)
-        {
-            throw new ArgumentNullException(nameof(value), "Tag value cannot be null.");
-        }
+        ArgumentException.ThrowIfNullOrEmpty(key);
+        ArgumentNullException.ThrowIfNull(value);
 
         Key = key;
         Value = value;

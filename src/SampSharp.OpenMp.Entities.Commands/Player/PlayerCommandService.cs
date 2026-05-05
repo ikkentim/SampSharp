@@ -1,11 +1,4 @@
-using SampSharp.Entities.SAMP.Commands.Async;
-using SampSharp.Entities.SAMP.Commands.Attributes;
-using SampSharp.Entities.SAMP.Commands.Core;
-using SampSharp.Entities.SAMP.Commands.Core.Execution;
-using SampSharp.Entities.SAMP.Commands.Core.Scanning;
-using SampSharp.Entities.SAMP.Commands.Services;
-
-namespace SampSharp.Entities.SAMP.Commands.Player;
+namespace SampSharp.Entities.SAMP.Commands;
 
 internal class PlayerCommandService : IPlayerCommandService
 {

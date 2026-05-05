@@ -1,4 +1,4 @@
-namespace SampSharp.Entities.SAMP.Commands.Core;
+namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>
 /// Represents an alias for a command. An alias allows a command to be invoked

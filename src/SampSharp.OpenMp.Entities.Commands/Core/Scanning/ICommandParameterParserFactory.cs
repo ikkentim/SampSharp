@@ -1,8 +1,6 @@
 using System.Reflection;
-using SampSharp.Entities.SAMP;
-using SampSharp.Entities.SAMP.Commands.Parsers;
 
-namespace SampSharp.Entities.SAMP.Commands.Core.Scanning;
+namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>
 /// Factory for creating command parameter parsers.

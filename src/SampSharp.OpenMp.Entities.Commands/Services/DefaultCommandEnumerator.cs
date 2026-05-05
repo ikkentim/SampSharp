@@ -1,16 +1,14 @@
-using SampSharp.Entities.SAMP;
-using SampSharp.Entities.SAMP.Commands.Core;
 using PlayerComponent = SampSharp.Entities.SAMP.Player;
 
-namespace SampSharp.Entities.SAMP.Commands.Services;
+namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>
 /// Default implementation of command enumeration and search.
 /// </summary>
 public class DefaultCommandEnumerator : ICommandEnumerator
 {
-    private readonly CommandRegistry _registry;
     private readonly IPermissionChecker _permissionChecker;
+    private readonly CommandRegistry _registry;
 
     public DefaultCommandEnumerator(CommandRegistry registry, IPermissionChecker permissionChecker)
     {
@@ -20,8 +18,7 @@ public class DefaultCommandEnumerator : ICommandEnumerator
 
     public IEnumerable<CommandDefinition> GetAllCommands(PlayerComponent? player = null)
     {
-        return _registry.GetAll()
-            .Where(cmd => player == null || _permissionChecker.HasPermission(player, cmd));
+        return _registry.GetAll().Where(cmd => player == null || _permissionChecker.HasPermission(player, cmd));
     }
 
     public IEnumerable<CommandGroup> GetCommandGroups()
@@ -31,8 +28,7 @@ public class DefaultCommandEnumerator : ICommandEnumerator
 
     public IEnumerable<CommandDefinition> GetCommandsInGroup(CommandGroup group, PlayerComponent? player = null)
     {
-        return _registry.GetCommandsInGroup(group)
-            .Where(cmd => player == null || _permissionChecker.HasPermission(player, cmd));
+        return _registry.GetCommandsInGroup(group).Where(cmd => player == null || _permissionChecker.HasPermission(player, cmd));
     }
 
     public CommandDefinition? FindCommand(string commandName, PlayerComponent? player = null)
@@ -55,10 +51,8 @@ public class DefaultCommandEnumerator : ICommandEnumerator
     {
         var lowerQuery = query?.ToLowerInvariant() ?? "";
         return _registry.GetAll()
-            .Where(cmd =>
-                cmd.Name.Contains(lowerQuery, StringComparison.OrdinalIgnoreCase) ||
-                cmd.FullName.Contains(lowerQuery, StringComparison.OrdinalIgnoreCase) ||
-                cmd.Aliases.Any(a => a.Name.Contains(lowerQuery, StringComparison.OrdinalIgnoreCase)))
+            .Where(cmd => cmd.Name.Contains(lowerQuery, StringComparison.OrdinalIgnoreCase) || cmd.FullName.Contains(lowerQuery, StringComparison.OrdinalIgnoreCase) ||
+                          cmd.Aliases.Any(a => a.Name.Contains(lowerQuery, StringComparison.OrdinalIgnoreCase)))
             .Where(cmd => player == null || _permissionChecker.HasPermission(player, cmd));
     }
 
@@ -71,9 +65,8 @@ public class DefaultCommandEnumerator : ICommandEnumerator
 
         var lowerInput = input.ToLowerInvariant();
         return _registry.GetAll()
-            .Where(cmd =>
-                cmd.Name.StartsWith(lowerInput, StringComparison.OrdinalIgnoreCase) ||
-                cmd.Aliases.Any(a => a.Name.StartsWith(lowerInput, StringComparison.OrdinalIgnoreCase)))
+            .Where(cmd => cmd.Name.StartsWith(lowerInput, StringComparison.OrdinalIgnoreCase) ||
+                          cmd.Aliases.Any(a => a.Name.StartsWith(lowerInput, StringComparison.OrdinalIgnoreCase)))
             .Where(cmd => player == null || _permissionChecker.HasPermission(player, cmd))
             .OrderBy(cmd => cmd.Name);
     }

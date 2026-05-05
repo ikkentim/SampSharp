@@ -1,6 +1,4 @@
-using SampSharp.Entities.SAMP.Commands.Parsers;
-
-namespace SampSharp.Entities.SAMP.Commands.Core;
+namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>
 /// Represents information about a command parameter that will be parsed from user input.
@@ -8,12 +6,7 @@ namespace SampSharp.Entities.SAMP.Commands.Core;
 public class CommandParameterInfo
 {
     /// <summary>Initializes a new instance.</summary>
-    public CommandParameterInfo(
-        string name,
-        ICommandParameterParser parser,
-        bool isRequired,
-        object? defaultValue,
-        int parameterIndex)
+    public CommandParameterInfo(string name, ICommandParameterParser parser, bool isRequired, object? defaultValue, int parameterIndex)
     {
         Name = name ?? throw new ArgumentNullException(nameof(name));
         Parser = parser ?? throw new ArgumentNullException(nameof(parser));

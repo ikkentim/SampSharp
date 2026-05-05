@@ -1,9 +1,7 @@
 using System.Reflection;
-using SampSharp.Entities.SAMP.Commands.Attributes;
-using SampSharp.Entities.SAMP.Commands.Console;
 using SampSharp.Entities.Utilities;
 
-namespace SampSharp.Entities.SAMP.Commands.Core.Scanning;
+namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>
 /// Scans ISystem types for command methods marked with [PlayerCommand] or [ConsoleCommand].
@@ -25,9 +23,7 @@ public class CommandScanner
     /// </summary>
     public void ScanPlayerCommands(CommandRegistry registry, ICommandParameterParserFactory parserFactory)
     {
-        var scanner = ClassScanner.Create()
-            .IncludeTypes(_systemRegistry.GetSystemTypes().Span)
-            .IncludeNonPublicMembers();
+        var scanner = ClassScanner.Create().IncludeTypes(_systemRegistry.GetSystemTypes().Span).IncludeNonPublicMembers();
 
         var methods = scanner.ScanMethods<PlayerCommandAttribute>();
 
@@ -39,15 +35,10 @@ public class CommandScanner
             var commandGroup = BuildCommandGroup(classGroups, methodGroups);
 
             // Aliases
-            var aliases = method.GetCustomAttributes<AliasAttribute>()
-                .SelectMany(a => a.Aliases)
-                .Select(a => new CommandAlias(a))
-                .ToArray();
+            var aliases = method.GetCustomAttributes<AliasAttribute>().SelectMany(a => a.Aliases).Select(a => new CommandAlias(a)).ToArray();
 
             // Command tags (including permissions as tags)
-            var tags = method.GetCustomAttributes<CommandTagAttribute>()
-                .Select(t => new CommandTag(t.Key, t.Value))
-                .ToArray();
+            var tags = method.GetCustomAttributes<CommandTagAttribute>().Select(t => new CommandTag(t.Key, t.Value)).ToArray();
 
             // Each [PlayerCommand] attribute is a separate overload
             var commandName = attribute.Name ?? GetCommandName(method);
@@ -58,19 +49,18 @@ public class CommandScanner
 
             if (method.Name == "PingCommand")
             {
-                System.Console.WriteLine();
+                Console.WriteLine();
             }
+
             if (!TryBuildOverload(method, systemType, parserFactory, 1, out var overload))
             {
                 continue;
             }
 
-            var definition = new CommandDefinition(
-                name: commandName,
-                group: commandGroup,
-                overloads: new[] { overload },
-                aliases: aliases,
-                tags: tags);
+            var definition = new CommandDefinition(commandName, commandGroup, new[]
+            {
+                overload
+            }, aliases, tags);
 
             registry.Register(definition);
         }
@@ -81,9 +71,7 @@ public class CommandScanner
     /// </summary>
     public void ScanConsoleCommands(CommandRegistry registry, ICommandParameterParserFactory parserFactory)
     {
-        var scanner = ClassScanner.Create()
-            .IncludeTypes(_systemRegistry.GetSystemTypes().Span)
-            .IncludeNonPublicMembers();
+        var scanner = ClassScanner.Create().IncludeTypes(_systemRegistry.GetSystemTypes().Span).IncludeNonPublicMembers();
 
         var methods = scanner.ScanMethods<ConsoleCommandAttribute>();
 
@@ -95,18 +83,13 @@ public class CommandScanner
             var commandGroup = BuildCommandGroup(classGroups, methodGroups);
 
             // Aliases
-            var aliases = method.GetCustomAttributes<AliasAttribute>()
-                .SelectMany(a => a.Aliases)
-                .Select(a => new CommandAlias(a))
-                .ToArray();
+            var aliases = method.GetCustomAttributes<AliasAttribute>().SelectMany(a => a.Aliases).Select(a => new CommandAlias(a)).ToArray();
 
             // Command tags (including permissions as tags)
-            var tags = method.GetCustomAttributes<CommandTagAttribute>()
-                .Select(t => new CommandTag(t.Key, t.Value))
-                .ToArray();
+            var tags = method.GetCustomAttributes<CommandTagAttribute>().Select(t => new CommandTag(t.Key, t.Value)).ToArray();
 
             // Console commands: check if first param is ConsoleCommandDispatchContext
-            int prefixParams = 0;
+            var prefixParams = 0;
             if (method.GetParameters().Length > 0)
             {
                 var firstParam = method.GetParameters()[0];
@@ -128,37 +111,25 @@ public class CommandScanner
                 continue;
             }
 
-            var definition = new CommandDefinition(
-                name: commandName,
-                group: commandGroup,
-                overloads: new[] { overload },
-                aliases: aliases,
-                tags: tags);
+            var definition = new CommandDefinition(commandName, commandGroup, new[]
+            {
+                overload
+            }, aliases, tags);
 
             registry.Register(definition);
         }
     }
 
     /// <summary>Builds the command group by stacking class and method groups.</summary>
-    private CommandGroup? BuildCommandGroup(
-        IEnumerable<CommandGroupAttribute> classGroups,
-        IEnumerable<CommandGroupAttribute> methodGroups)
+    private CommandGroup? BuildCommandGroup(IEnumerable<CommandGroupAttribute> classGroups, IEnumerable<CommandGroupAttribute> methodGroups)
     {
-        var allParts = classGroups
-            .SelectMany(g => g.Parts)
-            .Concat(methodGroups.SelectMany(g => g.Parts))
-            .ToList();
+        var allParts = classGroups.SelectMany(g => g.Parts).Concat(methodGroups.SelectMany(g => g.Parts)).ToList();
 
         return allParts.Count > 0 ? new CommandGroup(allParts) : null;
     }
 
     /// <summary>Tries to build a CommandOverload from a method.</summary>
-    private bool TryBuildOverload(
-        MethodInfo method,
-        Type systemType,
-        ICommandParameterParserFactory parserFactory,
-        int prefixParameters,
-        out CommandOverload? overload)
+    private bool TryBuildOverload(MethodInfo method, Type systemType, ICommandParameterParserFactory parserFactory, int prefixParameters, out CommandOverload? overload)
     {
         overload = null;
 
@@ -183,31 +154,21 @@ public class CommandScanner
         // Compile the method invoker at discovery time
         var invoker = CompileMethodInvoker(method, parameters, prefixParameters, parsedParams!);
 
-        overload = new CommandOverload(
-            method: method,
-            parameters: parameters,
-            declaringSystemType: systemType,
-            parsedParameters: parsedParams!,
-            invoker: invoker,
-            prefixParameterCount: prefixParameters);
+        overload = new CommandOverload(method, parameters, systemType, parsedParams!, invoker, prefixParameters);
 
         return true;
     }
 
     /// <summary>Compiles a MethodInvoker for the given method using expression trees.</summary>
-    private MethodInvoker CompileMethodInvoker(
-        MethodInfo method,
-        ParameterInfo[] parameters,
-        int prefixParameterCount,
-        CommandParameterInfo[] parsedParameters)
+    private MethodInvoker CompileMethodInvoker(MethodInfo method, ParameterInfo[] parameters, int prefixParameterCount, CommandParameterInfo[] parsedParameters)
     {
         // Build MethodParameterSource array
         var sources = new MethodParameterSource[parameters.Length];
         var parsedParamsByIndex = parsedParameters.ToDictionary(p => p.ParameterIndex);
 
-        int j = 0; // Counter for args array index
+        var j = 0; // Counter for args array index
 
-        for (int i = 0; i < parameters.Length; i++)
+        for (var i = 0; i < parameters.Length; i++)
         {
             var paramInfo = parameters[i];
             var source = new MethodParameterSource(paramInfo);
@@ -238,7 +199,7 @@ public class CommandScanner
         }
 
         // Compile using expression trees
-        return MethodInvokerFactory.Compile(method, sources, uninvokedReturnValue: null, retBoolToResult: true);
+        return MethodInvokerFactory.Compile(method, sources);
     }
 
     /// <summary>Validates that a return type is supported by the command system.</summary>
@@ -270,11 +231,7 @@ public class CommandScanner
     }
 
     /// <summary>Collects parameter information for a method (excluding prefix, handling DI).</summary>
-    private bool TryCollectParameters(
-        ParameterInfo[] parameters,
-        int prefixParameters,
-        ICommandParameterParserFactory parserFactory,
-        out CommandParameterInfo[]? result)
+    private bool TryCollectParameters(ParameterInfo[] parameters, int prefixParameters, ICommandParameterParserFactory parserFactory, out CommandParameterInfo[]? result)
     {
         result = null;
 
@@ -284,10 +241,10 @@ public class CommandScanner
         }
 
         var list = new List<CommandParameterInfo>();
-        int parameterIndex = prefixParameters;
-        bool optionalSeen = false;
+        var parameterIndex = prefixParameters;
+        var optionalSeen = false;
 
-        for (int i = prefixParameters; i < parameters.Length; i++)
+        for (var i = prefixParameters; i < parameters.Length; i++)
         {
             var param = parameters[i];
 
@@ -304,8 +261,8 @@ public class CommandScanner
             }
 
             // This parameter will be parsed from input
-            bool isRequired = !param.HasDefaultValue;
-            if (!isRequired && optionalSeen == false)
+            var isRequired = !param.HasDefaultValue;
+            if (!isRequired && !optionalSeen)
             {
                 optionalSeen = true;
             }
@@ -315,12 +272,7 @@ public class CommandScanner
                 return false;
             }
 
-            var cmdParamInfo = new CommandParameterInfo(
-                name: paramName,
-                parser: parser,
-                isRequired: isRequired,
-                defaultValue: param.DefaultValue,
-                parameterIndex: parameterIndex++);
+            var cmdParamInfo = new CommandParameterInfo(paramName, parser, isRequired, param.DefaultValue, parameterIndex++);
 
             list.Add(cmdParamInfo);
         }

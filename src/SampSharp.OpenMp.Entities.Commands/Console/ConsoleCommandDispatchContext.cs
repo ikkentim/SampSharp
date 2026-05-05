@@ -1,7 +1,4 @@
-using SampSharp.Entities.SAMP;
-using SampSharp.OpenMp.Core.Api;
-
-namespace SampSharp.Entities.SAMP.Commands.Console;
+namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>
 /// Provides context and message handler for a console command execution.
@@ -14,7 +11,7 @@ public class ConsoleCommandDispatchContext
     /// </summary>
     /// <param name="player">The player who sent the command (null if sent from server console).</param>
     /// <param name="messageHandler">Optional handler to send response messages.</param>
-    public ConsoleCommandDispatchContext(SAMP.Player? player, Action<string>? messageHandler = null)
+    public ConsoleCommandDispatchContext(Player? player, Action<string>? messageHandler = null)
     {
         Player = player;
         MessageHandler = messageHandler;
@@ -23,7 +20,7 @@ public class ConsoleCommandDispatchContext
     /// <summary>
     /// The player who invoked this console command, or null if invoked from server console.
     /// </summary>
-    public SAMP.Player? Player { get; }
+    public Player? Player { get; }
 
     /// <summary>
     /// Optional handler to send response messages back to the console/player.

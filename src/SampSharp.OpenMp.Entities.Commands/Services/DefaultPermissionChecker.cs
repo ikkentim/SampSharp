@@ -1,8 +1,6 @@
-using SampSharp.Entities.SAMP;
-using SampSharp.Entities.SAMP.Commands.Core;
 using PlayerComponent = SampSharp.Entities.SAMP.Player;
 
-namespace SampSharp.Entities.SAMP.Commands.Services;
+namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>
 /// Default permission checker that grants all permissions.
@@ -16,4 +14,3 @@ public class DefaultPermissionChecker : IPermissionChecker
         return true;
     }
 }
-

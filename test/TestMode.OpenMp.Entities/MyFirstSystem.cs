@@ -3,7 +3,6 @@ using Microsoft.Extensions.Logging;
 using SampSharp.Entities;
 using SampSharp.Entities.SAMP;
 using SampSharp.Entities.SAMP.Commands;
-using SampSharp.Entities.SAMP.Commands.Attributes;
 using SampSharp.OpenMp.Core;
 using SampSharp.OpenMp.Core.Api;
 

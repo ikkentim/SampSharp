@@ -1,6 +1,5 @@
 using System;
 using Moq;
-using SampSharp.Entities.SAMP.Commands.Parsers;
 using Shouldly;
 using Xunit;
 

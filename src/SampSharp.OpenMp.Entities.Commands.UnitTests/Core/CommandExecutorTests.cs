@@ -1,9 +1,6 @@
 using System;
 using System.Reflection;
 using Moq;
-using SampSharp.Entities.SAMP.Commands.Core;
-using SampSharp.Entities.SAMP.Commands.Core.Execution;
-using SampSharp.Entities.SAMP.Commands.Parsers;
 using Shouldly;
 using Xunit;
 

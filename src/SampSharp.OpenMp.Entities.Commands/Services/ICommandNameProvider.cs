@@ -1,6 +1,4 @@
-using SampSharp.Entities.SAMP.Commands.Core;
-
-namespace SampSharp.Entities.SAMP.Commands.Services;
+namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>
 /// Provides usage messages for commands. Can be customized for localization.
@@ -15,11 +13,7 @@ public interface ICommandNameProvider
     /// <param name="parameters">The parsed parameters of the command.</param>
     /// <param name="usageMessageKey">Optional localization key from the attribute (e.g., "message_send_usage").</param>
     /// <returns>A human-readable usage string.</returns>
-    string GetUsageMessage(
-        string commandName,
-        string? group,
-        CommandParameterInfo[] parameters,
-        string? usageMessageKey = null);
+    string GetUsageMessage(string commandName, string? group, CommandParameterInfo[] parameters, string? usageMessageKey = null);
 
     /// <summary>
     /// Gets the usage message for multiple command overloads.

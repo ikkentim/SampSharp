@@ -1,6 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 
-namespace SampSharp.Entities.SAMP.Commands.Parsers;
+namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>
 /// Parses a <see cref="SampSharp.Entities.SAMP.Player" /> reference. Accepts either:
@@ -37,9 +37,9 @@ public class PlayerParser : ICommandParameterParser
         }
 
         var entityManager = services.GetRequiredService<IEntityManager>();
-        var players = entityManager.GetComponents<SampSharp.Entities.SAMP.Player>();
+        var players = entityManager.GetComponents<Player>();
 
-        SampSharp.Entities.SAMP.Player? bestCandidate = null;
+        Player? bestCandidate = null;
         foreach (var player in players)
         {
             if (!player.IsComponentAlive)
@@ -53,6 +53,7 @@ public class PlayerParser : ICommandParameterParser
                 result = player.Entity;
                 return true;
             }
+
             if (!name.StartsWith(word, StringComparison.OrdinalIgnoreCase))
             {
                 continue;

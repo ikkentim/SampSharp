@@ -1,5 +1,4 @@
 using Shouldly;
-using SampSharp.Entities.SAMP.Commands.Attributes;
 using Xunit;
 
 namespace SampSharp.Entities.SAMP.Commands.Tests.Attributes;

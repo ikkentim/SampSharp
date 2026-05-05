@@ -1,11 +1,6 @@
-using System.Linq;
-using System.Reflection;
-using Microsoft.Extensions.DependencyInjection;
-using SampSharp.Entities.SAMP;
-using SampSharp.Entities.SAMP.Commands.Services;
 using PlayerComponent = SampSharp.Entities.SAMP.Player;
 
-namespace SampSharp.Entities.SAMP.Commands.Core;
+namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>
 /// Core command dispatcher. Handles parsing command input and matching to registered commands.
@@ -22,12 +17,7 @@ public class CommandDispatcher
     /// <param name="prefixArgs">Prefix arguments (e.g., [Player] for player commands, [ConsoleCommandDispatchContext] for console commands).</param>
     /// <param name="permissionChecker">Optional permission checker (for player commands only).</param>
     /// <returns>The dispatch result.</returns>
-    public DispatchResult Dispatch(
-        CommandRegistry registry,
-        IServiceProvider services,
-        string inputText,
-        object[] prefixArgs,
-        IPermissionChecker? permissionChecker = null)
+    public DispatchResult Dispatch(CommandRegistry registry, IServiceProvider services, string inputText, object[] prefixArgs, IPermissionChecker? permissionChecker = null)
     {
         ArgumentNullException.ThrowIfNull(registry);
         ArgumentNullException.ThrowIfNull(services);
@@ -65,9 +55,7 @@ public class CommandDispatcher
 
         // Remaining tokens become the arguments
         var remainingTokens = tokens.Skip(consumedTokenCount).ToArray();
-        var remainingArgs = remainingTokens.Length > 0
-            ? string.Join(" ", remainingTokens)
-            : "";
+        var remainingArgs = remainingTokens.Length > 0 ? string.Join(" ", remainingTokens) : "";
 
         // Try to match parameters for each overload
         var bestMatch = FindBestOverload(command, remainingArgs, services);
@@ -97,9 +85,7 @@ public class CommandDispatcher
     /// Finds the best matching overload for the given arguments.
     /// Tries each overload and returns the one that consumes the least remaining input.
     /// </summary>
-    private (bool matched, CommandOverload? overload, object?[]? parsedArguments, string? usageMessage) FindBestOverload(
-        CommandDefinition command,
-        string remainingArgs,
+    private (bool matched, CommandOverload? overload, object?[]? parsedArguments, string? usageMessage) FindBestOverload(CommandDefinition command, string remainingArgs,
         IServiceProvider services)
     {
         var bestMatch = (matched: false, overload: (CommandOverload?)null, parsedArguments: (object?[]?)null, remainingUnconsumed: int.MaxValue, usageMessage: (string?)null);
@@ -128,9 +114,7 @@ public class CommandDispatcher
     /// Tries to match the remaining arguments against the overload's parameters.
     /// Returns how many characters were unconsumed (for best-match selection).
     /// </summary>
-    private (bool matched, string? usageMessage, object?[]? parsedArguments, int remainingUnconsumed) TryMatchParameters(
-        CommandOverload overload,
-        string remainingArgs,
+    private (bool matched, string? usageMessage, object?[]? parsedArguments, int remainingUnconsumed) TryMatchParameters(CommandOverload overload, string remainingArgs,
         IServiceProvider services)
     {
         var parameters = overload.ParsedParameters;
@@ -228,8 +212,7 @@ public class CommandDispatcher
             return $"Usage: /{command}";
         }
 
-        var args = string.Join(" ", overload.ParsedParameters.Select(p =>
-            p.IsRequired ? $"<{p.Name}>" : $"[{p.Name}]"));
+        var args = string.Join(" ", overload.ParsedParameters.Select(p => p.IsRequired ? $"<{p.Name}>" : $"[{p.Name}]"));
 
         return $"Usage: /{command} {args}";
     }

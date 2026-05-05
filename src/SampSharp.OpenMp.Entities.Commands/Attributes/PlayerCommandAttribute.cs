@@ -1,6 +1,6 @@
 using JetBrains.Annotations;
 
-namespace SampSharp.Entities.SAMP.Commands.Attributes;
+namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>
 /// Marks an instance method on an <see cref="ISystem" /> as a player command.
@@ -11,10 +11,8 @@ namespace SampSharp.Entities.SAMP.Commands.Attributes;
 /// The signature can be:
 /// - <c>(Player player, [args...])</c> - if the first parameter is Player, it's provided automatically
 /// - <c>([args...])</c> - if no Player first parameter, treat all parameters as regular parsed parameters
-/// - subsequent parameters are parsed from the player input via <see cref="Parsers.ICommandParameterParser" />
+/// - subsequent parameters are parsed from the player input via <see cref="ICommandParameterParser" />
 /// - Return type may be <see langword="void" />, <see langword="Task" />, or <see cref="Task" />.
-/// 
-/// Unlike console commands, player commands support permission checking via <see cref="RequiresPermissionAttribute" />.
 /// </remarks>
 [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
 [MeansImplicitUse]

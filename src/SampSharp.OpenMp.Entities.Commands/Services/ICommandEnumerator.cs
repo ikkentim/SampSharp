@@ -1,8 +1,6 @@
-using SampSharp.Entities.SAMP;
-using SampSharp.Entities.SAMP.Commands.Core;
 using PlayerComponent = SampSharp.Entities.SAMP.Player;
 
-namespace SampSharp.Entities.SAMP.Commands.Services;
+namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>
 /// Provides enumeration and search capabilities for commands.

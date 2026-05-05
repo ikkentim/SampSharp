@@ -1,10 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using SampSharp.Entities.SAMP.Commands.Core;
-using SampSharp.Entities.SAMP.Commands.Console;
-using SampSharp.Entities.SAMP.Commands.Help;
-using SampSharp.Entities.SAMP.Commands.Player;
-using SampSharp.Entities.SAMP.Commands.Services;
 
 namespace SampSharp.Entities.SAMP.Commands;
 

@@ -1,6 +1,4 @@
-namespace SampSharp.Entities.SAMP.Commands.Services;
-
-using Parsers;
+namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>
 /// Factory for obtaining parameter parsers for specific types.

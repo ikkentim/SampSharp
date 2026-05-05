@@ -2,8 +2,6 @@ using System.Numerics;
 using SampSharp.Entities;
 using SampSharp.Entities.SAMP;
 using SampSharp.Entities.SAMP.Commands;
-using SampSharp.Entities.SAMP.Commands.Attributes;
-using SampSharp.Entities.SAMP.Commands.Help;
 
 namespace TestMode.OpenMp.Entities;
 

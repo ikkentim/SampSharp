@@ -1,4 +1,4 @@
-namespace SampSharp.Entities.SAMP.Commands.Core;
+namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>
 /// Represents the full definition of a command with all its metadata.
@@ -6,17 +6,12 @@ namespace SampSharp.Entities.SAMP.Commands.Core;
 /// </summary>
 public class CommandDefinition
 {
-    private readonly CommandOverload[] _overloads;
     private readonly CommandAlias[] _aliases;
+    private readonly CommandOverload[] _overloads;
     private readonly Dictionary<string, string> _tags;
 
     /// <summary>Initializes a new instance.</summary>
-    public CommandDefinition(
-        string name,
-        CommandGroup? group,
-        CommandOverload[] overloads,
-        CommandAlias[]? aliases = null,
-        CommandTag[]? tags = null)
+    public CommandDefinition(string name, CommandGroup? group, CommandOverload[] overloads, CommandAlias[]? aliases = null, CommandTag[]? tags = null)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
@@ -51,9 +46,7 @@ public class CommandDefinition
     public IReadOnlyDictionary<string, string> Tags => _tags;
 
     /// <summary>The full command path (group + name), e.g., "admin money give".</summary>
-    public string FullName => Group.HasValue
-        ? $"{Group.Value.FullName} {Name}"
-        : Name;
+    public string FullName => Group.HasValue ? $"{Group.Value.FullName} {Name}" : Name;
 
     /// <summary>Checks if this command has the given alias.</summary>
     public bool HasAlias(string alias)
@@ -76,7 +69,7 @@ public class CommandDefinition
         {
             var required = o.ParsedParameters.Count(p => p.IsRequired);
             var optional = o.ParsedParameters.Count(p => !p.IsRequired);
-            return parameterCount >= required && parameterCount <= (required + optional);
+            return parameterCount >= required && parameterCount <= required + optional;
         });
     }
 

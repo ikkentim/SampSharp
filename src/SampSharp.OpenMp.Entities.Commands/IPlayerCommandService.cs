@@ -1,7 +1,3 @@
-using SampSharp.Entities.SAMP.Commands.Attributes;
-using SampSharp.Entities.SAMP.Commands.Help;
-using SampSharp.Entities.SAMP.Commands.Services;
-
 namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>

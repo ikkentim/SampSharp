@@ -1,12 +1,6 @@
-using SampSharp.Entities.SAMP.Commands.Core;
-using SampSharp.Entities.SAMP.Commands.Console;
-
-using SampSharp.Entities.SAMP;
-using SampSharp.Entities.SAMP.Commands.Core;
-using SampSharp.Entities.SAMP.Commands.Console;
 using PlayerComponent = SampSharp.Entities.SAMP.Player;
 
-namespace SampSharp.Entities.SAMP.Commands.Services;
+namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>
 /// Default implementation of command usage message formatting and delivery.
@@ -77,7 +71,10 @@ public class DefaultCommandUsageFormatter : ICommandUsageFormatter
     /// </summary>
     private string FormatMultipleOverloadsUsage(CommandDefinition command)
     {
-        var lines = new List<string> { "Usage:" };
+        var lines = new List<string>
+        {
+            "Usage:"
+        };
         foreach (var overload in command.Overloads)
         {
             var parameterPart = FormatParametersUsage(overload.ParsedParameters);
@@ -100,7 +97,7 @@ public class DefaultCommandUsageFormatter : ICommandUsageFormatter
         var parts = new List<string>();
         foreach (var param in parameters)
         {
-            var wrapper = param.IsRequired ? ($"<{param.Name}>") : ($"[{param.Name}]");
+            var wrapper = param.IsRequired ? $"<{param.Name}>" : $"[{param.Name}]";
             parts.Add(wrapper);
         }
 

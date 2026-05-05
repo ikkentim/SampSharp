@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using SampSharp.Entities.SAMP.Commands.Core;
 using Shouldly;
 using Xunit;
 

@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace SampSharp.Entities.SAMP.Commands.Core;
+namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>
 /// Represents a single overload of a command (one specific method implementation).
@@ -9,12 +9,7 @@ namespace SampSharp.Entities.SAMP.Commands.Core;
 public class CommandOverload
 {
     /// <summary>Initializes a new instance.</summary>
-    public CommandOverload(
-        MethodInfo method,
-        ParameterInfo[] parameters,
-        Type declaringSystemType,
-        CommandParameterInfo[] parsedParameters,
-        MethodInvoker invoker,
+    public CommandOverload(MethodInfo method, ParameterInfo[] parameters, Type declaringSystemType, CommandParameterInfo[] parsedParameters, MethodInvoker invoker,
         int prefixParameterCount)
     {
         ArgumentNullException.ThrowIfNull(method);
@@ -55,9 +50,10 @@ public class CommandOverload
     public Type ReturnType => Method.ReturnType;
 
     /// <summary>Whether this method returns a Task/ValueTask.</summary>
-    public bool IsAsync => ReturnType.IsGenericType
-        ? (ReturnType.GetGenericTypeDefinition() == typeof(Task<>) || ReturnType.GetGenericTypeDefinition() == typeof(ValueTask<>))
-        : ReturnType == typeof(Task) || ReturnType == typeof(ValueTask);
+    public bool IsAsync =>
+        ReturnType.IsGenericType
+            ? ReturnType.GetGenericTypeDefinition() == typeof(Task<>) || ReturnType.GetGenericTypeDefinition() == typeof(ValueTask<>)
+            : ReturnType == typeof(Task) || ReturnType == typeof(ValueTask);
 
     /// <summary>For Task&lt;T&gt;, returns T. For Task/ValueTask, returns void. Otherwise returns the actual return type.</summary>
     public Type GetEffectiveReturnType()

@@ -1,9 +1,4 @@
-using System.Collections.Generic;
-using System.Linq;
-using SampSharp.Entities.SAMP.Commands.Core;
-using SampSharp.Entities.SAMP.Commands.Services;
-
-namespace SampSharp.Entities.SAMP.Commands.Help;
+namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>
 /// Provides enumeration of registered commands and command groups.
@@ -41,6 +36,18 @@ public interface ICommandEnumerator
 /// </summary>
 public class CommandEnumerator
 {
+    public CommandEnumerator(string name, CommandGroup? group, IReadOnlyList<CommandAlias> aliases, IReadOnlyList<CommandOverload> overloads, IReadOnlyList<string> permissions,
+        string usageMessage, string helpText)
+    {
+        Name = name;
+        Group = group;
+        Aliases = aliases;
+        Overloads = overloads;
+        Permissions = permissions;
+        UsageMessage = usageMessage;
+        HelpText = helpText;
+    }
+
     /// <summary>
     /// Gets the command name.
     /// </summary>
@@ -75,24 +82,6 @@ public class CommandEnumerator
     /// Gets the formatted help text for this command (including all overloads).
     /// </summary>
     public string HelpText { get; }
-
-    public CommandEnumerator(
-        string name,
-        CommandGroup? group,
-        IReadOnlyList<CommandAlias> aliases,
-        IReadOnlyList<CommandOverload> overloads,
-        IReadOnlyList<string> permissions,
-        string usageMessage,
-        string helpText)
-    {
-        Name = name;
-        Group = group;
-        Aliases = aliases;
-        Overloads = overloads;
-        Permissions = permissions;
-        UsageMessage = usageMessage;
-        HelpText = helpText;
-    }
 }
 
 /// <summary>
@@ -100,6 +89,14 @@ public class CommandEnumerator
 /// </summary>
 public class CommandGroupEnumerator
 {
+    public CommandGroupEnumerator(string name, CommandGroup group, IReadOnlyList<CommandEnumerator> commands, IReadOnlyList<CommandGroupEnumerator> subgroups)
+    {
+        Name = name;
+        Group = group;
+        Commands = commands;
+        Subgroups = subgroups;
+    }
+
     /// <summary>
     /// Gets the group name/path.
     /// </summary>
@@ -119,16 +116,4 @@ public class CommandGroupEnumerator
     /// Gets all child groups (one level deep).
     /// </summary>
     public IReadOnlyList<CommandGroupEnumerator> Subgroups { get; }
-
-    public CommandGroupEnumerator(
-        string name,
-        CommandGroup group,
-        IReadOnlyList<CommandEnumerator> commands,
-        IReadOnlyList<CommandGroupEnumerator> subgroups)
-    {
-        Name = name;
-        Group = group;
-        Commands = commands;
-        Subgroups = subgroups;
-    }
 }

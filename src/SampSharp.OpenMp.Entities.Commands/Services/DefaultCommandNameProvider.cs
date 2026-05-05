@@ -1,6 +1,4 @@
-using SampSharp.Entities.SAMP.Commands.Core;
-
-namespace SampSharp.Entities.SAMP.Commands.Services;
+namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>
 /// Default implementation of ICommandNameProvider.
@@ -8,11 +6,7 @@ namespace SampSharp.Entities.SAMP.Commands.Services;
 /// </summary>
 public class DefaultCommandNameProvider : ICommandNameProvider
 {
-    public string GetUsageMessage(
-        string commandName,
-        string? group,
-        CommandParameterInfo[] parameters,
-        string? usageMessageKey = null)
+    public string GetUsageMessage(string commandName, string? group, CommandParameterInfo[] parameters, string? usageMessageKey = null)
     {
         var prefix = group != null ? $"{group} {commandName}" : commandName;
 
@@ -21,8 +15,7 @@ public class DefaultCommandNameProvider : ICommandNameProvider
             return $"Usage: /{prefix}";
         }
 
-        var args = string.Join(" ", parameters.Select(p =>
-            p.IsRequired ? $"<{p.Name}>" : $"[{p.Name}]"));
+        var args = string.Join(" ", parameters.Select(p => p.IsRequired ? $"<{p.Name}>" : $"[{p.Name}]"));
 
         return $"Usage: /{prefix} {args}";
     }

@@ -1,4 +1,4 @@
-namespace SampSharp.Entities.SAMP.Commands.Services;
+namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>
 /// Handles "command not found" and "invalid arguments" responses.

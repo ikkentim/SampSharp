@@ -1,4 +1,4 @@
-namespace SampSharp.Entities.SAMP.Commands.Async;
+namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>
 /// Result of async task execution.

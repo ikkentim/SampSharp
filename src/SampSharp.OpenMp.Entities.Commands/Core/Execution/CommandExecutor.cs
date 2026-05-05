@@ -1,8 +1,4 @@
-using System.Reflection;
-using Microsoft.Extensions.DependencyInjection;
-using SampSharp.Entities.SAMP.Commands.Async;
-
-namespace SampSharp.Entities.SAMP.Commands.Core.Execution;
+namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>
 /// Executes a command by invoking the associated method with parsed parameters.
@@ -26,12 +22,7 @@ public class CommandExecutor
     /// <param name="services">Service provider for DI resolution.</param>
     /// <param name="system">The ISystem instance to invoke on.</param>
     /// <returns>The result of the method invocation.</returns>
-    public object? Execute(
-        CommandOverload overload,
-        object?[] prefixArgs,
-        object?[] parsedArgs,
-        IServiceProvider services,
-        ISystem system)
+    public object? Execute(CommandOverload overload, object?[] prefixArgs, object?[] parsedArgs, IServiceProvider services, ISystem system)
     {
         if (overload == null)
         {
@@ -59,15 +50,15 @@ public class CommandExecutor
         var args = new object?[parameters.Length];
 
         // Copy prefix arguments (player/console sender) - only copy as many as the command expects
-        int prefixCount = Math.Min(overload.PrefixParameterCount, prefixArgs.Length);
-        for (int i = 0; i < prefixCount; i++)
+        var prefixCount = Math.Min(overload.PrefixParameterCount, prefixArgs.Length);
+        for (var i = 0; i < prefixCount; i++)
         {
             args[i] = prefixArgs[i];
         }
 
         // Copy parsed arguments after prefix
-        int parsedIdx = 0;
-        int argStartIndex = overload.PrefixParameterCount;
+        var parsedIdx = 0;
+        var argStartIndex = overload.PrefixParameterCount;
         while (parsedIdx < parsedArgs.Length && argStartIndex < parameters.Length)
         {
             args[argStartIndex++] = parsedArgs[parsedIdx++];

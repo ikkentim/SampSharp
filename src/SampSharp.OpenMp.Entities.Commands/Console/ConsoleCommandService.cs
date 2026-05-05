@@ -1,11 +1,4 @@
-using Microsoft.Extensions.DependencyInjection;
-using SampSharp.OpenMp.Core.Api;
-using SampSharp.Entities.SAMP.Commands.Core;
-using SampSharp.Entities.SAMP.Commands.Core.Execution;
-using SampSharp.Entities.SAMP.Commands.Core.Scanning;
-using SampSharp.Entities.SAMP.Commands.Services;
-
-namespace SampSharp.Entities.SAMP.Commands.Console;
+namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>
 /// Dispatches console commands from the open.mp console.
@@ -13,18 +6,15 @@ namespace SampSharp.Entities.SAMP.Commands.Console;
 /// </summary>
 public class ConsoleCommandService
 {
-    private readonly CommandRegistry _registry = new();
     private readonly CommandDispatcher _dispatcher = new();
-    private readonly CommandExecutor _executor;
     private readonly IEntityManager _entityManager;
+    private readonly CommandExecutor _executor;
+    private readonly CommandRegistry _registry = new();
     private readonly ISystemRegistry _systemRegistry;
-    private readonly ICommandUsageFormatter _usageFormatter;
     private readonly IUnhandledExceptionHandler _unhandledExceptionHandler;
+    private readonly ICommandUsageFormatter _usageFormatter;
 
-    public ConsoleCommandService(
-        IEntityManager entityManager,
-        ISystemRegistry systemRegistry,
-        ICommandUsageFormatter usageFormatter,
+    public ConsoleCommandService(IEntityManager entityManager, ISystemRegistry systemRegistry, ICommandUsageFormatter usageFormatter,
         IUnhandledExceptionHandler unhandledExceptionHandler)
     {
         if (entityManager == null)
@@ -66,7 +56,7 @@ public class ConsoleCommandService
         inputText = inputText.Trim();
 
         // Dispatch the command (no permission checks for console)
-        var result = _dispatcher.Dispatch(_registry, services, inputText, [context], null);
+        var result = _dispatcher.Dispatch(_registry, services, inputText, [context]);
 
         // Handle the result
         switch (result.Response)
@@ -80,6 +70,7 @@ public class ConsoleCommandService
                 {
                     _usageFormatter.FormatUsageAsync(context, result.CommandDefinition).GetAwaiter().GetResult();
                 }
+
                 return true;
 
             case DispatchResponse.Error:
@@ -113,11 +104,7 @@ public class ConsoleCommandService
         try
         {
             // Execute the command
-            var result = _executor.Execute(
-                overload, [context],
-                parsedArgs,
-                services,
-                system);
+            var result = _executor.Execute(overload, [context], parsedArgs, services, system);
 
             // Interpret the result
             var success = result switch

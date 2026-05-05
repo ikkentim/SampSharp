@@ -1,20 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using SampSharp.Entities.SAMP.Commands.Core;
-using SampSharp.Entities.SAMP.Commands.Services;
-
-namespace SampSharp.Entities.SAMP.Commands.Help;
+namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>
 /// Default implementation of ICommandEnumerator using the command registry.
 /// </summary>
 public class DefaultCommandEnumerator : ICommandEnumerator
 {
-    private readonly CommandRegistry _registry;
-    private readonly ICommandNameProvider _nameProvider;
     private readonly Lazy<IReadOnlyList<CommandEnumerator>> _allCommands;
     private readonly Lazy<IReadOnlyList<CommandGroupEnumerator>> _allGroups;
+    private readonly ICommandNameProvider _nameProvider;
+    private readonly CommandRegistry _registry;
 
     public DefaultCommandEnumerator(CommandRegistry registry, ICommandNameProvider? nameProvider = null)
     {
@@ -54,8 +48,7 @@ public class DefaultCommandEnumerator : ICommandEnumerator
 
         var lowerTerm = searchTerm.ToLowerInvariant();
         return _allCommands.Value.Where(c =>
-            c.Name.Contains(lowerTerm, StringComparison.OrdinalIgnoreCase) ||
-            c.Aliases.Any(a => a.Name.Contains(lowerTerm, StringComparison.OrdinalIgnoreCase)) ||
+            c.Name.Contains(lowerTerm, StringComparison.OrdinalIgnoreCase) || c.Aliases.Any(a => a.Name.Contains(lowerTerm, StringComparison.OrdinalIgnoreCase)) ||
             c.HelpText.Contains(lowerTerm, StringComparison.OrdinalIgnoreCase));
     }
 
@@ -72,10 +65,7 @@ public class DefaultCommandEnumerator : ICommandEnumerator
 
     private IReadOnlyList<CommandEnumerator> BuildAllCommands()
     {
-        return _registry.GetAll()
-            .Select(BuildCommandEnumerator)
-            .ToList()
-            .AsReadOnly();
+        return _registry.GetAll().Select(BuildCommandEnumerator).ToList().AsReadOnly();
     }
 
     private IReadOnlyList<CommandGroupEnumerator> BuildAllGroups()
@@ -97,22 +87,12 @@ public class DefaultCommandEnumerator : ICommandEnumerator
 
     private CommandEnumerator BuildCommandEnumerator(CommandDefinition definition)
     {
-        var usageMessage = _nameProvider.GetUsageMessage(
-            definition.Name,
-            definition.Group?.ToString(),
-            definition.Overloads.FirstOrDefault()?.ParsedParameters ?? [],
-            null);
+        var usageMessage = _nameProvider.GetUsageMessage(definition.Name, definition.Group?.ToString(), definition.Overloads.FirstOrDefault()?.ParsedParameters ?? []);
 
         var helpText = BuildHelpText(definition);
 
-        return new CommandEnumerator(
-            name: definition.Name,
-            group: definition.Group,
-            aliases: definition.Aliases.ToList().AsReadOnly(),
-            overloads: definition.Overloads.ToList().AsReadOnly(),
-            permissions: definition.Tags.Select(t => t.Value).ToList().AsReadOnly(),
-            usageMessage: usageMessage,
-            helpText: helpText);
+        return new CommandEnumerator(definition.Name, definition.Group, definition.Aliases.ToList().AsReadOnly(), definition.Overloads.ToList().AsReadOnly(),
+            definition.Tags.Select(t => t.Value).ToList().AsReadOnly(), usageMessage, helpText);
     }
 
     private CommandGroupEnumerator? BuildGroupEnumerator(CommandGroup group)
@@ -135,11 +115,7 @@ public class DefaultCommandEnumerator : ICommandEnumerator
             }
         }
 
-        return new CommandGroupEnumerator(
-            name: group.ToString(),
-            group: group,
-            commands: commands.AsReadOnly(),
-            subgroups: subgroups.AsReadOnly());
+        return new CommandGroupEnumerator(group.ToString(), group, commands.AsReadOnly(), subgroups.AsReadOnly());
     }
 
     private IEnumerable<CommandGroup> FindImmediateSubgroups(CommandGroup parentGroup)
@@ -147,15 +123,15 @@ public class DefaultCommandEnumerator : ICommandEnumerator
         var allGroups = _registry.GetGroups();
         var parentParts = parentGroup.Parts.Count;
 
-        return allGroups.Where(g =>
-            g.Parts.Count == parentParts + 1 &&
-            g.Parts.Take(parentParts).SequenceEqual(parentGroup.Parts))
-            .Distinct();
+        return allGroups.Where(g => g.Parts.Count == parentParts + 1 && g.Parts.Take(parentParts).SequenceEqual(parentGroup.Parts)).Distinct();
     }
 
     private string BuildHelpText(CommandDefinition definition)
     {
-        var lines = new List<string> { $"Command: {definition.Name}" };
+        var lines = new List<string>
+        {
+            $"Command: {definition.Name}"
+        };
 
         if (definition.Group != null)
         {
@@ -181,10 +157,7 @@ public class DefaultCommandEnumerator : ICommandEnumerator
             lines.Add("Usage:");
             foreach (var overload in definition.Overloads)
             {
-                var paramNames = string.Join(
-                    " ",
-                    overload.ParsedParameters.Select(p =>
-                        p.IsRequired ? $"[{p.Name}]" : $"<{p.Name}>"));
+                var paramNames = string.Join(" ", overload.ParsedParameters.Select(p => p.IsRequired ? $"[{p.Name}]" : $"<{p.Name}>"));
 
                 lines.Add($"  /{definition.Name}" + (paramNames.Length > 0 ? $" {paramNames}" : ""));
             }

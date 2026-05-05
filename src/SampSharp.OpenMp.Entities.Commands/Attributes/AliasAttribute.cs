@@ -1,6 +1,6 @@
 using JetBrains.Annotations;
 
-namespace SampSharp.Entities.SAMP.Commands.Attributes;
+namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>
 /// Marks a command method as having one or more aliases (shorthand names).
@@ -8,7 +8,6 @@ namespace SampSharp.Entities.SAMP.Commands.Attributes;
 /// For example, [Alias("pm")] on a "message send" command allows "/pm" instead of "/message send".
 /// </summary>
 [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
-[MeansImplicitUse]
 public class AliasAttribute : Attribute
 {
     /// <summary>Initializes a new instance with a single alias.</summary>

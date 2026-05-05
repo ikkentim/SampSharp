@@ -1,9 +1,4 @@
-using SampSharp.Entities;
-using SampSharp.Entities.SAMP;
-using SampSharp.Entities.SAMP.Commands.Core;
-using SampSharp.OpenMp.Core.Api;
-
-namespace SampSharp.Entities.SAMP.Commands.Console;
+namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>
 /// System that bridges the new Commands system to the open.mp console command event system.

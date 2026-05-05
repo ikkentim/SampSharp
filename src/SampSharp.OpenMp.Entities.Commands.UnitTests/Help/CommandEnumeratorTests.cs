@@ -2,8 +2,6 @@ using System;
 using System.Linq;
 using System.Reflection;
 using Shouldly;
-using SampSharp.Entities.SAMP.Commands.Core;
-using SampSharp.Entities.SAMP.Commands.Help;
 using Xunit;
 
 namespace SampSharp.Entities.SAMP.Commands.Tests.Help;

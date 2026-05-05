@@ -1,6 +1,4 @@
-using System.Reflection;
-
-namespace SampSharp.Entities.SAMP.Commands.Core;
+namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>
 /// Central registry of all commands. Scans ISystem types via reflection to discover
@@ -8,9 +6,9 @@ namespace SampSharp.Entities.SAMP.Commands.Core;
 /// </summary>
 public class CommandRegistry
 {
-    private readonly Dictionary<string, CommandDefinition> _commandsByName = new();
     private readonly Dictionary<string, CommandDefinition> _aliasMap = new();
     private readonly List<CommandDefinition> _allCommands = new();
+    private readonly Dictionary<string, CommandDefinition> _commandsByName = new();
 
     /// <summary>Registers a command definition in the registry.</summary>
     public void Register(CommandDefinition definition)
@@ -74,8 +72,10 @@ public class CommandRegistry
         return TryFindByPath(pathParts, out _);
     }
 
-    /// <summary>Tries to find a command by its full path, matching command groups or aliases. 
-    /// Returns how many path parts were consumed.</summary>
+    /// <summary>
+    /// Tries to find a command by its full path, matching command groups or aliases.
+    /// Returns how many path parts were consumed.
+    /// </summary>
     public CommandDefinition? TryFindByPath(IEnumerable<string> pathParts, out int consumedParts)
     {
         consumedParts = 0;
@@ -91,7 +91,7 @@ public class CommandRegistry
         }
 
         // Build possible full names from longest to shortest match
-        for (int i = parts.Count; i > 0; i--)
+        for (var i = parts.Count; i > 0; i--)
         {
             var partial = string.Join(" ", parts.Take(i)).ToLowerInvariant();
             if (_commandsByName.TryGetValue(partial, out var cmd))

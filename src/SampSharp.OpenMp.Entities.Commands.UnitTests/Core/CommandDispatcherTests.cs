@@ -4,8 +4,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Shouldly;
 using Microsoft.Extensions.DependencyInjection;
-using SampSharp.Entities.SAMP.Commands.Core;
-using SampSharp.Entities.SAMP.Commands.Parsers;
 using Xunit;
 
 namespace SampSharp.Entities.SAMP.Commands.Tests.Core;

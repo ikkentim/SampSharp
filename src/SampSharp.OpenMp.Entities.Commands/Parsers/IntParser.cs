@@ -1,4 +1,4 @@
-namespace SampSharp.Entities.SAMP.Commands.Parsers;
+namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>Parses a single <see cref="int" /> word.</summary>
 public class IntParser : ICommandParameterParser
