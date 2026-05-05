@@ -6,12 +6,10 @@ namespace SampSharp.Entities.SAMP.Commands;
 /// </summary>
 public class CommandDefinition
 {
-    private readonly CommandAlias[] _aliases;
     private readonly CommandOverload[] _overloads;
-    private readonly Dictionary<string, string> _tags;
 
     /// <summary>Initializes a new instance.</summary>
-    public CommandDefinition(string name, CommandGroup? group, CommandOverload[] overloads, CommandAlias[]? aliases = null, CommandTag[]? tags = null)
+    public CommandDefinition(string name, CommandGroup? group, CommandOverload[] overloads)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
@@ -26,8 +24,6 @@ public class CommandDefinition
         Name = name;
         Group = group;
         _overloads = overloads;
-        _aliases = aliases ?? [];
-        _tags = tags?.ToDictionary(t => t.Key, t => t.Value) ?? new Dictionary<string, string>();
     }
 
     /// <summary>The command name (without leading slash or group prefix).</summary>
@@ -39,20 +35,8 @@ public class CommandDefinition
     /// <summary>All overloads of this command.</summary>
     public IReadOnlyList<CommandOverload> Overloads => _overloads;
 
-    /// <summary>Aliases for this command (shorthand names).</summary>
-    public IReadOnlyList<CommandAlias> Aliases => _aliases;
-
-    /// <summary>Custom metadata tags attached to this command.</summary>
-    public IReadOnlyDictionary<string, string> Tags => _tags;
-
     /// <summary>The full command path (group + name), e.g., "admin money give".</summary>
     public string FullName => Group.HasValue ? $"{Group.Value.FullName} {Name}" : Name;
-
-    /// <summary>Checks if this command has the given alias.</summary>
-    public bool HasAlias(string alias)
-    {
-        return _aliases.Any(a => a.Name == alias);
-    }
 
     /// <summary>Tries to find an overload that can handle the given parameter count.</summary>
     public CommandOverload? FindBestOverload(int parameterCount)

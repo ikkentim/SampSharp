@@ -14,5 +14,5 @@ public interface IPermissionChecker
     /// <param name="player">The player entity.</param>
     /// <param name="command">The command definition with metadata tags.</param>
     /// <returns>True if the player has permission; otherwise, false.</returns>
-    bool HasPermission(PlayerComponent player, CommandDefinition command);
+    bool HasPermission(PlayerComponent player, CommandOverload command);
 }

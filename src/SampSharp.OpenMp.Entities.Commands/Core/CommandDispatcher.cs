@@ -45,13 +45,14 @@ public class CommandDispatcher
         }
 
         // Check permission if a permission checker is provided
-        if (permissionChecker != null && prefixArgs.Length > 0 && prefixArgs[0] is PlayerComponent player)
-        {
-            if (!permissionChecker.HasPermission(player, command))
-            {
-                return DispatchResult.CreatePermissionDenied();
-            }
-        }
+        // TODO: Mover to after overload resolution
+        // if (permissionChecker != null && prefixArgs.Length > 0 && prefixArgs[0] is PlayerComponent player)
+        // {
+        //     if (!permissionChecker.HasPermission(player, command))
+        //     {
+        //         return DispatchResult.CreatePermissionDenied();
+        //     }
+        // }
 
         // Remaining tokens become the arguments
         var remainingTokens = tokens.Skip(consumedTokenCount).ToArray();

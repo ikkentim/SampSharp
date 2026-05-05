@@ -1,5 +1,3 @@
-using JetBrains.Annotations;
-
 namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>
@@ -18,7 +16,10 @@ public class CommandGroupAttribute : Attribute
             throw new ArgumentException("Group part cannot be empty.", nameof(part));
         }
 
-        Parts = new[] { part };
+        Parts = new[]
+        {
+            part
+        };
     }
 
     /// <summary>Initializes a new instance with multiple group parts.</summary>

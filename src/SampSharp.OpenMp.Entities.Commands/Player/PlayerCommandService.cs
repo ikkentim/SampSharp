@@ -2,30 +2,27 @@ namespace SampSharp.Entities.SAMP.Commands;
 
 internal class PlayerCommandService : IPlayerCommandService
 {
-    private readonly CommandRegistry _registry;
     private readonly CommandDispatcher _dispatcher = new();
-    private readonly CommandExecutor _executor;
     private readonly IEntityManager _entityManager;
-    private readonly ICommandUsageFormatter _usageFormatter;
-    private readonly IPermissionChecker _permissionChecker;
     private readonly ICommandEnumerator _enumerator;
+    private readonly CommandExecutor _executor;
+    private readonly IPermissionChecker _permissionChecker;
+    private readonly CommandRegistry _registry;
     private readonly IUnhandledExceptionHandler _unhandledExceptionHandler;
+    private readonly ICommandUsageFormatter _usageFormatter;
 
-    public PlayerCommandService(
-        IEntityManager entityManager,
-        ISystemRegistry systemRegistry,
-        CommandRegistry registry,
+    public PlayerCommandService(IEntityManager entityManager, ISystemRegistry systemRegistry,
         ICommandUsageFormatter usageFormatter,
         IPermissionChecker permissionChecker,
-        ICommandEnumerator enumerator,
         IUnhandledExceptionHandler unhandledExceptionHandler)
     {
         _entityManager = entityManager;
-        _registry = registry ?? throw new ArgumentNullException(nameof(registry));
         _unhandledExceptionHandler = unhandledExceptionHandler;
         _usageFormatter = usageFormatter ?? throw new ArgumentNullException(nameof(usageFormatter));
         _permissionChecker = permissionChecker ?? throw new ArgumentNullException(nameof(permissionChecker));
-        _enumerator = enumerator ?? throw new ArgumentNullException(nameof(enumerator));
+
+        _registry = new CommandRegistry();
+        _enumerator = new DefaultCommandEnumerator(_registry, new DefaultCommandNameProvider());
 
         _executor = new CommandExecutor(entityManager);
 
@@ -60,12 +57,7 @@ internal class PlayerCommandService : IPlayerCommandService
         }
 
         // Dispatch the command to find matching overload
-        var dispatchResult = _dispatcher.Dispatch(
-            _registry,
-            services,
-            commandText,
-            [player],
-            _permissionChecker);
+        var dispatchResult = _dispatcher.Dispatch(_registry, services, commandText, [player], _permissionChecker);
 
         // Handle the dispatch result
         switch (dispatchResult.Response)
@@ -78,7 +70,7 @@ internal class PlayerCommandService : IPlayerCommandService
                 // Send usage message via formatter
                 try
                 {
-                    var playerComponent = _entityManager.GetComponent<SAMP.Player>(player);
+                    var playerComponent = _entityManager.GetComponent<Player>(player);
                     if (playerComponent != null)
                     {
                         _usageFormatter.FormatUsageAsync(playerComponent, dispatchResult.CommandDefinition!).GetAwaiter().GetResult();
@@ -88,13 +80,14 @@ internal class PlayerCommandService : IPlayerCommandService
                 {
                     _unhandledExceptionHandler.Handle("player-command-usage-format", ex);
                 }
+
                 return true;
 
             case DispatchResponse.PermissionDenied:
                 // Send permission denied message via formatter
                 try
                 {
-                    var playerComponent = _entityManager.GetComponent<SAMP.Player>(player);
+                    var playerComponent = _entityManager.GetComponent<Player>(player);
                     if (playerComponent != null)
                     {
                         _usageFormatter.FormatPermissionDeniedAsync(playerComponent, dispatchResult.CommandDefinition!).GetAwaiter().GetResult();
@@ -104,13 +97,14 @@ internal class PlayerCommandService : IPlayerCommandService
                 {
                     _unhandledExceptionHandler.Handle("player-command-permission-format", ex);
                 }
+
                 return true;
 
             case DispatchResponse.Error:
                 {
                     try
                     {
-                        var playerComponent = _entityManager.GetComponent<SAMP.Player>(player);
+                        var playerComponent = _entityManager.GetComponent<Player>(player);
                         if (playerComponent != null)
                         {
                             playerComponent.SendClientMessage(dispatchResult.Message ?? "An error occurred while executing the command.");
@@ -127,7 +121,7 @@ internal class PlayerCommandService : IPlayerCommandService
             default:
                 try
                 {
-                    var playerComponent = _entityManager.GetComponent<SAMP.Player>(player);
+                    var playerComponent = _entityManager.GetComponent<Player>(player);
                     if (playerComponent != null)
                     {
                         _usageFormatter.FormatNotFoundAsync(playerComponent, inputText).GetAwaiter().GetResult();
@@ -137,6 +131,7 @@ internal class PlayerCommandService : IPlayerCommandService
                 {
                     _unhandledExceptionHandler.Handle("player-command-notfound-format", ex);
                 }
+
                 return false;
         }
     }
@@ -163,11 +158,7 @@ internal class PlayerCommandService : IPlayerCommandService
         try
         {
             // Execute the command with the Player component as prefix argument
-            var result = _executor.Execute(
-                overload, [playerId],
-                parsedArgs,
-                services,
-                system);
+            var result = _executor.Execute(overload, [playerId], parsedArgs, services, system);
 
             // Handle async results
             if (overload.IsAsync)

@@ -91,8 +91,12 @@ public class DefaultCommandEnumerator : ICommandEnumerator
 
         var helpText = BuildHelpText(definition);
 
-        return new CommandEnumerator(definition.Name, definition.Group, definition.Aliases.ToList().AsReadOnly(), definition.Overloads.ToList().AsReadOnly(),
-            definition.Tags.Select(t => t.Value).ToList().AsReadOnly(), usageMessage, helpText);
+        // Collect aliases and tags from all overloads
+        var allAliases = definition.Overloads.SelectMany(o => o.Aliases).Distinct().ToList().AsReadOnly();
+        var allTags = definition.Overloads.SelectMany(o => o.Tags).GroupBy(t => t.Key).Select(g => g.First()).Select(t => t.Value).ToList().AsReadOnly();
+
+        return new CommandEnumerator(definition.Name, definition.Group, allAliases, definition.Overloads.ToList().AsReadOnly(),
+            allTags, usageMessage, helpText);
     }
 
     private CommandGroupEnumerator? BuildGroupEnumerator(CommandGroup group)
@@ -138,18 +142,11 @@ public class DefaultCommandEnumerator : ICommandEnumerator
             lines.Add($"Group: {definition.Group}");
         }
 
-        if (definition.Aliases.Count > 0)
+        // Collect aliases from all overloads
+        var allAliases = definition.Overloads.SelectMany(o => o.Aliases).Distinct().ToList();
+        if (allAliases.Count > 0)
         {
-            lines.Add($"Aliases: {string.Join(", ", definition.Aliases.Select(a => a.Name))}");
-        }
-
-        if (definition.Tags.Count > 0)
-        {
-            var permTags = definition.Tags.Where(t => t.Key == "permission").Select(t => t.Value).ToList();
-            if (permTags.Count > 0)
-            {
-                lines.Add($"Requires: {string.Join(", ", permTags)}");
-            }
+            lines.Add($"Aliases: {string.Join(", ", allAliases.Select(a => a.Name))}");
         }
 
         if (definition.Overloads.Count > 0)

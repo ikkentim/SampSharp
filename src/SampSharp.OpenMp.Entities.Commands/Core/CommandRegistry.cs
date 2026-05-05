@@ -20,24 +20,24 @@ public class CommandRegistry
 
         // Register by full name (or short name if no group)
         var key = definition.FullName.ToLowerInvariant();
-        if (_commandsByName.ContainsKey(key))
+        if (!_commandsByName.TryAdd(key, definition))
         {
             throw new InvalidOperationException($"Command '{definition.FullName}' is already registered.");
         }
 
-        _commandsByName[key] = definition;
         _allCommands.Add(definition);
 
-        // Register aliases
-        foreach (var alias in definition.Aliases)
+        // Register aliases from all overloads
+        foreach (var overload in definition.Overloads)
         {
-            var aliasKey = alias.Name.ToLowerInvariant();
-            if (_aliasMap.ContainsKey(aliasKey))
+            foreach (var alias in overload.Aliases)
             {
-                throw new InvalidOperationException($"Alias '{alias.Name}' is already registered.");
+                var aliasKey = alias.Name.ToLowerInvariant();
+                if (!_aliasMap.TryAdd(aliasKey, definition))
+                {
+                    throw new InvalidOperationException($"Alias '{alias.Name}' is already registered.");
+                }
             }
-
-            _aliasMap[aliasKey] = definition;
         }
     }
 

@@ -1,5 +1,3 @@
-using JetBrains.Annotations;
-
 namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>

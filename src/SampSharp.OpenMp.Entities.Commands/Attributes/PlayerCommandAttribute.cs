@@ -29,9 +29,9 @@ public class PlayerCommandAttribute : Attribute, ICommandAttribute
         Name = name;
     }
 
-    /// <inheritdoc />
-    public string? Name { get; set; }
-
     /// <summary>Optional localization key for the usage message. Used by ICommandNameProvider to generate localized usage text.</summary>
     public string? UsageMessageKey { get; set; }
+
+    /// <inheritdoc />
+    public string? Name { get; set; }
 }

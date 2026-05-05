@@ -20,24 +20,10 @@ public static class EcsBuilderCommandsExtensions
         return services;
     }
 
-    /// <summary>
-    /// Registers the new Commands system infrastructure:
-    /// - CommandRegistry (for command storage/lookup)
-    /// - CommandDispatcher (for parsing and matching)
-    /// - ICommandEnumerator (for help/discovery)
-    /// - ICommandUsageFormatter (for message formatting and delivery)
-    /// - IPermissionChecker (for permission validation)
-    /// - Service implementations (help, error handling)
-    /// - ConsoleBridgeSystem (handles console command registration and dispatch)
-    /// </summary>
     public static IServiceCollection AddCommandsSystem(this IServiceCollection services)
     {
-        services.TryAddSingleton<CommandRegistry>();
         services.TryAddSingleton<ICommandUsageFormatter, DefaultCommandUsageFormatter>();
         services.TryAddSingleton<IPermissionChecker, DefaultPermissionChecker>();
-        services.TryAddSingleton<ICommandHelpProvider, DefaultCommandHelpProvider>();
-        services.TryAddSingleton<Services.ICommandEnumerator>(sp =>
-            new Services.DefaultCommandEnumerator(sp.GetRequiredService<CommandRegistry>(), sp.GetRequiredService<IPermissionChecker>()));
 
         services.TryAddSingleton<PlayerCommandService>();
         services.TryAddSingleton<ConsoleCommandService>();

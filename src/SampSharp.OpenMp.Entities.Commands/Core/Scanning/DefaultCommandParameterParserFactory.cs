@@ -40,7 +40,7 @@ public class DefaultCommandParameterParserFactory : ICommandParameterParserFacto
         }
 
         // Player/EntityId
-        if (paramType == typeof(SampSharp.Entities.SAMP.Player) || paramType == typeof(EntityId))
+        if (paramType == typeof(Player) || paramType == typeof(EntityId))
         {
             return new PlayerParser();
         }

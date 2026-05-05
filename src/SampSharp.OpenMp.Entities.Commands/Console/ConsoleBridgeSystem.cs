@@ -36,9 +36,7 @@ internal class ConsoleBridgeSystem : ISystem
         var inputText = string.IsNullOrEmpty(args) ? command : $"{command} {args}";
 
         // Create a dispatch context with message handler to send responses back
-        var context = new ConsoleCommandDispatchContext(
-            player: sender.Player,
-            messageHandler: msg => System.Console.WriteLine(msg));
+        var context = new ConsoleCommandDispatchContext(sender.Player, msg => Console.WriteLine(msg));
 
         // Dispatch through command service
         var success = _commandService.Invoke(serviceProvider, context, inputText);

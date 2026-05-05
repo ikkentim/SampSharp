@@ -28,7 +28,10 @@ public static class AsyncCommandExecutor
     /// </summary>
     public static AsyncTaskResult ExecuteAsync(object? result)
     {
-        var taskResult = new AsyncTaskResult { IsSuccess = true };
+        var taskResult = new AsyncTaskResult
+        {
+            IsSuccess = true
+        };
 
         // Handle null/void return
         if (result == null)

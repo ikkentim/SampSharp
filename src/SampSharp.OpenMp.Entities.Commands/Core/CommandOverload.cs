@@ -8,9 +8,12 @@ namespace SampSharp.Entities.SAMP.Commands;
 /// </summary>
 public class CommandOverload
 {
+    private readonly CommandAlias[] _aliases;
+    private readonly Dictionary<string, string> _tags;
+
     /// <summary>Initializes a new instance.</summary>
     public CommandOverload(MethodInfo method, ParameterInfo[] parameters, Type declaringSystemType, CommandParameterInfo[] parsedParameters, MethodInvoker invoker,
-        int prefixParameterCount)
+        int prefixParameterCount, CommandAlias[]? aliases = null, CommandTag[]? tags = null)
     {
         ArgumentNullException.ThrowIfNull(method);
         ArgumentNullException.ThrowIfNull(parameters);
@@ -23,6 +26,8 @@ public class CommandOverload
         ParsedParameters = parsedParameters;
         CompiledInvoker = invoker;
         PrefixParameterCount = prefixParameterCount;
+        _aliases = aliases ?? [];
+        _tags = tags?.ToDictionary(t => t.Key, t => t.Value) ?? new Dictionary<string, string>();
     }
 
     /// <summary>The method that implements this command overload.</summary>
@@ -45,6 +50,12 @@ public class CommandOverload
 
     /// <summary>The number of prefix parameters (e.g., Player for player commands, ConsoleCommandSender for console commands).</summary>
     public int PrefixParameterCount { get; }
+
+    /// <summary>Aliases for this overload.</summary>
+    public IReadOnlyList<CommandAlias> Aliases => _aliases;
+
+    /// <summary>Custom metadata tags attached to this overload.</summary>
+    public IReadOnlyDictionary<string, string> Tags => _tags;
 
     /// <summary>The return type of the method.</summary>
     public Type ReturnType => Method.ReturnType;

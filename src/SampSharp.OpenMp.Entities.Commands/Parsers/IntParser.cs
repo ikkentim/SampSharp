@@ -13,6 +13,7 @@ public class IntParser : ICommandParameterParser
             result = null;
             return false;
         }
+
         result = num;
         return true;
     }

@@ -34,10 +34,8 @@ public class CommandScanner
             var methodGroups = method.GetCustomAttributes<CommandGroupAttribute>();
             var commandGroup = BuildCommandGroup(classGroups, methodGroups);
 
-            // Aliases
+            // Aliases and tags are collected per overload
             var aliases = method.GetCustomAttributes<AliasAttribute>().SelectMany(a => a.Aliases).Select(a => new CommandAlias(a)).ToArray();
-
-            // Command tags (including permissions as tags)
             var tags = method.GetCustomAttributes<CommandTagAttribute>().Select(t => new CommandTag(t.Key, t.Value)).ToArray();
 
             // Each [PlayerCommand] attribute is a separate overload
@@ -52,7 +50,7 @@ public class CommandScanner
                 Console.WriteLine();
             }
 
-            if (!TryBuildOverload(method, systemType, parserFactory, 1, out var overload))
+            if (!TryBuildOverload(method, systemType, parserFactory, 1, aliases, tags, out var overload))
             {
                 continue;
             }
@@ -60,7 +58,7 @@ public class CommandScanner
             var definition = new CommandDefinition(commandName, commandGroup, new[]
             {
                 overload
-            }, aliases, tags);
+            });
 
             registry.Register(definition);
         }
@@ -82,10 +80,8 @@ public class CommandScanner
             var methodGroups = method.GetCustomAttributes<CommandGroupAttribute>();
             var commandGroup = BuildCommandGroup(classGroups, methodGroups);
 
-            // Aliases
+            // Aliases and tags are collected per overload
             var aliases = method.GetCustomAttributes<AliasAttribute>().SelectMany(a => a.Aliases).Select(a => new CommandAlias(a)).ToArray();
-
-            // Command tags (including permissions as tags)
             var tags = method.GetCustomAttributes<CommandTagAttribute>().Select(t => new CommandTag(t.Key, t.Value)).ToArray();
 
             // Console commands: check if first param is ConsoleCommandDispatchContext
@@ -106,7 +102,7 @@ public class CommandScanner
                 continue;
             }
 
-            if (!TryBuildOverload(method, systemType, parserFactory, prefixParams, out var overload))
+            if (!TryBuildOverload(method, systemType, parserFactory, prefixParams, aliases, tags, out var overload))
             {
                 continue;
             }
@@ -114,7 +110,7 @@ public class CommandScanner
             var definition = new CommandDefinition(commandName, commandGroup, new[]
             {
                 overload
-            }, aliases, tags);
+            });
 
             registry.Register(definition);
         }
@@ -129,7 +125,7 @@ public class CommandScanner
     }
 
     /// <summary>Tries to build a CommandOverload from a method.</summary>
-    private bool TryBuildOverload(MethodInfo method, Type systemType, ICommandParameterParserFactory parserFactory, int prefixParameters, out CommandOverload? overload)
+    private bool TryBuildOverload(MethodInfo method, Type systemType, ICommandParameterParserFactory parserFactory, int prefixParameters, CommandAlias[] aliases, CommandTag[] tags, out CommandOverload? overload)
     {
         overload = null;
 
@@ -154,7 +150,7 @@ public class CommandScanner
         // Compile the method invoker at discovery time
         var invoker = CompileMethodInvoker(method, parameters, prefixParameters, parsedParams!);
 
-        overload = new CommandOverload(method, parameters, systemType, parsedParams!, invoker, prefixParameters);
+        overload = new CommandOverload(method, parameters, systemType, parsedParams!, invoker, prefixParameters, aliases, tags);
 
         return true;
     }

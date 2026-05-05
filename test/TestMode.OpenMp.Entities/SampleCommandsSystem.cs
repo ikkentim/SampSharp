@@ -2,6 +2,7 @@ using System.Numerics;
 using SampSharp.Entities;
 using SampSharp.Entities.SAMP;
 using SampSharp.Entities.SAMP.Commands;
+using SampSharp.Entities.SAMP.Commands.Help;
 
 namespace TestMode.OpenMp.Entities;
 
@@ -43,7 +44,7 @@ public class SampleCommandsSystem : ISystem
     /// </summary>
     [PlayerCommand(Name = "slap")]
     [CommandGroup("admin")]
-    [RequiresPermission("admin", "moderator")]
+    [RequiresPermission("admin")]
     public void SlapPlayer(Player player, Player target, int damage = 10)
     {
         target.Health -= damage;
@@ -116,6 +117,7 @@ public class SampleCommandsSystem : ISystem
     {
         player.SendClientMessage("--- Available Commands ---");
 
+        new DefaultCommandHelpProvider(commands.GetCommands())
         var playerCommands = commands.GetCommands().GetAllCommands()
             .OrderBy(c => c.Name)
             .ToList();
