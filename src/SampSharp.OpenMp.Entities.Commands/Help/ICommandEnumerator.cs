@@ -5,6 +5,7 @@ namespace SampSharp.Entities.SAMP.Commands;
 /// </summary>
 public interface ICommandEnumerator
 {
+    ICommandRegistry Registry { get; }
     /// <summary>
     /// Gets all registered commands.
     /// </summary>

@@ -7,20 +7,15 @@ namespace SampSharp.Entities.SAMP.Commands;
 /// Scans ISystem types for command methods marked with [PlayerCommand] or [ConsoleCommand].
 /// Builds CommandDefinition objects and registers them in a registry.
 /// </summary>
-public class CommandScanner
+internal class CommandScanner
 {
-    private readonly IEntityManager _entityManager;
     private readonly ISystemRegistry _systemRegistry;
 
-    public CommandScanner(IEntityManager entityManager, ISystemRegistry systemRegistry)
+    public CommandScanner(ISystemRegistry systemRegistry)
     {
-        _entityManager = entityManager ?? throw new ArgumentNullException(nameof(entityManager));
-        _systemRegistry = systemRegistry ?? throw new ArgumentNullException(nameof(systemRegistry));
+        _systemRegistry = systemRegistry;
     }
 
-    /// <summary>
-    /// Scans all registered ISystem types for player commands and populates the registry.
-    /// </summary>
     public void ScanPlayerCommands(CommandRegistry registry, ICommandParameterParserFactory parserFactory)
     {
         var scanner = ClassScanner.Create().IncludeTypes(_systemRegistry.GetSystemTypes().Span).IncludeNonPublicMembers();
@@ -55,18 +50,14 @@ public class CommandScanner
                 continue;
             }
 
-            var definition = new CommandDefinition(commandName, commandGroup, new[]
-            {
+            var definition = new CommandDefinition(commandName, commandGroup, [
                 overload
-            });
+            ]);
 
             registry.Register(definition);
         }
     }
 
-    /// <summary>
-    /// Scans all registered ISystem types for console commands and populates the registry.
-    /// </summary>
     public void ScanConsoleCommands(CommandRegistry registry, ICommandParameterParserFactory parserFactory)
     {
         var scanner = ClassScanner.Create().IncludeTypes(_systemRegistry.GetSystemTypes().Span).IncludeNonPublicMembers();
@@ -107,16 +98,14 @@ public class CommandScanner
                 continue;
             }
 
-            var definition = new CommandDefinition(commandName, commandGroup, new[]
-            {
+            var definition = new CommandDefinition(commandName, commandGroup, [
                 overload
-            });
+            ]);
 
             registry.Register(definition);
         }
     }
 
-    /// <summary>Builds the command group by stacking class and method groups.</summary>
     private CommandGroup? BuildCommandGroup(IEnumerable<CommandGroupAttribute> classGroups, IEnumerable<CommandGroupAttribute> methodGroups)
     {
         var allParts = classGroups.SelectMany(g => g.Parts).Concat(methodGroups.SelectMany(g => g.Parts)).ToList();
@@ -124,7 +113,6 @@ public class CommandScanner
         return allParts.Count > 0 ? new CommandGroup(allParts) : null;
     }
 
-    /// <summary>Tries to build a CommandOverload from a method.</summary>
     private bool TryBuildOverload(MethodInfo method, Type systemType, ICommandParameterParserFactory parserFactory, int prefixParameters, CommandAlias[] aliases, CommandTag[] tags, out CommandOverload? overload)
     {
         overload = null;
@@ -155,7 +143,6 @@ public class CommandScanner
         return true;
     }
 
-    /// <summary>Compiles a MethodInvoker for the given method using expression trees.</summary>
     private MethodInvoker CompileMethodInvoker(MethodInfo method, ParameterInfo[] parameters, int prefixParameterCount, CommandParameterInfo[] parsedParameters)
     {
         // Build MethodParameterSource array
@@ -198,11 +185,10 @@ public class CommandScanner
         return MethodInvokerFactory.Compile(method, sources);
     }
 
-    /// <summary>Validates that a return type is supported by the command system.</summary>
     private bool IsValidReturnType(Type returnType)
     {
         // void, bool, int
-        if (returnType == typeof(void) || returnType == typeof(bool) || returnType == typeof(int))
+        if (returnType == typeof(void) || returnType == typeof(bool))
         {
             return true;
         }
@@ -226,7 +212,6 @@ public class CommandScanner
         return false;
     }
 
-    /// <summary>Collects parameter information for a method (excluding prefix, handling DI).</summary>
     private bool TryCollectParameters(ParameterInfo[] parameters, int prefixParameters, ICommandParameterParserFactory parserFactory, out CommandParameterInfo[]? result)
     {
         result = null;

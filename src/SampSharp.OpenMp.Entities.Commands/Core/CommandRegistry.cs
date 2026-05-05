@@ -1,16 +1,38 @@
 namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>
-/// Central registry of all commands. Scans ISystem types via reflection to discover
-/// and register commands marked with [PlayerCommand], [ConsoleCommand], and related attributes.
+/// Represents a registry for managing and retrieving command definitions by name, alias, or group.
 /// </summary>
-public class CommandRegistry
+public interface ICommandRegistry
+{
+    /// <summary>Tries to find a command by name or alias (case-insensitive).</summary>
+    CommandDefinition? TryFind(string nameOrAlias);
+
+    /// <summary>Tries to find a command by its full path, matching command groups or aliases.</summary>
+    CommandDefinition? TryFindByPath(IEnumerable<string> pathParts);
+
+    /// <summary>
+    /// Tries to find a command by its full path, matching command groups or aliases.
+    /// Returns how many path parts were consumed.
+    /// </summary>
+    CommandDefinition? TryFindByPath(IEnumerable<string> pathParts, out int consumedParts);
+
+    /// <summary>Gets all registered commands.</summary>
+    IReadOnlyList<CommandDefinition> GetAll();
+
+    /// <summary>Gets all commands in a specific group.</summary>
+    IEnumerable<CommandDefinition> GetCommandsInGroup(CommandGroup group);
+
+    /// <summary>Gets all command groups.</summary>
+    IEnumerable<CommandGroup> GetGroups();
+}
+
+internal class CommandRegistry : ICommandRegistry
 {
     private readonly Dictionary<string, CommandDefinition> _aliasMap = new();
-    private readonly List<CommandDefinition> _allCommands = new();
+    private readonly List<CommandDefinition> _allCommands = [];
     private readonly Dictionary<string, CommandDefinition> _commandsByName = new();
 
-    /// <summary>Registers a command definition in the registry.</summary>
     public void Register(CommandDefinition definition)
     {
         if (definition == null)
@@ -41,7 +63,6 @@ public class CommandRegistry
         }
     }
 
-    /// <summary>Tries to find a command by name or alias (case-insensitive).</summary>
     public CommandDefinition? TryFind(string nameOrAlias)
     {
         if (string.IsNullOrWhiteSpace(nameOrAlias))
@@ -51,31 +72,18 @@ public class CommandRegistry
 
         var key = nameOrAlias.ToLowerInvariant();
 
-        // Try as full/short name first
-        if (_commandsByName.TryGetValue(key, out var cmd))
-        {
-            return cmd;
-        }
+        // Try as full/short name first, otherwise as alias
+        return _commandsByName.TryGetValue(key, out var cmd) 
+            ? cmd
+            : _aliasMap.GetValueOrDefault(key);
 
-        // Try as alias
-        if (_aliasMap.TryGetValue(key, out var aliased))
-        {
-            return aliased;
-        }
-
-        return null;
     }
 
-    /// <summary>Tries to find a command by its full path, matching command groups or aliases.</summary>
     public CommandDefinition? TryFindByPath(IEnumerable<string> pathParts)
     {
         return TryFindByPath(pathParts, out _);
     }
 
-    /// <summary>
-    /// Tries to find a command by its full path, matching command groups or aliases.
-    /// Returns how many path parts were consumed.
-    /// </summary>
     public CommandDefinition? TryFindByPath(IEnumerable<string> pathParts, out int consumedParts)
     {
         consumedParts = 0;
@@ -111,25 +119,21 @@ public class CommandRegistry
         return null;
     }
 
-    /// <summary>Gets all registered commands.</summary>
     public IReadOnlyList<CommandDefinition> GetAll()
     {
         return _allCommands.AsReadOnly();
     }
 
-    /// <summary>Gets all commands in a specific group.</summary>
     public IEnumerable<CommandDefinition> GetCommandsInGroup(CommandGroup group)
     {
         return _allCommands.Where(c => c.Group == group);
     }
 
-    /// <summary>Gets all command groups.</summary>
     public IEnumerable<CommandGroup> GetGroups()
     {
-        return _allCommands.Where(c => c.Group.HasValue).Select(c => c.Group.Value).Distinct();
+        return _allCommands.Where(c => c.Group.HasValue).Select(c => c.Group!.Value).Distinct();
     }
 
-    /// <summary>Clears all registered commands.</summary>
     public void Clear()
     {
         _commandsByName.Clear();

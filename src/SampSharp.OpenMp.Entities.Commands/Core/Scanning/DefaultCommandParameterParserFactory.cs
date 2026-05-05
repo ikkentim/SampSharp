@@ -7,6 +7,7 @@ namespace SampSharp.Entities.SAMP.Commands;
 /// </summary>
 public class DefaultCommandParameterParserFactory : ICommandParameterParserFactory
 {
+    /// <inheritdoc />
     public ICommandParameterParser? CreateParser(ParameterInfo[] parameters, int index)
     {
         var param = parameters[index];

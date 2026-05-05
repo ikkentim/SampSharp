@@ -4,7 +4,7 @@ namespace SampSharp.Entities.SAMP.Commands;
 /// Executes a command by invoking the associated method with parsed parameters.
 /// Uses pre-compiled MethodInvoker from CommandOverload for high performance.
 /// </summary>
-public class CommandExecutor
+internal class CommandExecutor
 {
     private readonly IEntityManager _entityManager;
 
@@ -24,26 +24,6 @@ public class CommandExecutor
     /// <returns>The result of the method invocation.</returns>
     public object? Execute(CommandOverload overload, object?[] prefixArgs, object?[] parsedArgs, IServiceProvider services, ISystem system)
     {
-        if (overload == null)
-        {
-            throw new ArgumentNullException(nameof(overload));
-        }
-
-        if (services == null)
-        {
-            throw new ArgumentNullException(nameof(services));
-        }
-
-        if (system == null)
-        {
-            throw new ArgumentNullException(nameof(system));
-        }
-
-        if (overload.CompiledInvoker == null)
-        {
-            throw new InvalidOperationException("Command overload has no compiled invoker. Invoker should be compiled at discovery time.");
-        }
-
         var parameters = overload.MethodParameters;
 
         // Build the combined argument array (prefix + parsed)

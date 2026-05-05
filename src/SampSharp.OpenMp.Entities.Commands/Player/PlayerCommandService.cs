@@ -27,7 +27,7 @@ internal class PlayerCommandService : IPlayerCommandService
         _executor = new CommandExecutor(entityManager);
 
         // Scan for player commands into the shared registry
-        var scanner = new CommandScanner(entityManager, systemRegistry);
+        var scanner = new CommandScanner(systemRegistry);
         var parserFactory = new DefaultCommandParameterParserFactory();
         scanner.ScanPlayerCommands(_registry, parserFactory);
     }
@@ -73,7 +73,7 @@ internal class PlayerCommandService : IPlayerCommandService
                     var playerComponent = _entityManager.GetComponent<Player>(player);
                     if (playerComponent != null)
                     {
-                        _usageFormatter.FormatUsageAsync(playerComponent, dispatchResult.CommandDefinition!).GetAwaiter().GetResult();
+                        _usageFormatter.FormatUsage(playerComponent, dispatchResult.CommandDefinition!);
                     }
                 }
                 catch (Exception ex)
@@ -90,7 +90,7 @@ internal class PlayerCommandService : IPlayerCommandService
                     var playerComponent = _entityManager.GetComponent<Player>(player);
                     if (playerComponent != null)
                     {
-                        _usageFormatter.FormatPermissionDeniedAsync(playerComponent, dispatchResult.CommandDefinition!).GetAwaiter().GetResult();
+                        _usageFormatter.FormatPermissionDenied(playerComponent, dispatchResult.CommandDefinition!);
                     }
                 }
                 catch (Exception ex)
@@ -124,7 +124,7 @@ internal class PlayerCommandService : IPlayerCommandService
                     var playerComponent = _entityManager.GetComponent<Player>(player);
                     if (playerComponent != null)
                     {
-                        _usageFormatter.FormatNotFoundAsync(playerComponent, inputText).GetAwaiter().GetResult();
+                        _usageFormatter.FormatNotFound(playerComponent, inputText);
                     }
                 }
                 catch (Exception ex)

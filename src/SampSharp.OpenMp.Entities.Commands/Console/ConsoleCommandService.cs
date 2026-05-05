@@ -4,37 +4,24 @@ namespace SampSharp.Entities.SAMP.Commands;
 /// Dispatches console commands from the open.mp console.
 /// Handles ConsoleCommandDispatchContext and command execution.
 /// </summary>
-public class ConsoleCommandService
+internal class ConsoleCommandService
 {
     private readonly CommandDispatcher _dispatcher = new();
-    private readonly IEntityManager _entityManager;
     private readonly CommandExecutor _executor;
     private readonly CommandRegistry _registry = new();
-    private readonly ISystemRegistry _systemRegistry;
     private readonly IUnhandledExceptionHandler _unhandledExceptionHandler;
     private readonly ICommandUsageFormatter _usageFormatter;
 
     public ConsoleCommandService(IEntityManager entityManager, ISystemRegistry systemRegistry, ICommandUsageFormatter usageFormatter,
         IUnhandledExceptionHandler unhandledExceptionHandler)
     {
-        if (entityManager == null)
-        {
-            throw new ArgumentNullException(nameof(entityManager));
-        }
-
-        if (systemRegistry == null)
-        {
-            throw new ArgumentNullException(nameof(systemRegistry));
-        }
-
-        _entityManager = entityManager;
-        _systemRegistry = systemRegistry;
         _unhandledExceptionHandler = unhandledExceptionHandler;
-        _usageFormatter = usageFormatter ?? throw new ArgumentNullException(nameof(usageFormatter));
+        _usageFormatter = usageFormatter;
+
         _executor = new CommandExecutor(entityManager);
 
         // Scan for console commands
-        var scanner = new CommandScanner(entityManager, systemRegistry);
+        var scanner = new CommandScanner(systemRegistry);
         var parserFactory = new DefaultCommandParameterParserFactory();
         scanner.ScanConsoleCommands(_registry, parserFactory);
     }
@@ -68,7 +55,7 @@ public class ConsoleCommandService
             case DispatchResponse.InvalidArguments:
                 if (result.CommandDefinition != null)
                 {
-                    _usageFormatter.FormatUsageAsync(context, result.CommandDefinition).GetAwaiter().GetResult();
+                    _usageFormatter.FormatUsage(context, result.CommandDefinition);
                 }
 
                 return true;
@@ -79,7 +66,7 @@ public class ConsoleCommandService
 
             case DispatchResponse.CommandNotFound:
             default:
-                _usageFormatter.FormatNotFoundAsync(context, inputText).GetAwaiter().GetResult();
+                _usageFormatter.FormatNotFound(context, inputText);
                 return false;
         }
     }
@@ -123,7 +110,7 @@ public class ConsoleCommandService
     }
 
     /// <summary>Gets the command registry for access to registered commands.</summary>
-    public CommandRegistry GetRegistry()
+    public ICommandRegistry GetRegistry()
     {
         return _registry;
     }

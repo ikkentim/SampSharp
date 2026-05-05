@@ -1,12 +1,10 @@
-using PlayerComponent = SampSharp.Entities.SAMP.Player;
-
 namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>
 /// Core command dispatcher. Handles parsing command input and matching to registered commands.
 /// Used by both PlayerCommandService and ConsoleCommandService.
 /// </summary>
-public class CommandDispatcher
+internal class CommandDispatcher
 {
     /// <summary>
     /// Dispatches a command from input text with full overload matching and permission checking.
@@ -17,7 +15,7 @@ public class CommandDispatcher
     /// <param name="prefixArgs">Prefix arguments (e.g., [Player] for player commands, [ConsoleCommandDispatchContext] for console commands).</param>
     /// <param name="permissionChecker">Optional permission checker (for player commands only).</param>
     /// <returns>The dispatch result.</returns>
-    public DispatchResult Dispatch(CommandRegistry registry, IServiceProvider services, string inputText, object[] prefixArgs, IPermissionChecker? permissionChecker = null)
+    public DispatchResult Dispatch(ICommandRegistry registry, IServiceProvider services, string inputText, object[] prefixArgs, IPermissionChecker? permissionChecker = null)
     {
         ArgumentNullException.ThrowIfNull(registry);
         ArgumentNullException.ThrowIfNull(services);
@@ -44,15 +42,7 @@ public class CommandDispatcher
             return DispatchResult.CreateNotFound();
         }
 
-        // Check permission if a permission checker is provided
-        // TODO: Mover to after overload resolution
-        // if (permissionChecker != null && prefixArgs.Length > 0 && prefixArgs[0] is PlayerComponent player)
-        // {
-        //     if (!permissionChecker.HasPermission(player, command))
-        //     {
-        //         return DispatchResult.CreatePermissionDenied();
-        //     }
-        // }
+
 
         // Remaining tokens become the arguments
         var remainingTokens = tokens.Skip(consumedTokenCount).ToArray();
@@ -60,6 +50,15 @@ public class CommandDispatcher
 
         // Try to match parameters for each overload
         var bestMatch = FindBestOverload(command, remainingArgs, services);
+
+        // Check permission if a permission checker is provided
+        if (bestMatch.overload is not null && 
+            permissionChecker is not null &&
+            prefixArgs is [Player player, ..] &&
+            !permissionChecker.HasPermission(player, bestMatch.overload))
+        {
+            return DispatchResult.CreatePermissionDenied();
+        }
 
         if (bestMatch.matched)
         {

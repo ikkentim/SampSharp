@@ -16,10 +16,10 @@ public class CommandGroupAttribute : Attribute
             throw new ArgumentException("Group part cannot be empty.", nameof(part));
         }
 
-        Parts = new[]
-        {
+        Parts =
+        [
             part
-        };
+        ];
     }
 
     /// <summary>Initializes a new instance with multiple group parts.</summary>

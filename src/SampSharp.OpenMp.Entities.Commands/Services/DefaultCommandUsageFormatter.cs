@@ -8,39 +8,34 @@ namespace SampSharp.Entities.SAMP.Commands;
 /// </summary>
 public class DefaultCommandUsageFormatter : ICommandUsageFormatter
 {
-    public Task FormatUsageAsync(PlayerComponent player, CommandDefinition command)
+    public void FormatUsage(PlayerComponent player, CommandDefinition command)
     {
         var message = FormatUsageMessage(command);
         player.SendClientMessage(message);
-        return Task.CompletedTask;
     }
 
-    public Task FormatNotFoundAsync(PlayerComponent player, string input)
+    public void FormatNotFound(PlayerComponent player, string input)
     {
         var message = $"Unknown command: {input}";
         player.SendClientMessage(message);
-        return Task.CompletedTask;
     }
 
-    public Task FormatPermissionDeniedAsync(PlayerComponent player, CommandDefinition command)
+    public void FormatPermissionDenied(PlayerComponent player, CommandDefinition command)
     {
         var message = "You don't have permission to use this command.";
         player.SendClientMessage(message);
-        return Task.CompletedTask;
     }
 
-    public Task FormatUsageAsync(ConsoleCommandDispatchContext context, CommandDefinition command)
+    public void FormatUsage(ConsoleCommandDispatchContext context, CommandDefinition command)
     {
         var message = FormatUsageMessage(command);
         context.SendMessage(message);
-        return Task.CompletedTask;
     }
 
-    public Task FormatNotFoundAsync(ConsoleCommandDispatchContext context, string input)
+    public void FormatNotFound(ConsoleCommandDispatchContext context, string input)
     {
         var message = $"Unknown command: {input}";
         context.SendMessage(message);
-        return Task.CompletedTask;
     }
 
     /// <summary>

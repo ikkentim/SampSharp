@@ -117,7 +117,7 @@ public class SampleCommandsSystem : ISystem
     {
         player.SendClientMessage("--- Available Commands ---");
 
-        new DefaultCommandHelpProvider(commands.GetCommands())
+        new DefaultCommandHelpProvider(commands.GetCommands().Registry);
         var playerCommands = commands.GetCommands().GetAllCommands()
             .OrderBy(c => c.Name)
             .ToList();
@@ -161,5 +161,12 @@ public class SampleCommandsSystem : ISystem
     public void AddCommand(int a, int b)
     {
         Console.WriteLine($"{a} + {b} = {a + b}");
+    }
+
+    [PlayerCommand(Name = "add_numbers")]
+    [Alias("add")]
+    public void AddCommand(Player player, int a, int b)
+    {
+        player.SendClientMessage($"{a} + {b} = {a + b}");
     }
 }

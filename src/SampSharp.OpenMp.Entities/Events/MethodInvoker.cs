@@ -8,4 +8,4 @@
 /// <param name="services">The service provider from which dependencies are loaded.</param>
 /// <param name="entityManager">The entity manager from which components are loaded.</param>
 /// <returns>The result of the method.</returns>
-public delegate object MethodInvoker(object target, object?[]? args, IServiceProvider services, IEntityManager? entityManager);
+public delegate object? MethodInvoker(object target, object?[]? args, IServiceProvider services, IEntityManager? entityManager);
