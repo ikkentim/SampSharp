@@ -1,11 +1,15 @@
 namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>
-/// Dispatches chat input from a player to a method marked with
-/// <see cref="PlayerCommandAttribute" />.
+/// Dispatches chat input from a player to a method marked with <see cref="PlayerCommandAttribute" />.
 /// </summary>
 public interface IPlayerCommandService
 {
+    /// <summary>
+    /// Gets an enumerator that iterates through the available commands.
+    /// </summary>
+    ICommandEnumerator Commands { get; }
+
     /// <summary>Invokes a player command from the given chat input.</summary>
     /// <param name="services">Service provider used to resolve handler systems and DI parameters.</param>
     /// <param name="player">The invoking player.</param>

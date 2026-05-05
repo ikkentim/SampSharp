@@ -8,15 +8,15 @@ namespace SampSharp.Entities.SAMP.Commands;
 /// (a slash followed by the command name and optional arguments).
 /// </summary>
 /// <remarks>
-/// The signature is <c>(Player player, [args...])</c>. The first parameter
-/// must be the invoking <see cref="Player" /> (or <see cref="EntityId" />);
-/// subsequent parameters are parsed from the chat input via
-/// <see cref="Parsers.ICommandParameterParser" />. Return type may be
-/// <see langword="bool" />, <see langword="int" /> or <see langword="void" />.
+/// The signature can be:
+/// - <c>(Player player, [args...])</c> - if the first parameter is Player, it's provided automatically
+/// - <c>([args...])</c> - if no Player first parameter, treat all parameters as regular parsed parameters
+/// - subsequent parameters are parsed from the player input via <see cref="ICommandParameterParser" />
+/// - Return type may be <see langword="void" />, <see langword="Task" />, or <see cref="Task" />.
 /// </remarks>
 [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
 [MeansImplicitUse]
-public class PlayerCommandAttribute : Attribute, ICommandMethodInfo
+public class PlayerCommandAttribute : Attribute, ICommandAttribute
 {
     /// <summary>Initializes a new instance with the command name inferred from the method name (lowercased, trailing "Command" stripped).</summary>
     public PlayerCommandAttribute()
@@ -28,6 +28,9 @@ public class PlayerCommandAttribute : Attribute, ICommandMethodInfo
     {
         Name = name;
     }
+
+    /// <summary>Optional localization key for the usage message. Used by ICommandTextFormatter to generate localized usage text.</summary>
+    public string? UsageMessageKey { get; set; }
 
     /// <inheritdoc />
     public string? Name { get; set; }

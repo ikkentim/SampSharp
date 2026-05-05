@@ -1,15 +1,15 @@
 using Microsoft.Extensions.DependencyInjection;
 
-namespace SampSharp.Entities.SAMP.Commands.Parsers;
+namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>
-/// Parses a <see cref="Player" /> reference. Accepts either:
+/// Parses a <see cref="SampSharp.Entities.SAMP.Player" /> reference. Accepts either:
 /// <list type="bullet">
 ///     <item>integer playerid (e.g. <c>/kick 5</c>)</item>
 ///     <item>full player name (case-insensitive)</item>
 ///     <item>name prefix — picks the player with the lowest playerid among matches</item>
 /// </list>
-/// Returns the matched <see cref="EntityId" /> so the command pipeline can convert it to a <see cref="Player" /> component.
+/// Returns the matched <see cref="EntityId" /> so the command pipeline can convert it to a <see cref="SampSharp.Entities.SAMP.Player" /> component.
 /// </summary>
 public class PlayerParser : ICommandParameterParser
 {
@@ -42,19 +42,30 @@ public class PlayerParser : ICommandParameterParser
         Player? bestCandidate = null;
         foreach (var player in players)
         {
-            if (!player.IsComponentAlive) continue;
+            if (!player.IsComponentAlive)
+            {
+                continue;
+            }
+
             var name = player.Name;
             if (name.Equals(word, StringComparison.OrdinalIgnoreCase))
             {
                 result = player.Entity;
                 return true;
             }
-            if (!name.StartsWith(word, StringComparison.OrdinalIgnoreCase)) continue;
+
+            if (!name.StartsWith(word, StringComparison.OrdinalIgnoreCase))
+            {
+                continue;
+            }
+
             if (bestCandidate == null || player.Id < bestCandidate.Id)
+            {
                 bestCandidate = player;
+            }
         }
 
         result = bestCandidate?.Entity;
-        return bestCandidate != null;
+        return bestCandidate is not null;
     }
 }

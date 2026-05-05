@@ -1,4 +1,4 @@
-namespace SampSharp.Entities.SAMP.Commands.Parsers;
+namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>Parses one command parameter from chat input.</summary>
 public interface ICommandParameterParser
