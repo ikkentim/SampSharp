@@ -9,20 +9,20 @@ internal class PlayerCommandService : IPlayerCommandService
     private readonly IPermissionChecker _permissionChecker;
     private readonly CommandRegistry _registry;
     private readonly IUnhandledExceptionHandler _unhandledExceptionHandler;
-    private readonly ICommandUsageFormatter _usageFormatter;
+    private readonly IPlayerCommandMessageService _messageService;
 
     public PlayerCommandService(IEntityManager entityManager, ISystemRegistry systemRegistry,
-        ICommandUsageFormatter usageFormatter,
+        IPlayerCommandMessageService messageService,
         IPermissionChecker permissionChecker,
         IUnhandledExceptionHandler unhandledExceptionHandler)
     {
         _entityManager = entityManager;
         _unhandledExceptionHandler = unhandledExceptionHandler;
-        _usageFormatter = usageFormatter ?? throw new ArgumentNullException(nameof(usageFormatter));
+        _messageService = messageService ?? throw new ArgumentNullException(nameof(messageService));
         _permissionChecker = permissionChecker ?? throw new ArgumentNullException(nameof(permissionChecker));
 
         _registry = new CommandRegistry();
-        _enumerator = new DefaultCommandEnumerator(_registry, new DefaultCommandNameProvider());
+        _enumerator = new DefaultCommandEnumerator(_registry, new DefaultCommandTextFormatter());
 
         _executor = new CommandExecutor(entityManager);
 
@@ -67,13 +67,13 @@ internal class PlayerCommandService : IPlayerCommandService
                 return ExecuteCommand(services, player, dispatchResult);
 
             case DispatchResponse.InvalidArguments:
-                // Send usage message via formatter
+                // Send usage message via message service
                 try
                 {
                     var playerComponent = _entityManager.GetComponent<Player>(player);
                     if (playerComponent != null)
                     {
-                        _usageFormatter.FormatUsage(playerComponent, dispatchResult.CommandDefinition!);
+                        _messageService.SendUsage(playerComponent, dispatchResult.CommandDefinition!);
                     }
                 }
                 catch (Exception ex)
@@ -84,13 +84,19 @@ internal class PlayerCommandService : IPlayerCommandService
                 return true;
 
             case DispatchResponse.PermissionDenied:
-                // Send permission denied message via formatter
+                // Send permission denied message via message service
+                // If it returns true, treat as command not found
                 try
                 {
                     var playerComponent = _entityManager.GetComponent<Player>(player);
                     if (playerComponent != null)
                     {
-                        _usageFormatter.FormatPermissionDenied(playerComponent, dispatchResult.CommandDefinition!);
+                        var continueAsNotFound = _messageService.SendPermissionDenied(playerComponent, dispatchResult.CommandDefinition!);
+                        if (continueAsNotFound)
+                        {
+                            // Fall through to command not found logic
+                            return HandleCommandNotFound(player, inputText);
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -119,21 +125,26 @@ internal class PlayerCommandService : IPlayerCommandService
 
             case DispatchResponse.CommandNotFound:
             default:
-                try
-                {
-                    var playerComponent = _entityManager.GetComponent<Player>(player);
-                    if (playerComponent != null)
-                    {
-                        _usageFormatter.FormatNotFound(playerComponent, inputText);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    _unhandledExceptionHandler.Handle("player-command-notfound-format", ex);
-                }
-
-                return false;
+                return HandleCommandNotFound(player, inputText);
         }
+    }
+
+    private bool HandleCommandNotFound(EntityId player, string input)
+    {
+        try
+        {
+            var playerComponent = _entityManager.GetComponent<Player>(player);
+            if (playerComponent != null)
+            {
+                return _messageService.SendCommandNotFound(playerComponent, input);
+            }
+        }
+        catch (Exception ex)
+        {
+            _unhandledExceptionHandler.Handle("player-command-notfound-format", ex);
+        }
+
+        return false;
     }
 
     /// <summary>Executes the matched command.</summary>

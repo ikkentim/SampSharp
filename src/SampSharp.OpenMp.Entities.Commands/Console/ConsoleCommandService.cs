@@ -10,13 +10,13 @@ internal class ConsoleCommandService
     private readonly CommandExecutor _executor;
     private readonly CommandRegistry _registry = new();
     private readonly IUnhandledExceptionHandler _unhandledExceptionHandler;
-    private readonly ICommandUsageFormatter _usageFormatter;
+    private readonly IConsoleCommandMessageService _messageService;
 
-    public ConsoleCommandService(IEntityManager entityManager, ISystemRegistry systemRegistry, ICommandUsageFormatter usageFormatter,
+    public ConsoleCommandService(IEntityManager entityManager, ISystemRegistry systemRegistry, IConsoleCommandMessageService messageService,
         IUnhandledExceptionHandler unhandledExceptionHandler)
     {
         _unhandledExceptionHandler = unhandledExceptionHandler;
-        _usageFormatter = usageFormatter;
+        _messageService = messageService ?? throw new ArgumentNullException(nameof(messageService));
 
         _executor = new CommandExecutor(entityManager);
 
@@ -53,21 +53,25 @@ internal class ConsoleCommandService
                 return ExecuteCommand(services, result, context);
 
             case DispatchResponse.InvalidArguments:
+            case DispatchResponse.CommandNotFound:
+            default:
                 if (result.CommandDefinition != null)
                 {
-                    _usageFormatter.FormatUsage(context, result.CommandDefinition);
+                    try
+                    {
+                        _messageService.SendUsage(context, result.CommandDefinition);
+                    }
+                    catch (Exception ex)
+                    {
+                        _unhandledExceptionHandler.Handle("console-command-usage-format", ex);
+                    }
                 }
 
-                return true;
+                return result.Response == DispatchResponse.Success; // Only return true for Success
 
             case DispatchResponse.Error:
                 context.SendMessage(result.Message ?? "An error occurred while executing the command.");
                 return true;
-
-            case DispatchResponse.CommandNotFound:
-            default:
-                _usageFormatter.FormatNotFound(context, inputText);
-                return false;
         }
     }
 

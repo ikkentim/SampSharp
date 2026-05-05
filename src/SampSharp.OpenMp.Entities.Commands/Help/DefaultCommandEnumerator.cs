@@ -7,13 +7,13 @@ public class DefaultCommandEnumerator : ICommandEnumerator
 {
     private readonly Lazy<IReadOnlyList<CommandEnumerator>> _allCommands;
     private readonly Lazy<IReadOnlyList<CommandGroupEnumerator>> _allGroups;
-    private readonly ICommandNameProvider _nameProvider;
+    private readonly ICommandTextFormatter _textFormatter;
     private readonly ICommandRegistry _registry;
 
-    public DefaultCommandEnumerator(ICommandRegistry registry, ICommandNameProvider? nameProvider = null)
+    public DefaultCommandEnumerator(ICommandRegistry registry, ICommandTextFormatter? textFormatter = null)
     {
         _registry = registry ?? throw new ArgumentNullException(nameof(registry));
-        _nameProvider = nameProvider ?? new DefaultCommandNameProvider();
+        _textFormatter = textFormatter ?? new DefaultCommandTextFormatter();
 
         _allCommands = new Lazy<IReadOnlyList<CommandEnumerator>>(() => BuildAllCommands());
         _allGroups = new Lazy<IReadOnlyList<CommandGroupEnumerator>>(() => BuildAllGroups());
@@ -89,7 +89,10 @@ public class DefaultCommandEnumerator : ICommandEnumerator
 
     private CommandEnumerator BuildCommandEnumerator(CommandDefinition definition)
     {
-        var usageMessage = _nameProvider.GetUsageMessage(definition.Name, definition.Group?.ToString(), definition.Overloads.FirstOrDefault()?.ParsedParameters ?? []);
+        var firstOverload = definition.Overloads.FirstOrDefault();
+        var usageMessage = firstOverload != null 
+            ? $"Usage: {_textFormatter.FormatCommandUsage(definition.Name, definition.Group?.ToString(), firstOverload.ParsedParameters, includeSlash: true)}"
+            : $"Usage: /{definition.Name}";
 
         var helpText = BuildHelpText(definition);
 

@@ -29,7 +29,7 @@ public class PlayerCommandAttribute : Attribute, ICommandAttribute
         Name = name;
     }
 
-    /// <summary>Optional localization key for the usage message. Used by ICommandNameProvider to generate localized usage text.</summary>
+    /// <summary>Optional localization key for the usage message. Used by ICommandTextFormatter to generate localized usage text.</summary>
     public string? UsageMessageKey { get; set; }
 
     /// <inheritdoc />

@@ -22,7 +22,9 @@ public static class EcsBuilderCommandsExtensions
 
     public static IServiceCollection AddCommandsSystem(this IServiceCollection services)
     {
-        services.TryAddSingleton<ICommandUsageFormatter, DefaultCommandUsageFormatter>();
+        services.TryAddSingleton<ICommandTextFormatter, DefaultCommandTextFormatter>();
+        services.TryAddSingleton<IPlayerCommandMessageService, DefaultPlayerCommandMessageService>();
+        services.TryAddSingleton<IConsoleCommandMessageService, DefaultConsoleCommandMessageService>();
         services.TryAddSingleton<IPermissionChecker, DefaultPermissionChecker>();
 
         services.TryAddSingleton<PlayerCommandService>();
