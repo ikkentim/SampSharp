@@ -84,7 +84,7 @@ internal class CommandDispatcher
     /// Finds the best matching overload for the given arguments.
     /// Tries each overload and returns the one that consumes the least remaining input.
     /// </summary>
-    private (bool matched, CommandDefinition? overload, object?[]? parsedArguments, string? usageMessage) FindBestOverload(CommandCommand command, string remainingArgs,
+    private (bool matched, CommandDefinition? overload, object?[]? parsedArguments, string? usageMessage) FindBestOverload(CommandSet command, string remainingArgs,
         IServiceProvider services)
     {
         var bestMatch = (matched: false, overload: (CommandDefinition?)null, parsedArguments: (object?[]?)null, remainingUnconsumed: int.MaxValue, usageMessage: (string?)null);

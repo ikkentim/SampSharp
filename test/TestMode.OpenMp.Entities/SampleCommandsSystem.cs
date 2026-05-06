@@ -168,4 +168,25 @@ public class SampleCommandsSystem : ISystem
     {
         player.SendClientMessage($"{a} + {b} = {a + b}");
     }
+
+    [CommandGroup("test")]
+    [PlayerCommand("overloads")]
+    public void OverloadsCommand(Player player, int a)
+    {
+        player.SendClientMessage($"Overload {a}");
+    }
+
+    [CommandGroup("test")]
+    [PlayerCommand("overloads")]
+    public void OverloadsCommand(Player player, int a, int b)
+    {
+        player.SendClientMessage($"Overload {a} {b}");
+    }
+
+    [CommandGroup("test")]
+    [PlayerCommand("overloads")]
+    public void OverloadsCommand(Player player, int a, int b, string c)
+    {
+        player.SendClientMessage($"Overload {a} {b} {c}");
+    }
 }

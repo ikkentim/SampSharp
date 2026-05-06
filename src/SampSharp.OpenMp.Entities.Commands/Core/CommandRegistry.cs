@@ -2,9 +2,9 @@ namespace SampSharp.Entities.SAMP.Commands;
 
 internal class CommandRegistry : ICommandRegistry
 {
-    private readonly Dictionary<string, CommandCommand> _aliasMap = new();
-    private readonly List<CommandCommand> _allCommands = [];
-    private readonly Dictionary<string, CommandCommand> _commandsByName = new();
+    private readonly Dictionary<string, CommandSet> _aliasMap = new();
+    private readonly List<CommandSet> _allCommands = [];
+    private readonly Dictionary<string, CommandSet> _commandsByName = new();
     private readonly Dictionary<string, List<CommandDefinition>> _overloadsByKey = new();
 
     public void Register(CommandDefinition overload)
@@ -26,14 +26,14 @@ internal class CommandRegistry : ICommandRegistry
         // Create or update the command definition (wrapper)
         if (!_commandsByName.ContainsKey(key))
         {
-            var command = new CommandCommand(overload.Name, overload.Group, _overloadsByKey[key].ToArray());
+            var command = new CommandSet(overload.Name, overload.Group, _overloadsByKey[key].ToArray());
             _commandsByName[key] = command;
             _allCommands.Add(command);
         }
         else
         {
             // Update existing command with new overload array
-            var command = new CommandCommand(overload.Name, overload.Group, _overloadsByKey[key].ToArray());
+            var command = new CommandSet(overload.Name, overload.Group, _overloadsByKey[key].ToArray());
             var oldCmd = _commandsByName[key];
             _commandsByName[key] = command;
             var index = _allCommands.IndexOf(oldCmd);
@@ -55,7 +55,7 @@ internal class CommandRegistry : ICommandRegistry
     }
 
     // Internal method to get command group with all overloads
-    internal CommandCommand? GetCommandGroup(string nameOrAlias)
+    internal CommandSet? GetCommandGroup(string nameOrAlias)
     {
         if (string.IsNullOrWhiteSpace(nameOrAlias))
         {
@@ -74,7 +74,7 @@ internal class CommandRegistry : ICommandRegistry
     }
 
     // Internal method for dispatcher: get command group by path
-    internal CommandCommand? GetCommandGroupByPath(IEnumerable<string> pathParts, out int consumedParts)
+    internal CommandSet? GetCommandGroupByPath(IEnumerable<string> pathParts, out int consumedParts)
     {
         consumedParts = 0;
         if (pathParts == null)
@@ -110,7 +110,7 @@ internal class CommandRegistry : ICommandRegistry
     }
 
     // Internal method to get all overloads for a command
-    internal CommandCommand? GetCommand(string nameOrAlias)
+    internal CommandSet? GetCommand(string nameOrAlias)
     {
         if (string.IsNullOrWhiteSpace(nameOrAlias))
         {

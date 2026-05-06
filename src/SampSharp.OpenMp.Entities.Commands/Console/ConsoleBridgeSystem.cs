@@ -6,9 +6,9 @@ namespace SampSharp.Entities.SAMP.Commands;
 /// </summary>
 internal class ConsoleBridgeSystem : ISystem
 {
-    private readonly ConsoleCommandService _commandService;
+    private readonly IConsoleCommandService _commandService;
 
-    public ConsoleBridgeSystem(ConsoleCommandService commandService)
+    public ConsoleBridgeSystem(IConsoleCommandService commandService)
     {
         _commandService = commandService;
     }
