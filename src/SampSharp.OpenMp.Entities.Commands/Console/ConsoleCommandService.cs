@@ -21,7 +21,7 @@ internal class ConsoleCommandService : IConsoleCommandService
         _executor = new CommandExecutor(entityManager);
 
         // Scan for console commands
-        var scanner = new CommandScanner(systemRegistry);
+        var scanner = new CommandScanner(systemRegistry, unhandledExceptionHandler);
         var parserFactory = new DefaultCommandParameterParserFactory();
         scanner.ScanConsoleCommands(_registry, parserFactory);
     }
@@ -85,22 +85,7 @@ internal class ConsoleCommandService : IConsoleCommandService
         try
         {
             // Execute the command
-            var result = _executor.Execute(overload, [context], parsedArgs, services, system);
-
-            // Handle async results
-            if (overload.IsAsync)
-            {
-                result = AsyncCommandExecutor.ExecuteAsync(result);
-            }
-
-            // Interpret the result
-            var success = result switch
-            {
-                bool b => b,
-                _ => true
-            };
-
-            return success;
+            return _executor.Execute(overload, [context], parsedArgs, services, system);
         }
         catch (Exception e)
         {

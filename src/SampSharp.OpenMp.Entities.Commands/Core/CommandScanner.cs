@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using SampSharp.Entities.Utilities;
@@ -11,10 +12,12 @@ namespace SampSharp.Entities.SAMP.Commands;
 internal class CommandScanner
 {
     private readonly ISystemRegistry _systemRegistry;
+    private readonly IUnhandledExceptionHandler _unhandledExceptionHandler;
 
-    public CommandScanner(ISystemRegistry systemRegistry)
+    public CommandScanner(ISystemRegistry systemRegistry, IUnhandledExceptionHandler unhandledExceptionHandler)
     {
         _systemRegistry = systemRegistry;
+        _unhandledExceptionHandler = unhandledExceptionHandler;
     }
 
     public void ScanPlayerCommands(CommandRegistry registry, ICommandParameterParserFactory parserFactory)
@@ -137,14 +140,14 @@ internal class CommandScanner
         }
 
         // Compile the method invoker at discovery time
-        var invoker = CompileMethodInvoker(method, parameters, prefixParameters, parsedParams!);
+        var invoker = CompileCommandInvoker(method, parameters, prefixParameters, parsedParams!);
 
         overload = new CommandDefinition(commandName, commandGroup, method, parameters, systemType, parsedParams!, invoker, prefixParameters, aliases, tags);
 
         return true;
     }
 
-    private MethodInvoker CompileMethodInvoker(MethodInfo method, ParameterInfo[] parameters, int prefixParameterCount, CommandParameterInfo[] parsedParameters)
+    private CommandInvoker CompileCommandInvoker(MethodInfo method, ParameterInfo[] parameters, int prefixParameterCount, CommandParameterInfo[] parsedParameters)
     {
         // Build MethodParameterSource array
         var sources = new MethodParameterSource[parameters.Length];
@@ -183,37 +186,93 @@ internal class CommandScanner
         }
 
         // Compile using expression trees
-        return MethodInvokerFactory.Compile(method, sources);
+        var methodInvoker = MethodInvokerFactory.Compile(method, sources);
+
+        return ToCommandInvoker(methodInvoker, method);
     }
 
-    private bool IsValidReturnType(Type returnType)
+    private CommandInvoker ToCommandInvoker(MethodInvoker methodInvoker, MethodInfo method)
     {
-        // void, bool, int
-        if (returnType == typeof(void) || returnType == typeof(bool))
+        if (method.ReturnType == typeof(void))
         {
-            return true;
-        }
-
-        // Task, ValueTask
-        if (returnType == typeof(Task) || returnType == typeof(ValueTask))
-        {
-            return true;
-        }
-
-        // Task<T>, ValueTask<T>
-        if (returnType.IsGenericType)
-        {
-            var genericDef = returnType.GetGenericTypeDefinition();
-            if (genericDef == typeof(Task<>) || genericDef == typeof(ValueTask<>))
+            return [StackTraceHidden](target, args, services, manager) =>
             {
+                methodInvoker(target, args, services, manager);
                 return true;
-            }
+            };
         }
 
-        return false;
+        if (method.ReturnType == typeof(bool))
+        {
+            return [StackTraceHidden](target, args, services, manager) => ((MethodResult)methodInvoker(target, args, services, manager)!).Value;
+        }
+
+        if (method.ReturnType == typeof(Task))
+        {
+            return [StackTraceHidden](target, args, services, manager) =>
+            {
+                var task = (Task)methodInvoker(target, args, services, manager)!;
+
+                HandleTask(task);
+                return true;
+            };
+        }
+
+        if (method.ReturnType == typeof(Task<bool>))
+        {
+            return [StackTraceHidden](target, args, services, manager) =>
+            {
+                var task = (Task<bool>)methodInvoker(target, args, services, manager)!;
+                if (task.IsCompleted)
+                {
+                    return task.Result;
+                }
+
+                HandleTask(task);
+                return true;
+            };
+        }
+
+        throw new InvalidOperationException();
     }
 
-    private bool TryCollectParameters(ParameterInfo[] parameters, int prefixParameters, ICommandParameterParserFactory parserFactory, out CommandParameterInfo[]? result)
+    private void HandleTask(Task task)
+    {
+        if (task.IsCompleted)
+        {
+            // Get result to observe any exceptions
+            task.GetAwaiter().GetResult();
+        }
+        else
+        {
+            // Fire-and-forget: exceptions will be handled by unhandled exception handler
+            task.ContinueWith(t =>
+            {
+                if (t is { IsFaulted: true, Exception: not null })
+                {
+                    // Exception from async task - would typically be logged
+                    if (t.Exception.InnerExceptions.Count == 1)
+                    {
+                        _unhandledExceptionHandler.Handle("async-command", t.Exception.InnerExceptions[0]);
+                    }
+                    else
+                    {
+                        _unhandledExceptionHandler.Handle("async-command", t.Exception);
+                    }
+                }
+            });
+        }
+    }
+
+    private static bool IsValidReturnType(Type returnType)
+    {
+        return returnType == typeof(void) || 
+               returnType == typeof(bool) ||
+               returnType == typeof(Task) || 
+               returnType == typeof(Task<bool>);
+    }
+
+    private static bool TryCollectParameters(ParameterInfo[] parameters, int prefixParameters, ICommandParameterParserFactory parserFactory, out CommandParameterInfo[]? result)
     {
         result = null;
 
@@ -263,8 +322,7 @@ internal class CommandScanner
         return true;
     }
 
-    /// <summary>Derives command name from method name (lowercase, strip "Command" suffix).</summary>
-    private string GetCommandName(MethodInfo method)
+    private static string GetCommandName(MethodInfo method)
     {
         var name = method.Name.ToLowerInvariant();
         if (name.EndsWith("command", StringComparison.Ordinal))

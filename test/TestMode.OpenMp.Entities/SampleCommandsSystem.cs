@@ -188,4 +188,21 @@ public class SampleCommandsSystem : ISystem
     {
         player.SendClientMessage($"Overload a:{a} b:{b} c:{c}");
     }
+
+    [CommandGroup("test")]
+    [PlayerCommand("error")]
+    public void ErrorCommand(Player player)
+    {
+        player.SendClientMessage("an error will be thrown");
+        throw new InvalidOperationException("test error");
+    }
+
+    [CommandGroup("test")]
+    [PlayerCommand("asyncerror")]
+    public async Task AsyncErrorCommand(Player player)
+    {
+        player.SendClientMessage("an error will be thrown in a bit");
+        await Task.Delay(10);
+        throw new InvalidOperationException("test error");
+    }
 }

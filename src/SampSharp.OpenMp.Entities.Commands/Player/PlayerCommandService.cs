@@ -25,7 +25,7 @@ internal class PlayerCommandService : IPlayerCommandService
         _executor = new CommandExecutor(entityManager);
 
         // Scan for player commands into the shared registry
-        var scanner = new CommandScanner(systemRegistry);
+        var scanner = new CommandScanner(systemRegistry, unhandledExceptionHandler);
         var parserFactory = new DefaultCommandParameterParserFactory();
         scanner.ScanPlayerCommands(_registry, parserFactory);
     }
@@ -137,8 +137,9 @@ internal class PlayerCommandService : IPlayerCommandService
         }
 
         // Get the system instance
-        var system = services.GetService(overload.DeclaringSystemType) as ISystem;
-        if (system == null)
+        overload.System ??= services.GetService(overload.DeclaringSystemType) as ISystem;
+
+        if (overload.System == null)
         {
             return false;
         }
@@ -146,22 +147,7 @@ internal class PlayerCommandService : IPlayerCommandService
         try
         {
             // Execute the command with the Player component as prefix argument
-            var result = _executor.Execute(overload, [playerId], parsedArgs, services, system);
-
-            // Handle async results
-            if (overload.IsAsync)
-            {
-                result = AsyncCommandExecutor.ExecuteAsync(result);
-            }
-
-            // Interpret the result
-            var success = result switch
-            {
-                bool b => b,
-                _ => true
-            };
-
-            return success;
+            return _executor.Execute(overload, [playerId], parsedArgs, services, overload.System);
         }
         catch (Exception ex)
         {
