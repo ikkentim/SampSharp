@@ -1,4 +1,4 @@
-namespace SampSharp.Entities.SAMP.Commands.Help;
+namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>
 /// Default implementation of ICommandHelpProvider.

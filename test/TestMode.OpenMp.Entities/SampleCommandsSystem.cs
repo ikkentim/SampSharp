@@ -2,7 +2,6 @@ using System.Numerics;
 using SampSharp.Entities;
 using SampSharp.Entities.SAMP;
 using SampSharp.Entities.SAMP.Commands;
-using SampSharp.Entities.SAMP.Commands.Help;
 
 namespace TestMode.OpenMp.Entities;
 
@@ -88,11 +87,11 @@ public class SampleCommandsSystem : ISystem
     public void ConsoleListPlayers()
     {
         var players = _entityManager.GetComponents<Player>();
-        System.Console.WriteLine($"Active players: {players.Count()}");
+        Console.WriteLine($"Active players: {players.Count()}");
 
         foreach (var player in players.Where(p => p.IsComponentAlive))
         {
-            System.Console.WriteLine($"  [{player.Entity}] {player.Name} (Health: {player.Health:F0}, Armor: {player.Armour:F0})");
+            Console.WriteLine($"  [{player.Entity}] {player.Name} (Health: {player.Health:F0}, Armor: {player.Armour:F0})");
         }
     }
 
@@ -103,10 +102,10 @@ public class SampleCommandsSystem : ISystem
     public void ConsoleServerInfo()
     {
         var playerCount = _entityManager.GetComponents<Player>().Count(p => p.IsComponentAlive);
-        System.Console.WriteLine("=== Server Info ===");
-        System.Console.WriteLine($"Active Players: {playerCount}");
-        System.Console.WriteLine($"Current Time: {DateTime.UtcNow:yyyy-MM-dd HH:mm:ss}");
-        System.Console.WriteLine("===================");
+        Console.WriteLine("=== Server Info ===");
+        Console.WriteLine($"Active Players: {playerCount}");
+        Console.WriteLine($"Current Time: {DateTime.UtcNow:yyyy-MM-dd HH:mm:ss}");
+        Console.WriteLine("===================");
     }
 
     /// <summary>
@@ -117,7 +116,7 @@ public class SampleCommandsSystem : ISystem
     {
         player.SendClientMessage("--- Available Commands ---");
 
-        var playerCommands = commands.Commands.GetAllCommands()
+        var playerCommands = commands.Registry.GetAll()
             .OrderBy(c => c.Name)
             .ToList();
 
@@ -140,10 +139,10 @@ public class SampleCommandsSystem : ISystem
     [ConsoleCommand(Name = "time")]
     public void ConsoleTime(IServerService server)
     {
-        System.Console.WriteLine($"Server tick count: {server.TickCount}ms");
-        System.Console.WriteLine($"Server tick rate: {server.TickRate}");
-        System.Console.WriteLine($"Max players: {server.MaxPlayers}");
-        System.Console.WriteLine($"Player pool size: {server.PlayerPoolSize}");
+        Console.WriteLine($"Server tick count: {server.TickCount}ms");
+        Console.WriteLine($"Server tick rate: {server.TickRate}");
+        Console.WriteLine($"Max players: {server.MaxPlayers}");
+        Console.WriteLine($"Player pool size: {server.PlayerPoolSize}");
     }
 
     /// <summary>
@@ -173,20 +172,20 @@ public class SampleCommandsSystem : ISystem
     [PlayerCommand("overloads")]
     public void OverloadsCommand(Player player, int a)
     {
-        player.SendClientMessage($"Overload {a}");
+        player.SendClientMessage($"Overload a:{a}");
     }
 
     [CommandGroup("test")]
     [PlayerCommand("overloads")]
     public void OverloadsCommand(Player player, int a, int b)
     {
-        player.SendClientMessage($"Overload {a} {b}");
+        player.SendClientMessage($"Overload a:{a} b:{b}");
     }
 
     [CommandGroup("test")]
     [PlayerCommand("overloads")]
     public void OverloadsCommand(Player player, int a, int b, string c)
     {
-        player.SendClientMessage($"Overload {a} {b} {c}");
+        player.SendClientMessage($"Overload a:{a} b:{b} c:{c}");
     }
 }

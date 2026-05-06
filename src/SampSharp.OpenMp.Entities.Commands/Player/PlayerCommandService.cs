@@ -30,7 +30,7 @@ internal class PlayerCommandService : IPlayerCommandService
         scanner.ScanPlayerCommands(_registry, parserFactory);
     }
 
-    public ICommandEnumerator Commands => field ??= new DefaultCommandEnumerator(_registry);
+    public ICommandRegistry Registry => _registry;
 
     public bool Invoke(IServiceProvider services, EntityId player, string inputText)
     {

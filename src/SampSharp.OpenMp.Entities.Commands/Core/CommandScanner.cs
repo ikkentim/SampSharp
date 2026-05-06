@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using SampSharp.Entities.Utilities;
 
@@ -112,7 +113,8 @@ internal class CommandScanner
         return allParts.Count > 0 ? new CommandGroup(allParts) : null;
     }
 
-    private bool TryBuildOverload(string commandName, CommandGroup? commandGroup, MethodInfo method, Type systemType, ICommandParameterParserFactory parserFactory, int prefixParameters, CommandAlias[] aliases, CommandTag[] tags, out CommandDefinition? overload)
+    private bool TryBuildOverload(string commandName, CommandGroup? commandGroup, MethodInfo method, Type systemType, ICommandParameterParserFactory parserFactory,
+        int prefixParameters, CommandAlias[] aliases, CommandTag[] tags, [NotNullWhen(true)] out CommandDefinition? overload)
     {
         overload = null;
 

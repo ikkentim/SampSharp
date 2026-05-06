@@ -16,7 +16,7 @@ internal class ConsoleBridgeSystem : ISystem
     [Event]
     public void OnConsoleCommandListRequest(ConsoleCommandCollection commands)
     {
-        var registry = _commandService.Commands.Registry;
+        var registry = _commandService.Registry;
         foreach (var command in registry.GetAll())
         {
             commands.Add(command.Name);

@@ -11,9 +11,7 @@ internal class ConsoleCommandService : IConsoleCommandService
     private readonly CommandRegistry _registry = new();
     private readonly IUnhandledExceptionHandler _unhandledExceptionHandler;
     private readonly IConsoleCommandMessageService _messageService;
-
-    public ICommandEnumerator Commands => field ??= new DefaultCommandEnumerator(_registry);
-
+    
     public ConsoleCommandService(IEntityManager entityManager, ISystemRegistry systemRegistry, IConsoleCommandMessageService messageService,
         IUnhandledExceptionHandler unhandledExceptionHandler)
     {
@@ -27,6 +25,8 @@ internal class ConsoleCommandService : IConsoleCommandService
         var parserFactory = new DefaultCommandParameterParserFactory();
         scanner.ScanConsoleCommands(_registry, parserFactory);
     }
+
+    public ICommandRegistry Registry => _registry;
 
     public bool Invoke(IServiceProvider services, ConsoleCommandDispatchContext context, string inputText)
     {

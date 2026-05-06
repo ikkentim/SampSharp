@@ -1,14 +1,14 @@
 namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>
-/// Defines a service for managing and invoking console commands. This service provides access to the available commands and handles the invocation logic based on input text.
+/// Dispatches console input to a method marked with <see cref="PlayerCommandAttribute" />.
 /// </summary>
 public interface IConsoleCommandService
 {
     /// <summary>
-    /// Gets an enumerator that iterates through the available commands.
+    /// Gets the command registry containing all registered console commands.
     /// </summary>
-    ICommandEnumerator Commands { get; }
+    ICommandRegistry Registry { get; }
 
     /// <summary>
     /// Invokes a console command from the given input text.
@@ -16,6 +16,6 @@ public interface IConsoleCommandService
     /// <param name="services">The service provider for dependency injection.</param>
     /// <param name="context">The context for the console command dispatch.</param>
     /// <param name="inputText">The input text representing the command to invoke.</param>
-    /// <returns>True if the command was successfully invoked; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the command was successfully invoked; otherwise, <see langword="false"/>.</returns>
     bool Invoke(IServiceProvider services, ConsoleCommandDispatchContext context, string inputText);
 }
