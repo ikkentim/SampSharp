@@ -70,24 +70,21 @@ internal class CommandDispatcher
         }
 
         // No overload matched
-        if (bestMatch.usageMessage != null)
         {
-            var result = DispatchResult.CreateInvalidArguments(bestMatch.usageMessage);
+            var result = DispatchResult.CreateInvalidArguments();
             result.AllOverloads = commandGroup.Overloads;
             return result;
         }
-
-        return DispatchResult.CreateNotFound();
     }
 
     /// <summary>
     /// Finds the best matching overload for the given arguments.
     /// Tries each overload and returns the one that consumes the least remaining input.
     /// </summary>
-    private (bool matched, CommandDefinition? overload, object?[]? parsedArguments, string? usageMessage) FindBestOverload(CommandSet command, string remainingArgs,
+    private (bool matched, CommandDefinition? overload, object?[]? parsedArguments) FindBestOverload(CommandSet command, string remainingArgs,
         IServiceProvider services)
     {
-        var bestMatch = (matched: false, overload: (CommandDefinition?)null, parsedArguments: (object?[]?)null, remainingUnconsumed: int.MaxValue, usageMessage: (string?)null);
+        var bestMatch = (matched: false, overload: (CommandDefinition?)null, parsedArguments: (object?[]?)null, remainingUnconsumed: int.MaxValue);
 
         foreach (var overload in command.Overloads)
         {
@@ -97,23 +94,19 @@ internal class CommandDispatcher
                 // Check if this is a better match (less remaining input)
                 if (matchResult.remainingUnconsumed < bestMatch.remainingUnconsumed)
                 {
-                    bestMatch = (true, overload, matchResult.parsedArguments, matchResult.remainingUnconsumed, null);
+                    bestMatch = (true, overload, matchResult.parsedArguments, matchResult.remainingUnconsumed);
                 }
-            }
-            else if (matchResult.usageMessage != null && bestMatch.usageMessage == null)
-            {
-                bestMatch.usageMessage = matchResult.usageMessage;
             }
         }
 
-        return (bestMatch.matched, bestMatch.overload, bestMatch.parsedArguments, bestMatch.usageMessage);
+        return (bestMatch.matched, bestMatch.overload, bestMatch.parsedArguments);
     }
 
     /// <summary>
     /// Tries to match the remaining arguments against the overload's parameters.
     /// Returns how many characters were unconsumed (for best-match selection).
     /// </summary>
-    private (bool matched, string? usageMessage, object?[]? parsedArguments, int remainingUnconsumed) TryMatchParameters(CommandDefinition overload, string remainingArgs,
+    private (bool matched, object?[]? parsedArguments, int remainingUnconsumed) TryMatchParameters(CommandDefinition overload, string remainingArgs,
         IServiceProvider services)
     {
         var parameters = overload.ParsedParameters;
@@ -123,11 +116,11 @@ internal class CommandDispatcher
         {
             if (string.IsNullOrWhiteSpace(remainingArgs))
             {
-                return (true, null, [], 0);
+                return (true, [], 0);
             }
 
             // Has args but command takes none - invalid
-            return (false, GenerateUsageMessage(overload), null, remainingArgs.Length);
+            return (false, null, remainingArgs.Length);
         }
 
         // Count required vs optional parameters
@@ -148,7 +141,7 @@ internal class CommandDispatcher
                 }
                 else if (param.IsRequired)
                 {
-                    return (false, GenerateUsageMessage(overload), null, initialRemaining.Length);
+                    return (false,  null, initialRemaining.Length);
                 }
                 else
                 {
@@ -162,7 +155,7 @@ internal class CommandDispatcher
                 // Parser threw exception - treat as parse failure
                 if (param.IsRequired)
                 {
-                    return (false, GenerateUsageMessage(overload), null, initialRemaining.Length);
+                    return (false, null, initialRemaining.Length);
                 }
 
                 parsedValues.Add(param.DefaultValue);
@@ -189,30 +182,11 @@ internal class CommandDispatcher
 
         if (!requiredValid || parsedRequiredCount < requiredCount)
         {
-            return (false, GenerateUsageMessage(overload), null, remainingArgs.Length);
+            return (false, null, remainingArgs.Length);
         }
 
         // Successfully matched - calculate unconsumed length
         var unconsumedLength = Math.Max(0, remaining.Length);
-        return (true, null, parsedValues.ToArray(), unconsumedLength);
-    }
-
-    /// <summary>Generates a usage message for a command overload.</summary>
-    private static string GenerateUsageMessage(CommandDefinition overload)
-    {
-        var command = overload.Method.Name.ToLowerInvariant();
-        if (command.EndsWith("command"))
-        {
-            command = command[..^7];
-        }
-
-        if (overload.ParsedParameters.Length == 0)
-        {
-            return $"Usage: /{command}";
-        }
-
-        var args = string.Join(" ", overload.ParsedParameters.Select(p => p.IsRequired ? $"<{p.Name}>" : $"[{p.Name}]"));
-
-        return $"Usage: /{command} {args}";
+        return (true, parsedValues.ToArray(), unconsumedLength);
     }
 }

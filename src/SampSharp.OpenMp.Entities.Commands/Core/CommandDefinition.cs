@@ -13,7 +13,7 @@ public class CommandDefinition
 
     /// <summary>Initializes a new instance.</summary>
     public CommandDefinition(string name, CommandGroup? group, MethodInfo method, ParameterInfo[] parameters, Type declaringSystemType, CommandParameterInfo[] parsedParameters, MethodInvoker invoker,
-        int prefixParameterCount, CommandAlias[]? aliases = null, CommandTag[]? tags = null)
+        int prefixParameterCount, CommandAlias[] aliases, CommandTag[] tags)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
@@ -33,8 +33,12 @@ public class CommandDefinition
         ParsedParameters = parsedParameters;
         CompiledInvoker = invoker;
         PrefixParameterCount = prefixParameterCount;
-        _aliases = aliases ?? [];
-        _tags = tags?.ToDictionary(t => t.Key, t => t.Value) ?? new Dictionary<string, string>();
+        _aliases = aliases;
+        _tags = tags.ToDictionary(t => t.Key, t => t.Value);
+
+        IsAsync = ReturnType.IsGenericType
+            ? ReturnType.GetGenericTypeDefinition() == typeof(Task<>) || ReturnType.GetGenericTypeDefinition() == typeof(ValueTask<>)
+            : ReturnType == typeof(Task) || ReturnType == typeof(ValueTask);
     }
 
     /// <summary>The command name (without leading slash or group prefix).</summary>
@@ -77,28 +81,5 @@ public class CommandDefinition
     public Type ReturnType => Method.ReturnType;
 
     /// <summary>Whether this method returns a Task/ValueTask.</summary>
-    public bool IsAsync =>
-        ReturnType.IsGenericType
-            ? ReturnType.GetGenericTypeDefinition() == typeof(Task<>) || ReturnType.GetGenericTypeDefinition() == typeof(ValueTask<>)
-            : ReturnType == typeof(Task) || ReturnType == typeof(ValueTask);
-
-    /// <summary>For Task&lt;T&gt;, returns T. For Task/ValueTask, returns void. Otherwise returns the actual return type.</summary>
-    public Type GetEffectiveReturnType()
-    {
-        if (ReturnType == typeof(Task) || ReturnType == typeof(ValueTask))
-        {
-            return typeof(void);
-        }
-
-        if (ReturnType.IsGenericType)
-        {
-            var genericDef = ReturnType.GetGenericTypeDefinition();
-            if (genericDef == typeof(Task<>) || genericDef == typeof(ValueTask<>))
-            {
-                return ReturnType.GetGenericArguments()[0];
-            }
-        }
-
-        return ReturnType;
-    }
+    public bool IsAsync { get; }
 }

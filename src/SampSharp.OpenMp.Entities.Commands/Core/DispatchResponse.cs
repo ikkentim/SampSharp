@@ -13,8 +13,5 @@ public enum DispatchResponse
     InvalidArguments,
 
     /// <summary>Player does not have permission (player commands only).</summary>
-    PermissionDenied,
-
-    /// <summary>An error occurred during execution.</summary>
-    Error
+    PermissionDenied
 }

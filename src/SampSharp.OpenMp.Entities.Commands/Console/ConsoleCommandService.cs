@@ -63,10 +63,6 @@ internal class ConsoleCommandService : IConsoleCommandService
                 }
 
                 return result.Response == DispatchResponse.Success; // Only return true for Success
-
-            case DispatchResponse.Error:
-                context.SendMessage(result.Message ?? "An error occurred while executing the command.");
-                return true;
         }
     }
 

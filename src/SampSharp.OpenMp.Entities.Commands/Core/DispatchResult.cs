@@ -39,29 +39,14 @@ public class DispatchResult
     }
 
     /// <summary>Creates an "invalid arguments" result.</summary>
-    public static DispatchResult CreateInvalidArguments(string? usageMessage = null)
+    public static DispatchResult CreateInvalidArguments()
     {
-        return new DispatchResult(DispatchResponse.InvalidArguments)
-        {
-            UsageMessage = usageMessage
-        };
+        return new DispatchResult(DispatchResponse.InvalidArguments);
     }
 
     /// <summary>Creates a "permission denied" result.</summary>
-    public static DispatchResult CreatePermissionDenied(string? message = null)
+    public static DispatchResult CreatePermissionDenied()
     {
-        return new DispatchResult(DispatchResponse.PermissionDenied)
-        {
-            Message = message
-        };
-    }
-
-    /// <summary>Creates an error result.</summary>
-    public static DispatchResult CreateError(string? message = null)
-    {
-        return new DispatchResult(DispatchResponse.Error)
-        {
-            Message = message
-        };
+        return new DispatchResult(DispatchResponse.PermissionDenied);
     }
 }

@@ -101,23 +101,6 @@ internal class PlayerCommandService : IPlayerCommandService
 
                 return true;
 
-            case DispatchResponse.Error:
-                {
-                    try
-                    {
-                        var playerComponent = _entityManager.GetComponent<Player>(player);
-                        if (playerComponent != null)
-                        {
-                            playerComponent.SendClientMessage(dispatchResult.Message ?? "An error occurred while executing the command.");
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        _unhandledExceptionHandler.Handle("player-command-error-format", ex);
-                    }
-                }
-                return true;
-
             case DispatchResponse.CommandNotFound:
             default:
                 return HandleCommandNotFound(player, inputText);
