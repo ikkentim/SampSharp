@@ -70,31 +70,47 @@ public readonly struct CommandGroup : IEquatable<CommandGroup>
         return new CommandGroup(combined);
     }
 
+    /// <inheritdoc />
     public override bool Equals(object? obj)
     {
         return obj is CommandGroup other && Equals(other);
     }
 
+    /// <inheritdoc />
     public bool Equals(CommandGroup other)
     {
         return _parts.SequenceEqual(other._parts);
     }
 
+    /// <inheritdoc />
     public override int GetHashCode()
     {
         return HashCode.Combine(_parts);
     }
 
+    /// <inheritdoc />
     public override string ToString()
     {
         return FullName;
     }
 
+    /// <summary>
+    /// Determines whether two command groups are equal.
+    /// </summary>
+    /// <param name="left">The first command group to compare.</param>
+    /// <param name="right">The second command group to compare.</param>
+    /// <returns>True if the command groups are equal; otherwise, false.</returns>
     public static bool operator ==(CommandGroup left, CommandGroup right)
     {
         return left.Equals(right);
     }
 
+    /// <summary>
+    /// Determines whether two command groups are not equal.
+    /// </summary>
+    /// <param name="left">The first command group to compare.</param>
+    /// <param name="right">The second command group to compare.</param>
+    /// <returns>True if the command groups are not equal; otherwise, false.</returns>
     public static bool operator !=(CommandGroup left, CommandGroup right)
     {
         return !left.Equals(right);

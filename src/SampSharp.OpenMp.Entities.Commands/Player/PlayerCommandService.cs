@@ -66,9 +66,9 @@ internal class PlayerCommandService : IPlayerCommandService
                 try
                 {
                     var playerComponent = _entityManager.GetComponent<Player>(player);
-                    if (playerComponent != null)
+                    if (playerComponent != null && dispatchResult.AllOverloads != null)
                     {
-                        _messageService.SendUsage(playerComponent, dispatchResult.CommandDefinition!);
+                        _messageService.SendUsage(playerComponent, dispatchResult.AllOverloads);
                     }
                 }
                 catch (Exception ex)
@@ -84,9 +84,9 @@ internal class PlayerCommandService : IPlayerCommandService
                 try
                 {
                     var playerComponent = _entityManager.GetComponent<Player>(player);
-                    if (playerComponent != null)
+                    if (playerComponent != null && dispatchResult.CommandOverload != null)
                     {
-                        var messageShown = _messageService.SendPermissionDenied(playerComponent, dispatchResult.CommandDefinition!);
+                        var messageShown = _messageService.SendPermissionDenied(playerComponent, dispatchResult.CommandOverload);
                         if (!messageShown)
                         {
                             // Fall through to command not found logic
@@ -145,11 +145,10 @@ internal class PlayerCommandService : IPlayerCommandService
     /// <summary>Executes the matched command.</summary>
     private bool ExecuteCommand(IServiceProvider services, EntityId playerId, DispatchResult dispatchResult)
     {
-        var command = dispatchResult.CommandDefinition;
         var overload = dispatchResult.CommandOverload;
         var parsedArgs = dispatchResult.ParsedArguments ?? [];
 
-        if (command == null || overload == null)
+        if (overload == null)
         {
             return false;
         }

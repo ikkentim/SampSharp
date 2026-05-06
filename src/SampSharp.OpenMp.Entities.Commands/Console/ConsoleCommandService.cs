@@ -50,11 +50,11 @@ internal class ConsoleCommandService : IConsoleCommandService
             case DispatchResponse.InvalidArguments:
             case DispatchResponse.CommandNotFound:
             default:
-                if (result.CommandDefinition != null)
+                if (result.AllOverloads != null)
                 {
                     try
                     {
-                        _messageService.SendUsage(context, result.CommandDefinition);
+                        _messageService.SendUsage(context, result.AllOverloads);
                     }
                     catch (Exception ex)
                     {
@@ -72,11 +72,10 @@ internal class ConsoleCommandService : IConsoleCommandService
 
     private bool ExecuteCommand(IServiceProvider services, DispatchResult dispatchResult, ConsoleCommandDispatchContext context)
     {
-        var command = dispatchResult.CommandDefinition;
         var overload = dispatchResult.CommandOverload;
         var parsedArgs = dispatchResult.ParsedArguments ?? [];
 
-        if (command == null || overload == null)
+        if (overload == null)
         {
             return false;
         }

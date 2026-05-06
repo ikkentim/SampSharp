@@ -3,7 +3,7 @@ namespace SampSharp.Entities.SAMP.Commands.Help;
 /// <summary>
 /// Default implementation of ICommandHelpProvider.
 /// </summary>
-public class DefaultCommandHelpProvider : ICommandHelpProvider
+internal class DefaultCommandHelpProvider : ICommandHelpProvider
 {
     private readonly ICommandRegistry _registry;
 
@@ -42,7 +42,7 @@ public class DefaultCommandHelpProvider : ICommandHelpProvider
         var lower = query?.ToLowerInvariant() ?? "";
         return _registry.GetAll()
             .Where(c => c.Name.Contains(lower, StringComparison.OrdinalIgnoreCase) || c.FullName.Contains(lower, StringComparison.OrdinalIgnoreCase) ||
-                        c.Overloads.SelectMany(o => o.Aliases).Any(a => a.Name.Contains(lower, StringComparison.OrdinalIgnoreCase)));
+                        c.Aliases.Any(a => a.Name.Contains(lower, StringComparison.OrdinalIgnoreCase)));
     }
 
     /// <inheritdoc />

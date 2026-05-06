@@ -20,22 +20,22 @@ public class DefaultPlayerCommandMessageService : IPlayerCommandMessageService
     }
 
     /// <inheritdoc />
-    public void SendUsage(Player player, CommandDefinition command)
+    public void SendUsage(Player player, IReadOnlyList<CommandDefinition> overloads)
     {
         var messages = new List<string>();
 
-        if (command.Overloads.Count == 1)
+        if (overloads.Count == 1)
         {
-            var overload = command.Overloads.First();
-            var text = _formatter.FormatCommandUsage(command.Name, command.Group?.ToString(), overload.ParsedParameters, includeSlash: true);
+            var overload = overloads[0];
+            var text = _formatter.FormatCommandUsage(overload.Name, overload.Group?.ToString(), overload.ParsedParameters, includeSlash: true);
             messages.Add($"Usage: {text}");
         }
         else
         {
             messages.Add("Usage:");
-            foreach (var overload in command.Overloads)
+            foreach (var overload in overloads)
             {
-                var text = _formatter.FormatCommandUsage(command.Name, command.Group?.ToString(), overload.ParsedParameters, includeSlash: true);
+                var text = _formatter.FormatCommandUsage(overload.Name, overload.Group?.ToString(), overload.ParsedParameters, includeSlash: true);
                 messages.Add($"  {text}");
             }
         }
@@ -47,9 +47,9 @@ public class DefaultPlayerCommandMessageService : IPlayerCommandMessageService
     }
 
     /// <inheritdoc />
-    public bool SendPermissionDenied(Player player, CommandDefinition command)
+    public bool SendPermissionDenied(Player player, CommandDefinition overload)
     {
-        var message = _formatter.FormatPermissionDenied(""); //  TODO input text
+        var message = FormatPermissionDenied(""); //  TODO input text
         player.SendClientMessage(message);
         return true;// TODO: option to not print message
     }
@@ -58,5 +58,15 @@ public class DefaultPlayerCommandMessageService : IPlayerCommandMessageService
     public bool SendCommandNotFound(Player player, string input)
     {
         return false;
+    }
+
+    private string FormatCommandNotFound(string commandText)
+    {
+        return $"Unknown command: {commandText}";
+    }
+
+    private string FormatPermissionDenied(string commandText)
+    {
+        return "You do not have permission to use this command.";
     }
 }

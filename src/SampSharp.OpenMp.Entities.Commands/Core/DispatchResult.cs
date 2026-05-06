@@ -17,11 +17,11 @@ public class DispatchResult
     /// <summary>Usage message (for invalid arguments).</summary>
     public string? UsageMessage { get; set; }
 
-    /// <summary>The executed command definition (if found).</summary>
-    public CommandDefinition? CommandDefinition { get; set; }
-
     /// <summary>The executed command overload (if matched).</summary>
-    public CommandOverload? CommandOverload { get; set; }
+    public CommandDefinition? CommandOverload { get; set; }
+
+    /// <summary>All overloads of the command (for usage display).</summary>
+    internal IReadOnlyList<CommandDefinition>? AllOverloads { get; set; }
 
     /// <summary>Parsed argument values for the command (if successfully matched).</summary>
     public object?[]? ParsedArguments { get; set; }

@@ -5,7 +5,14 @@ namespace SampSharp.Entities.SAMP.Commands;
 /// </summary>
 public class CommandEnumerator
 {
-    public CommandEnumerator(string name, CommandGroup? group, IReadOnlyList<CommandAlias> aliases, IReadOnlyList<CommandOverload> overloads)
+    /// <summary>
+    /// Initializes a new instance of the <see cref="CommandEnumerator" /> class.
+    /// </summary>
+    /// <param name="name">The command name.</param>
+    /// <param name="group">The command group, if any.</param>
+    /// <param name="aliases">The list of command aliases.</param>
+    /// <param name="overloads">The list of command overloads with parameter information.</param>
+    public CommandEnumerator(string name, CommandGroup? group, IReadOnlyList<CommandAlias> aliases, IReadOnlyList<CommandDefinition> overloads)
     {
         Name = name;
         Group = group;
@@ -31,5 +38,5 @@ public class CommandEnumerator
     /// <summary>
     /// Gets all overloads for this command.
     /// </summary>
-    public IReadOnlyList<CommandOverload> Overloads { get; }
+    public IReadOnlyList<CommandDefinition> Overloads { get; }
 }

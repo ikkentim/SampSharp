@@ -3,9 +3,18 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace SampSharp.Entities.SAMP.Commands;
 
-/// <summary>Extensions to register the commands subsystem.</summary>
+/// <summary>Provides extension methods for registering the commands subsystem.</summary>
 public static class EcsBuilderCommandsExtensions
 {
+    /// <summary>
+    /// Registers player command services and systems in the dependency injection container.
+    /// </summary>
+    /// <param name="services">The service collection to register services into.</param>
+    /// <returns>The service collection for method chaining.</returns>
+    /// <remarks>
+    /// This method registers both the player command service and the core commands system infrastructure.
+    /// Call this method to enable player command handling in your game mode.
+    /// </remarks>
     public static IServiceCollection AddPlayerCommands(this IServiceCollection services)
     {
         services.AddCommandsSystem();
@@ -14,6 +23,16 @@ public static class EcsBuilderCommandsExtensions
         return services;
     }
 
+    /// <summary>
+    /// Registers all core command system services in the dependency injection container.
+    /// </summary>
+    /// <param name="services">The service collection to register services into.</param>
+    /// <returns>The service collection for method chaining.</returns>
+    /// <remarks>
+    /// This method registers default implementations of command text formatting, permission checking,
+    /// message services, and the command scanning system. Override these services by registering
+    /// your own implementations before calling this method to use custom implementations.
+    /// </remarks>
     public static IServiceCollection AddCommandsSystem(this IServiceCollection services)
     {
         services.TryAddSingleton<ICommandTextFormatter, DefaultCommandTextFormatter>();

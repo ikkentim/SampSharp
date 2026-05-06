@@ -22,39 +22,36 @@ internal class CommandScanner
 
         var methods = scanner.ScanMethods<PlayerCommandAttribute>();
 
-        foreach (var (systemType, method, attribute) in methods)
+        // Group methods by command name and group
+        var groupedByCommand = methods
+            .GroupBy(m => 
+            {
+                var (systemType, method, attribute) = m;
+                var classGroups = systemType.GetCustomAttributes<CommandGroupAttribute>();
+                var methodGroups = method.GetCustomAttributes<CommandGroupAttribute>();
+                var commandGroup = BuildCommandGroup(classGroups, methodGroups);
+                var commandName = attribute.Name ?? GetCommandName(method);
+                return (commandName, commandGroup);
+            })
+            .Where(g => !string.IsNullOrWhiteSpace(g.Key.commandName));
+
+        foreach (var commandGroup in groupedByCommand)
         {
-            // Group attributes from class and method
-            var classGroups = systemType.GetCustomAttributes<CommandGroupAttribute>();
-            var methodGroups = method.GetCustomAttributes<CommandGroupAttribute>();
-            var commandGroup = BuildCommandGroup(classGroups, methodGroups);
+            var (commandName, group) = commandGroup.Key;
 
-            // Aliases and tags are collected per overload
-            var aliases = method.GetCustomAttributes<AliasAttribute>().SelectMany(a => a.Aliases).Select(a => new CommandAlias(a)).ToArray();
-            var tags = method.GetCustomAttributes<CommandTagAttribute>().Select(t => new CommandTag(t.Key, t.Value)).ToArray();
-
-            // Each [PlayerCommand] attribute is a separate overload
-            var commandName = attribute.Name ?? GetCommandName(method);
-            if (string.IsNullOrWhiteSpace(commandName))
+            foreach (var (systemType, method, attribute) in commandGroup)
             {
-                continue;
+                // Aliases and tags are per-overload
+                var aliases = method.GetCustomAttributes<AliasAttribute>().SelectMany(a => a.Aliases).Select(a => new CommandAlias(a)).ToArray();
+                var tags = method.GetCustomAttributes<CommandTagAttribute>().Select(t => new CommandTag(t.Key, t.Value)).ToArray();
+
+                if (!TryBuildOverload(commandName, group, method, systemType, parserFactory, 1, aliases, tags, out var overload))
+                {
+                    continue;
+                }
+
+                registry.Register(overload);
             }
-
-            if (method.Name == "PingCommand")
-            {
-                Console.WriteLine();
-            }
-
-            if (!TryBuildOverload(method, systemType, parserFactory, 1, aliases, tags, out var overload))
-            {
-                continue;
-            }
-
-            var definition = new CommandDefinition(commandName, commandGroup, [
-                overload
-            ]);
-
-            registry.Register(definition);
         }
     }
 
@@ -64,45 +61,47 @@ internal class CommandScanner
 
         var methods = scanner.ScanMethods<ConsoleCommandAttribute>();
 
-        foreach (var (systemType, method, attribute) in methods)
+        // Group methods by command name and group
+        var groupedByCommand = methods
+            .GroupBy(m => 
+            {
+                var (systemType, method, attribute) = m;
+                var classGroups = systemType.GetCustomAttributes<CommandGroupAttribute>();
+                var methodGroups = method.GetCustomAttributes<CommandGroupAttribute>();
+                var commandGroup = BuildCommandGroup(classGroups, methodGroups);
+                var commandName = attribute.Name ?? GetCommandName(method);
+                return (commandName, commandGroup);
+            })
+            .Where(g => !string.IsNullOrWhiteSpace(g.Key.commandName));
+
+        foreach (var commandGroup in groupedByCommand)
         {
-            // Group attributes from class and method
-            var classGroups = systemType.GetCustomAttributes<CommandGroupAttribute>();
-            var methodGroups = method.GetCustomAttributes<CommandGroupAttribute>();
-            var commandGroup = BuildCommandGroup(classGroups, methodGroups);
+            var (commandName, group) = commandGroup.Key;
 
-            // Aliases and tags are collected per overload
-            var aliases = method.GetCustomAttributes<AliasAttribute>().SelectMany(a => a.Aliases).Select(a => new CommandAlias(a)).ToArray();
-            var tags = method.GetCustomAttributes<CommandTagAttribute>().Select(t => new CommandTag(t.Key, t.Value)).ToArray();
-
-            // Console commands: check if first param is ConsoleCommandDispatchContext
-            var prefixParams = 0;
-            if (method.GetParameters().Length > 0)
+            foreach (var (systemType, method, attribute) in commandGroup)
             {
-                var firstParam = method.GetParameters()[0];
-                if (firstParam.ParameterType == typeof(ConsoleCommandDispatchContext))
+                // Aliases and tags are per-overload
+                var aliases = method.GetCustomAttributes<AliasAttribute>().SelectMany(a => a.Aliases).Select(a => new CommandAlias(a)).ToArray();
+                var tags = method.GetCustomAttributes<CommandTagAttribute>().Select(t => new CommandTag(t.Key, t.Value)).ToArray();
+
+                // Console commands: check if first param is ConsoleCommandDispatchContext
+                var prefixParams = 0;
+                if (method.GetParameters().Length > 0)
                 {
-                    prefixParams = 1;
+                    var firstParam = method.GetParameters()[0];
+                    if (firstParam.ParameterType == typeof(ConsoleCommandDispatchContext))
+                    {
+                        prefixParams = 1;
+                    }
                 }
+
+                if (!TryBuildOverload(commandName, group, method, systemType, parserFactory, prefixParams, aliases, tags, out var overload))
+                {
+                    continue;
+                }
+
+                registry.Register(overload);
             }
-
-            // Build the overload
-            var commandName = attribute.Name ?? GetCommandName(method);
-            if (string.IsNullOrWhiteSpace(commandName))
-            {
-                continue;
-            }
-
-            if (!TryBuildOverload(method, systemType, parserFactory, prefixParams, aliases, tags, out var overload))
-            {
-                continue;
-            }
-
-            var definition = new CommandDefinition(commandName, commandGroup, [
-                overload
-            ]);
-
-            registry.Register(definition);
         }
     }
 
@@ -113,7 +112,7 @@ internal class CommandScanner
         return allParts.Count > 0 ? new CommandGroup(allParts) : null;
     }
 
-    private bool TryBuildOverload(MethodInfo method, Type systemType, ICommandParameterParserFactory parserFactory, int prefixParameters, CommandAlias[] aliases, CommandTag[] tags, out CommandOverload? overload)
+    private bool TryBuildOverload(string commandName, CommandGroup? commandGroup, MethodInfo method, Type systemType, ICommandParameterParserFactory parserFactory, int prefixParameters, CommandAlias[] aliases, CommandTag[] tags, out CommandDefinition? overload)
     {
         overload = null;
 
@@ -138,7 +137,7 @@ internal class CommandScanner
         // Compile the method invoker at discovery time
         var invoker = CompileMethodInvoker(method, parameters, prefixParameters, parsedParams!);
 
-        overload = new CommandOverload(method, parameters, systemType, parsedParams!, invoker, prefixParameters, aliases, tags);
+        overload = new CommandDefinition(commandName, commandGroup, method, parameters, systemType, parsedParams!, invoker, prefixParameters, aliases, tags);
 
         return true;
     }

@@ -9,17 +9,17 @@ public interface IPlayerCommandMessageService
     /// Sends a usage message to a player.
     /// </summary>
     /// <param name="player">The player to send the message to.</param>
-    /// <param name="command">The command definition.</param>
+    /// <param name="overloads">All overloads of the command.</param>
     /// <returns>True to continue processing, false to stop.</returns>
-    void SendUsage(Player player, CommandDefinition command);
+    void SendUsage(Player player, IReadOnlyList<CommandDefinition> overloads);
 
     /// <summary>
     /// Sends a permission denied message to a player.
     /// </summary>
     /// <param name="player">The player to send the message to.</param>
-    /// <param name="command">The command that was denied.</param>
+    /// <param name="overload">The command overload that was denied.</param>
     /// <returns>True if a message was send to the player, false otherwise.</returns>
-    bool SendPermissionDenied(Player player, CommandDefinition command);
+    bool SendPermissionDenied(Player player, CommandDefinition overload);
 
     /// <summary>
     /// Sends a command not found message to a player.

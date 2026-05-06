@@ -4,7 +4,7 @@ namespace SampSharp.Entities.SAMP.Commands;
 /// Default implementation of IConsoleCommandMessageService.
 /// Sends formatted messages to the console via SendMessage.
 /// </summary>
-public class DefaultConsoleCommandMessageService : IConsoleCommandMessageService
+internal class DefaultConsoleCommandMessageService : IConsoleCommandMessageService
 {
     private readonly ICommandTextFormatter _formatter;
 
@@ -20,21 +20,21 @@ public class DefaultConsoleCommandMessageService : IConsoleCommandMessageService
     }
 
     /// <inheritdoc />
-    public bool SendUsage(ConsoleCommandDispatchContext context, CommandDefinition command)
+    public bool SendUsage(ConsoleCommandDispatchContext context, IReadOnlyList<CommandDefinition> overloads)
     {
-        if (command.Overloads.Count == 1)
+        if (overloads.Count == 1)
         {
-            var overload = command.Overloads.First();
-            var text = _formatter.FormatCommandUsage(command.Name, command.Group?.ToString(), overload.ParsedParameters, includeSlash: false);
+            var overload = overloads[0];
+            var text = _formatter.FormatCommandUsage(overload.Name, overload.Group?.ToString(), overload.ParsedParameters, includeSlash: false);
 
             context.SendMessage($"Usage: {text}");
         }
         else
         {
             context.SendMessage("Usage:");
-            foreach (var overload in command.Overloads)
+            foreach (var overload in overloads)
             {
-                var text = _formatter.FormatCommandUsage(command.Name, command.Group?.ToString(), overload.ParsedParameters, includeSlash: false);
+                var text = _formatter.FormatCommandUsage(overload.Name, overload.Group?.ToString(), overload.ParsedParameters, includeSlash: false);
                 
                 context.SendMessage($"  {text}");
             }

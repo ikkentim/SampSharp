@@ -15,7 +15,7 @@ internal class CommandDispatcher
     /// <param name="prefixArgs">Prefix arguments (e.g., [Player] for player commands, [ConsoleCommandDispatchContext] for console commands).</param>
     /// <param name="permissionChecker">Optional permission checker (for player commands only).</param>
     /// <returns>The dispatch result.</returns>
-    public DispatchResult Dispatch(ICommandRegistry registry, IServiceProvider services, string inputText, object[] prefixArgs, IPermissionChecker? permissionChecker = null)
+    public DispatchResult Dispatch(CommandRegistry registry, IServiceProvider services, string inputText, object[] prefixArgs, IPermissionChecker? permissionChecker = null)
     {
         ArgumentNullException.ThrowIfNull(registry);
         ArgumentNullException.ThrowIfNull(services);
@@ -34,10 +34,9 @@ internal class CommandDispatcher
             return DispatchResult.CreateNotFound();
         }
 
-        // Try to find the command in the registry
-        // TryFindByPath returns how many tokens were consumed
-        var command = registry.TryFindByPath(tokens, out var consumedTokenCount);
-        if (command == null)
+        // Try to find the command group in the registry (all overloads with same name/group)
+        var commandGroup = registry.GetCommandGroupByPath(tokens, out var consumedTokenCount);
+        if (commandGroup == null)
         {
             return DispatchResult.CreateNotFound();
         }
@@ -49,7 +48,7 @@ internal class CommandDispatcher
         var remainingArgs = remainingTokens.Length > 0 ? string.Join(" ", remainingTokens) : "";
 
         // Try to match parameters for each overload
-        var bestMatch = FindBestOverload(command, remainingArgs, services);
+        var bestMatch = FindBestOverload(commandGroup, remainingArgs, services);
 
         // Check permission if a permission checker is provided
         if (bestMatch.overload is not null && 
@@ -64,8 +63,8 @@ internal class CommandDispatcher
         {
             // Successfully matched this overload
             var result = DispatchResult.CreateSuccess();
-            result.CommandDefinition = command;
             result.CommandOverload = bestMatch.overload;
+            result.AllOverloads = commandGroup.Overloads;
             result.ParsedArguments = bestMatch.parsedArguments;
             return result;
         }
@@ -74,7 +73,7 @@ internal class CommandDispatcher
         if (bestMatch.usageMessage != null)
         {
             var result = DispatchResult.CreateInvalidArguments(bestMatch.usageMessage);
-            result.CommandDefinition = command;
+            result.AllOverloads = commandGroup.Overloads;
             return result;
         }
 
@@ -85,10 +84,10 @@ internal class CommandDispatcher
     /// Finds the best matching overload for the given arguments.
     /// Tries each overload and returns the one that consumes the least remaining input.
     /// </summary>
-    private (bool matched, CommandOverload? overload, object?[]? parsedArguments, string? usageMessage) FindBestOverload(CommandDefinition command, string remainingArgs,
+    private (bool matched, CommandDefinition? overload, object?[]? parsedArguments, string? usageMessage) FindBestOverload(CommandCommand command, string remainingArgs,
         IServiceProvider services)
     {
-        var bestMatch = (matched: false, overload: (CommandOverload?)null, parsedArguments: (object?[]?)null, remainingUnconsumed: int.MaxValue, usageMessage: (string?)null);
+        var bestMatch = (matched: false, overload: (CommandDefinition?)null, parsedArguments: (object?[]?)null, remainingUnconsumed: int.MaxValue, usageMessage: (string?)null);
 
         foreach (var overload in command.Overloads)
         {
@@ -114,7 +113,7 @@ internal class CommandDispatcher
     /// Tries to match the remaining arguments against the overload's parameters.
     /// Returns how many characters were unconsumed (for best-match selection).
     /// </summary>
-    private (bool matched, string? usageMessage, object?[]? parsedArguments, int remainingUnconsumed) TryMatchParameters(CommandOverload overload, string remainingArgs,
+    private (bool matched, string? usageMessage, object?[]? parsedArguments, int remainingUnconsumed) TryMatchParameters(CommandDefinition overload, string remainingArgs,
         IServiceProvider services)
     {
         var parameters = overload.ParsedParameters;
@@ -199,7 +198,7 @@ internal class CommandDispatcher
     }
 
     /// <summary>Generates a usage message for a command overload.</summary>
-    private static string GenerateUsageMessage(CommandOverload overload)
+    private static string GenerateUsageMessage(CommandDefinition overload)
     {
         var command = overload.Method.Name.ToLowerInvariant();
         if (command.EndsWith("command"))

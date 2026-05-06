@@ -9,7 +9,7 @@ public interface IConsoleCommandMessageService
     /// Sends a usage message to the console.
     /// </summary>
     /// <param name="context">The console command dispatch context.</param>
-    /// <param name="command">The command definition.</param>
+    /// <param name="overloads">All overloads of the command.</param>
     /// <returns>True to continue processing, false to stop.</returns>
-    bool SendUsage(ConsoleCommandDispatchContext context, CommandDefinition command);
+    bool SendUsage(ConsoleCommandDispatchContext context, IReadOnlyList<CommandDefinition> overloads);
 }

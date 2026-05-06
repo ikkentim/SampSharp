@@ -1,15 +1,15 @@
 namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>
-/// Represents the full definition of a command with all its metadata.
-/// A command can have multiple overloads (different parameter signatures).
+/// Represents the complete definition of a command with all its overloads.
+/// A command can have multiple overloads (different parameter signatures) but the same name and group.
 /// </summary>
-public class CommandDefinition
+internal class CommandCommand
 {
-    private readonly CommandOverload[] _overloads;
+    private readonly CommandDefinition[] _overloads;
 
     /// <summary>Initializes a new instance.</summary>
-    public CommandDefinition(string name, CommandGroup? group, CommandOverload[] overloads)
+    internal CommandCommand(string name, CommandGroup? group, CommandDefinition[] overloads)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
@@ -33,38 +33,8 @@ public class CommandDefinition
     public CommandGroup? Group { get; }
 
     /// <summary>All overloads of this command.</summary>
-    public IReadOnlyList<CommandOverload> Overloads => _overloads;
+    public IReadOnlyList<CommandDefinition> Overloads => _overloads;
 
     /// <summary>The full command path (group + name), e.g., "admin money give".</summary>
     public string FullName => Group.HasValue ? $"{Group.Value.FullName} {Name}" : Name;
-
-    /// <summary>Tries to find an overload that can handle the given parameter count.</summary>
-    public CommandOverload? FindBestOverload(int parameterCount)
-    {
-        // Try exact match first
-        var exact = _overloads.FirstOrDefault(o => o.ParsedParameters.Length == parameterCount);
-        if (exact != null)
-        {
-            return exact;
-        }
-
-        // Try overload with optional parameters that can satisfy the count
-        return _overloads.FirstOrDefault(o =>
-        {
-            var required = o.ParsedParameters.Count(p => p.IsRequired);
-            var optional = o.ParsedParameters.Count(p => !p.IsRequired);
-            return parameterCount >= required && parameterCount <= required + optional;
-        });
-    }
-
-    /// <summary>Gets a human-readable description for displaying in help.</summary>
-    public string GetDisplayName()
-    {
-        if (Group.HasValue)
-        {
-            return $"/{Group.Value.FullName} {Name}";
-        }
-
-        return $"/{Name}";
-    }
 }

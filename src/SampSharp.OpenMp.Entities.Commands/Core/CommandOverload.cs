@@ -6,20 +6,27 @@ namespace SampSharp.Entities.SAMP.Commands;
 /// Represents a single overload of a command (one specific method implementation).
 /// Multiple overloads can exist for the same command with different parameter types.
 /// </summary>
-public class CommandOverload
+public class CommandDefinition
 {
     private readonly CommandAlias[] _aliases;
     private readonly Dictionary<string, string> _tags;
 
     /// <summary>Initializes a new instance.</summary>
-    public CommandOverload(MethodInfo method, ParameterInfo[] parameters, Type declaringSystemType, CommandParameterInfo[] parsedParameters, MethodInvoker invoker,
+    public CommandDefinition(string name, CommandGroup? group, MethodInfo method, ParameterInfo[] parameters, Type declaringSystemType, CommandParameterInfo[] parsedParameters, MethodInvoker invoker,
         int prefixParameterCount, CommandAlias[]? aliases = null, CommandTag[]? tags = null)
     {
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            throw new ArgumentException("Command name cannot be empty.", nameof(name));
+        }
+
         ArgumentNullException.ThrowIfNull(method);
         ArgumentNullException.ThrowIfNull(parameters);
         ArgumentNullException.ThrowIfNull(declaringSystemType);
         ArgumentNullException.ThrowIfNull(parsedParameters);
 
+        Name = name;
+        Group = group;
         Method = method;
         MethodParameters = parameters;
         DeclaringSystemType = declaringSystemType;
@@ -29,6 +36,15 @@ public class CommandOverload
         _aliases = aliases ?? [];
         _tags = tags?.ToDictionary(t => t.Key, t => t.Value) ?? new Dictionary<string, string>();
     }
+
+    /// <summary>The command name (without leading slash or group prefix).</summary>
+    public string Name { get; }
+
+    /// <summary>The command group, if any (e.g., ["admin", "money"]).</summary>
+    public CommandGroup? Group { get; }
+
+    /// <summary>The full command path (group + name), e.g., "admin money give".</summary>
+    public string FullName => Group.HasValue ? $"{Group.Value.FullName} {Name}" : Name;
 
     /// <summary>The method that implements this command overload.</summary>
     public MethodInfo Method { get; }

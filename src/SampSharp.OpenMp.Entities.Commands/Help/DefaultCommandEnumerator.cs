@@ -57,12 +57,58 @@ internal class DefaultCommandEnumerator : ICommandEnumerator
 
     private IReadOnlyList<CommandEnumerator> BuildAllCommands()
     {
-        return _registry.GetAll().Select(BuildCommandEnumerator).ToList().AsReadOnly();
+        var result = new List<CommandEnumerator>();
+        var allDefs = _registry.GetAll();
+
+        // Group by name and group
+        var grouped = allDefs
+            .GroupBy(d => (d.Name, d.Group), new CommandKeyComparer())
+            .OrderBy(g => g.Key.Name);
+
+        foreach (var group in grouped)
+        {
+            var (name, grp) = group.Key;
+            var overloads = group.ToList();
+
+            // Collect aliases from all overloads
+            var allAliases = overloads.SelectMany(o => o.Aliases).Distinct().ToList().AsReadOnly();
+
+            result.Add(new CommandEnumerator(name, grp, allAliases, overloads.AsReadOnly()));
+        }
+
+        return result.AsReadOnly();
+    }
+
+    private class CommandKeyComparer : IEqualityComparer<(string Name, CommandGroup? Group)>
+    {
+        public bool Equals((string Name, CommandGroup? Group) x, (string Name, CommandGroup? Group) y)
+        {
+            return x.Name == y.Name && (x.Group?.Equals(y.Group) ?? y.Group == null);
+        }
+
+        public int GetHashCode((string Name, CommandGroup? Group) obj)
+        {
+            return HashCode.Combine(obj.Name, obj.Group);
+        }
+    }
+
+    private CommandEnumerator BuildCommandEnumerator(CommandDefinition definition)
+    {
+        // Collect aliases and tags from all overloads
+        var allAliases = new[] { definition }.SelectMany(o => o.Aliases).Distinct().ToList().AsReadOnly();
+
+        return new CommandEnumerator(definition.Name, definition.Group, allAliases, new[] { definition }.AsReadOnly());
     }
 
     private IReadOnlyList<CommandGroupEnumerator> BuildAllGroups()
     {
-        var groups = _registry.GetGroups().ToList();
+        var groups = _registry.GetGroups().OrderBy(g => g.FullName).ToList();
+
+        if (groups.Count == 0)
+        {
+            return [];
+        }
+
         var result = new List<CommandGroupEnumerator>();
 
         foreach (var group in groups)
@@ -75,16 +121,6 @@ internal class DefaultCommandEnumerator : ICommandEnumerator
         }
 
         return result.AsReadOnly();
-    }
-
-    private CommandEnumerator BuildCommandEnumerator(CommandDefinition definition)
-    {
-        var firstOverload = definition.Overloads.FirstOrDefault();
-
-        // Collect aliases and tags from all overloads
-        var allAliases = definition.Overloads.SelectMany(o => o.Aliases).Distinct().ToList().AsReadOnly();
-
-        return new CommandEnumerator(definition.Name, definition.Group, allAliases, definition.Overloads.ToList().AsReadOnly());
     }
 
     private CommandGroupEnumerator? BuildGroupEnumerator(CommandGroup group)

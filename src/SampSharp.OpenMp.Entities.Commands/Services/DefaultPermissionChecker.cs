@@ -8,7 +8,8 @@ namespace SampSharp.Entities.SAMP.Commands;
 /// </summary>
 public class DefaultPermissionChecker : IPermissionChecker
 {
-    public bool HasPermission(PlayerComponent player, CommandOverload command)
+    /// <inheritdoc />
+    public bool HasPermission(PlayerComponent player, CommandDefinition command)
     {
         // Default: allow all permissions
         return true;

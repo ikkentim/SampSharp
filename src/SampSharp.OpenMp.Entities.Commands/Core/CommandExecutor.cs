@@ -22,7 +22,7 @@ internal class CommandExecutor
     /// <param name="services">Service provider for DI resolution.</param>
     /// <param name="system">The ISystem instance to invoke on.</param>
     /// <returns>The result of the method invocation.</returns>
-    public object? Execute(CommandOverload overload, object?[] prefixArgs, object?[] parsedArgs, IServiceProvider services, ISystem system)
+    public object? Execute(CommandDefinition overload, object?[] prefixArgs, object?[] parsedArgs, IServiceProvider services, ISystem system)
     {
         var parameters = overload.MethodParameters;
 
