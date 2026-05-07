@@ -92,7 +92,7 @@ internal class ServerService : IServerService
         }
     }
 
-    public PlayerClass AddPlayerClass(int teamId, int modelId, Vector3 spawnPosition, float angle, Weapon weapon1 = Weapon.None, int weapon1Ammo = 0, Weapon weapon2 = Weapon.None,
+    public Class AddPlayerClass(int teamId, int modelId, Vector3 spawnPosition, float angle, Weapon weapon1 = Weapon.None, int weapon1Ammo = 0, Weapon weapon2 = Weapon.None,
         int weapon2Ammo = 0, Weapon weapon3 = Weapon.None, int weapon3Ammo = 0)
     {
         var slots = new WeaponSlotData[WeaponSlots.MAX_WEAPON_SLOTS];
@@ -106,7 +106,7 @@ internal class ServerService : IServerService
         var @class = _classes.Create(modelId, teamId, spawnPosition, angle, ref weapons);
 
         var entityId = EntityId.NewEntityId();
-        var component = _entityManager.AddComponent<PlayerClass>(entityId, _classes, @class);
+        var component = _entityManager.AddComponent<Class>(entityId, _classes, @class);
 
         var extension = new ComponentExtension(component);
         @class.AddExtension(extension);
@@ -114,7 +114,7 @@ internal class ServerService : IServerService
         return component;
     }
 
-    public PlayerClass AddPlayerClass(int modelId, Vector3 spawnPosition, float angle, Weapon weapon1 = Weapon.None, int weapon1Ammo = 0, Weapon weapon2 = Weapon.None, int weapon2Ammo = 0,
+    public Class AddPlayerClass(int modelId, Vector3 spawnPosition, float angle, Weapon weapon1 = Weapon.None, int weapon1Ammo = 0, Weapon weapon2 = Weapon.None, int weapon2Ammo = 0,
         Weapon weapon3 = Weapon.None, int weapon3Ammo = 0)
     {
         return AddPlayerClass(OpenMpConstants.TEAM_NONE, modelId, spawnPosition, angle, weapon1, weapon1Ammo, weapon2, weapon2Ammo, weapon3, weapon3Ammo);

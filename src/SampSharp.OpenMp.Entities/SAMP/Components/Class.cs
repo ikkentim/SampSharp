@@ -7,15 +7,15 @@ namespace SampSharp.Entities.SAMP;
 /// <summary>
 /// Represents a component which provides the data and functionality of a player spawn class.
 /// </summary>
-public class PlayerClass : IdProvider
+public class Class : IdProvider
 {
     private readonly IClass _class;
     private readonly IClassesComponent _classes;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="PlayerClass" /> class.
+    /// Initializes a new instance of the <see cref="Class" /> class.
     /// </summary>
-    protected PlayerClass(IClassesComponent classes, IClass playerClass) : base((IIDProvider)playerClass)
+    protected Class(IClassesComponent classes, IClass playerClass) : base((IIDProvider)playerClass)
     {
         _classes = classes;
         _class = playerClass;
@@ -112,9 +112,9 @@ public class PlayerClass : IdProvider
     }
 
     /// <summary>
-    /// Performs an implicit conversion from <see cref="PlayerClass" /> to <see cref="IClass" />.
+    /// Performs an implicit conversion from <see cref="Class" /> to <see cref="IClass" />.
     /// </summary>
-    public static implicit operator IClass(PlayerClass playerClass)
+    public static implicit operator IClass(Class playerClass)
     {
         return playerClass._class;
     }

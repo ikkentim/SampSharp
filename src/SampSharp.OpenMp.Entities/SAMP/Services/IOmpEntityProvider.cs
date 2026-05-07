@@ -111,7 +111,7 @@ public interface IOmpEntityProvider
     /// </summary>
     /// <param name="playerClass">The player class to get the component for.</param>
     /// <returns>The player class component.</returns>
-    PlayerClass? GetComponent(IClass playerClass);
+    Class? GetComponent(IClass playerClass);
 
     /// <summary>
     /// Gets the entity for the specified player class.
@@ -219,7 +219,7 @@ public interface IOmpEntityProvider
     /// </summary>
     /// <param name="id">The identifier of the player class.</param>
     /// <returns>The player class with the specified identifier or <see langword="null" /> if no player class could be found.</returns>
-    PlayerClass? GetPlayerClass(int id);
+    Class? GetPlayerClass(int id);
 
     /// <summary>
     /// Gets the actor with the specified identifier.

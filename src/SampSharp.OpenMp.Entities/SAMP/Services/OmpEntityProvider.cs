@@ -88,7 +88,7 @@ internal class OmpEntityProvider(SampSharpEnvironment environment, IEntityManage
         return GetComponent(playerClass)?.Entity ?? default;
     }
 
-    public PlayerClass? GetComponent(IClass playerClass)
+    public Class? GetComponent(IClass playerClass)
     {
         if (playerClass == null)
         {
@@ -98,14 +98,14 @@ internal class OmpEntityProvider(SampSharpEnvironment environment, IEntityManage
         var ext = playerClass.TryGetExtension<ComponentExtension>();
         if (ext == null)
         {
-            var component = entityManager.AddComponent<PlayerClass>(EntityId.NewEntityId(), _classes, playerClass);
+            var component = entityManager.AddComponent<Class>(EntityId.NewEntityId(), _classes, playerClass);
             ext = new ComponentExtension(component);
             playerClass.AddExtension(ext);
 
             return component;
         }
 
-        return (PlayerClass)ext.Component;
+        return (Class)ext.Component;
     }
 
     public Actor? GetComponent(IActor actor)
@@ -399,7 +399,7 @@ internal class OmpEntityProvider(SampSharpEnvironment environment, IEntityManage
         return (Vehicle)ext.Component;
     }
 
-    public PlayerClass? GetPlayerClass(int id)
+    public Class? GetPlayerClass(int id)
     {
         return GetComponent(_classes.AsPool().Get(id));
     }
