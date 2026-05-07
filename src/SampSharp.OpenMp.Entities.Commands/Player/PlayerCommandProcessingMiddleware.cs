@@ -20,7 +20,7 @@ internal class PlayerCommandProcessingMiddleware
             return result;
         }
 
-        if (context.Arguments is [EntityId player, string text, ..])
+        if (context.Arguments is [EntityId player, string text])
         {
             return commandService.Invoke(context.EventServices, player, text);
         }
@@ -34,7 +34,6 @@ internal class PlayerCommandProcessingMiddleware
         {
             null => false,
             bool b => b,
-            int i => i != 0,
             MethodResult mr => mr.Value,
             _ => true
         };
