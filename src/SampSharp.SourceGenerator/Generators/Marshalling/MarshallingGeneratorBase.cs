@@ -98,7 +98,7 @@ public abstract class MarshallingGeneratorBase(MarshalDirection direction)
         GenerateGuaranteedBlock(ref guaranteedStatements, ref initLocals, ref notify);
 
         // chain all pin statements
-        var invoke = AddReturnValueAssignmentToInvoke(ctx, GetInvocation(ctx), direction);
+        var invoke = AddReturnValueAssignmentToInvoke(ctx, GetInvocation(ctx));
         var pinnedBlock = ChainPins(steps, invoke);
 
         // wire up steps
@@ -182,7 +182,7 @@ public abstract class MarshallingGeneratorBase(MarshalDirection direction)
 
         var initLocals = List(GenerateInitLocals(ctx));
 
-        var invoke = ExpressionStatement(AddReturnValueAssignmentToInvoke(ctx, GetInvocation(ctx), direction));
+        var invoke = ExpressionStatement(AddReturnValueAssignmentToInvoke(ctx, GetInvocation(ctx)));
 
         // wire up steps
         var statements = initLocals
@@ -335,11 +335,11 @@ public abstract class MarshallingGeneratorBase(MarshalDirection direction)
                         Block(finallyBlock))));
     }
 
-    private static ExpressionSyntax AddReturnValueAssignmentToInvoke(MarshallingStubGenerationContext ctx, ExpressionSyntax invoke, MarshalDirection marshallingDirection)
+    private static ExpressionSyntax AddReturnValueAssignmentToInvoke(MarshallingStubGenerationContext ctx, ExpressionSyntax invoke)
     {
         if (!ctx.Symbol.ReturnsVoid)
         {
-            var assignedLocal = marshallingDirection == MarshalDirection.ManagedToUnmanaged &&
+            var assignedLocal = ctx.ReturnValue.Direction == MarshalDirection.ManagedToUnmanaged &&
                                 ctx.ReturnValue.Generator.UsesNativeIdentifier
                 ? ctx.ReturnValue.GetNativeId()
                 : ctx.ReturnValue.GetManagedId();
