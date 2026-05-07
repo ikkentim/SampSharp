@@ -17,7 +17,7 @@ public class CommandRegistryTests
         CommandGroup? group = null,
         CommandAlias[] aliases = null!)
     {
-        var method = typeof(CommandRegistryTests).GetMethod(nameof(DummyMethod))!;
+        var method = typeof(CommandRegistryTests).GetMethod(nameof(DummyMethod), System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!;
         var parameters = method.GetParameters();
         var mockInvoker = new Mock<CommandInvoker>();
 
@@ -35,7 +35,7 @@ public class CommandRegistryTests
         );
     }
 
-    public void DummyMethod() { }
+    private void DummyMethod() { }
 
     [Fact]
     public void Register_SingleCommand_StoresCorrectly()

@@ -29,7 +29,7 @@ public class CommandDefinitionTests
         int paramCount = 0,
         CommandAlias[]? aliases = null)
     {
-        var method = typeof(CommandDefinitionTests).GetMethod(nameof(DummyMethod))!;
+        var method = typeof(CommandDefinitionTests).GetMethod(nameof(DummyMethod), System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!;
         var parameters = method.GetParameters();
         var parsedParams = CreateParamInfo(paramCount);
         var mockInvoker = new Mock<CommandInvoker>();
@@ -48,7 +48,7 @@ public class CommandDefinitionTests
         );
     }
 
-    public void DummyMethod() { }
+    private void DummyMethod() { }
 
     [Fact]
     public void Constructor_WithValidParameters_InitializesCorrectly()
@@ -63,7 +63,7 @@ public class CommandDefinitionTests
     [Fact]
     public void Constructor_WithNullName_ThrowsArgumentException()
     {
-        var method = typeof(CommandDefinitionTests).GetMethod(nameof(DummyMethod))!;
+        var method = typeof(CommandDefinitionTests).GetMethod(nameof(DummyMethod), System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!;
         var mockInvoker = new Mock<CommandInvoker>();
 
         Should.Throw<ArgumentException>(() => new CommandDefinition(
@@ -83,7 +83,7 @@ public class CommandDefinitionTests
     [Fact]
     public void Constructor_WithEmptyName_ThrowsArgumentException()
     {
-        var method = typeof(CommandDefinitionTests).GetMethod(nameof(DummyMethod))!;
+        var method = typeof(CommandDefinitionTests).GetMethod(nameof(DummyMethod), System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!;
         var mockInvoker = new Mock<CommandInvoker>();
 
         Should.Throw<ArgumentException>(() => new CommandDefinition(
@@ -162,7 +162,7 @@ public class CommandDefinitionTests
     public void Tags_ReturnsProvidedTags()
     {
         var tags = new[] { new CommandTag("category", "admin"), new CommandTag("version", "1.0") };
-        var method = typeof(CommandDefinitionTests).GetMethod(nameof(DummyMethod))!;
+        var method = typeof(CommandDefinitionTests).GetMethod(nameof(DummyMethod), System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!;
         var parameters = method.GetParameters();
         var mockInvoker = new Mock<CommandInvoker>();
 
@@ -187,7 +187,7 @@ public class CommandDefinitionTests
     [Fact]
     public void PrefixParameterCount_IsStored()
     {
-        var method = typeof(CommandDefinitionTests).GetMethod(nameof(DummyMethod))!;
+        var method = typeof(CommandDefinitionTests).GetMethod(nameof(DummyMethod), System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!;
         var mockInvoker = new Mock<CommandInvoker>();
 
         var def = new CommandDefinition(

@@ -16,7 +16,7 @@ public class CommandDispatcherTests
         int paramCount = 0,
         CommandGroup? group = null)
     {
-        var method = typeof(CommandDispatcherTests).GetMethod(nameof(DummyMethod))!;
+        var method = typeof(CommandDispatcherTests).GetMethod(nameof(DummyMethod), System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!;
         var parameters = method.GetParameters();
 
         var parsedParams = new CommandParameterInfo[paramCount];
@@ -50,7 +50,7 @@ public class CommandDispatcherTests
         );
     }
 
-    public void DummyMethod() { }
+    private void DummyMethod() { }
 
     private CommandRegistry CreateRegistry(params CommandDefinition[] commands)
     {

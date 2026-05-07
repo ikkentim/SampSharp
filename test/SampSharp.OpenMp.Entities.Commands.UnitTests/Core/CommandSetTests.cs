@@ -14,7 +14,7 @@ public class CommandSetTests
 {
     private static CommandDefinition CreateOverload(string name = "test", int paramIndex = 0)
     {
-        var method = typeof(CommandSetTests).GetMethod(nameof(DummyMethod))!;
+        var method = typeof(CommandSetTests).GetMethod(nameof(DummyMethod), System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!;
         var parameters = method.GetParameters();
         var paramInfo = new[] {
             new CommandParameterInfo($"param{paramIndex}", new Mock<ICommandParameterParser>().Object, true, null, paramIndex)
@@ -35,7 +35,7 @@ public class CommandSetTests
         );
     }
 
-    public void DummyMethod() { }
+    private void DummyMethod() { }
 
     [Fact]
     public void Constructor_WithSingleOverload_Succeeds()
