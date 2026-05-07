@@ -23,6 +23,9 @@ public class DispatchResult
     /// <summary>All overloads of the command (for usage display).</summary>
     internal IReadOnlyList<CommandDefinition>? AllOverloads { get; set; }
 
+    /// <summary>The actual command name/path used as input (e.g., "msg" if an alias was used).</summary>
+    public string UsedCommandName { get; set; } = string.Empty;
+
     /// <summary>Parsed argument values for the command (if successfully matched).</summary>
     public object?[]? ParsedArguments { get; set; }
 

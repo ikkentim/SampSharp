@@ -20,12 +20,28 @@ internal class DefaultConsoleCommandMessageService : IConsoleCommandMessageServi
     }
 
     /// <inheritdoc />
-    public bool SendUsage(ConsoleCommandDispatchContext context, IReadOnlyList<CommandDefinition> overloads)
+    public bool SendUsage(ConsoleCommandDispatchContext context, IReadOnlyList<CommandDefinition> overloads, string usedCommandName = "")
     {
         if (overloads.Count == 1)
         {
             var overload = overloads[0];
-            var text = _formatter.FormatCommandUsage(overload.Name, overload.Group?.ToString(), overload.ParsedParameters, includeSlash: false);
+            // If usedCommandName is provided (e.g., an alias), use it as the complete path without the group
+            // Otherwise, use the canonical command name with its group
+            string commandName;
+            string? group;
+            
+            if (usedCommandName.Length > 0)
+            {
+                commandName = usedCommandName;
+                group = null; // Alias is the complete path
+            }
+            else
+            {
+                commandName = overload.Name;
+                group = overload.Group?.ToString();
+            }
+            
+            var text = _formatter.FormatCommandUsage(commandName, group, overload.ParsedParameters, includeSlash: false);
 
             context.SendMessage($"Usage: {text}");
         }
@@ -34,7 +50,23 @@ internal class DefaultConsoleCommandMessageService : IConsoleCommandMessageServi
             context.SendMessage("Usage:");
             foreach (var overload in overloads)
             {
-                var text = _formatter.FormatCommandUsage(overload.Name, overload.Group?.ToString(), overload.ParsedParameters, includeSlash: false);
+                // If usedCommandName is provided (e.g., an alias), use it as the complete path without the group
+                // Otherwise, use the canonical command name with its group
+                string commandName;
+                string? group;
+                
+                if (usedCommandName.Length > 0)
+                {
+                    commandName = usedCommandName;
+                    group = null; // Alias is the complete path
+                }
+                else
+                {
+                    commandName = overload.Name;
+                    group = overload.Group?.ToString();
+                }
+                
+                var text = _formatter.FormatCommandUsage(commandName, group, overload.ParsedParameters, includeSlash: false);
                 
                 context.SendMessage($"  {text}");
             }

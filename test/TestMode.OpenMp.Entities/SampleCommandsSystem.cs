@@ -184,6 +184,7 @@ public class SampleCommandsSystem : ISystem
 
     [CommandGroup("test")]
     [PlayerCommand("overloads")]
+    [Alias("abc")]
     public void OverloadsCommand(Player player, int a, int b, string c)
     {
         player.SendClientMessage($"Overload a:{a} b:{b} c:{c}");

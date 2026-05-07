@@ -18,7 +18,7 @@ public interface ICommandRegistry
     CommandDefinition? TryFindByPath(IEnumerable<string> pathParts, out int consumedParts);
 
     /// <summary>Gets all registered commands.</summary>
-    IReadOnlyList<CommandDefinition> GetAll();
+    IEnumerable<CommandDefinition> GetAll();
 
     /// <summary>Gets all commands in a specific group.</summary>
     IEnumerable<CommandDefinition> GetCommandsInGroup(CommandGroup group);

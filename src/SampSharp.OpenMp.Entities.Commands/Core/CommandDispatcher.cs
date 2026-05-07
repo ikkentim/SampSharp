@@ -41,7 +41,8 @@ internal class CommandDispatcher
             return DispatchResult.CreateNotFound();
         }
 
-
+        // Build the used command name from the consumed tokens
+        var usedCommandName = string.Join(" ", tokens.Take(consumedTokenCount));
 
         // Remaining tokens become the arguments
         var remainingTokens = tokens.Skip(consumedTokenCount).ToArray();
@@ -65,6 +66,7 @@ internal class CommandDispatcher
             var result = DispatchResult.CreateSuccess();
             result.CommandOverload = bestMatch.overload;
             result.AllOverloads = commandGroup.Overloads;
+            result.UsedCommandName = usedCommandName;
             result.ParsedArguments = bestMatch.parsedArguments;
             return result;
         }
@@ -73,6 +75,7 @@ internal class CommandDispatcher
         {
             var result = DispatchResult.CreateInvalidArguments();
             result.AllOverloads = commandGroup.Overloads;
+            result.UsedCommandName = usedCommandName;
             return result;
         }
     }

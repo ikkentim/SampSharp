@@ -68,7 +68,7 @@ internal class PlayerCommandService : IPlayerCommandService
                     var playerComponent = _entityManager.GetComponent<Player>(player);
                     if (playerComponent != null && dispatchResult.AllOverloads != null)
                     {
-                        _messageService.SendUsage(playerComponent, dispatchResult.AllOverloads);
+                        _messageService.SendUsage(playerComponent, dispatchResult.AllOverloads, dispatchResult.UsedCommandName);
                     }
                 }
                 catch (Exception ex)

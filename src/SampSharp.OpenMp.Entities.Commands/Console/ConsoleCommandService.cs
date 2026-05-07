@@ -54,7 +54,7 @@ internal class ConsoleCommandService : IConsoleCommandService
                 {
                     try
                     {
-                        _messageService.SendUsage(context, result.AllOverloads);
+                        _messageService.SendUsage(context, result.AllOverloads, result.UsedCommandName);
                     }
                     catch (Exception ex)
                     {

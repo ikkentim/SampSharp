@@ -2,111 +2,72 @@ namespace SampSharp.Entities.SAMP.Commands;
 
 internal class CommandRegistry : ICommandRegistry
 {
-    private readonly Dictionary<string, CommandSet> _aliasMap = new();
+    private readonly CommandTree _tree = new();
     private readonly List<CommandSet> _allCommands = [];
-    private readonly Dictionary<string, CommandSet> _commandsByName = new();
     private readonly Dictionary<string, List<CommandDefinition>> _overloadsByKey = new();
 
     public void Register(CommandDefinition overload)
     {
-        if (overload == null)
-        {
-            throw new ArgumentNullException(nameof(overload));
-        }
+        ArgumentNullException.ThrowIfNull(overload);
 
         var key = overload.FullName.ToLowerInvariant();
 
         // Add to overload list for this command
-        if (!_overloadsByKey.ContainsKey(key))
+        if (!_overloadsByKey.TryGetValue(key, out var overloads))
         {
-            _overloadsByKey[key] = new List<CommandDefinition>();
+            overloads = new List<CommandDefinition>();
+            _overloadsByKey[key] = overloads;
         }
-        _overloadsByKey[key].Add(overload);
+        overloads.Add(overload);
 
         // Create or update the command definition (wrapper)
-        if (!_commandsByName.ContainsKey(key))
+        var command = new CommandSet(overload.Name, overload.Group, _overloadsByKey[key].ToArray());
+
+        if (overloads.Count == 1)
         {
-            var command = new CommandSet(overload.Name, overload.Group, _overloadsByKey[key].ToArray());
-            _commandsByName[key] = command;
+            // First overload for this command - add to all collections
             _allCommands.Add(command);
         }
         else
         {
-            // Update existing command with new overload array
-            var command = new CommandSet(overload.Name, overload.Group, _overloadsByKey[key].ToArray());
-            var oldCmd = _commandsByName[key];
-            _commandsByName[key] = command;
-            var index = _allCommands.IndexOf(oldCmd);
-            if (index >= 0)
+            // Additional overload - update existing command in all collections
+            var existingIndex = _allCommands.FindIndex(c => c.Name == command.Name && c.Group == command.Group);
+            if (existingIndex >= 0)
             {
-                _allCommands[index] = command;
+                _allCommands[existingIndex] = command;
             }
         }
 
-        // Register aliases from this overload
+        // Always register in the tree (this updates the reference when adding new overloads)
+        _tree.Register(command);
+
+        // Register aliases for this specific overload
         foreach (var alias in overload.Aliases)
         {
-            var aliasKey = alias.Name.ToLowerInvariant();
-            if (!_aliasMap.ContainsKey(aliasKey))
-            {
-                _aliasMap[aliasKey] = _commandsByName[key];
-            }
+            // Create a command set containing only this overload for the alias
+            var aliasCommand = new CommandSet(overload.Name, overload.Group, [overload]);
+            _tree.RegisterAlias(alias.Name, aliasCommand);
         }
-    }
-
-    // Internal method to get command group with all overloads
-    internal CommandSet? GetCommandGroup(string nameOrAlias)
-    {
-        if (string.IsNullOrWhiteSpace(nameOrAlias))
-        {
-            return null;
-        }
-
-        var key = nameOrAlias.ToLowerInvariant();
-
-        // Try as full/short name first, otherwise as alias
-        if (_commandsByName.TryGetValue(key, out var command))
-        {
-            return command;
-        }
-
-        return _aliasMap.GetValueOrDefault(key);
     }
 
     // Internal method for dispatcher: get command group by path
     internal CommandSet? GetCommandGroupByPath(IEnumerable<string> pathParts, out int consumedParts)
     {
-        consumedParts = 0;
         if (pathParts == null)
         {
+            consumedParts = 0;
             return null;
         }
 
         var parts = pathParts.ToList();
         if (parts.Count == 0)
         {
+            consumedParts = 0;
             return null;
         }
 
-        // Build possible full names from longest to shortest match
-        for (var i = parts.Count; i > 0; i--)
-        {
-            var partial = string.Join(" ", parts.Take(i)).ToLowerInvariant();
-            if (_commandsByName.TryGetValue(partial, out var command))
-            {
-                consumedParts = i;
-                return command;
-            }
-
-            // Also check aliases
-            if (_aliasMap.TryGetValue(partial, out var aliased))
-            {
-                consumedParts = i;
-                return aliased;
-            }
-        }
-
-        return null;
+        // Use the command tree for efficient lookup
+        return _tree.FindCommand(parts, out consumedParts);
     }
 
     // Internal method to get all overloads for a command
@@ -117,21 +78,14 @@ internal class CommandRegistry : ICommandRegistry
             return null;
         }
 
-        var key = nameOrAlias.ToLowerInvariant();
-
-        // Try as full/short name first, otherwise as alias
-        if (_commandsByName.TryGetValue(key, out var command))
-        {
-            return command;
-        }
-
-        return _aliasMap.GetValueOrDefault(key);
+        // Look up as a single word in the tree (covers both commands and aliases)
+        return _tree.FindCommand([nameOrAlias.ToLowerInvariant()], out _);
     }
 
     CommandDefinition? ICommandRegistry.TryFind(string nameOrAlias)
     {
         var command = GetCommand(nameOrAlias);
-        return command != null ? command.Overloads.FirstOrDefault() : null;
+        return command?.Overloads.Count > 0 ? command.Overloads[0] : null;
     }
 
     CommandDefinition? ICommandRegistry.TryFindByPath(IEnumerable<string> pathParts)
@@ -153,30 +107,19 @@ internal class CommandRegistry : ICommandRegistry
             return null;
         }
 
-        // Build possible full names from longest to shortest match
-        for (var i = parts.Count; i > 0; i--)
+        // Use the tree for all lookups (commands, groups, and aliases)
+        var commandSet = _tree.FindCommand(parts, out consumedParts);
+        if (commandSet is not null && commandSet.Overloads.Count > 0)
         {
-            var partial = string.Join(" ", parts.Take(i)).ToLowerInvariant();
-            if (_commandsByName.TryGetValue(partial, out var command))
-            {
-                consumedParts = i;
-                return command.Overloads.FirstOrDefault();
-            }
-
-            // Also check aliases
-            if (_aliasMap.TryGetValue(partial, out var aliased))
-            {
-                consumedParts = i;
-                return aliased.Overloads.FirstOrDefault();
-            }
+            return commandSet.Overloads[0];
         }
 
         return null;
     }
 
-    IReadOnlyList<CommandDefinition> ICommandRegistry.GetAll()
+    IEnumerable<CommandDefinition> ICommandRegistry.GetAll()
     {
-        return _allCommands.SelectMany(c => c.Overloads).ToList().AsReadOnly();
+        return _allCommands.SelectMany(c => c.Overloads);
     }
 
     IEnumerable<CommandDefinition> ICommandRegistry.GetCommandsInGroup(CommandGroup group)
@@ -191,8 +134,7 @@ internal class CommandRegistry : ICommandRegistry
 
     internal void Clear()
     {
-        _commandsByName.Clear();
-        _aliasMap.Clear();
+        _tree.Clear();
         _allCommands.Clear();
         _overloadsByKey.Clear();
     }
