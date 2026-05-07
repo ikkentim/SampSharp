@@ -421,7 +421,7 @@ public class OpenMpEventHandlerSourceGenerator : IIncrementalGenerator
                 var parameters = x.methodSymbol!.Parameters.Select(parameter => ctxFactory.Create(parameter, x.method.Interface.Resolve(parameter.Type), MarshalDirection.UnmanagedToManaged))
                     .ToArray();
 
-                var returnValueContext = ctxFactory.Create(x.methodSymbol, x.method.Interface.Resolve(x.methodSymbol.ReturnType), MarshalDirection.ManagedToUnmanaged);
+                var returnValueContext = ctxFactory.Create(x.methodSymbol, x.method.Interface.Resolve(x.methodSymbol.ReturnType), MarshalDirection.UnmanagedToManaged);
                 if (returnValueContext.Shape != MarshallerShape.None && (x.methodSymbol.ReturnsByRef || x.methodSymbol.ReturnsByRefReadonly))
                 {
                     // marshalling return-by-ref not supported.

@@ -98,7 +98,7 @@ public abstract class MarshallingGeneratorBase(MarshalDirection direction)
         GenerateGuaranteedBlock(ref guaranteedStatements, ref initLocals, ref notify);
 
         // chain all pin statements
-        var invoke = AddReturnValueAssignmentToInvoke(ctx, GetInvocation(ctx));
+        var invoke = AddReturnValueAssignmentToInvoke(ctx, GetInvocation(ctx), direction);
         var pinnedBlock = ChainPins(steps, invoke);
 
         // wire up steps
@@ -139,8 +139,6 @@ public abstract class MarshallingGeneratorBase(MarshalDirection direction)
 
     private BlockSyntax GenerateInvocationWithMarshallingUnmanagedToManaged(MarshallingStubGenerationContext ctx)
     {
-        // NOTE: We support only unmarshalling options for unmanaged to managed marshalling. 
-        //
         // LocalsInit
         // Setup
         // try
@@ -163,31 +161,42 @@ public abstract class MarshallingGeneratorBase(MarshalDirection direction)
         //
         // return: retVal
 
-        var steps = CollectPhases(ctx);
+        var setup = Phase(ctx, MarshalPhase.Setup, MarshallingCodeGenDocumentation.COMMENT_SETUP);
+        var notify = Phase(ctx, MarshalPhase.NotifyForSuccessfulInvoke, MarshallingCodeGenDocumentation.COMMENT_NOTIFY);
+        var cleanupCaller = Phase(ctx, MarshalPhase.CleanupCallerAllocated, MarshallingCodeGenDocumentation.COMMENT_CLEANUP_CALLER);
 
-        if (steps.CleanupCallee.Count > 0)
+        var parameterContexts = ctx.Parameters.AsEnumerable();
+        var returnContext = new[] { ctx.ReturnValue };
+
+        var unmarshalCapture = Phase(parameterContexts, MarshalPhase.UnmarshalCapture, MarshallingCodeGenDocumentation.COMMENT_UNMARSHAL_CAPTURE);
+        var unmarshal = Phase(parameterContexts, MarshalPhase.Unmarshal, MarshallingCodeGenDocumentation.COMMENT_UNMARSHAL);
+        var guaranteedUnmarshal = Phase(parameterContexts, MarshalPhase.GuaranteedUnmarshal, MarshallingCodeGenDocumentation.COMMENT_GUARANTEED_UNMARSHAL);
+        var cleanupCallee = Phase(parameterContexts, MarshalPhase.CleanupCalleeAllocated, MarshallingCodeGenDocumentation.COMMENT_CLEANUP_CALLEE);
+        var marshal = Phase(returnContext, MarshalPhase.Marshal, MarshallingCodeGenDocumentation.COMMENT_MARSHAL);
+        var pinnedMarshal = Phase(returnContext, MarshalPhase.PinnedMarshal, MarshallingCodeGenDocumentation.COMMENT_PINNED_MARSHAL);
+
+        if (cleanupCallee.Count > 0)
         {
             throw new InvalidOperationException("cannot cleanup callee allocated");
         }
 
         var initLocals = List(GenerateInitLocals(ctx));
 
-        // if callee cleanup or guaranteed unmarshalling is required, we need to keep track of invocation success
-        var notify = steps.Notify;
-
-        var invoke = ExpressionStatement(AddReturnValueAssignmentToInvoke(ctx, GetInvocation(ctx)));
+        var invoke = ExpressionStatement(AddReturnValueAssignmentToInvoke(ctx, GetInvocation(ctx), direction));
 
         // wire up steps
         var statements = initLocals
-            .AddRange(steps.Setup)
+            .AddRange(setup)
             .AddRange(
                 TryCatch(
-                    tryBlock: steps.UnmarshalCapture
-                        .AddRange(steps.Unmarshal)
-                        .AddRange(steps.GuaranteedUnmarshal)
+                    tryBlock: unmarshalCapture
+                        .AddRange(unmarshal)
+                        .AddRange(guaranteedUnmarshal)
                         .Add(invoke)
                         .AddRange(notify),
-                    finallyBlock: steps.CleanupCaller));
+                    finallyBlock: cleanupCaller))
+            .AddRange(marshal)
+            .AddRange(pinnedMarshal);
 
         // add return statement if the method returns a value
         if (!ctx.Symbol.ReturnsVoid)
@@ -326,20 +335,14 @@ public abstract class MarshallingGeneratorBase(MarshalDirection direction)
                         Block(finallyBlock))));
     }
 
-    private static ExpressionSyntax AddReturnValueAssignmentToInvoke(MarshallingStubGenerationContext ctx, ExpressionSyntax invoke)
+    private static ExpressionSyntax AddReturnValueAssignmentToInvoke(MarshallingStubGenerationContext ctx, ExpressionSyntax invoke, MarshalDirection marshallingDirection)
     {
         if (!ctx.Symbol.ReturnsVoid)
         {
-            string assignedLocal;
-            if (ctx.ReturnValue.Direction == MarshalDirection.ManagedToUnmanaged)
-            {
-                assignedLocal = ctx.ReturnValue.Generator.UsesNativeIdentifier ? ctx.ReturnValue.GetNativeId() : ctx.ReturnValue.GetManagedId();
-            }
-            else
-            {
-                // UnmanagedToManaged
-                assignedLocal = ctx.ReturnValue.Generator.UsesNativeIdentifier ? ctx.ReturnValue.GetManagedId() : ctx.ReturnValue.GetNativeId();
-            }
+            var assignedLocal = marshallingDirection == MarshalDirection.ManagedToUnmanaged &&
+                                ctx.ReturnValue.Generator.UsesNativeIdentifier
+                ? ctx.ReturnValue.GetNativeId()
+                : ctx.ReturnValue.GetManagedId();
 
             invoke = 
                 AssignmentExpression(
@@ -369,11 +372,9 @@ public abstract class MarshallingGeneratorBase(MarshalDirection direction)
 
     private static ArgumentSyntax GetArgumentForPInvokeParameter(IdentifierStubContext ctx)
     {
-        var arg = ctx.GetManagedId();
-        if (ctx.Generator.UsesNativeIdentifier)
-        {
-            arg = ctx.GetNativeId();
-        }
+        var arg = ctx.Direction == MarshalDirection.ManagedToUnmanaged && ctx.Generator.UsesNativeIdentifier
+            ? ctx.GetNativeId()
+            : ctx.GetManagedId();
         
         ExpressionSyntax expr = IdentifierName(arg);
 
@@ -391,9 +392,15 @@ public abstract class MarshallingGeneratorBase(MarshalDirection direction)
         MarshalPhase phase,
         string? comment)
     {
-        var elements = ctx.Parameters
-            .SelectMany(x => x.Generator.Generate(phase, x))
-            .Concat(ctx.ReturnValue.Generator.Generate(phase, ctx.ReturnValue));
+        return Phase(ctx.Parameters.Concat([ctx.ReturnValue]), phase, comment);
+    }
+
+    private static SyntaxList<StatementSyntax> Phase(
+        IEnumerable<IdentifierStubContext> contexts,
+        MarshalPhase phase,
+        string? comment)
+    {
+        var elements = contexts.SelectMany(x => x.Generator.Generate(phase, x));
 
         var result = List(elements);
 
