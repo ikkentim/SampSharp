@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Moq;
 using Shouldly;
@@ -21,7 +20,7 @@ public class CommandRegistryTests
         var method = typeof(CommandRegistryTests).GetMethod(nameof(DummyMethod))!;
         var parameters = method.GetParameters();
         var mockInvoker = new Mock<CommandInvoker>();
-        
+
         return new CommandDefinition(
             name,
             group,
@@ -36,16 +35,16 @@ public class CommandRegistryTests
         );
     }
 
-    public void DummyMethod() { }
+    internal void DummyMethod() { }
 
     [Fact]
     public void Register_SingleCommand_StoresCorrectly()
     {
         var registry = new CommandRegistry();
         var command = CreateCommand("test");
-        
+
         registry.Register(command);
-        
+
         var found = ((ICommandRegistry)registry).TryFind("test");
         found.ShouldNotBeNull();
         found.Name.ShouldBe("test");
@@ -56,9 +55,9 @@ public class CommandRegistryTests
     {
         var registry = new CommandRegistry();
         var command = CreateCommand("give", new CommandGroup("admin", "money"));
-        
+
         registry.Register(command);
-        
+
         var found = ((ICommandRegistry)registry).TryFindByPath(new[] { "admin", "money", "give" });
         found.ShouldNotBeNull();
         found.FullName.ShouldBe("admin money give");
@@ -70,10 +69,10 @@ public class CommandRegistryTests
         var registry = new CommandRegistry();
         var command1 = CreateCommand("test");
         var command2 = CreateCommand("test");
-        
+
         registry.Register(command1);
         registry.Register(command2);
-        
+
         var found = ((ICommandRegistry)registry).TryFind("test");
         found.ShouldNotBeNull();
     }
@@ -84,9 +83,9 @@ public class CommandRegistryTests
         var registry = new CommandRegistry();
         var aliases = new[] { new CommandAlias("pm") };
         var command = CreateCommand("message", aliases: aliases);
-        
+
         registry.Register(command);
-        
+
         var found = ((ICommandRegistry)registry).TryFind("pm");
         found.ShouldNotBeNull();
     }
@@ -97,9 +96,9 @@ public class CommandRegistryTests
         var registry = new CommandRegistry();
         var aliases = new[] { new CommandAlias("pm"), new CommandAlias("msg") };
         var command = CreateCommand("message", aliases: aliases);
-        
+
         registry.Register(command);
-        
+
         ((ICommandRegistry)registry).TryFind("pm").ShouldNotBeNull();
         ((ICommandRegistry)registry).TryFind("msg").ShouldNotBeNull();
     }
@@ -118,7 +117,7 @@ public class CommandRegistryTests
         var registry = new CommandRegistry();
         var command = CreateCommand("Test");
         registry.Register(command);
-        
+
         ((ICommandRegistry)registry).TryFind("test").ShouldNotBeNull();
         ((ICommandRegistry)registry).TryFind("TEST").ShouldNotBeNull();
         ((ICommandRegistry)registry).TryFind("Test").ShouldNotBeNull();
@@ -130,7 +129,7 @@ public class CommandRegistryTests
         var registry = new CommandRegistry();
         var command = CreateCommand("ban", new CommandGroup("admin", "player"));
         registry.Register(command);
-        
+
         var found = ((ICommandRegistry)registry).TryFindByPath(new[] { "admin", "player", "ban" });
         found.ShouldNotBeNull();
         found.FullName.ShouldBe("admin player ban");
@@ -142,7 +141,7 @@ public class CommandRegistryTests
         var registry = new CommandRegistry();
         var command = CreateCommand("test", new CommandGroup("admin", "money", "give"));
         registry.Register(command);
-        
+
         var found = ((ICommandRegistry)registry).TryFindByPath(new[] { "admin", "money" }, out var consumed);
         // Should find intermediate group if it exists as a node
         consumed.ShouldBe(2);
@@ -171,11 +170,11 @@ public class CommandRegistryTests
         var cmd1 = CreateCommand("test1");
         var cmd2 = CreateCommand("test2");
         var cmd3 = CreateCommand("test3");
-        
+
         registry.Register(cmd1);
         registry.Register(cmd2);
         registry.Register(cmd3);
-        
+
         var all = ((ICommandRegistry)registry).GetAll().ToList();
         all.Count.ShouldBe(3);
     }
@@ -187,11 +186,11 @@ public class CommandRegistryTests
         var cmd1 = CreateCommand("test");
         var cmd2 = CreateCommand("test");
         var cmd3 = CreateCommand("test");
-        
+
         registry.Register(cmd1);
         registry.Register(cmd2);
         registry.Register(cmd3);
-        
+
         var all = ((ICommandRegistry)registry).GetAll().ToList();
         all.Count.ShouldBe(3);
     }
@@ -204,11 +203,11 @@ public class CommandRegistryTests
         var cmd1 = CreateCommand("kick", group);
         var cmd2 = CreateCommand("ban", group);
         var cmd3 = CreateCommand("test");
-        
+
         registry.Register(cmd1);
         registry.Register(cmd2);
         registry.Register(cmd3);
-        
+
         var inGroup = ((ICommandRegistry)registry).GetCommandsInGroup(group).ToList();
         inGroup.Count.ShouldBe(2);
     }
@@ -218,7 +217,7 @@ public class CommandRegistryTests
     {
         var registry = new CommandRegistry();
         var group = new CommandGroup("admin");
-        
+
         var inGroup = ((ICommandRegistry)registry).GetCommandsInGroup(group).ToList();
         inGroup.ShouldBeEmpty();
     }
@@ -229,15 +228,15 @@ public class CommandRegistryTests
         var registry = new CommandRegistry();
         var group1 = new CommandGroup("admin");
         var group2 = new CommandGroup("player");
-        
+
         var cmd1 = CreateCommand("kick", group1);
         var cmd2 = CreateCommand("ban", group1);
         var cmd3 = CreateCommand("profile", group2);
-        
+
         registry.Register(cmd1);
         registry.Register(cmd2);
         registry.Register(cmd3);
-        
+
         var groups = ((ICommandRegistry)registry).GetGroups().ToList();
         groups.Count.ShouldBe(2);
         groups.ShouldContain(group1);
@@ -250,7 +249,7 @@ public class CommandRegistryTests
         var registry = new CommandRegistry();
         var cmd1 = CreateCommand("test");
         registry.Register(cmd1);
-        
+
         var groups = ((ICommandRegistry)registry).GetGroups().ToList();
         groups.ShouldBeEmpty();
     }
@@ -261,10 +260,10 @@ public class CommandRegistryTests
         var registry = new CommandRegistry();
         var cmd1 = CreateCommand("test");
         var cmd2 = CreateCommand("test");
-        
+
         registry.Register(cmd1);
         registry.Register(cmd2);
-        
+
         var all = ((ICommandRegistry)registry).GetAll().ToList();
         all.Count.ShouldBe(2);
     }
@@ -282,7 +281,7 @@ public class CommandRegistryTests
         var registry = new CommandRegistry();
         var command = CreateCommand("give", new CommandGroup("admin", "money"));
         registry.Register(command);
-        
+
         var found = registry.GetCommandGroupByPath(new[] { "admin", "money", "give" }, out var consumed);
         found.ShouldNotBeNull();
         consumed.ShouldBe(3);
@@ -302,7 +301,7 @@ public class CommandRegistryTests
         var registry = new CommandRegistry();
         var cmd = CreateCommand("test");
         registry.Register(cmd);
-        
+
         var found = registry.GetCommand("test");
         found.ShouldNotBeNull();
     }

@@ -135,7 +135,7 @@ public class CommandAliasTests
     {
         var alias1 = new CommandAlias("pm");
         var alias2 = new CommandAlias("pm");
-        
+
         var dict = new Dictionary<CommandAlias, string> { { alias1, "value1" } };
         dict[alias2].ShouldBe("value1");
     }
@@ -146,7 +146,7 @@ public class CommandAliasTests
         var alias1 = new CommandAlias("pm");
         var alias2 = new CommandAlias("pm");
         var alias3 = new CommandAlias("msg");
-        
+
         var set = new HashSet<CommandAlias> { alias1, alias2, alias3 };
         set.Count.ShouldBe(2);
     }

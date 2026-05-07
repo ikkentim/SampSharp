@@ -5,8 +5,6 @@ using Shouldly;
 using Xunit;
 using SampSharp.Entities.SAMP.Commands;
 
-#nullable enable
-
 namespace SampSharp.OpenMp.Entities.Commands.UnitTests.Core;
 
 /// <summary>
@@ -35,7 +33,7 @@ public class CommandDefinitionTests
         var parameters = method.GetParameters();
         var parsedParams = CreateParamInfo(paramCount);
         var mockInvoker = new Mock<CommandInvoker>();
-        
+
         return new CommandDefinition(
             name,
             group,
@@ -50,13 +48,13 @@ public class CommandDefinitionTests
         );
     }
 
-    public void DummyMethod() { }
+    internal void DummyMethod() { }
 
     [Fact]
     public void Constructor_WithValidParameters_InitializesCorrectly()
     {
         var def = CreateDefinition("give", new CommandGroup("admin", "money"), 2);
-        
+
         def.Name.ShouldBe("give");
         def.Group.ShouldBe(new CommandGroup("admin", "money"));
         def.ParsedParameters.Length.ShouldBe(2);
@@ -67,7 +65,7 @@ public class CommandDefinitionTests
     {
         var method = typeof(CommandDefinitionTests).GetMethod(nameof(DummyMethod))!;
         var mockInvoker = new Mock<CommandInvoker>();
-        
+
         Should.Throw<ArgumentException>(() => new CommandDefinition(
             null!,
             null,
@@ -87,7 +85,7 @@ public class CommandDefinitionTests
     {
         var method = typeof(CommandDefinitionTests).GetMethod(nameof(DummyMethod))!;
         var mockInvoker = new Mock<CommandInvoker>();
-        
+
         Should.Throw<ArgumentException>(() => new CommandDefinition(
             "",
             null,
@@ -106,7 +104,7 @@ public class CommandDefinitionTests
     public void Constructor_WithNullMethod_ThrowsArgumentNullException()
     {
         var mockInvoker = new Mock<CommandInvoker>();
-        
+
         Should.Throw<ArgumentNullException>(() => new CommandDefinition(
             "test",
             null,
@@ -147,7 +145,7 @@ public class CommandDefinitionTests
     {
         var aliases = new[] { new CommandAlias("pm"), new CommandAlias("msg") };
         var def = CreateDefinition(aliases: aliases);
-        
+
         def.Aliases.Count.ShouldBe(2);
         def.Aliases.ShouldContain(new CommandAlias("pm"));
         def.Aliases.ShouldContain(new CommandAlias("msg"));
@@ -167,7 +165,7 @@ public class CommandDefinitionTests
         var method = typeof(CommandDefinitionTests).GetMethod(nameof(DummyMethod))!;
         var parameters = method.GetParameters();
         var mockInvoker = new Mock<CommandInvoker>();
-        
+
         var def = new CommandDefinition(
             "test",
             null,
@@ -180,7 +178,7 @@ public class CommandDefinitionTests
             Array.Empty<CommandAlias>(),
             tags
         );
-        
+
         def.Tags.Count.ShouldBe(2);
         def.Tags["category"].ShouldBe("admin");
         def.Tags["version"].ShouldBe("1.0");
@@ -191,7 +189,7 @@ public class CommandDefinitionTests
     {
         var method = typeof(CommandDefinitionTests).GetMethod(nameof(DummyMethod))!;
         var mockInvoker = new Mock<CommandInvoker>();
-        
+
         var def = new CommandDefinition(
             "test",
             null,
@@ -204,7 +202,7 @@ public class CommandDefinitionTests
             Array.Empty<CommandAlias>(),
             Array.Empty<CommandTag>()
         );
-        
+
         def.PrefixParameterCount.ShouldBe(1);
     }
 

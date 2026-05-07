@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using Shouldly;
 using Xunit;
 using SampSharp.Entities.SAMP.Commands;

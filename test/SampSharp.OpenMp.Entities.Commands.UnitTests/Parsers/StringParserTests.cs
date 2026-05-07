@@ -20,7 +20,7 @@ public class StringParserTests
     {
         var input = StringSpan.For("hello");
         var result = _parser.TryParse(_services.Object, ref input, out var parsed);
-        
+
         result.ShouldBeTrue();
         parsed.ShouldBe("hello");
         input.Length.ShouldBe(0);
@@ -31,7 +31,7 @@ public class StringParserTests
     {
         var input = StringSpan.For("hello world test");
         var result = _parser.TryParse(_services.Object, ref input, out var parsed);
-        
+
         result.ShouldBeTrue();
         parsed.ShouldBe("hello world test");
         input.Length.ShouldBe(0);
@@ -42,7 +42,7 @@ public class StringParserTests
     {
         var input = StringSpan.For("   hello world");
         var result = _parser.TryParse(_services.Object, ref input, out var parsed);
-        
+
         result.ShouldBeTrue();
         parsed.ShouldBe("hello world");
         input.Length.ShouldBe(0);
@@ -53,7 +53,7 @@ public class StringParserTests
     {
         var input = StringSpan.For("");
         var result = _parser.TryParse(_services.Object, ref input, out var parsed);
-        
+
         result.ShouldBeFalse();
         parsed.ShouldBeNull();
     }
@@ -63,7 +63,7 @@ public class StringParserTests
     {
         var input = StringSpan.For("   \t  ");
         var result = _parser.TryParse(_services.Object, ref input, out var parsed);
-        
+
         result.ShouldBeFalse();
     }
 
@@ -72,7 +72,7 @@ public class StringParserTests
     {
         var input = StringSpan.For("hello@world!#test");
         var result = _parser.TryParse(_services.Object, ref input, out var parsed);
-        
+
         result.ShouldBeTrue();
         parsed.ShouldBe("hello@world!#test");
     }
@@ -82,7 +82,7 @@ public class StringParserTests
     {
         var input = StringSpan.For("123 456 789");
         var result = _parser.TryParse(_services.Object, ref input, out var parsed);
-        
+
         result.ShouldBeTrue();
         parsed.ShouldBe("123 456 789");
     }
@@ -92,7 +92,7 @@ public class StringParserTests
     {
         var input = StringSpan.For("a");
         var result = _parser.TryParse(_services.Object, ref input, out var parsed);
-        
+
         result.ShouldBeTrue();
         parsed.ShouldBe("a");
     }
@@ -103,7 +103,7 @@ public class StringParserTests
         var longText = string.Concat(Enumerable.Range(0, 1000).Select(i => $"word{i} "));
         var input = StringSpan.For(longText);
         var result = _parser.TryParse(_services.Object, ref input, out var parsed);
-        
+
         result.ShouldBeTrue();
         parsed.ShouldBe(longText);
     }
@@ -113,7 +113,7 @@ public class StringParserTests
     {
         var input = StringSpan.For("hello world   ");
         var result = _parser.TryParse(_services.Object, ref input, out var parsed);
-        
+
         result.ShouldBeTrue();
         parsed.ShouldBe("hello world   ");
     }
@@ -123,7 +123,7 @@ public class StringParserTests
     {
         var input = StringSpan.For("  a   b  c  ");
         var result = _parser.TryParse(_services.Object, ref input, out var parsed);
-        
+
         result.ShouldBeTrue();
         // After TrimStart, leading spaces removed, then all remaining consumed
         parsed.ShouldBe("a   b  c  ");

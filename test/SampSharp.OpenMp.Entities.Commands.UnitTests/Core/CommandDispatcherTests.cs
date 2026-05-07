@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using Moq;
 using Shouldly;
 using Xunit;
@@ -20,7 +18,7 @@ public class CommandDispatcherTests
     {
         var method = typeof(CommandDispatcherTests).GetMethod(nameof(DummyMethod))!;
         var parameters = method.GetParameters();
-        
+
         var parsedParams = new CommandParameterInfo[paramCount];
         for (int i = 0; i < paramCount; i++)
         {
@@ -32,12 +30,12 @@ public class CommandDispatcherTests
                     value = $"arg{i}";
                     return span.Length > 0;
                 });
-            
+
             parsedParams[i] = new CommandParameterInfo($"param{i}", mockParser.Object, true, null, i);
         }
-        
+
         var mockInvoker = new Mock<CommandInvoker>();
-        
+
         return new CommandDefinition(
             name,
             group,
@@ -52,7 +50,7 @@ public class CommandDispatcherTests
         );
     }
 
-    public void DummyMethod() { }
+    internal void DummyMethod() { }
 
     private CommandRegistry CreateRegistry(params CommandDefinition[] commands)
     {
@@ -70,9 +68,9 @@ public class CommandDispatcherTests
         var registry = CreateRegistry(CreateCommand("test"));
         var dispatcher = new CommandDispatcher();
         var services = new Mock<IServiceProvider>().Object;
-        
+
         var result = dispatcher.Dispatch(registry, services, "test", Array.Empty<object>());
-        
+
         result.Response.ShouldBe(DispatchResponse.Success);
         result.CommandOverload.ShouldNotBeNull();
     }
@@ -83,9 +81,9 @@ public class CommandDispatcherTests
         var registry = CreateRegistry(CreateCommand("test"));
         var dispatcher = new CommandDispatcher();
         var services = new Mock<IServiceProvider>().Object;
-        
+
         var result = dispatcher.Dispatch(registry, services, "unknown", Array.Empty<object>());
-        
+
         result.Response.ShouldBe(DispatchResponse.CommandNotFound);
     }
 
@@ -95,9 +93,9 @@ public class CommandDispatcherTests
         var registry = CreateRegistry(CreateCommand("test"));
         var dispatcher = new CommandDispatcher();
         var services = new Mock<IServiceProvider>().Object;
-        
+
         var result = dispatcher.Dispatch(registry, services, "", Array.Empty<object>());
-        
+
         result.Response.ShouldBe(DispatchResponse.CommandNotFound);
     }
 
@@ -107,9 +105,9 @@ public class CommandDispatcherTests
         var registry = CreateRegistry(CreateCommand("test"));
         var dispatcher = new CommandDispatcher();
         var services = new Mock<IServiceProvider>().Object;
-        
+
         var result = dispatcher.Dispatch(registry, services, "   \t  ", Array.Empty<object>());
-        
+
         result.Response.ShouldBe(DispatchResponse.CommandNotFound);
     }
 
@@ -119,10 +117,10 @@ public class CommandDispatcherTests
         var registry = CreateRegistry(CreateCommand("Test"));
         var dispatcher = new CommandDispatcher();
         var services = new Mock<IServiceProvider>().Object;
-        
+
         var result = dispatcher.Dispatch(registry, services, "test", Array.Empty<object>());
         result.Response.ShouldBe(DispatchResponse.Success);
-        
+
         var result2 = dispatcher.Dispatch(registry, services, "TEST", Array.Empty<object>());
         result2.Response.ShouldBe(DispatchResponse.Success);
     }
@@ -134,9 +132,9 @@ public class CommandDispatcherTests
         var registry = CreateRegistry(cmd);
         var dispatcher = new CommandDispatcher();
         var services = new Mock<IServiceProvider>().Object;
-        
+
         var result = dispatcher.Dispatch(registry, services, "admin money give", Array.Empty<object>());
-        
+
         result.Response.ShouldBe(DispatchResponse.Success);
         result.UsedCommandName.ShouldBe("admin money give");
     }
@@ -148,11 +146,11 @@ public class CommandDispatcherTests
         var registry = CreateRegistry(cmd);
         var dispatcher = new CommandDispatcher();
         var services = new Mock<IServiceProvider>().Object;
-        
+
         var result = dispatcher.Dispatch(registry, services, "test arg1 arg2", Array.Empty<object>());
-        
+
         result.Response.ShouldBe(DispatchResponse.Success);
-        result.ParsedArguments.Length.ShouldBe(2);
+        result.ParsedArguments.ShouldNotBeNull().Length.ShouldBe(2);
     }
 
     [Fact]
@@ -163,9 +161,9 @@ public class CommandDispatcherTests
         var registry = CreateRegistry(cmd1, cmd2);
         var dispatcher = new CommandDispatcher();
         var services = new Mock<IServiceProvider>().Object;
-        
+
         var result = dispatcher.Dispatch(registry, services, "test arg1", Array.Empty<object>());
-        
+
         result.Response.ShouldBe(DispatchResponse.Success);
     }
 
@@ -175,9 +173,9 @@ public class CommandDispatcherTests
         var registry = CreateRegistry(CreateCommand("test"));
         var dispatcher = new CommandDispatcher();
         var services = new Mock<IServiceProvider>().Object;
-        
+
         var result = dispatcher.Dispatch(registry, services, "   test", Array.Empty<object>());
-        
+
         result.Response.ShouldBe(DispatchResponse.Success);
     }
 
@@ -187,9 +185,9 @@ public class CommandDispatcherTests
         var registry = CreateRegistry(CreateCommand("test"));
         var dispatcher = new CommandDispatcher();
         var services = new Mock<IServiceProvider>().Object;
-        
+
         var result = dispatcher.Dispatch(registry, services, "test   ", Array.Empty<object>());
-        
+
         result.Response.ShouldBe(DispatchResponse.Success);
     }
 
@@ -198,7 +196,7 @@ public class CommandDispatcherTests
     {
         var dispatcher = new CommandDispatcher();
         var services = new Mock<IServiceProvider>().Object;
-        
+
         Should.Throw<ArgumentNullException>(() => dispatcher.Dispatch(null!, services, "test", Array.Empty<object>()));
     }
 
@@ -207,7 +205,7 @@ public class CommandDispatcherTests
     {
         var registry = CreateRegistry(CreateCommand("test"));
         var dispatcher = new CommandDispatcher();
-        
+
         Should.Throw<ArgumentNullException>(() => dispatcher.Dispatch(registry, null!, "test", Array.Empty<object>()));
     }
 
@@ -218,9 +216,9 @@ public class CommandDispatcherTests
         var registry = CreateRegistry(cmd);
         var dispatcher = new CommandDispatcher();
         var services = new Mock<IServiceProvider>().Object;
-        
+
         var result = dispatcher.Dispatch(registry, services, "admin   test", Array.Empty<object>());
-        
+
         result.Response.ShouldBe(DispatchResponse.Success);
     }
 
@@ -231,9 +229,9 @@ public class CommandDispatcherTests
         var registry = CreateRegistry(cmd);
         var dispatcher = new CommandDispatcher();
         var services = new Mock<IServiceProvider>().Object;
-        
+
         var result = dispatcher.Dispatch(registry, services, "mycommand", Array.Empty<object>());
-        
+
         result.UsedCommandName.ShouldBe("mycommand");
     }
 
@@ -244,9 +242,9 @@ public class CommandDispatcherTests
         var registry = CreateRegistry(cmd);
         var dispatcher = new CommandDispatcher();
         var services = new Mock<IServiceProvider>().Object;
-        
+
         var result = dispatcher.Dispatch(registry, services, "admin money give", Array.Empty<object>());
-        
+
         result.UsedCommandName.ShouldBe("admin money give");
     }
 

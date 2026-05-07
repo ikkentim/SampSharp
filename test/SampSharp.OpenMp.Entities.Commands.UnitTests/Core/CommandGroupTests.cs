@@ -144,7 +144,7 @@ public class CommandGroupTests
         var group1 = new CommandGroup("admin", "money");
         var group2 = new CommandGroup("give");
         var stacked = group1.Stack(group2);
-        
+
         stacked.Parts.Count.ShouldBe(3);
         stacked.Parts.ElementAt(0).ShouldBe("admin");
         stacked.Parts.ElementAt(1).ShouldBe("money");
@@ -157,7 +157,7 @@ public class CommandGroupTests
         var group1 = new CommandGroup("admin");
         var group2 = new CommandGroup("money", "give");
         var stacked = group1.Stack(group2);
-        
+
         stacked.Parts.ShouldHaveCount(3);
         stacked.FullName.ShouldBe("admin money give");
     }
@@ -167,7 +167,7 @@ public class CommandGroupTests
     {
         var group = new CommandGroup("admin", "money");
         var stacked = group.Stack("give");
-        
+
         stacked.Parts.Count.ShouldBe(3);
         stacked.Parts.ElementAt(2).ShouldBe("give");
     }

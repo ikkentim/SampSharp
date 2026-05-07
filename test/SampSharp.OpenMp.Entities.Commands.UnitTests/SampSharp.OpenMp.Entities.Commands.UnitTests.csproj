@@ -5,6 +5,7 @@
     <OutputType>Exe</OutputType>
     <IsTestProject>true</IsTestProject>
     <LangVersion>latest</LangVersion>
+	<Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>

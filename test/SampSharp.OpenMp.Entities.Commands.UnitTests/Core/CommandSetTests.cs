@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Moq;
 using Shouldly;
 using Xunit;
@@ -21,7 +20,7 @@ public class CommandSetTests
             new CommandParameterInfo($"param{paramIndex}", new Mock<ICommandParameterParser>().Object, true, null, paramIndex)
         };
         var mockInvoker = new Mock<CommandInvoker>();
-        
+
         return new CommandDefinition(
             name,
             null,
@@ -36,14 +35,14 @@ public class CommandSetTests
         );
     }
 
-    public void DummyMethod() { }
+    internal void DummyMethod() { }
 
     [Fact]
     public void Constructor_WithSingleOverload_Succeeds()
     {
         var overload = CreateOverload("test");
         var command = new CommandSet("test", null, new[] { overload });
-        
+
         command.Name.ShouldBe("test");
         command.Group.ShouldBeNull();
         command.Overloads.Count.ShouldBe(1);
@@ -55,7 +54,7 @@ public class CommandSetTests
         var overload1 = CreateOverload("test", 0);
         var overload2 = CreateOverload("test", 1);
         var command = new CommandSet("test", null, new[] { overload1, overload2 });
-        
+
         command.Overloads.Count.ShouldBe(2);
         command.Overloads.ShouldContain(overload1);
         command.Overloads.ShouldContain(overload2);
@@ -67,7 +66,7 @@ public class CommandSetTests
         var overload = CreateOverload("give");
         var group = new CommandGroup("admin", "money");
         var command = new CommandSet("give", group, new[] { overload });
-        
+
         command.Group.ShouldBe(group);
     }
 
@@ -109,7 +108,7 @@ public class CommandSetTests
     {
         var overload = CreateOverload("test");
         var command = new CommandSet("test", null, new[] { overload });
-        
+
         command.FullName.ShouldBe("test");
     }
 
@@ -119,7 +118,7 @@ public class CommandSetTests
         var overload = CreateOverload("give");
         var group = new CommandGroup("admin", "money");
         var command = new CommandSet("give", group, new[] { overload });
-        
+
         command.FullName.ShouldBe("admin money give");
     }
 
@@ -128,7 +127,7 @@ public class CommandSetTests
     {
         var overload = CreateOverload();
         var command = new CommandSet("test", null, new[] { overload });
-        
+
         var overloads = command.Overloads;
         overloads.ShouldBeAssignableTo<IReadOnlyList<CommandDefinition>>();
     }
@@ -138,7 +137,7 @@ public class CommandSetTests
     {
         var overload = CreateOverload();
         var command = new CommandSet("test", null, new[] { overload });
-        
+
         // IReadOnlyList doesn't have Add method, so this test validates read-only behavior
         // The collection itself is immutable
         command.Overloads.Count.ShouldBe(1);
