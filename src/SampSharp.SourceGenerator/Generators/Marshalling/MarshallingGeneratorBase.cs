@@ -172,9 +172,9 @@ public abstract class MarshallingGeneratorBase(MarshalDirection direction)
         var unmarshal = Phase(parameterContexts, MarshalPhase.Unmarshal, MarshallingCodeGenDocumentation.COMMENT_UNMARSHAL);
         var guaranteedUnmarshal = Phase(parameterContexts, MarshalPhase.GuaranteedUnmarshal, MarshallingCodeGenDocumentation.COMMENT_GUARANTEED_UNMARSHAL);
         var cleanupCallee = Phase(parameterContexts, MarshalPhase.CleanupCalleeAllocated, MarshallingCodeGenDocumentation.COMMENT_CLEANUP_CALLEE);
-        var marshalContexts = parameterContexts.Concat(returnContext);
-        var marshal = Phase(marshalContexts, MarshalPhase.Marshal, MarshallingCodeGenDocumentation.COMMENT_MARSHAL);
-        var pinnedMarshal = Phase(marshalContexts, MarshalPhase.PinnedMarshal, MarshallingCodeGenDocumentation.COMMENT_PINNED_MARSHAL);
+        var parameterAndReturnContexts = parameterContexts.Concat(returnContext);
+        var marshal = Phase(parameterAndReturnContexts, MarshalPhase.Marshal, MarshallingCodeGenDocumentation.COMMENT_MARSHAL);
+        var pinnedMarshal = Phase(parameterAndReturnContexts, MarshalPhase.PinnedMarshal, MarshallingCodeGenDocumentation.COMMENT_PINNED_MARSHAL);
 
         if (cleanupCallee.Count > 0)
         {
