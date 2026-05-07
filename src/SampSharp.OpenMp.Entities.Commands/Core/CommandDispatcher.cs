@@ -52,7 +52,7 @@ internal class CommandDispatcher
         var bestMatch = FindBestOverload(commandGroup, remainingArgs, services);
 
         // Check permission if a permission checker is provided
-        if (bestMatch.overload is not null && 
+        if (bestMatch.overload is not null &&
             permissionChecker is not null &&
             prefixArgs is [Player player, ..] &&
             !permissionChecker.HasPermission(player, bestMatch.overload))
@@ -130,9 +130,9 @@ internal class CommandDispatcher
         var requiredCount = parameters.Count(p => p.IsRequired);
 
         // Try to parse all parameters
-        var remaining = remainingArgs;
+        var remaining = StringSpan.For(remainingArgs);
         var parsedValues = new List<object?>();
-        var initialRemaining = remaining;
+        var initialRemaining = remainingArgs.Length;
 
         foreach (var param in parameters)
         {
@@ -144,7 +144,7 @@ internal class CommandDispatcher
                 }
                 else if (param.IsRequired)
                 {
-                    return (false,  null, initialRemaining.Length);
+                    return (false, null, initialRemaining);
                 }
                 else
                 {
@@ -158,7 +158,7 @@ internal class CommandDispatcher
                 // Parser threw exception - treat as parse failure
                 if (param.IsRequired)
                 {
-                    return (false, null, initialRemaining.Length);
+                    return (false, null, initialRemaining);
                 }
 
                 parsedValues.Add(param.DefaultValue);
@@ -167,7 +167,7 @@ internal class CommandDispatcher
 
         // Check if we have required minimum arguments before parsing
         var requiredValid = true;
-        var testRemaining = remainingArgs;
+        var testRemaining = StringSpan.For(remainingArgs);
         var parsedRequiredCount = 0;
 
         foreach (var param in parameters.Where(p => p.IsRequired))

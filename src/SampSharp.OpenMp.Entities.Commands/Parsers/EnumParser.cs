@@ -20,7 +20,7 @@ public class EnumParser : ICommandParameterParser
     }
 
     /// <inheritdoc />
-    public bool TryParse(IServiceProvider services, ref string inputText, out object? result)
+    public bool TryParse(IServiceProvider services, ref StringSpan inputText, out object? result)
     {
         if (!_wordParser.TryParse(services, ref inputText, out var sub) || sub is not string word)
         {

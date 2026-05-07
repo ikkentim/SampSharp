@@ -29,7 +29,7 @@ internal class DefaultConsoleCommandMessageService : IConsoleCommandMessageServi
             // Otherwise, use the canonical command name with its group
             string commandName;
             string? group;
-            
+
             if (usedCommandName.Length > 0)
             {
                 commandName = usedCommandName;
@@ -40,7 +40,7 @@ internal class DefaultConsoleCommandMessageService : IConsoleCommandMessageServi
                 commandName = overload.Name;
                 group = overload.Group?.ToString();
             }
-            
+
             var text = _formatter.FormatCommandUsage(commandName, group, overload.ParsedParameters, includeSlash: false);
 
             context.SendMessage($"Usage: {text}");
@@ -54,7 +54,7 @@ internal class DefaultConsoleCommandMessageService : IConsoleCommandMessageServi
                 // Otherwise, use the canonical command name with its group
                 string commandName;
                 string? group;
-                
+
                 if (usedCommandName.Length > 0)
                 {
                     commandName = usedCommandName;
@@ -65,9 +65,9 @@ internal class DefaultConsoleCommandMessageService : IConsoleCommandMessageServi
                     commandName = overload.Name;
                     group = overload.Group?.ToString();
                 }
-                
+
                 var text = _formatter.FormatCommandUsage(commandName, group, overload.ParsedParameters, includeSlash: false);
-                
+
                 context.SendMessage($"  {text}");
             }
         }

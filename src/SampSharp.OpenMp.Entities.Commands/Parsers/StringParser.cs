@@ -4,7 +4,7 @@ namespace SampSharp.Entities.SAMP.Commands;
 public class StringParser : ICommandParameterParser
 {
     /// <inheritdoc />
-    public bool TryParse(IServiceProvider services, ref string inputText, out object? result)
+    public bool TryParse(IServiceProvider services, ref StringSpan inputText, out object? result)
     {
         inputText = inputText.TrimStart();
         if (inputText.Length == 0)
@@ -13,8 +13,8 @@ public class StringParser : ICommandParameterParser
             return false;
         }
 
-        result = inputText;
-        inputText = string.Empty;
+        result = inputText.AsSpan().ToString();
+        inputText = inputText.Skip(inputText.Length); // Skip to end
         return true;
     }
 }

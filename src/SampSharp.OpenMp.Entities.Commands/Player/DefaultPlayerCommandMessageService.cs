@@ -31,7 +31,7 @@ public class DefaultPlayerCommandMessageService : IPlayerCommandMessageService
             // Otherwise, use the canonical command name with its group
             string commandName;
             string? group;
-            
+
             if (usedCommandName.Length > 0)
             {
                 commandName = usedCommandName;
@@ -42,7 +42,7 @@ public class DefaultPlayerCommandMessageService : IPlayerCommandMessageService
                 commandName = overload.Name;
                 group = overload.Group?.ToString();
             }
-            
+
             var text = _formatter.FormatCommandUsage(commandName, group, overload.ParsedParameters, includeSlash: true);
             messages.Add($"Usage: {text}");
         }
@@ -55,7 +55,7 @@ public class DefaultPlayerCommandMessageService : IPlayerCommandMessageService
                 // Otherwise, use the canonical command name with its group
                 string commandName;
                 string? group;
-                
+
                 if (usedCommandName.Length > 0)
                 {
                     commandName = usedCommandName;
@@ -66,7 +66,7 @@ public class DefaultPlayerCommandMessageService : IPlayerCommandMessageService
                     commandName = overload.Name;
                     group = overload.Group?.ToString();
                 }
-                
+
                 var text = _formatter.FormatCommandUsage(commandName, group, overload.ParsedParameters, includeSlash: true);
                 messages.Add($"  {text}");
             }

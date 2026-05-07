@@ -6,7 +6,7 @@ namespace SampSharp.Entities.SAMP.Commands;
 /// Represents a span of characters within a string.
 /// </summary>
 [DebuggerDisplay("{DebugString}")]
-public  readonly struct StringSpan : IEquatable<string>, IEquatable<StringSpan>
+public readonly struct StringSpan : IEquatable<string>, IEquatable<StringSpan>
 {
     private readonly string? _string;
 
@@ -105,7 +105,7 @@ public  readonly struct StringSpan : IEquatable<string>, IEquatable<StringSpan>
 
         return new StringSpan(String, new Range(Range.Start, newEnd));
     }
-    
+
     private Index GetRangeFromStart(int length)
     {
         var newEnd = Index.FromStart(Range.Start.Value + length);
@@ -137,6 +137,32 @@ public  readonly struct StringSpan : IEquatable<string>, IEquatable<StringSpan>
 
         var newStart = GetRangeFromStart(count);
         return new StringSpan(String, new Range(newStart, Range.End));
+    }
+
+    /// <summary>
+    /// Creates a new <see cref="StringSpan"/> with leading whitespace removed.
+    /// </summary>
+    /// <returns>A new <see cref="StringSpan"/> with leading whitespace removed.</returns>
+    public StringSpan TrimStart()
+    {
+        var span = AsSpan();
+        var trimmedStart = 0;
+        while (trimmedStart < span.Length && char.IsWhiteSpace(span[trimmedStart]))
+        {
+            trimmedStart++;
+        }
+
+        if (trimmedStart == 0)
+        {
+            return this;
+        }
+
+        if (trimmedStart >= Length)
+        {
+            return new StringSpan(String, new Range(Range.End, Range.End));
+        }
+
+        return Skip(trimmedStart);
     }
 
     /// <summary>

@@ -8,7 +8,7 @@ public class FloatParser : ICommandParameterParser
     private readonly WordParser _wordParser = new();
 
     /// <inheritdoc />
-    public bool TryParse(IServiceProvider services, ref string inputText, out object? result)
+    public bool TryParse(IServiceProvider services, ref StringSpan inputText, out object? result)
     {
         if (!_wordParser.TryParse(services, ref inputText, out var sub) || sub is not string word ||
             !float.TryParse(word, NumberStyles.Float, CultureInfo.InvariantCulture, out var num))

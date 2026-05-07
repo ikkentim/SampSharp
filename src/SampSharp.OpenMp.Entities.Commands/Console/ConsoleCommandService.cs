@@ -11,7 +11,7 @@ internal class ConsoleCommandService : IConsoleCommandService
     private readonly CommandRegistry _registry = new();
     private readonly IUnhandledExceptionHandler _unhandledExceptionHandler;
     private readonly IConsoleCommandMessageService _messageService;
-    
+
     public ConsoleCommandService(IEntityManager entityManager, ISystemRegistry systemRegistry, IConsoleCommandMessageService messageService,
         IUnhandledExceptionHandler unhandledExceptionHandler)
     {
