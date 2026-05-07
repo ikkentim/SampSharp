@@ -7,9 +7,9 @@
   <Folder Name="/SampSharp/">
     <Project Path="src/SampSharp.OpenMp.Core/SampSharp.OpenMp.Core.csproj" />
     <Project Path="src/SampSharp.OpenMp.Entities.Commands/SampSharp.OpenMp.Entities.Commands.csproj" />
-    <Project Path="src/SampSharp.OpenMp.Entities.Commands.UnitTests/SampSharp.OpenMp.Entities.Commands.UnitTests.csproj" />
     <Project Path="src/SampSharp.OpenMp.Entities/SampSharp.OpenMp.Entities.csproj" />
     <Project Path="src/SampSharp.Sdk/SampSharp.Sdk.csproj" />
+    <Project Path="test/SampSharp.OpenMp.Entities.Commands.UnitTests/SampSharp.OpenMp.Entities.Commands.UnitTests.csproj" />
   </Folder>
   <Folder Name="/Solution Items/">
     <File Path=".editorconfig" />

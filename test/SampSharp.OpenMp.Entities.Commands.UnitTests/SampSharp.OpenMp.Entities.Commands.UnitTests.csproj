@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SampSharp.OpenMp.Entities.Commands\SampSharp.OpenMp.Entities.Commands.csproj" />
+    <ProjectReference Include="..\..\src\SampSharp.OpenMp.Entities.Commands\SampSharp.OpenMp.Entities.Commands.csproj" />
   </ItemGroup>
 
 </Project>
