@@ -22,7 +22,6 @@ public static class MethodInvokerFactory
     /// <param name="methodInfo">The method information.</param>
     /// <param name="parameterSources">The sources of the parameters.</param>
     /// <param name="uninvokedReturnValue">The value returned if the method is not invoked when a parameter could not be converted to the correct component.</param>
-    /// <param name="retBoolToResult">Indicates whether the <see langword="bool" /> return value should be converted to a <see cref="MethodResult" /> value.</param>
     /// <returns>The method invoker.</returns>
     public static MethodInvoker Compile(MethodInfo methodInfo, MethodParameterSource[] parameterSources, object? uninvokedReturnValue = null)
     {
