@@ -48,7 +48,7 @@ public class CommandDefinitionTests
         );
     }
 
-    internal void DummyMethod() { }
+    public void DummyMethod() { }
 
     [Fact]
     public void Constructor_WithValidParameters_InitializesCorrectly()

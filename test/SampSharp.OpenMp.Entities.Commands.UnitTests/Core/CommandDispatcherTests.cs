@@ -50,7 +50,7 @@ public class CommandDispatcherTests
         );
     }
 
-    internal void DummyMethod() { }
+    public void DummyMethod() { }
 
     private CommandRegistry CreateRegistry(params CommandDefinition[] commands)
     {

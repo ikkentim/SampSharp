@@ -35,7 +35,7 @@ public class CommandRegistryTests
         );
     }
 
-    internal void DummyMethod() { }
+    public void DummyMethod() { }
 
     [Fact]
     public void Register_SingleCommand_StoresCorrectly()
