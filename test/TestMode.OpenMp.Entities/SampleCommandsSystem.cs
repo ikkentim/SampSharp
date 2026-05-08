@@ -29,13 +29,16 @@ public class SampleCommandsSystem : ISystem
     }
 
     /// <summary>
-    /// Player command: /spawn - spawns the player at a location
+    /// Player command: /spawn - spawns a vehicle at the player
     /// </summary>
     [PlayerCommand(Name = "spawn")]
-    public void SpawnPlayer(Player player, float x = 0, float y = 0, float z = 5)
+    public void SpawnPlayer(Player player, VehicleModelType model, IWorldService worldService)
     {
-        player.Position = new Vector3(x, y, z);
-        player.SendClientMessage($"Spawned at ({x}, {y}, {z})");
+        player.SendClientMessage($"Spawned a {model}!");
+        
+        var vehicle = worldService.CreateVehicle(model, player.Position + GtaVector.Up, player.Angle, -1, -1);
+
+        player.PutInVehicle(vehicle);
     }
 
     /// <summary>
@@ -154,6 +157,12 @@ public class SampleCommandsSystem : ISystem
         player.SendClientMessage($"Your ping: {player.Ping}ms");
     }
 
+    [PlayerCommand("announce")]
+    public void AnnounceCommand(IWorldService server)
+    {
+        server.SendClientMessage("Hello everyone!");
+    }
+
     [ConsoleCommand(Name = "add_numbers")]
     [Alias("add")]
     public void AddCommand(int a, int b)
@@ -205,5 +214,23 @@ public class SampleCommandsSystem : ISystem
         player.SendClientMessage("an error will be thrown in a bit");
         await Task.Delay(10);
         throw new InvalidOperationException("test error");
+    }
+
+    [CommandGroup("test")]
+    [PlayerCommand("help")]
+    public void HelpTestCommand(Player player, IPlayerCommandService commandService, ICommandTextFormatter commandFormatter, string? filter = null)
+    {
+        var help = new DefaultCommandHelpProvider(commandService.Registry);
+        var cmds = help.GetCommandsInGroup(new CommandGroup("test"));
+
+        foreach (var cmd in cmds)
+        {
+            var commandFormatted = commandFormatter.FormatCommandUsage(cmd.Name, cmd.Group?.FullName, cmd.ParsedParameters);
+
+            if (filter is null || commandFormatted.Contains(filter))
+            {
+                player.SendClientMessage(commandFormatted);
+            }
+        }
     }
 }

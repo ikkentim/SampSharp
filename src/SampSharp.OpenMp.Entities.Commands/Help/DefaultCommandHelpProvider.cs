@@ -3,7 +3,7 @@ namespace SampSharp.Entities.SAMP.Commands;
 /// <summary>
 /// Default implementation of ICommandHelpProvider.
 /// </summary>
-internal class DefaultCommandHelpProvider : ICommandHelpProvider
+public class DefaultCommandHelpProvider : ICommandHelpProvider
 {
     private readonly ICommandRegistry _registry;
 

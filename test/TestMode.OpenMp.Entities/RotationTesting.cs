@@ -26,14 +26,6 @@ public class RotationTestingSystem(IWorldService worldService, IEntityManager en
     [Event]
     public bool OnPlayerCommandText(Player player, string cmdText)
     {
-        if (cmdText.StartsWith("/spawn") && cmdText.Length > 7)
-        {
-            var mdl = int.Parse(cmdText[7..]);
-            var vehicle = worldService.CreateVehicle((VehicleModelType)mdl, player.Position + GtaVector.Up * 5, 0, -1, -1);
-            player.PutInVehicle(vehicle, 0);
-            return true;
-        }
-
         if (cmdText.StartsWith("/coords"))
         {
             var pos = player.Position;

@@ -43,8 +43,16 @@ internal class CommandScanner
         {
             var (commandName, group) = commandGroup.Key;
 
-            foreach (var (systemType, method, attribute) in commandGroup)
+            foreach (var (systemType, method, _) in commandGroup)
             {
+                var parameters = method.GetParameters();
+
+                if (parameters.Length == 0 || !parameters[0].ParameterType.IsAssignableTo(typeof(Component)))
+                {
+                    // First parameter must be a component (player).
+                    continue;
+                }
+
                 // Aliases and tags are per-overload
                 var aliases = method.GetCustomAttributes<AliasAttribute>().SelectMany(a => a.Aliases).Select(a => new CommandAlias(a)).ToArray();
                 var tags = method.GetCustomAttributes<CommandTagAttribute>().Select(t => new CommandTag(t.Key, t.Value)).ToArray();
