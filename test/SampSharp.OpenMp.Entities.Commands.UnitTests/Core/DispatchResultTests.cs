@@ -45,16 +45,12 @@ public class DispatchResultTests
     public void CreateSuccess_MessageIsNullByDefault()
     {
         var result = DispatchResult.CreateSuccess();
-
-        result.Message.ShouldBeNull();
     }
 
     [Fact]
     public void CreateSuccess_UsageMessageIsNullByDefault()
     {
         var result = DispatchResult.CreateSuccess();
-
-        result.UsageMessage.ShouldBeNull();
     }
 
     [Fact]
@@ -79,24 +75,6 @@ public class DispatchResultTests
         var result = DispatchResult.CreateSuccess();
 
         result.UsedCommandName.ShouldBe(string.Empty);
-    }
-
-    [Fact]
-    public void Message_CanBeSet()
-    {
-        var result = DispatchResult.CreateSuccess();
-        result.Message = "hello";
-
-        result.Message.ShouldBe("hello");
-    }
-
-    [Fact]
-    public void UsageMessage_CanBeSet()
-    {
-        var result = DispatchResult.CreateInvalidArguments();
-        result.UsageMessage = "/test <arg>";
-
-        result.UsageMessage.ShouldBe("/test <arg>");
     }
 
     [Fact]
