@@ -7,46 +7,41 @@ namespace SampSharp.Entities.SAMP.Commands;
 internal class CommandDispatcher
 {
     /// <summary>
-    /// Dispatches a command from input text with full overload matching and permission checking.
+    /// Dispatches a command from input with full overload matching and permission checking.
     /// </summary>
     /// <param name="registry">The command registry containing all registered commands.</param>
     /// <param name="services">The service provider for DI and permission checking.</param>
-    /// <param name="inputText">The input text to parse (without leading / for player commands).</param>
-    /// <param name="prefixArgs">Prefix arguments (e.g., [Player] for player commands, [ConsoleCommandDispatchContext] for console commands).</param>
+    /// <param name="input">The input span to parse (without leading / for player commands).</param>
+    /// <param name="prefixArgs">Prefix arguments (e.g., [EntityId] for player commands, [ConsoleCommandDispatchContext] for console commands).</param>
     /// <param name="permissionChecker">Optional permission checker (for player commands only).</param>
     /// <returns>The dispatch result.</returns>
-    public DispatchResult Dispatch(CommandRegistry registry, IServiceProvider services, string inputText, object[] prefixArgs, IPermissionChecker? permissionChecker = null)
+    public DispatchResult Dispatch(CommandRegistry registry, IServiceProvider services, StringSpan input, object[] prefixArgs, IPermissionChecker? permissionChecker = null)
     {
         ArgumentNullException.ThrowIfNull(registry);
         ArgumentNullException.ThrowIfNull(services);
 
-        if (string.IsNullOrWhiteSpace(inputText))
+        input = input.TrimStart();
+
+        if (input.Length == 0)
         {
             return DispatchResult.CreateNotFound();
         }
 
-        inputText = inputText.Trim();
+        // Save position before lookup so we can reconstruct the used command name
+        var beforeLookup = input;
 
-        // Split input into tokens and try to find the command by matching from longest to shortest path
-        var tokens = inputText.Split([' ', '\t'], StringSplitOptions.RemoveEmptyEntries);
-        if (tokens.Length == 0)
-        {
-            return DispatchResult.CreateNotFound();
-        }
-
-        // Try to find the command group in the registry (all overloads with same name/group)
-        var commandGroup = registry.GetCommandGroupByPath(tokens, out var consumedTokenCount);
+        // Advance 'input' past the consumed command path words
+        var commandGroup = registry.GetCommandGroupByPath(ref input);
         if (commandGroup == null)
         {
             return DispatchResult.CreateNotFound();
         }
 
-        // Build the used command name from the consumed tokens
-        var usedCommandName = string.Join(" ", tokens.Take(consumedTokenCount));
+        // The used command name is the portion consumed during lookup (trim trailing whitespace)
+        var usedCommandName = beforeLookup.Take(beforeLookup.Length - input.Length).ToString().TrimEnd();
 
-        // Remaining tokens become the arguments
-        var remainingTokens = tokens.Skip(consumedTokenCount).ToArray();
-        var remainingArgs = remainingTokens.Length > 0 ? string.Join(" ", remainingTokens) : "";
+        // Remaining args start after any leading whitespace that follows the command name
+        var remainingArgs = input.TrimStart();
 
         // Try to match parameters for each overload
         var bestMatch = FindBestOverload(commandGroup, remainingArgs, services);
@@ -91,52 +86,41 @@ internal class CommandDispatcher
 
     /// <summary>
     /// Finds the best matching overload for the given arguments.
-    /// Tries each overload and returns the one that consumes the least remaining input.
     /// </summary>
-    private (bool matched, CommandDefinition? overload, object?[]? parsedArguments) FindBestOverload(CommandSet command, string remainingArgs,
+    private (bool matched, CommandDefinition? overload, object?[]? parsedArguments) FindBestOverload(CommandSet command, StringSpan remainingArgs,
         IServiceProvider services)
     {
-        var bestMatch = (matched: false, overload: (CommandDefinition?)null, parsedArguments: (object?[]?)null, remainingUnconsumed: int.MaxValue);
+        var bestMatch = (matched: false, overload: (CommandDefinition?)null, parsedArguments: (object?[]?)null);
 
         foreach (var overload in command.Overloads)
         {
             var matchResult = TryMatchParameters(overload, remainingArgs, services);
             if (matchResult.matched)
             {
-                // Check if this is a better match (less remaining input)
-                if (matchResult.remainingUnconsumed < bestMatch.remainingUnconsumed)
-                {
-                    bestMatch = (true, overload, matchResult.parsedArguments, matchResult.remainingUnconsumed);
-                }
+                bestMatch = (true, overload, matchResult.parsedArguments);
+                break; // First match wins (overloads are ordered by specificity at registration time)
             }
         }
 
-        return (bestMatch.matched, bestMatch.overload, bestMatch.parsedArguments);
+        return bestMatch;
     }
 
     /// <summary>
     /// Tries to match the remaining arguments against the overload's parameters.
-    /// Returns how many characters were unconsumed (for best-match selection).
     /// </summary>
-    private (bool matched, object?[]? parsedArguments, int remainingUnconsumed) TryMatchParameters(CommandDefinition overload, string remainingArgs,
+    private (bool matched, object?[]? parsedArguments) TryMatchParameters(CommandDefinition overload, StringSpan remainingArgs,
         IServiceProvider services)
     {
         var parameters = overload.ParsedParameters;
 
-        // If no parameters, check if no remaining args or all optional
+        // If no parameters, succeed only when there are no remaining args
         if (parameters.Length == 0)
         {
-            if (string.IsNullOrWhiteSpace(remainingArgs))
-            {
-                return (true, [], 0);
-            }
-
-            // Has args but command takes none - invalid
-            return (false, null, remainingArgs.Length);
+            return (remainingArgs.TrimStart().Length == 0, []);
         }
 
         // Try to parse all parameters
-        var remaining = StringSpan.For(remainingArgs);
+        var remaining = remainingArgs;
         var parsedValues = new List<object?>();
 
         foreach (var param in parameters)
@@ -149,15 +133,15 @@ internal class CommandDispatcher
                 }
                 else if (param.IsRequired)
                 {
-                    return (false, null, remainingArgs.Length);
+                    return (false, null);
                 }
                 else
                 {
-                    // Optional parameter - only use default if there is no remaining input
+                    // Optional parameter - only use default when there is no remaining input
                     if (remaining.TrimStart().Length > 0)
                     {
-                        // There is remaining input but it could not be parsed - fail this overload
-                        return (false, null, remainingArgs.Length);
+                        // There is remaining input that could not be parsed - fail this overload
+                        return (false, null);
                     }
 
                     parsedValues.Add(param.DefaultValue);
@@ -168,12 +152,12 @@ internal class CommandDispatcher
                 // Parser threw exception - treat as parse failure
                 if (param.IsRequired)
                 {
-                    return (false, null, remainingArgs.Length);
+                    return (false, null);
                 }
 
                 if (remaining.TrimStart().Length > 0)
                 {
-                    return (false, null, remainingArgs.Length);
+                    return (false, null);
                 }
 
                 parsedValues.Add(param.DefaultValue);
@@ -183,9 +167,9 @@ internal class CommandDispatcher
         // Reject overloads that have unconsumed trailing input
         if (remaining.TrimStart().Length > 0)
         {
-            return (false, null, remaining.Length);
+            return (false, null);
         }
 
-        return (true, parsedValues.ToArray(), 0);
+        return (true, parsedValues.ToArray());
     }
 }

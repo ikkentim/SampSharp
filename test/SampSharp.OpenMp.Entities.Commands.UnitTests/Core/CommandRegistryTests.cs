@@ -282,16 +282,18 @@ public class CommandRegistryTests
         var command = CreateCommand("give", new CommandGroup("admin", "money"));
         registry.Register(command);
 
-        var found = registry.GetCommandGroupByPath(new[] { "admin", "money", "give" }, out var consumed);
+        var span = StringSpan.For("admin money give");
+        var found = registry.GetCommandGroupByPath(ref span);
         found.ShouldNotBeNull();
-        consumed.ShouldBe(3);
+        span.Length.ShouldBe(0); // all words consumed
     }
 
     [Fact]
-    public void GetCommandGroupByPath_EmptyPath_ReturnsNull()
+    public void GetCommandGroupByPath_EmptyInput_ReturnsNull()
     {
         var registry = new CommandRegistry();
-        var found = registry.GetCommandGroupByPath(Array.Empty<string>(), out _);
+        var span = StringSpan.Empty;
+        var found = registry.GetCommandGroupByPath(ref span);
         found.ShouldBeNull();
     }
 

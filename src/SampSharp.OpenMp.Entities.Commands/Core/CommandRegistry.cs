@@ -41,37 +41,25 @@ internal class CommandRegistry : ICommandRegistry
         // Always register in the tree (this updates the reference when adding new overloads)
         _tree.Register(command);
 
-        // Register aliases - each alias points to the full command set (all overloads)
+        // Register aliases - each alias points to the full command set (all overloads),
+        // with the alias name as the command name and no group (aliases are top-level)
         foreach (var alias in overload.Aliases)
         {
             var allOverloadsForKey = _overloadsByKey[key].ToArray();
-            var aliasCommand = new CommandSet(overload.Name, overload.Group, allOverloadsForKey);
+            var aliasCommand = new CommandSet(alias.Name, null, allOverloadsForKey);
             _tree.RegisterAlias(alias.Name, aliasCommand);
         }
     }
 
     // Internal method for dispatcher: get command group by path
-    internal CommandSet? GetCommandGroupByPath(IEnumerable<string> pathParts, out int consumedParts)
+    // Advances 'input' past the consumed command path words.
+    internal CommandSet? GetCommandGroupByPath(ref StringSpan input)
     {
-        if (pathParts == null)
-        {
-            consumedParts = 0;
-            return null;
-        }
-
-        var parts = pathParts.ToList();
-        if (parts.Count == 0)
-        {
-            consumedParts = 0;
-            return null;
-        }
-
-        // Use the command tree for efficient lookup
-        return _tree.FindCommand(parts, out consumedParts);
+        return _tree.FindCommand(ref input);
     }
 
     // Internal method to get all overloads for a command
-    internal CommandSet? GetCommand(string nameOrAlias)
+    internal CommandSet? GetCommand(string? nameOrAlias)
     {
         if (string.IsNullOrWhiteSpace(nameOrAlias))
         {
@@ -79,7 +67,8 @@ internal class CommandRegistry : ICommandRegistry
         }
 
         // Look up as a single word in the tree (covers both commands and aliases)
-        return _tree.FindCommand([nameOrAlias.ToLowerInvariant()], out _);
+        var span = StringSpan.For(nameOrAlias.ToLowerInvariant());
+        return _tree.FindCommand(ref span);
     }
 
     CommandDefinition? ICommandRegistry.TryFind(string nameOrAlias)
@@ -107,8 +96,28 @@ internal class CommandRegistry : ICommandRegistry
             return null;
         }
 
-        // Use the tree for all lookups (commands, groups, and aliases)
-        var commandSet = _tree.FindCommand(parts, out consumedParts);
+        // Build a StringSpan from the joined path parts and use the tree for lookup.
+        var joined = string.Join(" ", parts);
+        var span = StringSpan.For(joined);
+        var commandSet = _tree.FindCommand(ref span);
+
+        // Compute how many parts were consumed by measuring consumed characters.
+        var consumedChars = joined.Length - span.Length;
+        var cumulativeLen = 0;
+        for (var i = 0; i < parts.Count; i++)
+        {
+            cumulativeLen += parts[i].Length;
+            if (cumulativeLen <= consumedChars)
+            {
+                consumedParts++;
+                cumulativeLen++; // account for the separator space
+            }
+            else
+            {
+                break;
+            }
+        }
+
         if (commandSet is not null && commandSet.Overloads.Count > 0)
         {
             return commandSet.Overloads[0];

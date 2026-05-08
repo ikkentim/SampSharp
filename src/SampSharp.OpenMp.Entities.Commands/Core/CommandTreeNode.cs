@@ -46,23 +46,39 @@ internal class CommandTreeNode
     }
 
     /// <summary>
-    /// Attempts to traverse the tree following the given path, returning the deepest node reached
-    /// and the number of path segments consumed.
+    /// Attempts to traverse the tree following words read from <paramref name="remaining" />, returning
+    /// the deepest node reached. <paramref name="remaining" /> is advanced past the words that were
+    /// successfully consumed; unmatched tokens are left in place.
     /// </summary>
-    /// <param name="pathSegments">The path segments to traverse.</param>
-    /// <param name="consumedCount">The number of path segments consumed before the path ended.</param>
-    /// <returns>The deepest node reached.</returns>
-    public CommandTreeNode Traverse(IReadOnlyList<string> pathSegments, out int consumedCount)
+    /// <param name="remaining">
+    /// The input span to read from. On return this span starts immediately after the last consumed word.
+    /// </param>
+    /// <returns>The deepest node reached (may be <c>this</c> if no words matched).</returns>
+    public CommandTreeNode Traverse(ref StringSpan remaining)
     {
-        consumedCount = 0;
         var current = this;
 
-        foreach (var segment in pathSegments)
+        while (true)
         {
-            if (current.TryGetChild(segment, out var child) && child != null)
+            var trimmed = remaining.TrimStart();
+            if (trimmed.Length == 0)
+            {
+                break;
+            }
+
+            // Read the next whitespace-delimited word without consuming it yet
+            var wordLen = 0;
+            while (wordLen < trimmed.Length && !char.IsWhiteSpace(trimmed[wordLen]))
+            {
+                wordLen++;
+            }
+
+            var word = trimmed.Take(wordLen).ToString();
+
+            if (current.TryGetChild(word, out var child))
             {
                 current = child;
-                consumedCount++;
+                remaining = trimmed.Skip(wordLen); // consume the word
             }
             else
             {

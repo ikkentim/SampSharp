@@ -131,63 +131,94 @@ public class CommandTreeNodeTests
     }
 
     [Fact]
-    public void Traverse_EmptyPath_ReturnsRoot()
+    public void Traverse_EmptyInput_ReturnsRoot()
     {
         var node = new CommandTreeNode();
+        var span = StringSpan.Empty;
 
-        var result = node.Traverse([], out var consumed);
+        var result = node.Traverse(ref span);
 
         result.ShouldBeSameAs(node);
-        consumed.ShouldBe(0);
+        span.Length.ShouldBe(0);
     }
 
     [Fact]
-    public void Traverse_SingleMatchingSegment_ReturnsChild()
+    public void Traverse_SingleMatchingWord_ReturnsChild()
     {
         var root = new CommandTreeNode();
         var child = root.GetOrCreateChild("kick");
+        var span = StringSpan.For("kick");
 
-        var result = root.Traverse(["kick"], out var consumed);
+        var result = root.Traverse(ref span);
 
         result.ShouldBeSameAs(child);
-        consumed.ShouldBe(1);
+        span.Length.ShouldBe(0);
     }
 
     [Fact]
-    public void Traverse_MultipleMatchingSegments_TraversesDeep()
+    public void Traverse_MultipleMatchingWords_TraversesDeep()
     {
         var root = new CommandTreeNode();
         var admin = root.GetOrCreateChild("admin");
         var money = admin.GetOrCreateChild("money");
         var give = money.GetOrCreateChild("give");
+        var span = StringSpan.For("admin money give");
 
-        var result = root.Traverse(["admin", "money", "give"], out var consumed);
+        var result = root.Traverse(ref span);
 
         result.ShouldBeSameAs(give);
-        consumed.ShouldBe(3);
+        span.Length.ShouldBe(0);
     }
 
     [Fact]
-    public void Traverse_StopsAtUnknownSegment()
+    public void Traverse_StopsAtUnknownWord()
     {
         var root = new CommandTreeNode();
         var admin = root.GetOrCreateChild("admin");
+        var span = StringSpan.For("admin unknown");
 
-        var result = root.Traverse(["admin", "unknown"], out var consumed);
+        var result = root.Traverse(ref span);
 
         result.ShouldBeSameAs(admin);
-        consumed.ShouldBe(1);
+        span.TrimStart().ToString().ShouldBe("unknown");
     }
 
     [Fact]
-    public void Traverse_NoMatchingSegments_ReturnsRoot()
+    public void Traverse_NoMatchingWords_ReturnsRoot()
     {
         var root = new CommandTreeNode();
         root.GetOrCreateChild("admin");
+        var span = StringSpan.For("unknown");
 
-        var result = root.Traverse(["unknown"], out var consumed);
+        var result = root.Traverse(ref span);
 
         result.ShouldBeSameAs(root);
-        consumed.ShouldBe(0);
+        span.ToString().ShouldBe("unknown");
+    }
+
+    [Fact]
+    public void Traverse_MultipleSpacesBetweenWords_StillMatches()
+    {
+        var root = new CommandTreeNode();
+        var admin = root.GetOrCreateChild("admin");
+        var kick = admin.GetOrCreateChild("kick");
+        var span = StringSpan.For("admin   kick");
+
+        var result = root.Traverse(ref span);
+
+        result.ShouldBeSameAs(kick);
+        span.Length.ShouldBe(0);
+    }
+
+    [Fact]
+    public void Traverse_InputWithRemainingArgs_LeavesArgsInSpan()
+    {
+        var root = new CommandTreeNode();
+        root.GetOrCreateChild("kick");
+        var span = StringSpan.For("kick playerName");
+
+        root.Traverse(ref span);
+
+        span.TrimStart().ToString().ShouldBe("playerName");
     }
 }

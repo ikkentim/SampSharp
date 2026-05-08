@@ -58,15 +58,17 @@ internal class CommandTree
     }
 
     /// <summary>
-    /// Attempts to find a command in the tree by following the given path.
-    /// Returns the command set at the deepest matching node and the number of path segments consumed.
+    /// Attempts to find a command in the tree by consuming words from <paramref name="input" />.
+    /// <paramref name="input" /> is advanced past the consumed command path on success; on a no-match
+    /// it may still be partially advanced (past intermediate group words that have no command set).
     /// </summary>
-    /// <param name="pathSegments">The path segments to match (words from the input).</param>
-    /// <param name="consumedCount">The number of path segments consumed before no further match.</param>
-    /// <returns>The command set found at the deepest matching node, or null if the root is reached.</returns>
-    public CommandSet? FindCommand(IReadOnlyList<string> pathSegments, out int consumedCount)
+    /// <param name="input">
+    /// The input span. On return this span starts immediately after the last consumed word.
+    /// </param>
+    /// <returns>The command set at the deepest matching node, or <see langword="null"/> if none.</returns>
+    public CommandSet? FindCommand(ref StringSpan input)
     {
-        var node = _root.Traverse(pathSegments, out consumedCount);
+        var node = _root.Traverse(ref input);
         return node.CommandSet;
     }
 

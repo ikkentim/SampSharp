@@ -29,15 +29,20 @@ internal class ConsoleCommandService : IConsoleCommandService
 
     public bool Invoke(IServiceProvider services, ConsoleCommandDispatchContext context, string inputText)
     {
-        if (string.IsNullOrWhiteSpace(inputText))
+        if (string.IsNullOrEmpty(inputText))
         {
             return false;
         }
 
-        inputText = inputText.Trim();
+        var span = StringSpan.For(inputText).TrimStart();
+
+        if (span.Length == 0)
+        {
+            return false;
+        }
 
         // Dispatch the command (no permission checks for console)
-        var result = _dispatcher.Dispatch(_registry, services, inputText, [context]);
+        var result = _dispatcher.Dispatch(_registry, services, span, [context]);
 
         // Handle the result
         switch (result.Response)

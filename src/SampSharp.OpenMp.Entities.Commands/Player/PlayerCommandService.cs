@@ -30,25 +30,29 @@ internal class PlayerCommandService : IPlayerCommandService
 
     public bool Invoke(IServiceProvider services, EntityId player, string inputText)
     {
-        if (string.IsNullOrWhiteSpace(inputText))
+        if (string.IsNullOrEmpty(inputText))
         {
             return false;
         }
 
-        // Strip leading /
-        if (!inputText.StartsWith('/'))
+        var span = StringSpan.For(inputText).TrimStart();
+
+        // Require leading /
+        if (span.Length == 0 || span[0] != '/')
         {
             return false;
         }
 
-        var commandText = inputText[1..].Trim();
-        if (string.IsNullOrWhiteSpace(commandText))
+        // Skip the / and any whitespace immediately after it
+        span = span.Skip(1).TrimStart();
+
+        if (span.Length == 0)
         {
             return false;
         }
 
         // Dispatch the command to find matching overload
-        var dispatchResult = _dispatcher.Dispatch(_registry, services, commandText, [player], _permissionChecker);
+        var dispatchResult = _dispatcher.Dispatch(_registry, services, span, [player], _permissionChecker);
 
         // Handle the dispatch result
         switch (dispatchResult.Response)
