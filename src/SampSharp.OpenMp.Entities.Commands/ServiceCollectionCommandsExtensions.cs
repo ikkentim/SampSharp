@@ -17,6 +17,7 @@ public static class ServiceCollectionCommandsExtensions
         public IServiceCollection AddCommandsSystem()
         {
             services.TryAddSingleton<ICommandTextFormatter, DefaultCommandTextFormatter>();
+            services.TryAddSingleton<ICommandParameterParserFactory, DefaultCommandParameterParserFactory>();
 
             return services;
         }

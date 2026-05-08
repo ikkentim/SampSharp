@@ -13,7 +13,7 @@ internal class ConsoleCommandService : IConsoleCommandService
     private readonly IConsoleCommandMessageService _messageService;
 
     public ConsoleCommandService(IEntityManager entityManager, ISystemRegistry systemRegistry, IConsoleCommandMessageService messageService,
-        IUnhandledExceptionHandler unhandledExceptionHandler)
+        IUnhandledExceptionHandler unhandledExceptionHandler, ICommandParameterParserFactory parserFactory)
     {
         _unhandledExceptionHandler = unhandledExceptionHandler;
         _messageService = messageService;
@@ -22,7 +22,6 @@ internal class ConsoleCommandService : IConsoleCommandService
 
         // Scan for console commands
         var scanner = new CommandScanner(systemRegistry, unhandledExceptionHandler);
-        var parserFactory = new DefaultCommandParameterParserFactory();
         scanner.ScanConsoleCommands(_registry, parserFactory);
     }
 

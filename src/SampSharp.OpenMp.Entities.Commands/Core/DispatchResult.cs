@@ -11,12 +11,6 @@ public class DispatchResult
     /// <summary>The response code.</summary>
     public DispatchResponse Response { get; }
 
-    /// <summary>General message (for errors, permission denied, etc.).</summary>
-    public string? Message { get; set; }
-
-    /// <summary>Usage message (for invalid arguments).</summary>
-    public string? UsageMessage { get; set; }
-
     /// <summary>The executed command overload (if matched).</summary>
     public CommandDefinition? CommandOverload { get; set; }
 

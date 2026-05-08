@@ -10,10 +10,8 @@ internal class PlayerCommandService : IPlayerCommandService
     private readonly IUnhandledExceptionHandler _unhandledExceptionHandler;
     private readonly IPlayerCommandMessageService _messageService;
 
-    public PlayerCommandService(IEntityManager entityManager, ISystemRegistry systemRegistry,
-        IPlayerCommandMessageService messageService,
-        IPermissionChecker permissionChecker,
-        IUnhandledExceptionHandler unhandledExceptionHandler)
+    public PlayerCommandService(IEntityManager entityManager, ISystemRegistry systemRegistry, IPlayerCommandMessageService messageService,
+        IPermissionChecker permissionChecker, IUnhandledExceptionHandler unhandledExceptionHandler, ICommandParameterParserFactory parserFactory)
     {
         _entityManager = entityManager;
         _unhandledExceptionHandler = unhandledExceptionHandler;
@@ -21,12 +19,10 @@ internal class PlayerCommandService : IPlayerCommandService
         _permissionChecker = permissionChecker;
 
         _registry = new CommandRegistry();
-
         _executor = new CommandExecutor(entityManager);
 
         // Scan for player commands into the shared registry
         var scanner = new CommandScanner(systemRegistry, unhandledExceptionHandler);
-        var parserFactory = new DefaultCommandParameterParserFactory();
         scanner.ScanPlayerCommands(_registry, parserFactory);
     }
 
@@ -154,17 +150,5 @@ internal class PlayerCommandService : IPlayerCommandService
             _unhandledExceptionHandler.Handle("player-command", ex);
             return true;
         }
-    }
-
-    /// <summary>Gets the command registry for access to registered commands.</summary>
-    public CommandRegistry GetRegistry()
-    {
-        return _registry;
-    }
-
-    /// <summary>Gets the command dispatcher.</summary>
-    public CommandDispatcher GetDispatcher()
-    {
-        return _dispatcher;
     }
 }

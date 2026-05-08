@@ -43,6 +43,12 @@ internal class CommandScanner
         {
             var (commandName, group) = commandGroup.Key;
 
+            if (commandName.Contains(' '))
+            {
+                // Reject commands containing spaces
+                continue;
+            }
+
             foreach (var (systemType, method, _) in commandGroup)
             {
                 var parameters = method.GetParameters();
@@ -89,6 +95,12 @@ internal class CommandScanner
         foreach (var commandGroup in groupedByCommand)
         {
             var (commandName, group) = commandGroup.Key;
+
+            if (commandName.Contains(' '))
+            {
+                // Reject commands containing spaces
+                continue;
+            }
 
             foreach (var (systemType, method, attribute) in commandGroup)
             {
