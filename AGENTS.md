@@ -28,7 +28,7 @@ SampSharp is a comprehensive C# framework for building game modes and plugins fo
 
 ### Build & Environment
 - **build/** - Build artifacts and CMake configurations
-- **env/** - Runtime environment (game mode DLLs, test configurations, server files)
+- **env/** - Runtime environment for the legacy SA-MP version (game mode DLLs, test configurations, server files)
 - **build.cmd** / **build.sh** - Main build scripts
 - **SampSharp.slnx** - Slice project file (modern VS project format)
 
