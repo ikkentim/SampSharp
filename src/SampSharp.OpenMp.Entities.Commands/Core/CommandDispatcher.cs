@@ -98,7 +98,7 @@ internal class CommandDispatcher
             if (matchResult.matched)
             {
                 bestMatch = (true, overload, matchResult.parsedArguments);
-                break; // First match wins (overloads are ordered by specificity at registration time)
+                break; // First matching overload wins; caller registers overloads in preferred order
             }
         }
 
