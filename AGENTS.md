@@ -21,6 +21,7 @@ SampSharp is a comprehensive C# framework for building game modes and plugins fo
 - **legacy/** - Legacy SA-MP implementation (limited support for critical fixes only)
 
 ### Testing (`test/`)
+- **SampSharp.OpenMp.Entities.Commands.UnitTests/** - Unit tests for the command processor (`dotnet test SampSharp.slnx`)
 - **TestMode.OpenMp.Entities/** - Integration tests for entity system
 - **TestMode.OpenMp.Core/** - Core functionality tests
 - **TestMode.UnitTests/** - Unit tests
