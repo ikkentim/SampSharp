@@ -43,7 +43,7 @@ jobs:
       run: ./build.sh component-libraries
 
     - name: Test component libraries
-      run: dotnet test test/SampSharp.OpenMp.Entities.Commands.UnitTests/ -c Release --no-build
+      run: dotnet test SampSharp.slnx -c Release --no-build
 
     - name: Pack component libraries
       run: ./build.sh component-libraries publish
