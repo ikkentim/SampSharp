@@ -8,11 +8,9 @@ on:
     paths:
       - .github/workflows/dotnet-component.yml
       - src/SampSharp.*/**
-      - test/SampSharp.*/**
-      - test/TestMode.*/**
+      - test/**
       - SampSharp.slnx
       - Directory.Build.props
-      - build.sh
 
   pull_request:
     branches:
@@ -21,11 +19,9 @@ on:
     paths:
       - .github/workflows/dotnet-component.yml
       - src/SampSharp.*/**
-      - test/SampSharp.*/**
-      - test/TestMode.*/**
+      - test/**
       - SampSharp.slnx
       - Directory.Build.props
-      - build.sh
 
 jobs:
   build:
