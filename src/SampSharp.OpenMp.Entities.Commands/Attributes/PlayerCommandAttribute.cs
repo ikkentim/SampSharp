@@ -10,9 +10,9 @@ namespace SampSharp.Entities.SAMP.Commands;
 /// <remarks>
 /// The signature can be:
 /// - <c>(Player player, [args...])</c> - if the first parameter is Player, it's provided automatically
-/// - <c>([args...])</c> - if no Player first parameter, treat all parameters as regular parsed parameters
+/// - <c>(SomeComponent player, [args...])</c> - if the first parameter is a component, the command is only available if the player has the specified component
 /// - subsequent parameters are parsed from the player input via <see cref="ICommandParameterParser" />
-/// - Return type may be <see langword="void" />, <see langword="Task" />, or <see cref="Task" />.
+/// - Return type may be <see langword="void" />, <see langword="bool" />, or <see cref="Task" />.
 /// </remarks>
 [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
 [MeansImplicitUse]

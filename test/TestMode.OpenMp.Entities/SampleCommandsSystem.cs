@@ -233,4 +233,12 @@ public class SampleCommandsSystem : ISystem
             }
         }
     }
+
+    [CommandGroup("test")]
+    [PlayerCommand("admin")]
+    public void AdminTestCommand(AdminComponent admin)
+    {
+        admin.GetComponent<Player>()!.SendClientMessage("Yup, you're an admin");
+        ;
+    }
 }

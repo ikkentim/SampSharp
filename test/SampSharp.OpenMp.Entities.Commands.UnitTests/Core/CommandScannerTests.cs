@@ -5,6 +5,7 @@ using Moq;
 using Shouldly;
 using Xunit;
 using SampSharp.Entities;
+using SampSharp.Entities.SAMP;
 using SampSharp.Entities.SAMP.Commands;
 
 namespace SampSharp.OpenMp.Entities.Commands.UnitTests.Core;
@@ -37,69 +38,94 @@ public class CommandScannerTests
     private class SimplePlayerCommandSystem : ISystem
     {
         [PlayerCommand]
+        public void Hello(Player player) { }
+    }
+
+    private class CustomComponentCommandSystem : ISystem
+    {
+        [PlayerCommand]
+        public void Hello(CustomComponent player) { }
+    }
+
+    private class EntityIdCommandSystem : ISystem
+    {
+        [PlayerCommand]
         public void Hello(EntityId player) { }
     }
+
+    private class InvalidParametersCommandSystem : ISystem
+    {
+        [PlayerCommand]
+        public void Hello() { }
+
+        [PlayerCommand]
+        public void IdNumber(int playerId) { }
+        [PlayerCommand]
+        public void IdNumber(string playerId) { }
+    }
+
+    private class CustomComponent : Component;
 
     private class NamedPlayerCommandSystem : ISystem
     {
         [PlayerCommand("greet")]
-        public void SomeMethod(EntityId player) { }
+        public void SomeMethod(Player player) { }
     }
 
     private class PlayerCommandWithParamsSystem : ISystem
     {
         [PlayerCommand]
-        public void Give(EntityId player, int amount) { }
+        public void Give(Player player, int amount) { }
     }
 
     private class PlayerCommandWithAliasSystem : ISystem
     {
         [Alias("pm")]
         [PlayerCommand("message")]
-        public void Message(EntityId player) { }
+        public void Message(Player player) { }
     }
 
     private class PlayerCommandWithTagSystem : ISystem
     {
         [CommandTag("category", "admin")]
         [PlayerCommand]
-        public void Kick(EntityId player) { }
+        public void Kick(Player player) { }
     }
 
     [CommandGroup("admin")]
     private class GroupedPlayerCommandSystem : ISystem
     {
         [PlayerCommand]
-        public void Kick(EntityId player) { }
+        public void Kick(Player player) { }
     }
 
     private class MethodGroupPlayerCommandSystem : ISystem
     {
         [CommandGroup("admin")]
         [PlayerCommand]
-        public void Kick(EntityId player) { }
+        public void Kick(Player player) { }
     }
 
     private class MultipleCommandSystem : ISystem
     {
         [PlayerCommand]
-        public void Kick(EntityId player) { }
+        public void Kick(Player player) { }
 
         [PlayerCommand]
-        public void Ban(EntityId player) { }
+        public void Ban(Player player) { }
     }
 
     private class CommandWithSuffixSystem : ISystem
     {
         [PlayerCommand]
-        public void HelpCommand(EntityId player) { }
+        public void HelpCommand(Player player) { }
     }
 
     private class InvalidReturnTypeSystem : ISystem
     {
         // int is not a valid return type for player commands
         [PlayerCommand]
-        public int BadReturnCommand(EntityId player) => 0;
+        public int BadReturnCommand(Player player) => 0;
     }
 
     private class SimpleConsoleCommandSystem : ISystem
@@ -123,6 +149,39 @@ public class CommandScannerTests
         scanner.ScanPlayerCommands(registry, CreateParserFactory());
 
         ((ICommandRegistry)registry).TryFind("hello").ShouldNotBeNull();
+    }
+
+    [Fact]
+    public void ScanPlayerCommands_SupportsCustomComponentType()
+    {
+        var registry = new CommandRegistry();
+        var scanner = new CommandScanner(CreateRegistry(typeof(CustomComponentCommandSystem)), CreateExceptionHandler());
+
+        scanner.ScanPlayerCommands(registry, CreateParserFactory());
+
+        ((ICommandRegistry)registry).TryFind("hello").ShouldNotBeNull();
+    }
+
+    [Fact]
+    public void ScanPlayerCommands_SupportsEntityIdType()
+    {
+        var registry = new CommandRegistry();
+        var scanner = new CommandScanner(CreateRegistry(typeof(EntityIdCommandSystem)), CreateExceptionHandler());
+
+        scanner.ScanPlayerCommands(registry, CreateParserFactory());
+
+        ((ICommandRegistry)registry).TryFind("hello").ShouldNotBeNull();
+    }
+
+    [Fact]
+    public void ScanPlayerCommands_SkipsNoParameters()
+    {
+        var registry = new CommandRegistry();
+        var scanner = new CommandScanner(CreateRegistry(typeof(InvalidParametersCommandSystem)), CreateExceptionHandler());
+
+        scanner.ScanPlayerCommands(registry, CreateParserFactory());
+
+        ((ICommandRegistry)registry).GetAll().ShouldHaveCount(0);
     }
 
     [Fact]

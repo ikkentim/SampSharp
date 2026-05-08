@@ -47,9 +47,9 @@ internal class CommandScanner
             {
                 var parameters = method.GetParameters();
 
-                if (parameters.Length == 0 || !parameters[0].ParameterType.IsAssignableTo(typeof(Component)))
+                if (parameters.Length == 0 || (!parameters[0].ParameterType.IsAssignableTo(typeof(Component)) && parameters[0].ParameterType != typeof(EntityId)))
                 {
-                    // First parameter must be a component (player).
+                    // First parameter must be an entity/component (player).
                     continue;
                 }
 
@@ -194,34 +194,44 @@ internal class CommandScanner
         }
 
         // Compile using expression trees
-        var methodInvoker = MethodInvokerFactory.Compile(method, sources);
+        var methodInvoker = MethodInvokerFactory.Compile(method, sources, MethodResult.False);
 
         return ToCommandInvoker(methodInvoker, method);
     }
 
     private CommandInvoker ToCommandInvoker(MethodInvoker methodInvoker, MethodInfo method)
     {
-        if (method.ReturnType == typeof(void))
+        if (method.ReturnType == typeof(void) )
         {
             return [StackTraceHidden](target, args, services, manager) =>
             {
-                methodInvoker(target, args, services, manager);
-                return true;
+                var result = (MethodResult?)methodInvoker(target, args, services, manager);
+                return result?.Value ?? true;
             };
         }
 
         if (method.ReturnType == typeof(bool))
         {
-            return [StackTraceHidden](target, args, services, manager) => ((MethodResult)methodInvoker(target, args, services, manager)!).Value;
+            return [StackTraceHidden] (target, args, services, manager) => ((MethodResult)methodInvoker(target, args, services, manager)!).Value;
         }
 
         if (method.ReturnType == typeof(Task))
         {
             return [StackTraceHidden](target, args, services, manager) =>
             {
-                var task = (Task)methodInvoker(target, args, services, manager)!;
+                var result = methodInvoker(target, args, services, manager)!;
 
-                HandleTask(task);
+                if (result is Task task)
+                {
+                    HandleTask(task);
+                    return true;
+                }
+
+                if (result is MethodResult methodResult)
+                {
+                    return methodResult.Value;
+                }
+
                 return true;
             };
         }
@@ -230,13 +240,24 @@ internal class CommandScanner
         {
             return [StackTraceHidden](target, args, services, manager) =>
             {
-                var task = (Task<bool>)methodInvoker(target, args, services, manager)!;
-                if (task.IsCompleted)
+                var result = methodInvoker(target, args, services, manager)!;
+
+                if (result is Task<bool> task)
                 {
-                    return task.Result;
+                    if (task.IsCompleted)
+                    {
+                        return task.Result;
+                    }
+
+                    HandleTask(task);
+                    return true;
                 }
 
-                HandleTask(task);
+                if (result is MethodResult methodResult)
+                {
+                    return methodResult.Value;
+                }
+
                 return true;
             };
         }
