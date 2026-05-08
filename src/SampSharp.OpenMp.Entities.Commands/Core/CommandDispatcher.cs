@@ -56,8 +56,9 @@ internal class CommandDispatcher
             permissionChecker is not null &&
             prefixArgs is [EntityId entityId, ..])
         {
-            var entityManager = services.GetService(typeof(IEntityManager)) as IEntityManager;
-            var playerComponent = entityManager?.GetComponent<Player>(entityId);
+            var entityManager = services.GetService(typeof(IEntityManager)) as IEntityManager
+                ?? throw new InvalidOperationException($"{nameof(IEntityManager)} is not registered in the service provider but is required for permission checking.");
+            var playerComponent = entityManager.GetComponent<Player>(entityId);
             if (playerComponent != null && !permissionChecker.HasPermission(playerComponent, bestMatch.overload))
             {
                 var permDenied = DispatchResult.CreatePermissionDenied();
