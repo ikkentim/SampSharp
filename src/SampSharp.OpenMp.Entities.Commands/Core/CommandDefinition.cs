@@ -34,7 +34,11 @@ public class CommandDefinition
         CompiledInvoker = invoker;
         PrefixParameterCount = prefixParameterCount;
         _aliases = aliases;
-        _tags = tags.ToDictionary(t => t.Key, t => t.Value);
+        _tags = new Dictionary<string, string>();
+        foreach (var tag in tags)
+        {
+            _tags[tag.Key] = tag.Value;
+        }
     }
 
     /// <summary>The command name (without leading slash or group prefix).</summary>

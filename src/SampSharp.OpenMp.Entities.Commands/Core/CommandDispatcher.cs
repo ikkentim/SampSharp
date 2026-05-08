@@ -54,10 +54,18 @@ internal class CommandDispatcher
         // Check permission if a permission checker is provided
         if (bestMatch.overload is not null &&
             permissionChecker is not null &&
-            prefixArgs is [Player player, ..] &&
-            !permissionChecker.HasPermission(player, bestMatch.overload))
+            prefixArgs is [EntityId entityId, ..])
         {
-            return DispatchResult.CreatePermissionDenied();
+            var entityManager = services.GetService(typeof(IEntityManager)) as IEntityManager;
+            var playerComponent = entityManager?.GetComponent<Player>(entityId);
+            if (playerComponent != null && !permissionChecker.HasPermission(playerComponent, bestMatch.overload))
+            {
+                var permDenied = DispatchResult.CreatePermissionDenied();
+                permDenied.CommandOverload = bestMatch.overload;
+                permDenied.AllOverloads = commandGroup.Overloads;
+                permDenied.UsedCommandName = usedCommandName;
+                return permDenied;
+            }
         }
 
         if (bestMatch.matched)
@@ -126,13 +134,9 @@ internal class CommandDispatcher
             return (false, null, remainingArgs.Length);
         }
 
-        // Count required vs optional parameters
-        var requiredCount = parameters.Count(p => p.IsRequired);
-
         // Try to parse all parameters
         var remaining = StringSpan.For(remainingArgs);
         var parsedValues = new List<object?>();
-        var initialRemaining = remainingArgs.Length;
 
         foreach (var param in parameters)
         {
@@ -144,13 +148,18 @@ internal class CommandDispatcher
                 }
                 else if (param.IsRequired)
                 {
-                    return (false, null, initialRemaining);
+                    return (false, null, remainingArgs.Length);
                 }
                 else
                 {
-                    // Optional parameter - use default
+                    // Optional parameter - only use default if there is no remaining input
+                    if (remaining.TrimStart().Length > 0)
+                    {
+                        // There is remaining input but it could not be parsed - fail this overload
+                        return (false, null, remainingArgs.Length);
+                    }
+
                     parsedValues.Add(param.DefaultValue);
-                    // Don't advance 'remaining' for failed optional parse
                 }
             }
             catch (Exception)
@@ -158,38 +167,24 @@ internal class CommandDispatcher
                 // Parser threw exception - treat as parse failure
                 if (param.IsRequired)
                 {
-                    return (false, null, initialRemaining);
+                    return (false, null, remainingArgs.Length);
+                }
+
+                if (remaining.TrimStart().Length > 0)
+                {
+                    return (false, null, remainingArgs.Length);
                 }
 
                 parsedValues.Add(param.DefaultValue);
             }
         }
 
-        // Check if we have required minimum arguments before parsing
-        var requiredValid = true;
-        var testRemaining = StringSpan.For(remainingArgs);
-        var parsedRequiredCount = 0;
-
-        foreach (var param in parameters.Where(p => p.IsRequired))
+        // Reject overloads that have unconsumed trailing input
+        if (remaining.TrimStart().Length > 0)
         {
-            if (param.Parser.TryParse(services, ref testRemaining, out _))
-            {
-                parsedRequiredCount++;
-            }
-            else
-            {
-                requiredValid = false;
-                break;
-            }
+            return (false, null, remaining.Length);
         }
 
-        if (!requiredValid || parsedRequiredCount < requiredCount)
-        {
-            return (false, null, remainingArgs.Length);
-        }
-
-        // Successfully matched - calculate unconsumed length
-        var unconsumedLength = Math.Max(0, remaining.Length);
-        return (true, parsedValues.ToArray(), unconsumedLength);
+        return (true, parsedValues.ToArray(), 0);
     }
 }

@@ -85,7 +85,12 @@ public readonly struct CommandGroup : IEquatable<CommandGroup>
     /// <inheritdoc />
     public override int GetHashCode()
     {
-        return HashCode.Combine(_parts);
+        var hash = new HashCode();
+        foreach (var part in _parts)
+        {
+            hash.Add(part);
+        }
+        return hash.ToHashCode();
     }
 
     /// <inheritdoc />

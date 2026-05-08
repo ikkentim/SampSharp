@@ -82,7 +82,7 @@ public static class EcsBuilderUseMiddlewareExtensions
 
             if (invokeMethods.Length != 1)
             {
-                throw new InvalidOperationException($"No suitable 'Invoke' method found type {middleware}");
+                throw new InvalidOperationException($"No suitable 'Invoke' method found on type {middleware}");
             }
 
             var methodInfo = invokeMethods[0];

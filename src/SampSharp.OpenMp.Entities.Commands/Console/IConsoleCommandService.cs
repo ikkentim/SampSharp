@@ -1,7 +1,7 @@
 namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>
-/// Dispatches console input to a method marked with <see cref="PlayerCommandAttribute" />.
+/// Dispatches console input to a method marked with <see cref="ConsoleCommandAttribute" />.
 /// </summary>
 public interface IConsoleCommandService
 {

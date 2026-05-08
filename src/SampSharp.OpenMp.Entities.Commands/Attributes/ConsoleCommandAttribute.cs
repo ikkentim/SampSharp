@@ -8,11 +8,10 @@ namespace SampSharp.Entities.SAMP.Commands;
 /// </summary>
 /// <remarks>
 /// The signature can be:
-/// - <c>(ConsoleCommandSender sender, [args...])</c> - if the first parameter is ConsoleCommandSender, it's provided automatically
-/// - <c>([args...])</c> - if no ConsoleCommandSender first parameter, treat all parameters as regular parsed parameters
+/// - <c>(ConsoleCommandDispatchContext context, [args...])</c> - if the first parameter is <see cref="ConsoleCommandDispatchContext"/>, it is provided automatically
+/// - <c>([args...])</c> - if no <see cref="ConsoleCommandDispatchContext"/> first parameter, all parameters are treated as regular parsed parameters
 /// - subsequent parameters are parsed from the console input via <see cref="ICommandParameterParser" />
-/// - Return type may be <see langword="bool" />, <see langword="int" />, <see langword="void" />,
-/// <see cref="Task" />, or <see cref="Task{T}" />.
+/// - Return type may be <see langword="void" />, <see langword="bool" />, <see cref="Task" />, or <see cref="Task{T}" /> where T is <see langword="bool" />.
 /// Unlike player commands, console commands do NOT have permission checking.
 /// </remarks>
 [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]

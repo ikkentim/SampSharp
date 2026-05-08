@@ -48,8 +48,6 @@ internal class ConsoleCommandService : IConsoleCommandService
                 return ExecuteCommand(services, result, context);
 
             case DispatchResponse.InvalidArguments:
-            case DispatchResponse.CommandNotFound:
-            default:
                 if (result.AllOverloads != null)
                 {
                     try
@@ -62,7 +60,11 @@ internal class ConsoleCommandService : IConsoleCommandService
                     }
                 }
 
-                return result.Response == DispatchResponse.Success; // Only return true for Success
+                return true;
+
+            case DispatchResponse.CommandNotFound:
+            default:
+                return false;
         }
     }
 

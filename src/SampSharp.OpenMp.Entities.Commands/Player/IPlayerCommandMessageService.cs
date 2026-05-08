@@ -11,7 +11,6 @@ public interface IPlayerCommandMessageService
     /// <param name="player">The player to send the message to.</param>
     /// <param name="overloads">All overloads of the command.</param>
     /// <param name="usedCommandName">The actual command name/path used (e.g., alias name). Empty string means use canonical command name.</param>
-    /// <returns>True to continue processing, false to stop.</returns>
     void SendUsage(Player player, IReadOnlyList<CommandDefinition> overloads, string usedCommandName = "");
 
     /// <summary>

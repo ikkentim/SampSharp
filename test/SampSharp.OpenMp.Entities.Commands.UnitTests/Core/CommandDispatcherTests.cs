@@ -23,12 +23,26 @@ public class CommandDispatcherTests
         for (int i = 0; i < paramCount; i++)
         {
             var mockParser = new Mock<ICommandParameterParser>();
-            // Make parser succeed for test
+            // Make parser consume one whitespace-delimited word per parse call
             mockParser.Setup(p => p.TryParse(It.IsAny<IServiceProvider>(), ref It.Ref<StringSpan>.IsAny, out It.Ref<object?>.IsAny))
                 .Returns((IServiceProvider _, ref StringSpan span, out object? value) =>
                 {
-                    value = $"arg{i}";
-                    return span.Length > 0;
+                    span = span.TrimStart();
+                    if (span.Length == 0)
+                    {
+                        value = null;
+                        return false;
+                    }
+
+                    var len = 0;
+                    while (len < span.Length && !char.IsWhiteSpace(span[len]))
+                    {
+                        len++;
+                    }
+
+                    value = span.Take(len).ToString();
+                    span = span.Skip(len);
+                    return true;
                 });
 
             parsedParams[i] = new CommandParameterInfo($"param{i}", mockParser.Object, true, null, i);
