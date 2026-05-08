@@ -8,6 +8,7 @@ on:
     paths:
       - .github/workflows/dotnet-component.yml
       - src/SampSharp.*/**
+      - test/SampSharp.*/**
       - test/TestMode.*/**
       - SampSharp.slnx
       - Directory.Build.props
@@ -20,6 +21,7 @@ on:
     paths:
       - .github/workflows/dotnet-component.yml
       - src/SampSharp.*/**
+      - test/SampSharp.*/**
       - test/TestMode.*/**
       - SampSharp.slnx
       - Directory.Build.props
@@ -39,6 +41,9 @@ jobs:
 
     - name: Build component libraries
       run: ./build.sh component-libraries
+
+    - name: Test component libraries
+      run: dotnet test test/SampSharp.OpenMp.Entities.Commands.UnitTests/ -c Release --no-build
 
     - name: Pack component libraries
       run: ./build.sh component-libraries publish
