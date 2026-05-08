@@ -11,6 +11,7 @@ on:
       - test/**
       - SampSharp.slnx
       - Directory.Build.props
+      - build.sh
 
   pull_request:
     branches:
@@ -22,6 +23,7 @@ on:
       - test/**
       - SampSharp.slnx
       - Directory.Build.props
+      - build.sh
 
 jobs:
   build:
