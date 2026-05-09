@@ -35,14 +35,25 @@ internal class CommandTreeNode
     }
 
     /// <summary>
-    /// Tries to get the child node for a given word.
+    /// Tries to get the child node for a given word using a case-insensitive span comparison,
+    /// without any string allocation.
     /// </summary>
     /// <param name="word">The word to look up.</param>
     /// <param name="node">The child node, if found.</param>
     /// <returns><c>true</c> if the child node was found; otherwise, <c>false</c>.</returns>
-    public bool TryGetChild(string word, out CommandTreeNode node)
+    public bool TryGetChild(ReadOnlySpan<char> word, out CommandTreeNode node)
     {
-        return _children.TryGetValue(word, out node!);
+        foreach (var kvp in _children)
+        {
+            if (word.Equals(kvp.Key, StringComparison.OrdinalIgnoreCase))
+            {
+                node = kvp.Value;
+                return true;
+            }
+        }
+
+        node = null!;
+        return false;
     }
 
     /// <summary>
@@ -73,9 +84,9 @@ internal class CommandTreeNode
                 wordLen++;
             }
 
-            var word = trimmed.Take(wordLen).ToString();
+            var wordSpan = trimmed.AsSpan()[..wordLen];
 
-            if (current.TryGetChild(word, out var child))
+            if (current.TryGetChild(wordSpan, out var child))
             {
                 current = child;
                 remaining = trimmed.Skip(wordLen); // consume the word

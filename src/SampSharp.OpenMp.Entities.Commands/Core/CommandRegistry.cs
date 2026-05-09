@@ -41,12 +41,11 @@ internal class CommandRegistry : ICommandRegistry
         // Always register in the tree (this updates the reference when adding new overloads)
         _tree.Register(command);
 
-        // Register aliases - each alias points to the full command set (all overloads),
-        // with the alias name as the command name and no group (aliases are top-level)
+        // Register aliases - each alias points to the CommandSet for this specific overload only.
+        // The user controls which overloads share an alias by applying the alias attribute to each overload.
         foreach (var alias in overload.Aliases)
         {
-            var allOverloadsForKey = _overloadsByKey[key].ToArray();
-            var aliasCommand = new CommandSet(alias.Name, null, allOverloadsForKey);
+            var aliasCommand = new CommandSet(alias.Name, null, [overload]);
             _tree.RegisterAlias(alias.Name, aliasCommand);
         }
     }
