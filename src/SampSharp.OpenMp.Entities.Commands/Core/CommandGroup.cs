@@ -79,7 +79,7 @@ public readonly struct CommandGroup : IEquatable<CommandGroup>
     /// <inheritdoc />
     public bool Equals(CommandGroup other)
     {
-        return _parts.SequenceEqual(other._parts);
+        return _parts.SequenceEqual(other._parts, StringComparer.OrdinalIgnoreCase);
     }
 
     /// <inheritdoc />
@@ -88,7 +88,7 @@ public readonly struct CommandGroup : IEquatable<CommandGroup>
         var hash = new HashCode();
         foreach (var part in _parts)
         {
-            hash.Add(part);
+            hash.Add(StringComparer.OrdinalIgnoreCase.GetHashCode(part));
         }
         return hash.ToHashCode();
     }

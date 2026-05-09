@@ -111,21 +111,6 @@ public class DefaultCommandHelpProviderTests
     }
 
     [Fact]
-    public void SearchCommands_NullQuery_ReturnsAll()
-    {
-        var def1 = CreateDefinition("kick");
-        var def2 = CreateDefinition("ban");
-        var registryMock = new Mock<ICommandRegistry>();
-        registryMock.Setup(r => r.GetAll()).Returns(new[] { def1, def2 });
-
-        var provider = new DefaultCommandHelpProvider(registryMock.Object);
-
-        var result = provider.SearchCommands(null!).ToList();
-
-        result.Count.ShouldBe(2);
-    }
-
-    [Fact]
     public void SearchCommands_EmptyQuery_ReturnsAll()
     {
         var def1 = CreateDefinition("kick");

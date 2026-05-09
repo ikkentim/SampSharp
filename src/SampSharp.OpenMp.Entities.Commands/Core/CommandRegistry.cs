@@ -5,6 +5,7 @@ internal class CommandRegistry : ICommandRegistry
     private readonly CommandTree _tree = new();
     private readonly List<CommandSet> _allCommands = [];
     private readonly Dictionary<string, List<CommandDefinition>> _overloadsByKey = new();
+    private readonly Dictionary<string, List<CommandDefinition>> _overloadsByAliasKey = new();
 
     public void Register(CommandDefinition overload)
     {
@@ -41,11 +42,20 @@ internal class CommandRegistry : ICommandRegistry
         // Always register in the tree (this updates the reference when adding new overloads)
         _tree.Register(command);
 
-        // Register aliases - each alias points to the CommandSet for this specific overload only.
-        // The user controls which overloads share an alias by applying the alias attribute to each overload.
+        // Register aliases - accumulate overloads per alias key so multiple overloads sharing
+        // an alias are all reachable via that alias (consistent with canonical command behaviour).
         foreach (var alias in overload.Aliases)
         {
-            var aliasCommand = new CommandSet(alias.Name, null, [overload]);
+            var aliasKey = alias.Name.ToLowerInvariant();
+
+            if (!_overloadsByAliasKey.TryGetValue(aliasKey, out var aliasOverloads))
+            {
+                aliasOverloads = new List<CommandDefinition>();
+                _overloadsByAliasKey[aliasKey] = aliasOverloads;
+            }
+            aliasOverloads.Add(overload);
+
+            var aliasCommand = new CommandSet(alias.Name, null, aliasOverloads.ToArray());
             _tree.RegisterAlias(alias.Name, aliasCommand);
         }
     }
@@ -145,5 +155,6 @@ internal class CommandRegistry : ICommandRegistry
         _tree.Clear();
         _allCommands.Clear();
         _overloadsByKey.Clear();
+        _overloadsByAliasKey.Clear();
     }
 }

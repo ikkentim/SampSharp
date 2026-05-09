@@ -152,13 +152,13 @@ public class SampleCommandsSystem : ISystem
     /// Player command: /ping - shows player ping (demonstrates DI parameter - IEntityManager injected)
     /// </summary>
     [PlayerCommand(Name = "ping")]
-    public void PingCommand(Player player, IEntityManager entityManager)
+    public void PingCommand(Player player)
     {
         player.SendClientMessage($"Your ping: {player.Ping}ms");
     }
 
     [PlayerCommand("announce")]
-    public void AnnounceCommand(IWorldService server)
+    public void AnnounceCommand(Player player, IWorldService server)
     {
         server.SendClientMessage("Hello everyone!");
     }
@@ -239,6 +239,5 @@ public class SampleCommandsSystem : ISystem
     public void AdminTestCommand(AdminComponent admin)
     {
         admin.GetComponent<Player>()!.SendClientMessage("Yup, you're an admin");
-        ;
     }
 }

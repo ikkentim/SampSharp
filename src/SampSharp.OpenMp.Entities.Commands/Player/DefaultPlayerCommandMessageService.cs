@@ -81,15 +81,17 @@ public class DefaultPlayerCommandMessageService : IPlayerCommandMessageService
     /// <inheritdoc />
     public bool SendPermissionDenied(Player player, CommandDefinition overload)
     {
-        var message = FormatPermissionDenied(""); //  TODO input text
+        var commandText = overload.Group.HasValue ? $"{overload.Group.Value.FullName} {overload.Name}" : overload.Name;
+        var message = FormatPermissionDenied(commandText);
         player.SendClientMessage(message);
-        return true;// TODO: option to not print message
+        return true;
     }
 
     /// <inheritdoc />
     public bool SendCommandNotFound(Player player, string input)
     {
-        return false;
+        player.SendClientMessage(FormatCommandNotFound(input));
+        return true;
     }
 
     private string FormatCommandNotFound(string commandText)

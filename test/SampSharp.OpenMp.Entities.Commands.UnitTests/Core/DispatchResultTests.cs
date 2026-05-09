@@ -42,18 +42,6 @@ public class DispatchResultTests
     }
 
     [Fact]
-    public void CreateSuccess_MessageIsNullByDefault()
-    {
-        var result = DispatchResult.CreateSuccess();
-    }
-
-    [Fact]
-    public void CreateSuccess_UsageMessageIsNullByDefault()
-    {
-        var result = DispatchResult.CreateSuccess();
-    }
-
-    [Fact]
     public void CreateSuccess_CommandOverloadIsNullByDefault()
     {
         var result = DispatchResult.CreateSuccess();

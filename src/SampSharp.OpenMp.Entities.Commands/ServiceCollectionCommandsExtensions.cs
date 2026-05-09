@@ -29,6 +29,7 @@ public static class ServiceCollectionCommandsExtensions
         public IServiceCollection AddPlayerCommands()
         {
             services.AddCommandsSystem();
+            services.AddOptions<PlayerCommandServiceOptions>();
 
             services.TryAddSingleton<IPermissionChecker, DefaultPermissionChecker>();
             services.TryAddSingleton<IPlayerCommandService, PlayerCommandService>();
@@ -44,6 +45,7 @@ public static class ServiceCollectionCommandsExtensions
         public IServiceCollection AddConsoleCommands()
         {
             services.AddCommandsSystem();
+            services.AddOptions<ConsoleCommandServiceOptions>();
 
             services.TryAddSingleton<IConsoleCommandService, ConsoleCommandService>();
             services.TryAddSingleton<IConsoleCommandMessageService, DefaultConsoleCommandMessageService>();
