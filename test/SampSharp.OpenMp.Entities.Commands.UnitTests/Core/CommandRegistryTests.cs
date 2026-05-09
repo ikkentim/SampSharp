@@ -37,10 +37,15 @@ public class CommandRegistryTests
 
     private void DummyMethod() { }
 
+    private static CommandRegistry CreateRegistry()
+    {
+        return new CommandRegistry(StringComparison.OrdinalIgnoreCase);
+    }
+
     [Fact]
     public void Register_SingleCommand_StoresCorrectly()
     {
-        var registry = new CommandRegistry();
+        var registry = CreateRegistry();
         var command = CreateCommand("test");
 
         registry.Register(command);
@@ -53,7 +58,7 @@ public class CommandRegistryTests
     [Fact]
     public void Register_CommandWithGroup_CanBeFoundByPath()
     {
-        var registry = new CommandRegistry();
+        var registry = CreateRegistry();
         var command = CreateCommand("give", new CommandGroup("admin", "money"));
 
         registry.Register(command);
@@ -67,7 +72,7 @@ public class CommandRegistryTests
     [Fact]
     public void Register_MultipleOverloads_AllStoredInGetAll()
     {
-        var registry = new CommandRegistry();
+        var registry = CreateRegistry();
         var command1 = CreateCommand("test");
         var command2 = CreateCommand("test");
 
@@ -81,7 +86,7 @@ public class CommandRegistryTests
     [Fact]
     public void Register_WithAlias_FindableByAlias()
     {
-        var registry = new CommandRegistry();
+        var registry = CreateRegistry();
         var aliases = new[] { new CommandAlias("pm") };
         var command = CreateCommand("message", aliases: aliases);
 
@@ -95,7 +100,7 @@ public class CommandRegistryTests
     [Fact]
     public void Register_MultipleAliases_AllFindable()
     {
-        var registry = new CommandRegistry();
+        var registry = CreateRegistry();
         var aliases = new[] { new CommandAlias("pm"), new CommandAlias("msg") };
         var command = CreateCommand("message", aliases: aliases);
 
@@ -110,7 +115,7 @@ public class CommandRegistryTests
     [Fact]
     public void Register_MultipleOverloadsSharedAlias_AllReachableViaAlias()
     {
-        var registry = new CommandRegistry();
+        var registry = CreateRegistry();
         var aliases1 = new[] { new CommandAlias("pm") };
         var aliases2 = new[] { new CommandAlias("pm") };
         var command1 = CreateCommand("message", aliases: aliases1);
@@ -128,7 +133,7 @@ public class CommandRegistryTests
     [Fact]
     public void GetAll_ReturnsAllCommands()
     {
-        var registry = new CommandRegistry();
+        var registry = CreateRegistry();
         var cmd1 = CreateCommand("test1");
         var cmd2 = CreateCommand("test2");
         var cmd3 = CreateCommand("test3");
@@ -144,7 +149,7 @@ public class CommandRegistryTests
     [Fact]
     public void GetAll_WithMultipleOverloads_IncludesAllOverloads()
     {
-        var registry = new CommandRegistry();
+        var registry = CreateRegistry();
         var cmd1 = CreateCommand("test");
         var cmd2 = CreateCommand("test");
         var cmd3 = CreateCommand("test");
@@ -160,7 +165,7 @@ public class CommandRegistryTests
     [Fact]
     public void GetCommandsInGroup_ReturnsCommandsInGroup()
     {
-        var registry = new CommandRegistry();
+        var registry = CreateRegistry();
         var group = new CommandGroup("admin");
         var cmd1 = CreateCommand("kick", group);
         var cmd2 = CreateCommand("ban", group);
@@ -177,7 +182,7 @@ public class CommandRegistryTests
     [Fact]
     public void GetCommandsInGroup_WithNoCommands_ReturnsEmpty()
     {
-        var registry = new CommandRegistry();
+        var registry = CreateRegistry();
         var group = new CommandGroup("admin");
 
         var inGroup = ((ICommandRegistry)registry).GetCommandsInGroup(group).ToList();
@@ -187,7 +192,7 @@ public class CommandRegistryTests
     [Fact]
     public void GetGroups_ReturnsAllGroups()
     {
-        var registry = new CommandRegistry();
+        var registry = CreateRegistry();
         var group1 = new CommandGroup("admin");
         var group2 = new CommandGroup("player");
 
@@ -208,7 +213,7 @@ public class CommandRegistryTests
     [Fact]
     public void GetGroups_WithNoGroups_ReturnsEmpty()
     {
-        var registry = new CommandRegistry();
+        var registry = CreateRegistry();
         var cmd1 = CreateCommand("test");
         registry.Register(cmd1);
 
@@ -219,14 +224,14 @@ public class CommandRegistryTests
     [Fact]
     public void Register_NullCommand_ThrowsArgumentNullException()
     {
-        var registry = new CommandRegistry();
+        var registry = CreateRegistry();
         Should.Throw<ArgumentNullException>(() => registry.Register(null!));
     }
 
     [Fact]
     public void GetCommandGroupByPath_FindsExactMatch()
     {
-        var registry = new CommandRegistry();
+        var registry = CreateRegistry();
         var command = CreateCommand("give", new CommandGroup("admin", "money"));
         registry.Register(command);
 
@@ -239,7 +244,7 @@ public class CommandRegistryTests
     [Fact]
     public void GetCommandGroupByPath_EmptyInput_ReturnsNull()
     {
-        var registry = new CommandRegistry();
+        var registry = CreateRegistry();
         var span = StringSpan.Empty;
         var found = registry.GetCommandGroupByPath(ref span);
         found.ShouldBeNull();

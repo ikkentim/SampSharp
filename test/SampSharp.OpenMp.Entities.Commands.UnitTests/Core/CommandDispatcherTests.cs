@@ -68,7 +68,7 @@ public class CommandDispatcherTests
 
     private CommandRegistry CreateRegistry(params CommandDefinition[] commands)
     {
-        var registry = new CommandRegistry();
+        var registry = new CommandRegistry(StringComparison.OrdinalIgnoreCase);
         foreach (var cmd in commands)
         {
             registry.Register(cmd);

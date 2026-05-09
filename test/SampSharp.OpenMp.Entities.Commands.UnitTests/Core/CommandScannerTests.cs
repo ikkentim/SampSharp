@@ -32,6 +32,11 @@ public class CommandScannerTests
         return new Mock<IUnhandledExceptionHandler>().Object;
     }
 
+    private static CommandRegistry CreateCommandRegistry()
+    {
+        return new CommandRegistry(StringComparison.OrdinalIgnoreCase);
+    }
+
     // Player commands use prefixParams=1, so each method must have at least 1 parameter.
     // The first parameter is the player prefix (EntityId); subsequent ones are parsed from input.
 
@@ -157,7 +162,7 @@ public class CommandScannerTests
     [Fact]
     public void ScanPlayerCommands_DiscoversSingleCommand()
     {
-        var registry = new CommandRegistry();
+        var registry = CreateCommandRegistry();
         var scanner = new CommandScanner(CreateRegistry(typeof(SimplePlayerCommandSystem)), CreateExceptionHandler());
 
         scanner.ScanPlayerCommands(registry, CreateParserFactory());
@@ -168,7 +173,7 @@ public class CommandScannerTests
     [Fact]
     public void ScanPlayerCommands_SupportsCustomComponentType()
     {
-        var registry = new CommandRegistry();
+        var registry = CreateCommandRegistry();
         var scanner = new CommandScanner(CreateRegistry(typeof(CustomComponentCommandSystem)), CreateExceptionHandler());
 
         scanner.ScanPlayerCommands(registry, CreateParserFactory());
@@ -179,7 +184,7 @@ public class CommandScannerTests
     [Fact]
     public void ScanPlayerCommands_SupportsEntityIdType()
     {
-        var registry = new CommandRegistry();
+        var registry = CreateCommandRegistry();
         var scanner = new CommandScanner(CreateRegistry(typeof(EntityIdCommandSystem)), CreateExceptionHandler());
 
         scanner.ScanPlayerCommands(registry, CreateParserFactory());
@@ -190,7 +195,7 @@ public class CommandScannerTests
     [Fact]
     public void ScanPlayerCommands_SkipsNoParameters()
     {
-        var registry = new CommandRegistry();
+        var registry = CreateCommandRegistry();
         var scanner = new CommandScanner(CreateRegistry(typeof(InvalidParametersCommandSystem)), CreateExceptionHandler());
 
         scanner.ScanPlayerCommands(registry, CreateParserFactory());
@@ -201,7 +206,7 @@ public class CommandScannerTests
     [Fact]
     public void ScanPlayerCommands_UsesExplicitCommandName()
     {
-        var registry = new CommandRegistry();
+        var registry = CreateCommandRegistry();
         var scanner = new CommandScanner(CreateRegistry(typeof(NamedPlayerCommandSystem)), CreateExceptionHandler());
 
         scanner.ScanPlayerCommands(registry, CreateParserFactory());
@@ -212,7 +217,7 @@ public class CommandScannerTests
     [Fact]
     public void ScanPlayerCommands_StripsSuffixFromMethodName()
     {
-        var registry = new CommandRegistry();
+        var registry = CreateCommandRegistry();
         var scanner = new CommandScanner(CreateRegistry(typeof(CommandWithSuffixSystem)), CreateExceptionHandler());
 
         scanner.ScanPlayerCommands(registry, CreateParserFactory());
@@ -224,7 +229,7 @@ public class CommandScannerTests
     [Fact]
     public void ScanPlayerCommands_ExtractsParsedParameters()
     {
-        var registry = new CommandRegistry();
+        var registry = CreateCommandRegistry();
         var scanner = new CommandScanner(CreateRegistry(typeof(PlayerCommandWithParamsSystem)), CreateExceptionHandler());
 
         scanner.ScanPlayerCommands(registry, CreateParserFactory());
@@ -239,7 +244,7 @@ public class CommandScannerTests
     [Fact]
     public void ScanPlayerCommands_RegistersAlias()
     {
-        var registry = new CommandRegistry();
+        var registry = CreateCommandRegistry();
         var scanner = new CommandScanner(CreateRegistry(typeof(PlayerCommandWithAliasSystem)), CreateExceptionHandler());
 
         scanner.ScanPlayerCommands(registry, CreateParserFactory());
@@ -251,7 +256,7 @@ public class CommandScannerTests
     [Fact]
     public void ScanPlayerCommands_RegistersTag()
     {
-        var registry = new CommandRegistry();
+        var registry = CreateCommandRegistry();
         var scanner = new CommandScanner(CreateRegistry(typeof(PlayerCommandWithTagSystem)), CreateExceptionHandler());
 
         scanner.ScanPlayerCommands(registry, CreateParserFactory());
@@ -264,7 +269,7 @@ public class CommandScannerTests
     [Fact]
     public void ScanPlayerCommands_UsesClassLevelCommandGroup()
     {
-        var registry = new CommandRegistry();
+        var registry = CreateCommandRegistry();
         var scanner = new CommandScanner(CreateRegistry(typeof(GroupedPlayerCommandSystem)), CreateExceptionHandler());
 
         scanner.ScanPlayerCommands(registry, CreateParserFactory());
@@ -277,7 +282,7 @@ public class CommandScannerTests
     [Fact]
     public void ScanPlayerCommands_UsesMethodLevelCommandGroup()
     {
-        var registry = new CommandRegistry();
+        var registry = CreateCommandRegistry();
         var scanner = new CommandScanner(CreateRegistry(typeof(MethodGroupPlayerCommandSystem)), CreateExceptionHandler());
 
         scanner.ScanPlayerCommands(registry, CreateParserFactory());
@@ -288,7 +293,7 @@ public class CommandScannerTests
     [Fact]
     public void ScanPlayerCommands_MultipleCommands_AllRegistered()
     {
-        var registry = new CommandRegistry();
+        var registry = CreateCommandRegistry();
         var scanner = new CommandScanner(CreateRegistry(typeof(MultipleCommandSystem)), CreateExceptionHandler());
 
         scanner.ScanPlayerCommands(registry, CreateParserFactory());
@@ -300,7 +305,7 @@ public class CommandScannerTests
     [Fact]
     public void ScanPlayerCommands_EmptySystemRegistry_RegistersNothing()
     {
-        var registry = new CommandRegistry();
+        var registry = CreateCommandRegistry();
         var scanner = new CommandScanner(CreateRegistry(), CreateExceptionHandler());
 
         scanner.ScanPlayerCommands(registry, CreateParserFactory());
@@ -311,7 +316,7 @@ public class CommandScannerTests
     [Fact]
     public void ScanPlayerCommands_InvalidReturnType_SkipsMethod()
     {
-        var registry = new CommandRegistry();
+        var registry = CreateCommandRegistry();
         var scanner = new CommandScanner(CreateRegistry(typeof(InvalidReturnTypeSystem)), CreateExceptionHandler());
 
         scanner.ScanPlayerCommands(registry, CreateParserFactory());
@@ -322,7 +327,7 @@ public class CommandScannerTests
     [Fact]
     public void ScanConsoleCommands_DiscoversSingleCommand()
     {
-        var registry = new CommandRegistry();
+        var registry = CreateCommandRegistry();
         var scanner = new CommandScanner(CreateRegistry(typeof(SimpleConsoleCommandSystem)), CreateExceptionHandler());
 
         scanner.ScanConsoleCommands(registry, CreateParserFactory());
@@ -333,7 +338,7 @@ public class CommandScannerTests
     [Fact]
     public void ScanConsoleCommands_WithContext_ContextIsNotParsedParameter()
     {
-        var registry = new CommandRegistry();
+        var registry = CreateCommandRegistry();
         var scanner = new CommandScanner(CreateRegistry(typeof(ConsoleCommandWithContextSystem)), CreateExceptionHandler());
 
         scanner.ScanConsoleCommands(registry, CreateParserFactory());

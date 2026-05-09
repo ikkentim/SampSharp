@@ -1,8 +1,8 @@
 namespace SampSharp.Entities.SAMP.Commands;
 
-internal class CommandRegistry : ICommandRegistry
+internal class CommandRegistry(StringComparison stringComparison) : ICommandRegistry
 {
-    private readonly CommandTree _tree = new();
+    private readonly CommandTree _tree = new(stringComparison);
     private readonly List<CommandDefinition> _allCommands = [];
 
     public void Register(CommandDefinition overload)

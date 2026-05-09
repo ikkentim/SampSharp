@@ -24,10 +24,15 @@ public class CommandTreeNodeTests
 
     private void DummyMethod() { }
 
+    private static CommandTreeNode CreateNode()
+    {
+        return new CommandTreeNode(StringComparison.OrdinalIgnoreCase);
+    }
+
     [Fact]
     public void Constructor_CommandsIsNullByDefault()
     {
-        var node = new CommandTreeNode();
+        var node = CreateNode();
 
         node.Commands.ShouldBeNull();
     }
@@ -35,7 +40,7 @@ public class CommandTreeNodeTests
     [Fact]
     public void Constructor_ChildrenIsEmptyByDefault()
     {
-        var node = new CommandTreeNode();
+        var node = CreateNode();
 
         node.Children.ShouldBeEmpty();
     }
@@ -43,7 +48,7 @@ public class CommandTreeNodeTests
     [Fact]
     public void AddCommand_CommandsContainsDefinition()
     {
-        var node = new CommandTreeNode();
+        var node = CreateNode();
         var def = CreateDefinition("test");
 
         node.AddCommand(def);
@@ -56,7 +61,7 @@ public class CommandTreeNodeTests
     [Fact]
     public void AddCommand_MultipleOverloads_AllStored()
     {
-        var node = new CommandTreeNode();
+        var node = CreateNode();
         var def1 = CreateDefinition("test");
         var def2 = CreateDefinition("test");
 
@@ -69,7 +74,7 @@ public class CommandTreeNodeTests
     [Fact]
     public void GetOrCreateChild_CreatesNewChild()
     {
-        var node = new CommandTreeNode();
+        var node = CreateNode();
 
         var child = node.GetOrCreateChild("test");
 
@@ -80,7 +85,7 @@ public class CommandTreeNodeTests
     [Fact]
     public void GetOrCreateChild_ReturnsSameChildOnSecondCall()
     {
-        var node = new CommandTreeNode();
+        var node = CreateNode();
 
         var child1 = node.GetOrCreateChild("test");
         var child2 = node.GetOrCreateChild("test");
@@ -91,7 +96,7 @@ public class CommandTreeNodeTests
     [Fact]
     public void GetOrCreateChild_CaseInsensitive()
     {
-        var node = new CommandTreeNode();
+        var node = CreateNode();
 
         var child1 = node.GetOrCreateChild("Test");
         var child2 = node.GetOrCreateChild("test");
@@ -102,7 +107,7 @@ public class CommandTreeNodeTests
     [Fact]
     public void GetOrCreateChild_DifferentWords_CreatesDifferentChildren()
     {
-        var node = new CommandTreeNode();
+        var node = CreateNode();
 
         var child1 = node.GetOrCreateChild("kick");
         var child2 = node.GetOrCreateChild("ban");
@@ -114,7 +119,7 @@ public class CommandTreeNodeTests
     [Fact]
     public void TryGetChild_ExistingChild_ReturnsTrue()
     {
-        var node = new CommandTreeNode();
+        var node = CreateNode();
         node.GetOrCreateChild("test");
 
         var found = node.TryGetChild("test", out var child);
@@ -126,7 +131,7 @@ public class CommandTreeNodeTests
     [Fact]
     public void TryGetChild_NonExistentChild_ReturnsFalse()
     {
-        var node = new CommandTreeNode();
+        var node = CreateNode();
 
         var found = node.TryGetChild("nonexistent", out _);
 
@@ -136,7 +141,7 @@ public class CommandTreeNodeTests
     [Fact]
     public void TryGetChild_CaseInsensitive()
     {
-        var node = new CommandTreeNode();
+        var node = CreateNode();
         node.GetOrCreateChild("Test");
 
         node.TryGetChild("test", out _).ShouldBeTrue();
@@ -146,7 +151,7 @@ public class CommandTreeNodeTests
     [Fact]
     public void Traverse_EmptyInput_ReturnsRoot()
     {
-        var node = new CommandTreeNode();
+        var node = CreateNode();
         var span = StringSpan.Empty;
 
         var result = node.Traverse(ref span);
@@ -158,7 +163,7 @@ public class CommandTreeNodeTests
     [Fact]
     public void Traverse_SingleMatchingWord_ReturnsChild()
     {
-        var root = new CommandTreeNode();
+        var root = CreateNode();
         var child = root.GetOrCreateChild("kick");
         var span = StringSpan.For("kick");
 
@@ -171,7 +176,7 @@ public class CommandTreeNodeTests
     [Fact]
     public void Traverse_MultipleMatchingWords_TraversesDeep()
     {
-        var root = new CommandTreeNode();
+        var root = CreateNode();
         var admin = root.GetOrCreateChild("admin");
         var money = admin.GetOrCreateChild("money");
         var give = money.GetOrCreateChild("give");
@@ -186,7 +191,7 @@ public class CommandTreeNodeTests
     [Fact]
     public void Traverse_StopsAtUnknownWord()
     {
-        var root = new CommandTreeNode();
+        var root = CreateNode();
         var admin = root.GetOrCreateChild("admin");
         var span = StringSpan.For("admin unknown");
 
@@ -199,7 +204,7 @@ public class CommandTreeNodeTests
     [Fact]
     public void Traverse_NoMatchingWords_ReturnsRoot()
     {
-        var root = new CommandTreeNode();
+        var root = CreateNode();
         root.GetOrCreateChild("admin");
         var span = StringSpan.For("unknown");
 
@@ -212,7 +217,7 @@ public class CommandTreeNodeTests
     [Fact]
     public void Traverse_MultipleSpacesBetweenWords_StillMatches()
     {
-        var root = new CommandTreeNode();
+        var root = CreateNode();
         var admin = root.GetOrCreateChild("admin");
         var kick = admin.GetOrCreateChild("kick");
         var span = StringSpan.For("admin   kick");
@@ -226,7 +231,7 @@ public class CommandTreeNodeTests
     [Fact]
     public void Traverse_InputWithRemainingArgs_LeavesArgsInSpan()
     {
-        var root = new CommandTreeNode();
+        var root = CreateNode();
         root.GetOrCreateChild("kick");
         var span = StringSpan.For("kick playerName");
 

@@ -1,3 +1,5 @@
+using Microsoft.Extensions.Options;
+
 namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>
@@ -8,17 +10,18 @@ internal class ConsoleCommandService : IConsoleCommandService
 {
     private readonly CommandDispatcher _dispatcher = new();
     private readonly CommandExecutor _executor;
-    private readonly CommandRegistry _registry = new();
+    private readonly CommandRegistry _registry;
     private readonly IUnhandledExceptionHandler _unhandledExceptionHandler;
     private readonly IConsoleCommandMessageService _messageService;
 
     public ConsoleCommandService(IEntityManager entityManager, ISystemRegistry systemRegistry, IConsoleCommandMessageService messageService,
-        IUnhandledExceptionHandler unhandledExceptionHandler, ICommandParameterParserFactory parserFactory)
+        IUnhandledExceptionHandler unhandledExceptionHandler, ICommandParameterParserFactory parserFactory, IOptions<ConsoleCommandServiceOptions> options)
     {
         _unhandledExceptionHandler = unhandledExceptionHandler;
         _messageService = messageService;
 
         _executor = new CommandExecutor(entityManager);
+        _registry = new CommandRegistry(options.Value.StringComparison);
 
         // Scan for console commands
         var scanner = new CommandScanner(systemRegistry, unhandledExceptionHandler);

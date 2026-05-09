@@ -24,10 +24,15 @@ public class CommandTreeTests
 
     private void DummyMethod() { }
 
+    private static CommandTree CreateTree()
+    {
+        return new CommandTree(StringComparison.OrdinalIgnoreCase);
+    }
+
     [Fact]
     public void Register_SingleCommand_CanBeFound()
     {
-        var tree = new CommandTree();
+        var tree = CreateTree();
         var def = CreateDefinition("test");
 
         tree.Register(def, null, "test");
@@ -42,7 +47,7 @@ public class CommandTreeTests
     [Fact]
     public void Register_NullCommand_ThrowsArgumentNullException()
     {
-        var tree = new CommandTree();
+        var tree = CreateTree();
 
         Should.Throw<ArgumentNullException>(() => tree.Register(null!, null, "test"));
     }
@@ -50,7 +55,7 @@ public class CommandTreeTests
     [Fact]
     public void Register_NullName_ThrowsArgumentNullException()
     {
-        var tree = new CommandTree();
+        var tree = CreateTree();
         var def = CreateDefinition("test");
 
         Should.Throw<ArgumentNullException>(() => tree.Register(def, null, null!));
@@ -59,7 +64,7 @@ public class CommandTreeTests
     [Fact]
     public void Register_CommandWithGroup_CanBeFoundByFullPath()
     {
-        var tree = new CommandTree();
+        var tree = CreateTree();
         var group = new CommandGroup("admin", "money");
         var def = CreateDefinition("give", group);
 
@@ -75,7 +80,7 @@ public class CommandTreeTests
     [Fact]
     public void FindCommand_UnknownCommand_ReturnsNull()
     {
-        var tree = new CommandTree();
+        var tree = CreateTree();
 
         var span = StringSpan.For("unknown");
         var found = tree.FindCommand(ref span);
@@ -86,7 +91,7 @@ public class CommandTreeTests
     [Fact]
     public void FindCommand_EmptyInput_ReturnsNull()
     {
-        var tree = new CommandTree();
+        var tree = CreateTree();
         var def = CreateDefinition("test");
         tree.Register(def, null, "test");
 
@@ -99,7 +104,7 @@ public class CommandTreeTests
     [Fact]
     public void FindCommand_CaseInsensitive()
     {
-        var tree = new CommandTree();
+        var tree = CreateTree();
         var def = CreateDefinition("Test");
         tree.Register(def, null, "Test");
 
@@ -116,7 +121,7 @@ public class CommandTreeTests
     [Fact]
     public void FindCommand_AdvancesSpanByConsumedWords()
     {
-        var tree = new CommandTree();
+        var tree = CreateTree();
         var group = new CommandGroup("admin");
         var def = CreateDefinition("kick", group);
         tree.Register(def, group, "kick");
@@ -131,7 +136,7 @@ public class CommandTreeTests
     [Fact]
     public void FindCommand_PartialMatch_StopsAtDeepestNode()
     {
-        var tree = new CommandTree();
+        var tree = CreateTree();
         var group = new CommandGroup("admin");
         var def = CreateDefinition("kick", group);
         tree.Register(def, group, "kick");
@@ -148,7 +153,7 @@ public class CommandTreeTests
     [Fact]
     public void Register_MultipleOverloads_SameNode_AccumulatesAll()
     {
-        var tree = new CommandTree();
+        var tree = CreateTree();
         var def1 = CreateDefinition("test");
         var def2 = CreateDefinition("test");
 
@@ -165,7 +170,7 @@ public class CommandTreeTests
     [Fact]
     public void Register_AliasAsTopLevel_CanBeFound()
     {
-        var tree = new CommandTree();
+        var tree = CreateTree();
         var def = CreateDefinition("message");
         tree.Register(def, null, "message");
         tree.Register(def, null, "pm");
@@ -179,7 +184,7 @@ public class CommandTreeTests
     [Fact]
     public void Clear_RemovesAllCommands()
     {
-        var tree = new CommandTree();
+        var tree = CreateTree();
         var def1 = CreateDefinition("test");
         var def2 = CreateDefinition("kick", new CommandGroup("admin"));
         tree.Register(def1, null, "test");
@@ -196,7 +201,7 @@ public class CommandTreeTests
     [Fact]
     public void Register_MultipleCommands_AllFindable()
     {
-        var tree = new CommandTree();
+        var tree = CreateTree();
         var def1 = CreateDefinition("help");
         var def2 = CreateDefinition("kick", new CommandGroup("admin"));
         var def3 = CreateDefinition("ban", new CommandGroup("admin"));
@@ -215,7 +220,7 @@ public class CommandTreeTests
     [Fact]
     public void Root_IsAccessible()
     {
-        var tree = new CommandTree();
+        var tree = CreateTree();
 
         tree.Root.ShouldNotBeNull();
     }

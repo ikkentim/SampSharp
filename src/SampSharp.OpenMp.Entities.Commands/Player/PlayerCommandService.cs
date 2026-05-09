@@ -1,3 +1,5 @@
+using Microsoft.Extensions.Options;
+
 namespace SampSharp.Entities.SAMP.Commands;
 
 internal class PlayerCommandService : IPlayerCommandService
@@ -11,14 +13,15 @@ internal class PlayerCommandService : IPlayerCommandService
     private readonly IPlayerCommandMessageService _messageService;
 
     public PlayerCommandService(IEntityManager entityManager, ISystemRegistry systemRegistry, IPlayerCommandMessageService messageService,
-        IPermissionChecker permissionChecker, IUnhandledExceptionHandler unhandledExceptionHandler, ICommandParameterParserFactory parserFactory)
+        IPermissionChecker permissionChecker, IUnhandledExceptionHandler unhandledExceptionHandler, ICommandParameterParserFactory parserFactory,
+        IOptions<PlayerCommandServiceOptions> options)
     {
         _entityManager = entityManager;
         _unhandledExceptionHandler = unhandledExceptionHandler;
         _messageService = messageService;
         _permissionChecker = permissionChecker;
 
-        _registry = new CommandRegistry();
+        _registry = new CommandRegistry(options.Value.StringComparison);
         _executor = new CommandExecutor(entityManager);
 
         // Scan for player commands into the shared registry

@@ -4,9 +4,9 @@ namespace SampSharp.Entities.SAMP.Commands;
 /// Represents a node in the command tree where edges are words.
 /// Each node may contain a list of command overloads and child nodes for further word matching.
 /// </summary>
-internal class CommandTreeNode
+internal class CommandTreeNode(StringComparison stringComparison)
 {
-    private readonly Dictionary<string, CommandTreeNode> _children = new(StringComparer.OrdinalIgnoreCase);
+    private readonly Dictionary<string, CommandTreeNode> _children = new(StringComparer.FromComparison(stringComparison));
     private List<CommandDefinition>? _commands;
 
     /// <summary>
@@ -36,7 +36,7 @@ internal class CommandTreeNode
     {
         if (!_children.TryGetValue(word, out var node))
         {
-            node = new CommandTreeNode();
+            node = new CommandTreeNode(stringComparison);
             _children[word] = node;
         }
 
@@ -54,7 +54,7 @@ internal class CommandTreeNode
     {
         foreach (var kvp in _children)
         {
-            if (word.Equals(kvp.Key, StringComparison.OrdinalIgnoreCase))
+            if (word.Equals(kvp.Key, stringComparison))
             {
                 node = kvp.Value;
                 return true;

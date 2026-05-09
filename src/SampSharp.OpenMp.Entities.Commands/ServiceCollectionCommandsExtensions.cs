@@ -25,8 +25,9 @@ public static class ServiceCollectionCommandsExtensions
         /// <summary>
         /// Adds player command services to the service collection.
         /// </summary>
+        /// <param name="configure">An optional action to configure player command service options.</param>
         /// <returns>The service collection for chaining.</returns>
-        public IServiceCollection AddPlayerCommands()
+        public IServiceCollection AddPlayerCommands(Action<PlayerCommandServiceOptions>? configure = null)
         {
             services.AddCommandsSystem();
             services.AddOptions<PlayerCommandServiceOptions>();
@@ -35,20 +36,31 @@ public static class ServiceCollectionCommandsExtensions
             services.TryAddSingleton<IPlayerCommandService, PlayerCommandService>();
             services.TryAddSingleton<IPlayerCommandMessageService, DefaultPlayerCommandMessageService>();
 
+            if (configure != null)
+            {
+                services.Configure(configure);
+            }
+
             return services;
         }
 
         /// <summary>
         /// Adds console command services to the service collection.
         /// </summary>
+        /// <param name="configure">An optional action to configure console command service options.</param>
         /// <returns>The service collection for chaining.</returns>
-        public IServiceCollection AddConsoleCommands()
+        public IServiceCollection AddConsoleCommands(Action<ConsoleCommandServiceOptions>? configure = null)
         {
             services.AddCommandsSystem();
             services.AddOptions<ConsoleCommandServiceOptions>();
 
             services.TryAddSingleton<IConsoleCommandService, ConsoleCommandService>();
             services.TryAddSingleton<IConsoleCommandMessageService, DefaultConsoleCommandMessageService>();
+
+            if (configure != null)
+            {
+                services.Configure(configure);
+            }
 
             return services;
         }

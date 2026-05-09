@@ -11,17 +11,3 @@ public class CommandServiceOptions
     /// </summary>
     public StringComparison StringComparison { get; set; } = StringComparison.OrdinalIgnoreCase;
 }
-
-/// <summary>
-/// Options for configuring the player command service.
-/// </summary>
-public class PlayerCommandServiceOptions : CommandServiceOptions
-{
-}
-
-/// <summary>
-/// Options for configuring the console command service.
-/// </summary>
-public class ConsoleCommandServiceOptions : CommandServiceOptions
-{
-}

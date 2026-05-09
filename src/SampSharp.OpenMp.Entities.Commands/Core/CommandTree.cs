@@ -19,9 +19,9 @@ namespace SampSharp.Entities.SAMP.Commands;
 ///   │   └─ "ban" -> Node [overloads for "admin ban"]
 ///   └─ "help" -> Node [overloads for "help"]
 /// </summary>
-internal class CommandTree
+internal class CommandTree(StringComparison stringComparison)
 {
-    private CommandTreeNode _root = new();
+    private CommandTreeNode _root = new(stringComparison);
 
     /// <summary>
     /// Registers a command overload in the tree by traversing from the group parts to the command name.
@@ -53,7 +53,7 @@ internal class CommandTree
     /// </summary>
     public void Clear()
     {
-        _root = new CommandTreeNode();
+        _root = new CommandTreeNode(stringComparison);
     }
 
     /// <summary>
