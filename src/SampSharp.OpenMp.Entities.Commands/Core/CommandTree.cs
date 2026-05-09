@@ -5,48 +5,47 @@ namespace SampSharp.Entities.SAMP.Commands;
 /// 
 /// The tree structure works as follows:
 /// - Each edge is a word (command group part, command name, or alias)
-/// - Nodes may contain a command set (representing a complete command)
+/// - Nodes may contain a list of command overloads (representing a complete command)
 /// - When no further edges can be matched, the remaining input is used as arguments
 /// - From there, overload resolution is performed
 /// 
 /// Example tree:
 /// Root
-///   ├─ "hello" -> Node [CommandSet for "hello"]
-///   │   ├─ "world" -> Node [CommandSet for "hello world"]
-///   │   └─ "there" -> Node [CommandSet for "hello there"]
+///   ├─ "hello" -> Node [overloads for "hello"]
+///   │   ├─ "world" -> Node [overloads for "hello world"]
+///   │   └─ "there" -> Node [overloads for "hello there"]
 ///   ├─ "admin" -> Node
-///   │   ├─ "kick" -> Node [CommandSet for "admin kick"]
-///   │   └─ "ban" -> Node [CommandSet for "admin ban"]
-///   └─ "help" -> Node [CommandSet for "help"]
+///   │   ├─ "kick" -> Node [overloads for "admin kick"]
+///   │   └─ "ban" -> Node [overloads for "admin ban"]
+///   └─ "help" -> Node [overloads for "help"]
 /// </summary>
 internal class CommandTree
 {
     private CommandTreeNode _root = new();
 
     /// <summary>
-    /// Registers a command by its full path into the tree.
+    /// Registers a command overload in the tree by traversing from the group parts to the command name.
     /// </summary>
-    /// <param name="commandSet">The command set to register.</param>
-    public void Register(CommandSet commandSet)
+    /// <param name="command">The command overload to register.</param>
+    /// <param name="group">The command group, or <see langword="null"/> for a top-level or alias registration.</param>
+    /// <param name="name">The command name (or alias name).</param>
+    public void Register(CommandDefinition command, CommandGroup? group, string name)
     {
-        ArgumentNullException.ThrowIfNull(commandSet);
+        ArgumentNullException.ThrowIfNull(command);
+        ArgumentNullException.ThrowIfNull(name);
 
-        // Register the command by its full path (group + name)
-        var path = BuildPath(commandSet);
-        RegisterPath(path, commandSet);
-    }
+        var current = _root;
 
-    /// <summary>
-    /// Registers an alias that points to a command set.
-    /// </summary>
-    /// <param name="aliasName">The alias name.</param>
-    /// <param name="commandSet">The command set to register under this alias.</param>
-    public void RegisterAlias(string aliasName, CommandSet commandSet)
-    {
-        ArgumentNullException.ThrowIfNull(aliasName);
-        ArgumentNullException.ThrowIfNull(commandSet);
+        if (group.HasValue)
+        {
+            foreach (var part in group.Value.Parts)
+            {
+                current = current.GetOrCreateChild(part);
+            }
+        }
 
-        RegisterPath([aliasName], commandSet);
+        current = current.GetOrCreateChild(name);
+        current.AddCommand(command);
     }
 
     /// <summary>
@@ -58,67 +57,21 @@ internal class CommandTree
     }
 
     /// <summary>
-    /// Attempts to find a command in the tree by consuming words from <paramref name="input" />.
-    /// <paramref name="input" /> is advanced past the consumed command path on success; on a no-match
-    /// it may still be partially advanced (past intermediate group words that have no command set).
+    /// Attempts to find the command overloads in the tree by consuming words from <paramref name="input" />.
+    /// <paramref name="input" /> is advanced past the consumed command path on success.
     /// </summary>
     /// <param name="input">
     /// The input span. On return this span starts immediately after the last consumed word.
     /// </param>
-    /// <returns>The command set at the deepest matching node, or <see langword="null"/> if none.</returns>
-    public CommandSet? FindCommand(ref StringSpan input)
+    /// <returns>The command overloads at the deepest matching node, or <see langword="null"/> if none.</returns>
+    public IReadOnlyList<CommandDefinition>? FindCommand(ref StringSpan input)
     {
         var node = _root.Traverse(ref input);
-        return node.CommandSet;
+        return node.Commands;
     }
 
     /// <summary>
     /// Gets the root node of the tree.
     /// </summary>
     internal CommandTreeNode Root => _root;
-
-    /// <summary>
-    /// Builds the full path for a command by combining its group and name.
-    /// </summary>
-    private static string[] BuildPath(CommandSet commandSet)
-    {
-        var parts = new List<string>();
-
-        if (commandSet.Group.HasValue)
-        {
-            parts.AddRange(commandSet.Group.Value.Parts);
-        }
-
-        parts.Add(commandSet.Name);
-        return parts.ToArray();
-    }
-
-    /// <summary>
-    /// Registers a path in the tree, creating intermediate nodes as needed.
-    /// </summary>
-    private void RegisterPath(string[] path, CommandSet commandSet)
-    {
-        if (path.Length == 0)
-        {
-            throw new ArgumentException("Path cannot be empty", nameof(path));
-        }
-
-        var current = _root;
-
-        // Traverse/create all intermediate nodes
-        for (var i = 0; i < path.Length - 1; i++)
-        {
-            current = current.GetOrCreateChild(path[i]);
-        }
-
-        // Register the command at the final node
-        var finalNode = current.GetOrCreateChild(path[^1]);
-        if (finalNode.CommandSet != null && finalNode.CommandSet != commandSet)
-        {
-            // Allow re-registration of the same command (happens when adding overloads)
-            // but warn if a different command already exists at this location
-        }
-
-        finalNode.CommandSet = commandSet;
-    }
 }

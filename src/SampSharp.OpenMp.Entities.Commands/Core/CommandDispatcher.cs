@@ -31,8 +31,8 @@ internal class CommandDispatcher
         var beforeLookup = input;
 
         // Advance 'input' past the consumed command path words
-        var commandGroup = registry.GetCommandGroupByPath(ref input);
-        if (commandGroup == null)
+        var overloads = registry.GetCommandGroupByPath(ref input);
+        if (overloads == null)
         {
             return DispatchResult.CreateNotFound();
         }
@@ -44,7 +44,7 @@ internal class CommandDispatcher
         var remainingArgs = input.TrimStart();
 
         // Try to match parameters for each overload
-        var bestMatch = FindBestOverload(commandGroup, remainingArgs, services);
+        var bestMatch = FindBestOverload(overloads, remainingArgs, services);
 
         // Check permission if a permission checker is provided
         if (bestMatch.overload is not null &&
@@ -58,7 +58,7 @@ internal class CommandDispatcher
             {
                 var permDenied = DispatchResult.CreatePermissionDenied();
                 permDenied.CommandOverload = bestMatch.overload;
-                permDenied.AllOverloads = commandGroup.Overloads;
+                permDenied.AllOverloads = overloads;
                 permDenied.UsedCommandName = usedCommandName;
                 return permDenied;
             }
@@ -69,7 +69,7 @@ internal class CommandDispatcher
             // Successfully matched this overload
             var result = DispatchResult.CreateSuccess();
             result.CommandOverload = bestMatch.overload;
-            result.AllOverloads = commandGroup.Overloads;
+            result.AllOverloads = overloads;
             result.UsedCommandName = usedCommandName;
             result.ParsedArguments = bestMatch.parsedArguments;
             return result;
@@ -78,7 +78,7 @@ internal class CommandDispatcher
         // No overload matched
         {
             var result = DispatchResult.CreateInvalidArguments();
-            result.AllOverloads = commandGroup.Overloads;
+            result.AllOverloads = overloads;
             result.UsedCommandName = usedCommandName;
             return result;
         }
@@ -87,12 +87,12 @@ internal class CommandDispatcher
     /// <summary>
     /// Finds the best matching overload for the given arguments.
     /// </summary>
-    private (bool matched, CommandDefinition? overload, object?[]? parsedArguments) FindBestOverload(CommandSet command, StringSpan remainingArgs,
+    private (bool matched, CommandDefinition? overload, object?[]? parsedArguments) FindBestOverload(IReadOnlyList<CommandDefinition> overloads, StringSpan remainingArgs,
         IServiceProvider services)
     {
         var bestMatch = (matched: false, overload: (CommandDefinition?)null, parsedArguments: (object?[]?)null);
 
-        foreach (var overload in command.Overloads)
+        foreach (var overload in overloads)
         {
             var matchResult = TryMatchParameters(overload, remainingArgs, services);
             if (matchResult.matched)

@@ -26,50 +26,34 @@ internal class CommandScanner
 
         var methods = scanner.ScanMethods<PlayerCommandAttribute>();
 
-        // Group methods by command name and group
-        var groupedByCommand = methods
-            .GroupBy(m => 
-            {
-                var (systemType, method, attribute) = m;
-                var classGroups = systemType.GetCustomAttributes<CommandGroupAttribute>();
-                var methodGroups = method.GetCustomAttributes<CommandGroupAttribute>();
-                var commandGroup = BuildCommandGroup(classGroups, methodGroups);
-                var commandName = attribute.Name ?? GetCommandName(method);
-                return (commandName, commandGroup);
-            })
-            .Where(g => !string.IsNullOrWhiteSpace(g.Key.commandName));
-
-        foreach (var commandGroup in groupedByCommand)
+        foreach (var (systemType, method, attribute) in methods)
         {
-            var (commandName, group) = commandGroup.Key;
+            var classGroups = systemType.GetCustomAttributes<CommandGroupAttribute>();
+            var methodGroups = method.GetCustomAttributes<CommandGroupAttribute>();
+            var commandGroup = BuildCommandGroup(classGroups, methodGroups);
+            var commandName = attribute.Name ?? GetCommandName(method);
 
-            if (commandName.Contains(' '))
+            if (string.IsNullOrWhiteSpace(commandName) || commandName.Contains(' '))
             {
-                // Reject commands containing spaces
                 continue;
             }
 
-            foreach (var (systemType, method, _) in commandGroup)
+            var parameters = method.GetParameters();
+            if (parameters.Length == 0 || (!parameters[0].ParameterType.IsAssignableTo(typeof(Component)) && parameters[0].ParameterType != typeof(EntityId)))
             {
-                var parameters = method.GetParameters();
-
-                if (parameters.Length == 0 || (!parameters[0].ParameterType.IsAssignableTo(typeof(Component)) && parameters[0].ParameterType != typeof(EntityId)))
-                {
-                    // First parameter must be an entity/component (player).
-                    continue;
-                }
-
-                // Aliases and tags are per-overload
-                var aliases = method.GetCustomAttributes<AliasAttribute>().SelectMany(a => a.Aliases).Select(a => new CommandAlias(a)).ToArray();
-                var tags = method.GetCustomAttributes<CommandTagAttribute>().Select(t => new CommandTag(t.Key, t.Value)).ToArray();
-
-                if (!TryBuildOverload(commandName, group, method, systemType, parserFactory, 1, aliases, tags, out var overload))
-                {
-                    continue;
-                }
-
-                registry.Register(overload);
+                // First parameter must be an entity/component (player).
+                continue;
             }
+
+            var aliases = method.GetCustomAttributes<AliasAttribute>().SelectMany(a => a.Aliases).Select(a => new CommandAlias(a)).ToArray();
+            var tags = method.GetCustomAttributes<CommandTagAttribute>().Select(t => new CommandTag(t.Key, t.Value)).ToArray();
+
+            if (!TryBuildOverload(commandName, commandGroup, method, systemType, parserFactory, 1, aliases, tags, out var overload))
+            {
+                continue;
+            }
+
+            registry.Register(overload);
         }
     }
 
@@ -79,53 +63,34 @@ internal class CommandScanner
 
         var methods = scanner.ScanMethods<ConsoleCommandAttribute>();
 
-        // Group methods by command name and group
-        var groupedByCommand = methods
-            .GroupBy(m => 
-            {
-                var (systemType, method, attribute) = m;
-                var classGroups = systemType.GetCustomAttributes<CommandGroupAttribute>();
-                var methodGroups = method.GetCustomAttributes<CommandGroupAttribute>();
-                var commandGroup = BuildCommandGroup(classGroups, methodGroups);
-                var commandName = attribute.Name ?? GetCommandName(method);
-                return (commandName, commandGroup);
-            })
-            .Where(g => !string.IsNullOrWhiteSpace(g.Key.commandName));
-
-        foreach (var commandGroup in groupedByCommand)
+        foreach (var (systemType, method, attribute) in methods)
         {
-            var (commandName, group) = commandGroup.Key;
+            var classGroups = systemType.GetCustomAttributes<CommandGroupAttribute>();
+            var methodGroups = method.GetCustomAttributes<CommandGroupAttribute>();
+            var commandGroup = BuildCommandGroup(classGroups, methodGroups);
+            var commandName = attribute.Name ?? GetCommandName(method);
 
-            if (commandName.Contains(' '))
+            if (string.IsNullOrWhiteSpace(commandName) || commandName.Contains(' '))
             {
-                // Reject commands containing spaces
                 continue;
             }
 
-            foreach (var (systemType, method, attribute) in commandGroup)
+            var aliases = method.GetCustomAttributes<AliasAttribute>().SelectMany(a => a.Aliases).Select(a => new CommandAlias(a)).ToArray();
+            var tags = method.GetCustomAttributes<CommandTagAttribute>().Select(t => new CommandTag(t.Key, t.Value)).ToArray();
+
+            var prefixParams = 0;
+            var parameters = method.GetParameters();
+            if (parameters.Length > 0 && parameters[0].ParameterType == typeof(ConsoleCommandDispatchContext))
             {
-                // Aliases and tags are per-overload
-                var aliases = method.GetCustomAttributes<AliasAttribute>().SelectMany(a => a.Aliases).Select(a => new CommandAlias(a)).ToArray();
-                var tags = method.GetCustomAttributes<CommandTagAttribute>().Select(t => new CommandTag(t.Key, t.Value)).ToArray();
-
-                // Console commands: check if first param is ConsoleCommandDispatchContext
-                var prefixParams = 0;
-                if (method.GetParameters().Length > 0)
-                {
-                    var firstParam = method.GetParameters()[0];
-                    if (firstParam.ParameterType == typeof(ConsoleCommandDispatchContext))
-                    {
-                        prefixParams = 1;
-                    }
-                }
-
-                if (!TryBuildOverload(commandName, group, method, systemType, parserFactory, prefixParams, aliases, tags, out var overload))
-                {
-                    continue;
-                }
-
-                registry.Register(overload);
+                prefixParams = 1;
             }
+
+            if (!TryBuildOverload(commandName, commandGroup, method, systemType, parserFactory, prefixParams, aliases, tags, out var overload))
+            {
+                continue;
+            }
+
+            registry.Register(overload);
         }
     }
 

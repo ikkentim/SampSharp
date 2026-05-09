@@ -2,16 +2,25 @@ namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>
 /// Represents a node in the command tree where edges are words.
-/// Each node may contain a command set and child nodes for further word matching.
+/// Each node may contain a list of command overloads and child nodes for further word matching.
 /// </summary>
 internal class CommandTreeNode
 {
     private readonly Dictionary<string, CommandTreeNode> _children = new(StringComparer.OrdinalIgnoreCase);
+    private List<CommandDefinition>? _commands;
 
     /// <summary>
-    /// Gets or sets the command set at this node, if this node represents a complete command.
+    /// Gets the command overloads registered at this node, or <see langword="null"/> if none.
     /// </summary>
-    public CommandSet? CommandSet { get; set; }
+    public IReadOnlyList<CommandDefinition>? Commands => _commands;
+
+    /// <summary>
+    /// Adds a command overload to this node.
+    /// </summary>
+    public void AddCommand(CommandDefinition command)
+    {
+        (_commands ??= new List<CommandDefinition>()).Add(command);
+    }
 
     /// <summary>
     /// Gets the child nodes mapped by word (case-insensitive).

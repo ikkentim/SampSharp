@@ -16,7 +16,4 @@ public interface ICommandHelpProvider
 
     /// <summary>Searches for commands matching a query.</summary>
     IEnumerable<CommandDefinition> SearchCommands(string query);
-
-    /// <summary>Finds a specific command by name.</summary>
-    CommandDefinition? FindCommand(string name);
 }

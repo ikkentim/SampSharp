@@ -44,10 +44,4 @@ public class DefaultCommandHelpProvider : ICommandHelpProvider
             .Where(c => c.Name.Contains(lower, StringComparison.OrdinalIgnoreCase) || c.FullName.Contains(lower, StringComparison.OrdinalIgnoreCase) ||
                         c.Aliases.Any(a => a.Name.Contains(lower, StringComparison.OrdinalIgnoreCase)));
     }
-
-    /// <inheritdoc />
-    public CommandDefinition? FindCommand(string name)
-    {
-        return _registry.TryFind(name);
-    }
 }

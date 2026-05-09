@@ -11,17 +11,15 @@ namespace SampSharp.OpenMp.Entities.Commands.UnitTests.Core;
 /// </summary>
 public class CommandTreeTests
 {
-    private static CommandSet CreateCommandSet(string name, CommandGroup? group = null)
+    private static CommandDefinition CreateDefinition(string name, CommandGroup? group = null)
     {
         var method = typeof(CommandTreeTests).GetMethod(nameof(DummyMethod), System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!;
         var mockInvoker = new Mock<CommandInvoker>();
-        var definition = new CommandDefinition(
+        return new CommandDefinition(
             name, group, method, method.GetParameters(),
             typeof(CommandTreeTests), Array.Empty<CommandParameterInfo>(),
             mockInvoker.Object, 0,
             Array.Empty<CommandAlias>(), Array.Empty<CommandTag>());
-
-        return new CommandSet(name, group, [definition]);
     }
 
     private void DummyMethod() { }
@@ -30,22 +28,32 @@ public class CommandTreeTests
     public void Register_SingleCommand_CanBeFound()
     {
         var tree = new CommandTree();
-        var commandSet = CreateCommandSet("test");
+        var def = CreateDefinition("test");
 
-        tree.Register(commandSet);
+        tree.Register(def, null, "test");
 
         var span = StringSpan.For("test");
         var found = tree.FindCommand(ref span);
         found.ShouldNotBeNull();
-        found.Name.ShouldBe("test");
+        found.Count.ShouldBe(1);
+        found[0].Name.ShouldBe("test");
     }
 
     [Fact]
-    public void Register_NullCommandSet_ThrowsArgumentNullException()
+    public void Register_NullCommand_ThrowsArgumentNullException()
     {
         var tree = new CommandTree();
 
-        Should.Throw<ArgumentNullException>(() => tree.Register(null!));
+        Should.Throw<ArgumentNullException>(() => tree.Register(null!, null, "test"));
+    }
+
+    [Fact]
+    public void Register_NullName_ThrowsArgumentNullException()
+    {
+        var tree = new CommandTree();
+        var def = CreateDefinition("test");
+
+        Should.Throw<ArgumentNullException>(() => tree.Register(def, null, null!));
     }
 
     [Fact]
@@ -53,14 +61,14 @@ public class CommandTreeTests
     {
         var tree = new CommandTree();
         var group = new CommandGroup("admin", "money");
-        var commandSet = CreateCommandSet("give", group);
+        var def = CreateDefinition("give", group);
 
-        tree.Register(commandSet);
+        tree.Register(def, group, "give");
 
         var span = StringSpan.For("admin money give");
         var found = tree.FindCommand(ref span);
         found.ShouldNotBeNull();
-        found.Name.ShouldBe("give");
+        found![0].Name.ShouldBe("give");
         span.Length.ShouldBe(0); // all consumed
     }
 
@@ -79,7 +87,8 @@ public class CommandTreeTests
     public void FindCommand_EmptyInput_ReturnsNull()
     {
         var tree = new CommandTree();
-        tree.Register(CreateCommandSet("test"));
+        var def = CreateDefinition("test");
+        tree.Register(def, null, "test");
 
         var span = StringSpan.Empty;
         var found = tree.FindCommand(ref span);
@@ -91,7 +100,8 @@ public class CommandTreeTests
     public void FindCommand_CaseInsensitive()
     {
         var tree = new CommandTree();
-        tree.Register(CreateCommandSet("Test"));
+        var def = CreateDefinition("Test");
+        tree.Register(def, null, "Test");
 
         var span1 = StringSpan.For("test");
         tree.FindCommand(ref span1).ShouldNotBeNull();
@@ -108,7 +118,8 @@ public class CommandTreeTests
     {
         var tree = new CommandTree();
         var group = new CommandGroup("admin");
-        tree.Register(CreateCommandSet("kick", group));
+        var def = CreateDefinition("kick", group);
+        tree.Register(def, group, "kick");
 
         var span = StringSpan.For("admin kick arg1");
         tree.FindCommand(ref span);
@@ -122,9 +133,11 @@ public class CommandTreeTests
     {
         var tree = new CommandTree();
         var group = new CommandGroup("admin");
-        tree.Register(CreateCommandSet("kick", group));
+        var def = CreateDefinition("kick", group);
+        tree.Register(def, group, "kick");
 
-        // "foo" is not a child of "admin", so traversal stops at "admin" (no CommandSet -> null)
+        // "foo" is not a child of "admin", so traversal stops at "admin" which has no commands
+        // registered, returning null.
         var span = StringSpan.For("admin foo");
         var found = tree.FindCommand(ref span);
 
@@ -133,29 +146,29 @@ public class CommandTreeTests
     }
 
     [Fact]
-    public void RegisterAlias_NullAliasName_ThrowsArgumentNullException()
+    public void Register_MultipleOverloads_SameNode_AccumulatesAll()
     {
         var tree = new CommandTree();
-        var commandSet = CreateCommandSet("test");
+        var def1 = CreateDefinition("test");
+        var def2 = CreateDefinition("test");
 
-        Should.Throw<ArgumentNullException>(() => tree.RegisterAlias(null!, commandSet));
+        tree.Register(def1, null, "test");
+        tree.Register(def2, null, "test");
+
+        var span = StringSpan.For("test");
+        var found = tree.FindCommand(ref span);
+
+        found.ShouldNotBeNull();
+        found!.Count.ShouldBe(2);
     }
 
     [Fact]
-    public void RegisterAlias_NullCommandSet_ThrowsArgumentNullException()
+    public void Register_AliasAsTopLevel_CanBeFound()
     {
         var tree = new CommandTree();
-
-        Should.Throw<ArgumentNullException>(() => tree.RegisterAlias("alias", null!));
-    }
-
-    [Fact]
-    public void RegisterAlias_AliasCanBeFound()
-    {
-        var tree = new CommandTree();
-        var commandSet = CreateCommandSet("message");
-        tree.Register(commandSet);
-        tree.RegisterAlias("pm", commandSet);
+        var def = CreateDefinition("message");
+        tree.Register(def, null, "message");
+        tree.Register(def, null, "pm");
 
         var span = StringSpan.For("pm");
         var found = tree.FindCommand(ref span);
@@ -167,8 +180,10 @@ public class CommandTreeTests
     public void Clear_RemovesAllCommands()
     {
         var tree = new CommandTree();
-        tree.Register(CreateCommandSet("test"));
-        tree.Register(CreateCommandSet("kick", new CommandGroup("admin")));
+        var def1 = CreateDefinition("test");
+        var def2 = CreateDefinition("kick", new CommandGroup("admin"));
+        tree.Register(def1, null, "test");
+        tree.Register(def2, new CommandGroup("admin"), "kick");
 
         tree.Clear();
 
@@ -182,9 +197,12 @@ public class CommandTreeTests
     public void Register_MultipleCommands_AllFindable()
     {
         var tree = new CommandTree();
-        tree.Register(CreateCommandSet("help"));
-        tree.Register(CreateCommandSet("kick", new CommandGroup("admin")));
-        tree.Register(CreateCommandSet("ban", new CommandGroup("admin")));
+        var def1 = CreateDefinition("help");
+        var def2 = CreateDefinition("kick", new CommandGroup("admin"));
+        var def3 = CreateDefinition("ban", new CommandGroup("admin"));
+        tree.Register(def1, null, "help");
+        tree.Register(def2, new CommandGroup("admin"), "kick");
+        tree.Register(def3, new CommandGroup("admin"), "ban");
 
         var span1 = StringSpan.For("help");
         tree.FindCommand(ref span1).ShouldNotBeNull();

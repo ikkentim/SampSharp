@@ -138,31 +138,4 @@ public class DefaultCommandHelpProviderTests
 
         result.Count.ShouldBe(1);
     }
-
-    [Fact]
-    public void FindCommand_DelegatesToRegistry()
-    {
-        var def = CreateDefinition("kick");
-        var registryMock = new Mock<ICommandRegistry>();
-        registryMock.Setup(r => r.TryFind("kick")).Returns(def);
-
-        var provider = new DefaultCommandHelpProvider(registryMock.Object);
-
-        var result = provider.FindCommand("kick");
-
-        result.ShouldBeSameAs(def);
-    }
-
-    [Fact]
-    public void FindCommand_NotFound_ReturnsNull()
-    {
-        var registryMock = new Mock<ICommandRegistry>();
-        registryMock.Setup(r => r.TryFind(It.IsAny<string>())).Returns((CommandDefinition?)null);
-
-        var provider = new DefaultCommandHelpProvider(registryMock.Object);
-
-        var result = provider.FindCommand("nonexistent");
-
-        result.ShouldBeNull();
-    }
 }

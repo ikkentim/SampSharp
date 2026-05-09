@@ -5,18 +5,6 @@ namespace SampSharp.Entities.SAMP.Commands;
 /// </summary>
 public interface ICommandRegistry
 {
-    /// <summary>Tries to find a command by name or alias (case-insensitive).</summary>
-    CommandDefinition? TryFind(string nameOrAlias);
-
-    /// <summary>Tries to find a command by its full path, matching command groups or aliases.</summary>
-    CommandDefinition? TryFindByPath(IEnumerable<string> pathParts);
-
-    /// <summary>
-    /// Tries to find a command by its full path, matching command groups or aliases.
-    /// Returns how many path parts were consumed.
-    /// </summary>
-    CommandDefinition? TryFindByPath(IEnumerable<string> pathParts, out int consumedParts);
-
     /// <summary>Gets all registered commands.</summary>
     IEnumerable<CommandDefinition> GetAll();
 

@@ -11,27 +11,25 @@ namespace SampSharp.OpenMp.Entities.Commands.UnitTests.Core;
 /// </summary>
 public class CommandTreeNodeTests
 {
-    private static CommandSet CreateCommandSet(string name)
+    private static CommandDefinition CreateDefinition(string name)
     {
         var method = typeof(CommandTreeNodeTests).GetMethod(nameof(DummyMethod), System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!;
         var mockInvoker = new Mock<CommandInvoker>();
-        var definition = new CommandDefinition(
+        return new CommandDefinition(
             name, null, method, method.GetParameters(),
             typeof(CommandTreeNodeTests), Array.Empty<CommandParameterInfo>(),
             mockInvoker.Object, 0,
             Array.Empty<CommandAlias>(), Array.Empty<CommandTag>());
-
-        return new CommandSet(name, null, [definition]);
     }
 
     private void DummyMethod() { }
 
     [Fact]
-    public void Constructor_CommandSetIsNullByDefault()
+    public void Constructor_CommandsIsNullByDefault()
     {
         var node = new CommandTreeNode();
 
-        node.CommandSet.ShouldBeNull();
+        node.Commands.ShouldBeNull();
     }
 
     [Fact]
@@ -43,14 +41,29 @@ public class CommandTreeNodeTests
     }
 
     [Fact]
-    public void CommandSet_CanBeSet()
+    public void AddCommand_CommandsContainsDefinition()
     {
         var node = new CommandTreeNode();
-        var commandSet = CreateCommandSet("test");
+        var def = CreateDefinition("test");
 
-        node.CommandSet = commandSet;
+        node.AddCommand(def);
 
-        node.CommandSet.ShouldBeSameAs(commandSet);
+        node.Commands.ShouldNotBeNull();
+        node.Commands!.Count.ShouldBe(1);
+        node.Commands[0].ShouldBeSameAs(def);
+    }
+
+    [Fact]
+    public void AddCommand_MultipleOverloads_AllStored()
+    {
+        var node = new CommandTreeNode();
+        var def1 = CreateDefinition("test");
+        var def2 = CreateDefinition("test");
+
+        node.AddCommand(def1);
+        node.AddCommand(def2);
+
+        node.Commands!.Count.ShouldBe(2);
     }
 
     [Fact]

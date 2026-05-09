@@ -140,6 +140,20 @@ public class CommandScannerTests
         public void Echo(ConsoleCommandDispatchContext ctx, int value) { }
     }
 
+    private static CommandDefinition? FindByName(CommandRegistry registry, string name)
+    {
+        var span = StringSpan.For(name);
+        var overloads = registry.GetCommandGroupByPath(ref span);
+        return overloads?.Count > 0 ? overloads[0] : null;
+    }
+
+    private static CommandDefinition? FindByPath(CommandRegistry registry, params string[] parts)
+    {
+        var span = StringSpan.For(string.Join(" ", parts));
+        var overloads = registry.GetCommandGroupByPath(ref span);
+        return overloads?.Count > 0 ? overloads[0] : null;
+    }
+
     [Fact]
     public void ScanPlayerCommands_DiscoversSingleCommand()
     {
@@ -148,7 +162,7 @@ public class CommandScannerTests
 
         scanner.ScanPlayerCommands(registry, CreateParserFactory());
 
-        ((ICommandRegistry)registry).TryFind("hello").ShouldNotBeNull();
+        FindByName(registry, "hello").ShouldNotBeNull();
     }
 
     [Fact]
@@ -159,7 +173,7 @@ public class CommandScannerTests
 
         scanner.ScanPlayerCommands(registry, CreateParserFactory());
 
-        ((ICommandRegistry)registry).TryFind("hello").ShouldNotBeNull();
+        FindByName(registry, "hello").ShouldNotBeNull();
     }
 
     [Fact]
@@ -170,7 +184,7 @@ public class CommandScannerTests
 
         scanner.ScanPlayerCommands(registry, CreateParserFactory());
 
-        ((ICommandRegistry)registry).TryFind("hello").ShouldNotBeNull();
+        FindByName(registry, "hello").ShouldNotBeNull();
     }
 
     [Fact]
@@ -192,7 +206,7 @@ public class CommandScannerTests
 
         scanner.ScanPlayerCommands(registry, CreateParserFactory());
 
-        ((ICommandRegistry)registry).TryFind("greet").ShouldNotBeNull();
+        FindByName(registry, "greet").ShouldNotBeNull();
     }
 
     [Fact]
@@ -204,7 +218,7 @@ public class CommandScannerTests
         scanner.ScanPlayerCommands(registry, CreateParserFactory());
 
         // Method is "HelpCommand" -> command name should be "help"
-        ((ICommandRegistry)registry).TryFind("help").ShouldNotBeNull();
+        FindByName(registry, "help").ShouldNotBeNull();
     }
 
     [Fact]
@@ -215,7 +229,7 @@ public class CommandScannerTests
 
         scanner.ScanPlayerCommands(registry, CreateParserFactory());
 
-        var found = ((ICommandRegistry)registry).TryFind("give");
+        var found = FindByName(registry, "give");
         found.ShouldNotBeNull();
         // First param (EntityId player) is prefix; second (int amount) is parsed
         found!.ParsedParameters.Length.ShouldBe(1);
@@ -231,7 +245,7 @@ public class CommandScannerTests
         scanner.ScanPlayerCommands(registry, CreateParserFactory());
 
         // Command should be findable by alias
-        ((ICommandRegistry)registry).TryFind("pm").ShouldNotBeNull();
+        FindByName(registry, "pm").ShouldNotBeNull();
     }
 
     [Fact]
@@ -242,7 +256,7 @@ public class CommandScannerTests
 
         scanner.ScanPlayerCommands(registry, CreateParserFactory());
 
-        var found = ((ICommandRegistry)registry).TryFind("kick");
+        var found = FindByName(registry, "kick");
         found.ShouldNotBeNull();
         found!.Tags["category"].ShouldBe("admin");
     }
@@ -255,7 +269,7 @@ public class CommandScannerTests
 
         scanner.ScanPlayerCommands(registry, CreateParserFactory());
 
-        var found = ((ICommandRegistry)registry).TryFindByPath(["admin", "kick"]);
+        var found = FindByPath(registry, "admin", "kick");
         found.ShouldNotBeNull();
         found!.FullName.ShouldBe("admin kick");
     }
@@ -268,8 +282,7 @@ public class CommandScannerTests
 
         scanner.ScanPlayerCommands(registry, CreateParserFactory());
 
-        var found = ((ICommandRegistry)registry).TryFindByPath(["admin", "kick"]);
-        found.ShouldNotBeNull();
+        FindByPath(registry, "admin", "kick").ShouldNotBeNull();
     }
 
     [Fact]
@@ -280,8 +293,8 @@ public class CommandScannerTests
 
         scanner.ScanPlayerCommands(registry, CreateParserFactory());
 
-        ((ICommandRegistry)registry).TryFind("kick").ShouldNotBeNull();
-        ((ICommandRegistry)registry).TryFind("ban").ShouldNotBeNull();
+        FindByName(registry, "kick").ShouldNotBeNull();
+        FindByName(registry, "ban").ShouldNotBeNull();
     }
 
     [Fact]
@@ -314,7 +327,7 @@ public class CommandScannerTests
 
         scanner.ScanConsoleCommands(registry, CreateParserFactory());
 
-        ((ICommandRegistry)registry).TryFind("status").ShouldNotBeNull();
+        FindByName(registry, "status").ShouldNotBeNull();
     }
 
     [Fact]
@@ -325,7 +338,7 @@ public class CommandScannerTests
 
         scanner.ScanConsoleCommands(registry, CreateParserFactory());
 
-        var found = ((ICommandRegistry)registry).TryFind("echo");
+        var found = FindByName(registry, "echo");
         found.ShouldNotBeNull();
         // The context param is prefix param; "value" (int) is the only parsed param
         found!.ParsedParameters.Length.ShouldBe(1);

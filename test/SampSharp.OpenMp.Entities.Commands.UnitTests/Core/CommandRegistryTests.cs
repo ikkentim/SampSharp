@@ -45,26 +45,27 @@ public class CommandRegistryTests
 
         registry.Register(command);
 
-        var found = ((ICommandRegistry)registry).TryFind("test");
-        found.ShouldNotBeNull();
-        found.Name.ShouldBe("test");
+        var all = ((ICommandRegistry)registry).GetAll().ToList();
+        all.Count.ShouldBe(1);
+        all[0].Name.ShouldBe("test");
     }
 
     [Fact]
-    public void Register_CommandWithGroup_StoresWithFullPath()
+    public void Register_CommandWithGroup_CanBeFoundByPath()
     {
         var registry = new CommandRegistry();
         var command = CreateCommand("give", new CommandGroup("admin", "money"));
 
         registry.Register(command);
 
-        var found = ((ICommandRegistry)registry).TryFindByPath(new[] { "admin", "money", "give" });
+        var span = StringSpan.For("admin money give");
+        var found = registry.GetCommandGroupByPath(ref span);
         found.ShouldNotBeNull();
-        found.FullName.ShouldBe("admin money give");
+        found![0].FullName.ShouldBe("admin money give");
     }
 
     [Fact]
-    public void Register_MultipleOverloads_GroupsTogether()
+    public void Register_MultipleOverloads_AllStoredInGetAll()
     {
         var registry = new CommandRegistry();
         var command1 = CreateCommand("test");
@@ -73,8 +74,8 @@ public class CommandRegistryTests
         registry.Register(command1);
         registry.Register(command2);
 
-        var found = ((ICommandRegistry)registry).TryFind("test");
-        found.ShouldNotBeNull();
+        var all = ((ICommandRegistry)registry).GetAll().ToList();
+        all.Count.ShouldBe(2);
     }
 
     [Fact]
@@ -86,7 +87,8 @@ public class CommandRegistryTests
 
         registry.Register(command);
 
-        var found = ((ICommandRegistry)registry).TryFind("pm");
+        var span = StringSpan.For("pm");
+        var found = registry.GetCommandGroupByPath(ref span);
         found.ShouldNotBeNull();
     }
 
@@ -99,68 +101,28 @@ public class CommandRegistryTests
 
         registry.Register(command);
 
-        ((ICommandRegistry)registry).TryFind("pm").ShouldNotBeNull();
-        ((ICommandRegistry)registry).TryFind("msg").ShouldNotBeNull();
+        var span1 = StringSpan.For("pm");
+        registry.GetCommandGroupByPath(ref span1).ShouldNotBeNull();
+        var span2 = StringSpan.For("msg");
+        registry.GetCommandGroupByPath(ref span2).ShouldNotBeNull();
     }
 
     [Fact]
-    public void TryFind_NonExistentCommand_ReturnsNull()
+    public void Register_MultipleOverloadsSharedAlias_AllReachableViaAlias()
     {
         var registry = new CommandRegistry();
-        var found = ((ICommandRegistry)registry).TryFind("nonexistent");
-        found.ShouldBeNull();
-    }
+        var aliases1 = new[] { new CommandAlias("pm") };
+        var aliases2 = new[] { new CommandAlias("pm") };
+        var command1 = CreateCommand("message", aliases: aliases1);
+        var command2 = CreateCommand("message", aliases: aliases2);
 
-    [Fact]
-    public void TryFind_CaseInsensitive()
-    {
-        var registry = new CommandRegistry();
-        var command = CreateCommand("Test");
-        registry.Register(command);
+        registry.Register(command1);
+        registry.Register(command2);
 
-        ((ICommandRegistry)registry).TryFind("test").ShouldNotBeNull();
-        ((ICommandRegistry)registry).TryFind("TEST").ShouldNotBeNull();
-        ((ICommandRegistry)registry).TryFind("Test").ShouldNotBeNull();
-    }
-
-    [Fact]
-    public void TryFindByPath_WithGroup_FindsCorrectly()
-    {
-        var registry = new CommandRegistry();
-        var command = CreateCommand("ban", new CommandGroup("admin", "player"));
-        registry.Register(command);
-
-        var found = ((ICommandRegistry)registry).TryFindByPath(new[] { "admin", "player", "ban" });
+        var span = StringSpan.For("pm");
+        var found = registry.GetCommandGroupByPath(ref span);
         found.ShouldNotBeNull();
-        found.FullName.ShouldBe("admin player ban");
-    }
-
-    [Fact]
-    public void TryFindByPath_PartialPath_FindsClosestNode()
-    {
-        var registry = new CommandRegistry();
-        var command = CreateCommand("test", new CommandGroup("admin", "money", "give"));
-        registry.Register(command);
-
-        var found = ((ICommandRegistry)registry).TryFindByPath(new[] { "admin", "money" }, out var consumed);
-        // Should find intermediate group if it exists as a node
-        consumed.ShouldBe(2);
-    }
-
-    [Fact]
-    public void TryFindByPath_EmptyPath_ReturnsNull()
-    {
-        var registry = new CommandRegistry();
-        var found = ((ICommandRegistry)registry).TryFindByPath(Array.Empty<string>());
-        found.ShouldBeNull();
-    }
-
-    [Fact]
-    public void TryFindByPath_NullPath_ReturnsNull()
-    {
-        var registry = new CommandRegistry();
-        var found = ((ICommandRegistry)registry).TryFindByPath(null!);
-        found.ShouldBeNull();
+        found!.Count.ShouldBe(2);
     }
 
     [Fact]
@@ -255,20 +217,6 @@ public class CommandRegistryTests
     }
 
     [Fact]
-    public void Register_UpdatesExistingOverload()
-    {
-        var registry = new CommandRegistry();
-        var cmd1 = CreateCommand("test");
-        var cmd2 = CreateCommand("test");
-
-        registry.Register(cmd1);
-        registry.Register(cmd2);
-
-        var all = ((ICommandRegistry)registry).GetAll().ToList();
-        all.Count.ShouldBe(2);
-    }
-
-    [Fact]
     public void Register_NullCommand_ThrowsArgumentNullException()
     {
         var registry = new CommandRegistry();
@@ -294,33 +242,6 @@ public class CommandRegistryTests
         var registry = new CommandRegistry();
         var span = StringSpan.Empty;
         var found = registry.GetCommandGroupByPath(ref span);
-        found.ShouldBeNull();
-    }
-
-    [Fact]
-    public void GetCommand_FindsByName()
-    {
-        var registry = new CommandRegistry();
-        var cmd = CreateCommand("test");
-        registry.Register(cmd);
-
-        var found = registry.GetCommand("test");
-        found.ShouldNotBeNull();
-    }
-
-    [Fact]
-    public void GetCommand_EmptyName_ReturnsNull()
-    {
-        var registry = new CommandRegistry();
-        var found = registry.GetCommand("");
-        found.ShouldBeNull();
-    }
-
-    [Fact]
-    public void GetCommand_NullName_ReturnsNull()
-    {
-        var registry = new CommandRegistry();
-        var found = registry.GetCommand(null!);
         found.ShouldBeNull();
     }
 }
