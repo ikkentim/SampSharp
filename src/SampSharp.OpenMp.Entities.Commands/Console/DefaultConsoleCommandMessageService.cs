@@ -20,7 +20,7 @@ internal class DefaultConsoleCommandMessageService : IConsoleCommandMessageServi
     }
 
     /// <inheritdoc />
-    public bool SendUsage(ConsoleCommandDispatchContext context, IReadOnlyList<CommandDefinition> overloads, string usedCommandName = "")
+    public virtual bool SendUsage(ConsoleCommandDispatchContext context, IReadOnlyList<CommandDefinition> overloads, string usedCommandName = "")
     {
         if (overloads.Count == 1)
         {

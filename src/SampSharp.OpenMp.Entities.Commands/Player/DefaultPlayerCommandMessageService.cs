@@ -20,7 +20,7 @@ public class DefaultPlayerCommandMessageService : IPlayerCommandMessageService
     }
 
     /// <inheritdoc />
-    public void SendUsage(Player player, IReadOnlyList<CommandDefinition> overloads, string usedCommandName = "")
+    public virtual void SendUsage(Player player, IReadOnlyList<CommandDefinition> overloads, string usedCommandName = "")
     {
         var messages = new List<string>();
 
@@ -79,28 +79,16 @@ public class DefaultPlayerCommandMessageService : IPlayerCommandMessageService
     }
 
     /// <inheritdoc />
-    public bool SendPermissionDenied(Player player, CommandDefinition overload)
+    public virtual bool SendPermissionDenied(Player player, CommandDefinition overload)
     {
-        var commandText = overload.Group.HasValue ? $"{overload.Group.Value.FullName} {overload.Name}" : overload.Name;
-        var message = FormatPermissionDenied(commandText);
+        const string message = "You do not have permission to use this command.";
         player.SendClientMessage(message);
         return true;
     }
 
     /// <inheritdoc />
-    public bool SendCommandNotFound(Player player, string input)
+    public virtual bool SendCommandNotFound(Player player, string input)
     {
-        player.SendClientMessage(FormatCommandNotFound(input));
-        return true;
-    }
-
-    private string FormatCommandNotFound(string commandText)
-    {
-        return $"Unknown command: {commandText}";
-    }
-
-    private string FormatPermissionDenied(string commandText)
-    {
-        return "You do not have permission to use this command.";
+        return false;
     }
 }
