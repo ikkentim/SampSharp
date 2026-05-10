@@ -81,6 +81,17 @@ public interface IServerService
         int weapon2Ammo = 0, Weapon weapon3 = Weapon.None, int weapon3Ammo = 0);
 
     /// <summary>
+    /// Creates and registers a new player class using the specified spawn data.
+    /// </summary>
+    /// <param name="spawnData">The data that defines the player's spawn configuration, including position, appearance, and initial attributes.</param>
+    /// <returns>The created player class component.</returns>
+    /// <remarks>
+    /// The maximum class ID is 319 (starting from 0, so a total of 320 classes). When this limit is reached, any more classes that are added will replace ID
+    /// 319.
+    /// </remarks>
+    Class AddPlayerClass(PlayerSpawnData spawnData);
+
+    /// <summary>
     /// Blocks an IP address from further communication with the server for a set amount of time (with wildcards allowed). Players trying to connect to the
     /// server with a blocked IP address will receive the generic "You are banned from this server." message. Players that are online on the specified IP before the
     /// block will timeout after specific amount of seconds and, upon reconnect, will receive the same message. Effect takes place only when server is running (it is

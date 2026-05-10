@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using System.Reflection.Metadata;
 using Microsoft.Extensions.Logging;
 using SampSharp.OpenMp.Core;
 using SampSharp.OpenMp.Core.Api;
@@ -118,6 +119,22 @@ internal class ServerService : IServerService
         Weapon weapon3 = Weapon.None, int weapon3Ammo = 0)
     {
         return AddPlayerClass(OpenMpConstants.TEAM_NONE, modelId, spawnPosition, angle, weapon1, weapon1Ammo, weapon2, weapon2Ammo, weapon3, weapon3Ammo);
+    }
+
+    public Class AddPlayerClass(PlayerSpawnData spawnData)
+    {
+        ArgumentNullException.ThrowIfNull(spawnData);
+
+        var weapons = spawnData.Weapons.ToOmpData();
+        var @class = _classes.Create(spawnData.Skin, spawnData.Team, spawnData.Location, spawnData.Angle, ref weapons);
+
+        var entityId = EntityId.NewEntityId();
+        var component = _entityManager.AddComponent<Class>(entityId, _classes, @class);
+
+        var extension = new ComponentExtension(component);
+        @class.AddExtension(extension);
+
+        return component;
     }
 
     public void BlockIpAddress(string ipAddress, TimeSpan time = default)
