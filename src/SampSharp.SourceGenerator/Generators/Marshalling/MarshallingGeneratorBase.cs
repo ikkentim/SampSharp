@@ -161,22 +161,10 @@ public abstract class MarshallingGeneratorBase(MarshalDirection direction)
         //
         // return: retVal
 
-        var setup = Phase(ctx, MarshalPhase.Setup, MarshallingCodeGenDocumentation.COMMENT_SETUP);
-        var notify = Phase(ctx, MarshalPhase.NotifyForSuccessfulInvoke, MarshallingCodeGenDocumentation.COMMENT_NOTIFY);
-        var cleanupCaller = Phase(ctx, MarshalPhase.CleanupCallerAllocated, MarshallingCodeGenDocumentation.COMMENT_CLEANUP_CALLER);
+        var steps = CollectPhases(ctx);
 
-        var parameterContexts = ctx.Parameters.AsEnumerable();
-        var returnContext = new[] { ctx.ReturnValue };
 
-        var unmarshalCapture = Phase(parameterContexts, MarshalPhase.UnmarshalCapture, MarshallingCodeGenDocumentation.COMMENT_UNMARSHAL_CAPTURE);
-        var unmarshal = Phase(parameterContexts, MarshalPhase.Unmarshal, MarshallingCodeGenDocumentation.COMMENT_UNMARSHAL);
-        var guaranteedUnmarshal = Phase(parameterContexts, MarshalPhase.GuaranteedUnmarshal, MarshallingCodeGenDocumentation.COMMENT_GUARANTEED_UNMARSHAL);
-        var cleanupCallee = Phase(parameterContexts, MarshalPhase.CleanupCalleeAllocated, MarshallingCodeGenDocumentation.COMMENT_CLEANUP_CALLEE);
-        var parameterAndReturnContexts = parameterContexts.Concat(returnContext);
-        var marshal = Phase(parameterAndReturnContexts, MarshalPhase.Marshal, MarshallingCodeGenDocumentation.COMMENT_MARSHAL);
-        var pinnedMarshal = Phase(parameterAndReturnContexts, MarshalPhase.PinnedMarshal, MarshallingCodeGenDocumentation.COMMENT_PINNED_MARSHAL);
-
-        if (cleanupCallee.Count > 0)
+        if (steps.CleanupCallee.Count > 0)
         {
             throw new InvalidOperationException("cannot cleanup callee allocated");
         }
@@ -187,17 +175,17 @@ public abstract class MarshallingGeneratorBase(MarshalDirection direction)
 
         // wire up steps
         var statements = initLocals
-            .AddRange(setup)
+            .AddRange(steps.Setup)
             .AddRange(
                 TryCatch(
-                    tryBlock: unmarshalCapture
-                        .AddRange(unmarshal)
-                        .AddRange(guaranteedUnmarshal)
+                    tryBlock: steps.UnmarshalCapture
+                        .AddRange(steps.Unmarshal)
+                        .AddRange(steps.GuaranteedUnmarshal)
                         .Add(invoke)
-                        .AddRange(notify),
-                    finallyBlock: cleanupCaller))
-            .AddRange(marshal)
-            .AddRange(pinnedMarshal);
+                        .AddRange(steps.Notify),
+                    finallyBlock: steps.CleanupCaller))
+            .AddRange(steps.Marshal)
+            .AddRange(steps.PinnedMarshal);
 
         // add return statement if the method returns a value
         if (!ctx.Symbol.ReturnsVoid)
@@ -393,15 +381,9 @@ public abstract class MarshallingGeneratorBase(MarshalDirection direction)
         MarshalPhase phase,
         string? comment)
     {
-        return Phase(ctx.Parameters.Concat([ctx.ReturnValue]), phase, comment);
-    }
-
-    private static SyntaxList<StatementSyntax> Phase(
-        IEnumerable<IdentifierStubContext> contexts,
-        MarshalPhase phase,
-        string? comment)
-    {
-        var elements = contexts.SelectMany(x => x.Generator.Generate(phase, x));
+        var elements = ctx.Parameters
+            .SelectMany(x => x.Generator.Generate(phase, x))
+            .Concat(ctx.ReturnValue.Generator.Generate(phase, ctx.ReturnValue));
 
         var result = List(elements);
 
