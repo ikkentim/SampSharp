@@ -11,7 +11,7 @@ public class NpcTestSystem : ISystem
     [PlayerCommand("spawn")]
     public void SpawnCommand(Player player, string name, IWorldService worldService)
     {
-        var npc = worldService.CreateNpc(name, player); // TODO: throws exception 'Failed to add extension'. Why does addExtension return false?
+        var npc = worldService.CreateNpc(name, player);
 
         npc.Position = player.Position;
         npc.Rotation = player.Rotation;

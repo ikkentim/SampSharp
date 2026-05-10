@@ -45,11 +45,21 @@ internal class WorldService(SampSharpEnvironment environment, IEntityManager ent
 
         var native = _npcs.Create(name);
 
+        if (!native.HasValue)
+        {
+            throw new InvalidOperationException("Failed to create NPC.");
+        }
+
         var entityId = EntityId.NewEntityId();
         var component = entityManager.AddComponent<Npc>(entityId, parent, _npcs, native);
 
-        var extension = new ComponentExtension(component);
-        native.AddExtension(extension);
+        var extension = native.TryGetExtension<ComponentExtension>();
+        if (extension is null)
+        {
+            // Extension should have already been added through OnNPCCreate event
+            extension = new ComponentExtension(component);
+            native.AddExtension(extension);
+        }
 
         return component;
     }
