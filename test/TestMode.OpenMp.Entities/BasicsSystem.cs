@@ -9,18 +9,33 @@ public class BasicsSystem : ISystem
     [Event]
     public void OnGameModeInit(IServerService svr)
     {
-        svr.AddPlayerClass(1, new Vector3(0, 0, 10), 0);
+        var cls1 = new PlayerSpawnData(0, 3, new Vector3(0, 0, 10), 0, new PlayerWeaponSlots
+        {
+            [0] = new PlayerWeaponSlot(Weapon.Colt45, 14)
+        }); // Andre
+
+        var cls2 = new PlayerSpawnData(0, 6, new Vector3(0, 0, 10), 0, new PlayerWeaponSlots
+        {
+            [0] = new PlayerWeaponSlot(Weapon.Deagle, 14)
+        }); // Emmet
+
+        svr.AddPlayerClass(cls1).AddComponent(new ClassNameComponent("Andre"));
+        svr.AddPlayerClass(cls2).AddComponent(new ClassNameComponent("Emmet"));
     }
 
-    // [Event]
-    // public bool OnPlayerRequestClass(Player player, int classId)
-    // {
-    //     return true;
-    // }
-    //
-    // [Event]
-    // public bool OnPlayerRequestSpawn(Player player)
-    // {
-    //     return true;
-    // }
+    [Event]
+    public void OnPlayerRequestClass(Player player, Class klass)
+    {
+        var className = klass.GetComponent<ClassNameComponent>();
+
+        if (className is not null)
+        {
+            player.SendClientMessage($"Class: {className.Name}");
+        }
+    }
+}
+
+public class ClassNameComponent(string name) : Component
+{
+    public string Name { get; } = name;
 }
