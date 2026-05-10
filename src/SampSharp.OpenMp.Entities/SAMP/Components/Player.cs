@@ -642,9 +642,8 @@ public class Player : WorldEntity
     /// </summary>
     public virtual string ClientVersionName => _player.GetClientVersionName();
 
-    // TODO: Is ghost mode only available for open-mp clients? If available for SA-MP clients, remove the 'open.mp only' note from the docs.
     /// <summary>
-    /// Gets or sets a value indicating whether ghost mode is enabled for this player. (open.mp only)
+    /// Gets or sets a value indicating whether ghost mode is enabled for this player.
     /// </summary>
     /// <remarks>When enabled, other players will pass through this player as if they were not there.</remarks>
     public virtual bool IsGhostModeEnabled
@@ -792,6 +791,28 @@ public class Player : WorldEntity
         var info = new PlayerClass(team, skin, position, rotation, new WeaponSlots(weapons));
 
         ClassData.SetSpawnInfo(ref info);
+    }
+
+    /// <summary>
+    /// Sets the spawn information for the player using the specified spawn data.
+    /// </summary>
+    /// <param name="spawnData">The spawn data that defines the player's initial position, orientation, and other spawn-related settings.</param>
+    public virtual void SetSpawnInfo(PlayerSpawnData spawnData)
+    {
+        ArgumentNullException.ThrowIfNull(spawnData);
+
+        var data = spawnData.ToOmpData();
+        ClassData.SetSpawnInfo(ref data);
+    }
+
+    /// <summary>
+    /// Retrieves the spawn information for the player based on the current class data.
+    /// </summary>
+    /// <returns>A <see cref="PlayerSpawnData"/> instance containing the player's spawn position, orientation, and related data.</returns>
+    public virtual PlayerSpawnData GetSpawnInfo()
+    {
+        ref var data = ref ClassData.GetClass();
+        return PlayerSpawnData.FromOmpData(ref data);
     }
 
     /// <summary>

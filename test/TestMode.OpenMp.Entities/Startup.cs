@@ -11,7 +11,7 @@ public class Startup : IEcsStartup
     public void Initialize(IStartupContext context)
     {
         context.UseEntities()
-            .UsePlayerCommands()
+            .UseCommands()
             .ConfigureLogging(logging => logging.SetMinimumLevel(LogLevel.Information));
     }
 

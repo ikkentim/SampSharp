@@ -52,12 +52,12 @@ public interface IServerService
     /// <param name="weapon2Ammo">The amount of ammunition of the second weapon for the player to spawn with.</param>
     /// <param name="weapon3">The third weapon for the player to spawn with.</param>
     /// <param name="weapon3Ammo">The amount of ammunition of the third weapon for the player to spawn with.</param>
-    /// <returns>The identifier of the class which was added.</returns>
+    /// <returns>The created player class component.</returns>
     /// <remarks>
     /// The maximum class ID is 319 (starting from 0, so a total of 320 classes). When this limit is reached, any more classes that are added will replace ID
     /// 319.
     /// </remarks>
-    int AddPlayerClass(int teamId, int modelId, Vector3 spawnPosition, float angle, Weapon weapon1 = Weapon.None, int weapon1Ammo = 0,
+    Class AddPlayerClass(int teamId, int modelId, Vector3 spawnPosition, float angle, Weapon weapon1 = Weapon.None, int weapon1Ammo = 0,
         Weapon weapon2 = Weapon.None, int weapon2Ammo = 0, Weapon weapon3 = Weapon.None, int weapon3Ammo = 0);
 
     /// <summary>
@@ -72,13 +72,24 @@ public interface IServerService
     /// <param name="weapon2Ammo">The amount of ammunition of the second weapon for the player to spawn with.</param>
     /// <param name="weapon3">The third weapon for the player to spawn with.</param>
     /// <param name="weapon3Ammo">The amount of ammunition of the third weapon for the player to spawn with.</param>
-    /// <returns>The identifier of the class which was added.</returns>
+    /// <returns>The created player class component.</returns>
     /// <remarks>
     /// The maximum class ID is 319 (starting from 0, so a total of 320 classes). When this limit is reached, any more classes that are added will replace ID
     /// 319.
     /// </remarks>
-    int AddPlayerClass(int modelId, Vector3 spawnPosition, float angle, Weapon weapon1 = Weapon.None, int weapon1Ammo = 0, Weapon weapon2 = Weapon.None,
+    Class AddPlayerClass(int modelId, Vector3 spawnPosition, float angle, Weapon weapon1 = Weapon.None, int weapon1Ammo = 0, Weapon weapon2 = Weapon.None,
         int weapon2Ammo = 0, Weapon weapon3 = Weapon.None, int weapon3Ammo = 0);
+
+    /// <summary>
+    /// Creates and registers a new player class using the specified spawn data.
+    /// </summary>
+    /// <param name="spawnData">The data that defines the player's spawn configuration, including position, appearance, and initial attributes.</param>
+    /// <returns>The created player class component.</returns>
+    /// <remarks>
+    /// The maximum class ID is 319 (starting from 0, so a total of 320 classes). When this limit is reached, any more classes that are added will replace ID
+    /// 319.
+    /// </remarks>
+    Class AddPlayerClass(PlayerSpawnData spawnData);
 
     /// <summary>
     /// Blocks an IP address from further communication with the server for a set amount of time (with wildcards allowed). Players trying to connect to the

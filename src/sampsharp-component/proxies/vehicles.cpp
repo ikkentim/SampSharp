@@ -3,6 +3,7 @@
 #include <Server/Components/Vehicles/vehicle_models.hpp>
 #include <Server/Components/Vehicles/vehicle_colours.hpp>
 #include <Server/Components/Vehicles/vehicle_seats.hpp>
+#include "../proxy-api.hpp"
 
 extern "C" SDK_EXPORT bool __CDECL vehicles_isValidComponentForVehicleModel(int vehicleModel, int componentId)
 {

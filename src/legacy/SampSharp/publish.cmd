@@ -32,3 +32,4 @@ copy "%DLLSOURCE%\SampSharp.lib" "%ARTIFACTDIR%" /y 2>nul
 
 echo.
 echo Artifacts published to: %ARTIFACTDIR%
+exit /b 0

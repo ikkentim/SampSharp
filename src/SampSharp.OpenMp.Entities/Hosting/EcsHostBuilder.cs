@@ -95,6 +95,7 @@ internal sealed class EcsHostBuilder : Extension, IEcsHostBuilder
                 builder.AddOpenMp();
                 ConfigureLogger(builder);
             })
+            .AddSingleton<IUnhandledExceptionHandler, UnhandledExceptionHandlerImpl>()
             .AddSingleton<EventDispatcher>()
             .AddSingleton<IEventDispatcher>(sp => sp.GetRequiredService<EventDispatcher>())
 #pragma warning disable CS0618 // Type or member is obsolete

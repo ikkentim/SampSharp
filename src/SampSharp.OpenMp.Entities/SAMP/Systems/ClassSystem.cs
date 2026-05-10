@@ -4,6 +4,7 @@ namespace SampSharp.Entities.SAMP;
 
 internal class ClassSystem : DisposableSystem, IClassEventHandler
 {
+    private readonly IClassesComponent _classes;
     private readonly IOmpEntityProvider _entityProvider;
     private readonly IEventDispatcher _eventDispatcher;
 
@@ -11,6 +12,7 @@ internal class ClassSystem : DisposableSystem, IClassEventHandler
     {
         _eventDispatcher = eventDispatcher;
         _entityProvider = entityProvider;
+        _classes = environment.Components.QueryComponent<IClassesComponent>();
 
         AddDisposable(environment.TryAddEventHandler<IClassesComponent, IClassEventHandler>(x => x.GetEventDispatcher(), this));
     }
@@ -18,6 +20,6 @@ internal class ClassSystem : DisposableSystem, IClassEventHandler
     public bool OnPlayerRequestClass(IPlayer player, uint classId)
     {
         return _eventDispatcher.InvokeAs("OnPlayerRequestClass", true,
-            _entityProvider.GetEntity(player), (int)classId);
+            _entityProvider.GetEntity(player), _entityProvider.GetEntity(_classes.AsPool().Get((int)classId)));
     }
 }

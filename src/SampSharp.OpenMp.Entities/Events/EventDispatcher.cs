@@ -250,6 +250,7 @@ internal class EventDispatcher : IEventDispatcher, IEventService
                 var result = invoke(context);
                 return result switch
                 {
+                    // TODO - handle async failures
                     Task<bool> task => !task.IsCompleted ? null : (task.Result ? MethodResult.True : MethodResult.False),
                     Task<int> task => !task.IsCompleted ? null : task.Result,
                     Task => null,

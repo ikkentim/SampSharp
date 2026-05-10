@@ -42,3 +42,4 @@ jobs:
           name: sampsharp-component-windows
           path: build/artifacts/sampsharp-component/
           if-no-files-found: error
+          retention-days: ${{ github.event_name == 'pull_request' && 14 || 90 }}

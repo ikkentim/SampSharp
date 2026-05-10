@@ -1,4 +1,4 @@
-namespace SampSharp.Entities.SAMP.Commands.Parsers;
+namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>Parses an enum by integer value or by (case-insensitive) substring of name.</summary>
 public class EnumParser : ICommandParameterParser
@@ -20,7 +20,7 @@ public class EnumParser : ICommandParameterParser
     }
 
     /// <inheritdoc />
-    public bool TryParse(IServiceProvider services, ref string inputText, out object? result)
+    public bool TryParse(IServiceProvider services, ref StringSpan inputText, out object? result)
     {
         if (!_wordParser.TryParse(services, ref inputText, out var sub) || sub is not string word)
         {
@@ -35,9 +35,7 @@ public class EnumParser : ICommandParameterParser
         }
 
         var lowerWord = word.ToLowerInvariant();
-        var names = Enum.GetNames(_enumType)
-            .Where(n => n.Contains(lowerWord, StringComparison.InvariantCultureIgnoreCase))
-            .ToArray();
+        var names = Enum.GetNames(_enumType).Where(n => n.Contains(lowerWord, StringComparison.InvariantCultureIgnoreCase)).ToArray();
 
         if (names.Length > 1)
         {

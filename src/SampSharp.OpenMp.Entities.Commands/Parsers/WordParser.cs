@@ -1,21 +1,30 @@
-namespace SampSharp.Entities.SAMP.Commands.Parsers;
+namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>Consumes the next whitespace-delimited word.</summary>
 public class WordParser : ICommandParameterParser
 {
     /// <inheritdoc />
-    public bool TryParse(IServiceProvider services, ref string inputText, out object? result)
+    public bool TryParse(IServiceProvider services, ref StringSpan inputText, out object? result)
     {
         result = null;
         inputText = inputText.TrimStart();
-        if (inputText.Length == 0) return false;
+        if (inputText.Length == 0)
+        {
+            return false;
+        }
 
-        var index = inputText.IndexOf(' ');
-        if (index == 0) return false;
+        var span = inputText.AsSpan();
+        var index = span.IndexOf(' ');
+        if (index == 0)
+        {
+            return false;
+        }
 
-        var str = index < 0 ? inputText : inputText[..index];
-        inputText = inputText[str.Length..];
-        result = str;
+        var wordLength = index < 0 ? span.Length : index;
+        var word = span[..wordLength].ToString();
+
+        inputText = inputText.Skip(wordLength);
+        result = word;
         return true;
     }
 }

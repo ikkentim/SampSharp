@@ -22,5 +22,8 @@ public sealed record MethodResult(bool Value)
     /// <summary>
     /// Returns the singleton <see cref="MethodResult" /> for the given <paramref name="value" />.
     /// </summary>
-    public static object From(bool value) => value ? True : False;
+    public static object From(bool value)
+    {
+        return value ? True : False;
+    }
 }

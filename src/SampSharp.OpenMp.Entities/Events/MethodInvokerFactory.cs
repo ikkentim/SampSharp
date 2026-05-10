@@ -22,9 +22,8 @@ public static class MethodInvokerFactory
     /// <param name="methodInfo">The method information.</param>
     /// <param name="parameterSources">The sources of the parameters.</param>
     /// <param name="uninvokedReturnValue">The value returned if the method is not invoked when a parameter could not be converted to the correct component.</param>
-    /// <param name="retBoolToResult">Indicates whether the <see langword="bool" /> return value should be converted to a <see cref="MethodResult" /> value.</param>
     /// <returns>The method invoker.</returns>
-    public static MethodInvoker Compile(MethodInfo methodInfo, MethodParameterSource[] parameterSources, object? uninvokedReturnValue = null, bool retBoolToResult = true)
+    public static MethodInvoker Compile(MethodInfo methodInfo, MethodParameterSource[] parameterSources, object? uninvokedReturnValue = null)
     {
         if (methodInfo.DeclaringType == null)
         {
@@ -129,7 +128,7 @@ public static class MethodInvokerFactory
         {
             body = Expression.Block(body, Expression.Constant(null));
         }
-        else if (retBoolToResult && body.Type == typeof(bool))
+        else if (body.Type == typeof(bool))
         {
             var boxMethod = typeof(MethodResult).GetMethod(nameof(MethodResult.From))!;
             body = Expression.Call(boxMethod, body);

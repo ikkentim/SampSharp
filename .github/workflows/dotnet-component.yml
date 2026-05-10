@@ -8,7 +8,7 @@ on:
     paths:
       - .github/workflows/dotnet-component.yml
       - src/SampSharp.*/**
-      - test/TestMode.*/**
+      - test/**
       - SampSharp.slnx
       - Directory.Build.props
       - build.sh
@@ -20,7 +20,7 @@ on:
     paths:
       - .github/workflows/dotnet-component.yml
       - src/SampSharp.*/**
-      - test/TestMode.*/**
+      - test/**
       - SampSharp.slnx
       - Directory.Build.props
       - build.sh
@@ -40,6 +40,9 @@ jobs:
     - name: Build component libraries
       run: ./build.sh component-libraries
 
+    - name: Test component libraries
+      run: dotnet test SampSharp.slnx -c Release --no-build
+
     - name: Pack component libraries
       run: ./build.sh component-libraries publish
 
@@ -49,3 +52,4 @@ jobs:
         name: sampsharp-component-nuget-packages
         path: build/artifacts/packages/
         if-no-files-found: error
+        retention-days: ${{ github.event_name == 'pull_request' && 14 || 90 }}

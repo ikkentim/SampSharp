@@ -139,8 +139,6 @@ public abstract class MarshallingGeneratorBase(MarshalDirection direction)
 
     private BlockSyntax GenerateInvocationWithMarshallingUnmanagedToManaged(MarshallingStubGenerationContext ctx)
     {
-        // NOTE: We support only unmarshalling options for unmanaged to managed marshalling. 
-        //
         // LocalsInit
         // Setup
         // try
@@ -165,15 +163,13 @@ public abstract class MarshallingGeneratorBase(MarshalDirection direction)
 
         var steps = CollectPhases(ctx);
 
+
         if (steps.CleanupCallee.Count > 0)
         {
             throw new InvalidOperationException("cannot cleanup callee allocated");
         }
 
         var initLocals = List(GenerateInitLocals(ctx));
-
-        // if callee cleanup or guaranteed unmarshalling is required, we need to keep track of invocation success
-        var notify = steps.Notify;
 
         var invoke = ExpressionStatement(AddReturnValueAssignmentToInvoke(ctx, GetInvocation(ctx)));
 
@@ -186,8 +182,10 @@ public abstract class MarshallingGeneratorBase(MarshalDirection direction)
                         .AddRange(steps.Unmarshal)
                         .AddRange(steps.GuaranteedUnmarshal)
                         .Add(invoke)
-                        .AddRange(notify),
-                    finallyBlock: steps.CleanupCaller));
+                        .AddRange(steps.Notify),
+                    finallyBlock: steps.CleanupCaller))
+            .AddRange(steps.Marshal)
+            .AddRange(steps.PinnedMarshal); // << is likely broken, unsupported scenario for now since we don't need it.
 
         // add return statement if the method returns a value
         if (!ctx.Symbol.ReturnsVoid)
@@ -330,16 +328,10 @@ public abstract class MarshallingGeneratorBase(MarshalDirection direction)
     {
         if (!ctx.Symbol.ReturnsVoid)
         {
-            string assignedLocal;
-            if (ctx.ReturnValue.Direction == MarshalDirection.ManagedToUnmanaged)
-            {
-                assignedLocal = ctx.ReturnValue.Generator.UsesNativeIdentifier ? ctx.ReturnValue.GetNativeId() : ctx.ReturnValue.GetManagedId();
-            }
-            else
-            {
-                // UnmanagedToManaged
-                assignedLocal = ctx.ReturnValue.Generator.UsesNativeIdentifier ? ctx.ReturnValue.GetManagedId() : ctx.ReturnValue.GetNativeId();
-            }
+            var assignedLocal = ctx.ReturnValue.Direction == MarshalDirection.ManagedToUnmanaged &&
+                                ctx.ReturnValue.Generator.UsesNativeIdentifier
+                ? ctx.ReturnValue.GetNativeId()
+                : ctx.ReturnValue.GetManagedId();
 
             invoke = 
                 AssignmentExpression(
@@ -369,11 +361,9 @@ public abstract class MarshallingGeneratorBase(MarshalDirection direction)
 
     private static ArgumentSyntax GetArgumentForPInvokeParameter(IdentifierStubContext ctx)
     {
-        var arg = ctx.GetManagedId();
-        if (ctx.Generator.UsesNativeIdentifier)
-        {
-            arg = ctx.GetNativeId();
-        }
+        var arg = ctx.Direction == MarshalDirection.ManagedToUnmanaged && ctx.Generator.UsesNativeIdentifier
+            ? ctx.GetNativeId()
+            : ctx.GetManagedId();
         
         ExpressionSyntax expr = IdentifierName(arg);
 

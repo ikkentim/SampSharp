@@ -12,12 +12,14 @@ if /i "%TARGET%"=="legacy-plugin" (
     if "%ACTION%"=="" (
         echo Building legacy plugin x86...
         call "%SCRIPTDIR%src\legacy\SampSharp\build.cmd"
+        if errorlevel 1 exit /b 1
         goto end
     ) else if /i "%ACTION%"=="publish" (
         echo Building and publishing legacy plugin x86...
         call "%SCRIPTDIR%src\legacy\SampSharp\build.cmd"
         if errorlevel 1 exit /b 1
         call "%SCRIPTDIR%src\legacy\SampSharp\publish.cmd"
+        if errorlevel 1 exit /b 1
         goto end
     ) else (
         goto usage
@@ -28,10 +30,12 @@ if /i "%TARGET%"=="legacy-libraries" (
     if "%ACTION%"=="" (
         echo Building legacy C# libraries...
         call :build_legacy_libraries
+        if errorlevel 1 exit /b 1
         goto end
     ) else if /i "%ACTION%"=="publish" (
         echo Building and packing legacy C# libraries...
         call :pack_legacy_libraries
+        if errorlevel 1 exit /b 1
         goto end
     ) else (
         goto usage
@@ -42,12 +46,14 @@ if /i "%TARGET%"=="component" (
     if "%ACTION%"=="" (
         echo Building open.mp component...
         call "%SCRIPTDIR%src\sampsharp-component\build.cmd"
+        if errorlevel 1 exit /b 1
         goto end
     ) else if /i "%ACTION%"=="publish" (
         echo Building and publishing open.mp component...
         call "%SCRIPTDIR%src\sampsharp-component\build.cmd"
         if errorlevel 1 exit /b 1
         call "%SCRIPTDIR%src\sampsharp-component\publish.cmd"
+        if errorlevel 1 exit /b 1
         goto end
     ) else (
         goto usage
@@ -58,10 +64,12 @@ if /i "%TARGET%"=="component-libraries" (
     if "%ACTION%"=="" (
         echo Building C# libraries...
         call :build_component_libraries
+        if errorlevel 1 exit /b 1
         goto end
     ) else if /i "%ACTION%"=="publish" (
         echo Building and packing C# libraries...
         call :pack_component_libraries
+        if errorlevel 1 exit /b 1
         goto end
     ) else (
         goto usage

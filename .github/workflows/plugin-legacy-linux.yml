@@ -42,3 +42,4 @@ jobs:
           name: sampsharp-legacy-plugin-linux
           path: build/artifacts/sampsharp-legacy/
           if-no-files-found: error
+          retention-days: ${{ github.event_name == 'pull_request' && 14 || 90 }}
