@@ -34,8 +34,3 @@ public class BasicsSystem : ISystem
         }
     }
 }
-
-public class ClassNameComponent(string name) : Component
-{
-    public string Name { get; } = name;
-}
