@@ -1,6 +1,5 @@
 ﻿using System.Numerics;
 using SampSharp.OpenMp.Core.Api;
-using OmpPlayerClass = SampSharp.OpenMp.Core.Api.PlayerClass;
 
 namespace SampSharp.Entities.SAMP;
 
@@ -29,71 +28,48 @@ public class Class : IdProvider
     /// <summary>
     /// Gets or sets the team ID for this player class.
     /// </summary>
-    public virtual int Team
-    {
-        get => _class.GetClass().Team;
-        set
-        {
-            var data = _class.GetClass();
-            var newData = new OmpPlayerClass(value, data.Skin, data.Spawn, data.Angle, data.Weapons);
-            _class.SetClass(ref newData);
-        }
-    }
+    public virtual int Team => GetSpawnData().Team;
 
     /// <summary>
     /// Gets or sets the skin model ID for this player class.
     /// </summary>
-    public virtual int Skin
-    {
-        get => _class.GetClass().Skin;
-        set
-        {
-            var data = _class.GetClass();
-            var newData = new OmpPlayerClass(data.Team, value, data.Spawn, data.Angle, data.Weapons);
-            _class.SetClass(ref newData);
-        }
-    }
+    public virtual int Skin => GetSpawnData().Skin;
 
     /// <summary>
     /// Gets or sets the spawn position for this player class.
     /// </summary>
-    public virtual Vector3 SpawnPosition
-    {
-        get => _class.GetClass().Spawn;
-        set
-        {
-            var data = _class.GetClass();
-            var newData = new OmpPlayerClass(data.Team, data.Skin, value, data.Angle, data.Weapons);
-            _class.SetClass(ref newData);
-        }
-    }
+    public virtual Vector3 Location => GetSpawnData().Location;
 
     /// <summary>
     /// Gets or sets the spawn angle (in degrees) for this player class.
     /// </summary>
-    public virtual float Angle
-    {
-        get => _class.GetClass().Angle;
-        set
-        {
-            var data = _class.GetClass();
-            var newData = new OmpPlayerClass(data.Team, data.Skin, data.Spawn, value, data.Weapons);
-            _class.SetClass(ref newData);
-        }
-    }
+    public virtual float Angle => GetSpawnData().Angle;
 
     /// <summary>
     /// Gets or sets the weapon slots assigned to this player class.
     /// </summary>
-    public virtual WeaponSlots Weapons
+    public virtual PlayerWeaponSlots Weapons => GetSpawnData().Weapons;
+
+    /// <summary>
+    /// Sets the spawn data for the player using the specified spawn configuration.
+    /// </summary>
+    /// <param name="data">The spawn configuration data to apply.</param>
+    public virtual void SetSpawnData(PlayerSpawnData data)
     {
-        get => _class.GetClass().Weapons;
-        set
-        {
-            var data = _class.GetClass();
-            var newData = new OmpPlayerClass(data.Team, data.Skin, data.Spawn, data.Angle, value);
-            _class.SetClass(ref newData);
-        }
+        ArgumentNullException.ThrowIfNull(data);
+
+        var omp = data.ToOmpData();
+        _class.SetClass(ref omp);
+    }
+
+    /// <summary>
+    /// Retrieves the current spawn data for the player.
+    /// </summary>
+    /// <returns>A <see cref="PlayerSpawnData"/> instance containing the player's spawn information.</returns>
+    public virtual PlayerSpawnData GetSpawnData()
+    {
+        ref var dat = ref _class.GetClass();
+        return PlayerSpawnData.FromOmpData(ref dat);
     }
 
     /// <inheritdoc />
