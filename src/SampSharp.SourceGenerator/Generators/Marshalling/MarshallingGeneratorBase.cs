@@ -185,7 +185,7 @@ public abstract class MarshallingGeneratorBase(MarshalDirection direction)
                         .AddRange(steps.Notify),
                     finallyBlock: steps.CleanupCaller))
             .AddRange(steps.Marshal)
-            .AddRange(steps.PinnedMarshal);
+            .AddRange(steps.PinnedMarshal); // << is likely broken, unsupported scenario for now since we don't need it.
 
         // add return statement if the method returns a value
         if (!ctx.Symbol.ReturnsVoid)
