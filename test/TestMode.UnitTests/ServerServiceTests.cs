@@ -25,15 +25,17 @@ public class ServerServiceTests : TestBase
     [Fact]
     public void AddPlayerClass_with_team_should_succeed()
     {
-        var classId = Sut.AddPlayerClass(1, 2, new Vector3(0, 0, 0), 0.0f, Weapon.Colt45, 100);
-        classId.ShouldBeGreaterThanOrEqualTo(0);
+        var playerClass = Sut.AddPlayerClass(1, 2, new Vector3(0, 0, 0), 0.0f, Weapon.Colt45, 100);
+        playerClass.ShouldNotBeNull();
+        playerClass.Id.ShouldBeGreaterThanOrEqualTo(0);
     }
 
     [Fact]
     public void AddPlayerClass_without_team_should_succeed()
     {
-        var classId = Sut.AddPlayerClass(2, new Vector3(0, 0, 0), 0.0f, Weapon.Colt45, 100);
-        classId.ShouldBeGreaterThanOrEqualTo(0);
+        var playerClass = Sut.AddPlayerClass(2, new Vector3(0, 0, 0), 0.0f, Weapon.Colt45, 100);
+        playerClass.ShouldNotBeNull();
+        playerClass.Id.ShouldBeGreaterThanOrEqualTo(0);
     }
 
     [Fact]

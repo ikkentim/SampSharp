@@ -794,6 +794,28 @@ public class Player : WorldEntity
     }
 
     /// <summary>
+    /// Sets the spawn information for the player using the specified spawn data.
+    /// </summary>
+    /// <param name="spawnData">The spawn data that defines the player's initial position, orientation, and other spawn-related settings.</param>
+    public virtual void SetSpawnInfo(PlayerSpawnData spawnData)
+    {
+        ArgumentNullException.ThrowIfNull(spawnData);
+
+        var data = spawnData.ToOmpData();
+        ClassData.SetSpawnInfo(ref data);
+    }
+
+    /// <summary>
+    /// Retrieves the spawn information for the player based on the current class data.
+    /// </summary>
+    /// <returns>A <see cref="PlayerSpawnData"/> instance containing the player's spawn position, orientation, and related data.</returns>
+    public virtual PlayerSpawnData GetSpawnInfo()
+    {
+        ref var data = ref ClassData.GetClass();
+        return PlayerSpawnData.FromOmpData(ref data);
+    }
+
+    /// <summary>
     /// Gets the network statistics for this player.
     /// </summary>
     /// <returns>A <see cref="NetworkStats" /> object containing the player's network statistics.</returns>
