@@ -12,14 +12,14 @@ public class TimerAttribute : Attribute
     /// <summary>
     /// Initializes a new instance of the <see cref="TimerAttribute" /> class.
     /// </summary>
-    /// <param name="interval">The interval of the timer.</param>
+    /// <param name="interval">The interval of the timer in milliseconds.</param>
     public TimerAttribute(double interval)
     {
         Interval = interval;
     }
 
     /// <summary>
-    /// Gets or sets the interval of the timer.
+    /// Gets or sets the interval of the timer in milliseconds.
     /// </summary>
     public double Interval { get; set; }
 

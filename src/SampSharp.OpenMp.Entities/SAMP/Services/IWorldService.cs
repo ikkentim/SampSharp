@@ -25,6 +25,8 @@ public interface IWorldService
     /// <returns>The actor component of the newly created entity.</returns>
     Actor CreateActor(int modelId, Vector3 position, float rotation, EntityId parent = default);
 
+    Npc CreateNpc(string name, EntityId parent = default);
+
     /// <summary>
     /// Creates a vehicle in the world.
     /// </summary>

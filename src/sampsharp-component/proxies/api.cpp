@@ -274,19 +274,127 @@ PROXY(INPC, bool, isInvulnerable);
 PROXY(INPC, void, setInvulnerable, bool);
 PROXY(INPC, bool, isMoving);
 PROXY(INPC, bool, move, Vector3, NPCMoveType, float, float);
+PROXY(INPC, bool, moveToPlayer, IPlayer &, NPCMoveType, float, float, Milliseconds, bool);
 PROXY(INPC, void, stopMove);
+PROXY(INPC, const FlatPtrHashSet<IPlayer> &, streamedForPlayers);
 PROXY(INPC, void, clearAnimations);
 PROXY(INPC, void, applyAnimation, const AnimationData &);
 PROXY(INPC, bool, isStreamedInForPlayer, const IPlayer &);
+PROXY(INPC, void, setWeaponSkillLevel, PlayerWeaponSkill, int);
+PROXY(INPC, int, getWeaponSkillLevel, PlayerWeaponSkill);
+PROXY(INPC, void, setKeys, uint16_t, uint16_t, uint16_t);
+PROXY(INPC, void, getKeys, uint16_t &, uint16_t &, uint16_t &);
+PROXY(INPC, void, meleeAttack, int, bool);
+PROXY(INPC, void, stopMeleeAttack);
+PROXY(INPC, bool, isMeleeAttacking);
+PROXY(INPC, void, setFightingStyle, PlayerFightingStyle);
+PROXY(INPC, PlayerFightingStyle, getFightingStyle);
+PROXY(INPC, void, enableReloading, bool);
+PROXY(INPC, bool, isReloadEnabled);
+PROXY(INPC, bool, isReloading);
+PROXY(INPC, void, enableInfiniteAmmo, bool);
+PROXY(INPC, bool, isInfiniteAmmoEnabled);
+PROXY(INPC, PlayerWeaponState, getWeaponState);
+PROXY(INPC, void, setWeaponState, PlayerWeaponState);
+PROXY(INPC, void, setAmmoInClip, int);
+PROXY(INPC, int, getAmmoInClip);
+PROXY(INPC, void, shoot, int, PlayerBulletHitType, uint8_t, const Vector3 &, const Vector3 &, bool, EntityCheckType);
+PROXY(INPC, bool, isShooting);
+PROXY(INPC, void, aimAt, const Vector3 &, bool, int, bool, const Vector3 &, EntityCheckType);
+PROXY(INPC, void, aimAtPlayer, IPlayer &, bool, int, bool, const Vector3 &, const Vector3 &, EntityCheckType);
+PROXY(INPC, void, stopAim);
+PROXY(INPC, bool, isAiming);
+PROXY(INPC, bool, isAimingAtPlayer, IPlayer &);
+PROXY(INPC, void, setWeaponAccuracy, uint8_t, float);
+PROXY(INPC, float, getWeaponAccuracy, uint8_t);
+PROXY(INPC, void, setWeaponReloadTime, uint8_t, int);
+PROXY(INPC, int, getWeaponReloadTime, uint8_t);
+PROXY(INPC, int, getWeaponActualReloadTime, uint8_t);
+PROXY(INPC, void, setWeaponShootTime, uint8_t, int);
+PROXY(INPC, int, getWeaponShootTime, uint8_t);
+PROXY(INPC, void, setWeaponClipSize, uint8_t, int);
+PROXY(INPC, int, getWeaponClipSize, uint8_t);
+PROXY(INPC, int, getWeaponActualClipSize, uint8_t);
+PROXY(INPC, void, enterVehicle, IVehicle &, uint8_t, NPCMoveType);
+PROXY(INPC, void, exitVehicle);
+PROXY(INPC, bool, putInVehicle, IVehicle &, uint8_t);
+PROXY(INPC, bool, removeFromVehicle);
+PROXY(INPC, bool, moveByPath, int, NPCMoveType, float, bool);
+PROXY(INPC, void, pausePath);
+PROXY(INPC, void, resumePath);
+PROXY(INPC, void, stopPath);
+PROXY(INPC, bool, isMovingByPath);
+PROXY(INPC, bool, isPathPaused);
+PROXY(INPC, int, getCurrentPathId);
+PROXY(INPC, int, getCurrentPathPointIndex);
+PROXY(INPC, IVehicle *, getVehicle);
+PROXY(INPC, int, getVehicleSeat);
+PROXY(INPC, IVehicle *, getEnteringVehicle);
+PROXY(INPC, int, getEnteringVehicleSeat);
+PROXY(INPC, void, useVehicleSiren, bool);
+PROXY(INPC, bool, isVehicleSirenUsed);
+PROXY(INPC, void, setVehicleHealth, float);
+PROXY(INPC, float, getVehicleHealth);
+PROXY(INPC, void, setVehicleHydraThrusters, int);
+PROXY(INPC, int, getVehicleHydraThrusters);
+PROXY(INPC, void, setVehicleGearState, int);
+PROXY(INPC, int, getVehicleGearState);
+PROXY(INPC, void, setVehicleTrainSpeed, float);
+PROXY(INPC, float, getVehicleTrainSpeed);
+PROXY(INPC, void, resetAnimation);
+PROXY(INPC, void, setAnimation, int, float, bool, bool, bool, bool, int);
+PROXY(INPC, void, getAnimation, int &, float &, bool &, bool &, bool &, bool &, int &);
+PROXY(INPC, void, setSpecialAction, PlayerSpecialAction);
+PROXY(INPC, PlayerSpecialAction, getSpecialAction);
+PROXY_NAMED_OVERLOAD(INPC, INPC, bool, startPlayback, ByName, StringView, bool, Vector3, GTAQuat);
+PROXY_NAMED_OVERLOAD(INPC, INPC, bool, startPlayback, ById, int, bool, Vector3, GTAQuat);
+PROXY(INPC, void, stopPlayback);
+PROXY(INPC, void, pausePlayback, bool);
+PROXY(INPC, bool, isPlayingPlayback);
+PROXY(INPC, bool, isPlaybackPaused);
+PROXY(INPC, bool, playNode, int, NPCMoveType, float, float, bool);
+PROXY(INPC, void, stopPlayingNode);
+PROXY(INPC, void, pausePlayingNode);
+PROXY(INPC, void, resumePlayingNode);
+PROXY(INPC, bool, isPlayingNodePaused);
+PROXY(INPC, bool, isPlayingNode);
+PROXY(INPC, uint16_t, changeNode, int, uint16_t);
+PROXY(INPC, bool, updateNodePoint, uint16_t);
+PROXY(INPC, void, setSurfingData, const PlayerSurfingData &);
+PROXY(INPC, PlayerSurfingData, getSurfingData);
+PROXY(INPC, void, resetSurfingData);
+PROXY(INPC, bool, isMovingToPlayer, IPlayer &);
+PROXY(INPC, void, kill, IPlayer *, uint8_t);
+PROXY(INPC, IPlayer *, getPlayerAimingAt);
+PROXY(INPC, IPlayer *, getPlayerMovingTo);
+PROXY(INPC, Vector3, getPositionMovingTo);
 PROXY_CAST(INPC, IIDProvider);
 PROXY(INPCComponent, INPC *, create, StringView);
 PROXY(INPCComponent, void, destroy, INPC &);
 PROXY(INPCComponent, int, createPath);
 PROXY(INPCComponent, bool, destroyPath, int);
+PROXY(INPCComponent, void, destroyAllPaths);
+PROXY_PTR(INPCComponent, size_t, getPathCount);
 PROXY(INPCComponent, bool, addPointToPath, int, const Vector3 &, float);
+PROXY(INPCComponent, bool, removePointFromPath, int, size_t);
+PROXY(INPCComponent, bool, clearPath, int);
+PROXY_PTR(INPCComponent, size_t, getPathPointCount, int);
+PROXY(INPCComponent, bool, getPathPoint, int, size_t, Vector3 &, float &);
+PROXY(INPCComponent, bool, hasPathPointInRange, int, const Vector3 &, float);
 PROXY(INPCComponent, bool, isValidPath, int);
 PROXY(INPCComponent, int, loadRecord, StringView);
 PROXY(INPCComponent, bool, unloadRecord, int);
+PROXY(INPCComponent, bool, isValidRecord, int);
+PROXY_PTR(INPCComponent, size_t, getRecordCount);
+PROXY(INPCComponent, void, unloadAllRecords);
+PROXY(INPCComponent, bool, openNode, int);
+PROXY(INPCComponent, void, closeNode, int);
+PROXY(INPCComponent, bool, isNodeOpen, int);
+PROXY(INPCComponent, uint8_t, getNodeType, int);
+PROXY(INPCComponent, bool, setNodePoint, int, uint16_t);
+PROXY(INPCComponent, bool, getNodePointPosition, int, Vector3 &);
+PROXY(INPCComponent, int, getNodePointCount, int);
+PROXY(INPCComponent, bool, getNodeInfo, int, uint32_t &, uint32_t &, uint32_t &);
 PROXY_CAST(INPCComponent, INetworkComponent);
 
 PROXY_EVENT_DISPATCHER(INPCComponent, NPCEventHandler, getEventDispatcher);
@@ -296,9 +404,28 @@ PROXY_EVENT_HANDLER_EVENT(void, onNPCCreate, INPC &)
 PROXY_EVENT_HANDLER_EVENT(void, onNPCDestroy, INPC &)
 PROXY_EVENT_HANDLER_EVENT(void, onNPCSpawn, INPC &)
 PROXY_EVENT_HANDLER_EVENT(void, onNPCRespawn, INPC &)
+PROXY_EVENT_HANDLER_EVENT(void, onNPCWeaponStateChange, INPC &, PlayerWeaponState, PlayerWeaponState)
+PROXY_EVENT_HANDLER_EVENT(bool, onNPCTakeDamage, INPC &, IPlayer &, float, uint8_t, BodyPart)
+PROXY_EVENT_HANDLER_EVENT(bool, onNPCGiveDamage, INPC &, IPlayer &, float, uint8_t, BodyPart)
 PROXY_EVENT_HANDLER_EVENT(void, onNPCDeath, INPC &, IPlayer *, int)
+PROXY_EVENT_HANDLER_EVENT(bool, onNPCShotMissed, INPC &, const PlayerBulletData &)
+PROXY_EVENT_HANDLER_EVENT(bool, onNPCShotPlayer, INPC &, IPlayer &, const PlayerBulletData &)
+PROXY_EVENT_HANDLER_EVENT(bool, onNPCShotNPC, INPC &, INPC &, const PlayerBulletData &)
+PROXY_EVENT_HANDLER_EVENT(bool, onNPCShotVehicle, INPC &, IVehicle &, const PlayerBulletData &)
+PROXY_EVENT_HANDLER_EVENT(bool, onNPCShotObject, INPC &, IObject &, const PlayerBulletData &)
+PROXY_EVENT_HANDLER_EVENT(bool, onNPCShotPlayerObject, INPC &, IPlayerObject &, const PlayerBulletData &)
+PROXY_EVENT_HANDLER_EVENT(void, onNPCPlaybackStart, INPC &, int)
+PROXY_EVENT_HANDLER_EVENT(void, onNPCPlaybackEnd, INPC &, int)
+PROXY_EVENT_HANDLER_EVENT(void, onNPCFinishNodePoint, INPC &, int, uint16_t)
+PROXY_EVENT_HANDLER_EVENT(void, onNPCFinishNode, INPC &, int)
+PROXY_EVENT_HANDLER_EVENT(bool, onNPCChangeNode, INPC &, int, int)
+PROXY_EVENT_HANDLER_EVENT(void, onNPCFinishMovePathPoint, INPC &, int, int)
+PROXY_EVENT_HANDLER_EVENT(void, onNPCFinishMovePath, INPC &, int)
 PROXY_EVENT_HANDLER_END(NPCEventHandler, onNPCFinishMove, onNPCCreate, onNPCDestroy, onNPCSpawn, onNPCRespawn,
-                        onNPCDeath)
+                        onNPCWeaponStateChange, onNPCTakeDamage, onNPCGiveDamage, onNPCDeath,
+                        onNPCShotMissed, onNPCShotPlayer, onNPCShotNPC, onNPCShotVehicle, onNPCShotObject,
+                        onNPCShotPlayerObject, onNPCPlaybackStart, onNPCPlaybackEnd, onNPCFinishNodePoint,
+                        onNPCFinishNode, onNPCChangeNode, onNPCFinishMovePathPoint, onNPCFinishMovePath)
 
 // include/Server/Components/Objects
 PROXY(IBaseObject, void, setDrawDistance, float);
