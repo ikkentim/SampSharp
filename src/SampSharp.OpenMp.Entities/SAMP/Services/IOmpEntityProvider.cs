@@ -236,14 +236,6 @@ public interface IOmpEntityProvider
     Npc? GetNpc(int id);
 
     /// <summary>
-    /// Creates a new server-controlled NPC with the given name and returns its ECS component.
-    /// You still need to call <see cref="Npc.Spawn" /> for it to appear in the world.
-    /// </summary>
-    /// <param name="name">The NPC name (must follow the same rules as normal player names).</param>
-    /// <returns>The created NPC component, or <see langword="null" /> if creation failed.</returns>
-    Npc? CreateNpc(string name);
-
-    /// <summary>
     /// Gets the gang zone with the specified identifier.
     /// </summary>
     /// <param name="id">The identifier of the gang zone.</param>

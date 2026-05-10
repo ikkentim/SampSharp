@@ -419,16 +419,6 @@ internal class OmpEntityProvider(SampSharpEnvironment environment, IEntityManage
         return GetComponent(_npcs.Get(id));
     }
 
-    public Npc? CreateNpc(string name)
-    {
-        if (!_npcs.HasValue)
-        {
-            return null;
-        }
-
-        return GetComponent(_npcs.Create(name));
-    }
-
     public BaseGangZone? GetGangZone(int id)
     {
         return GetComponent(_gangZones.AsPool().Get(id));

@@ -56,7 +56,7 @@ public class Npc : IdProvider
     /// <summary>
     /// Gets or sets the NPC's rotation as a quaternion.
     /// </summary>
-    public virtual GTAQuat Rotation
+    public virtual Quaternion Rotation
     {
         get => _npc.GetRotation();
         set => _npc.SetRotation(value, false);
@@ -358,7 +358,7 @@ public class Npc : IdProvider
     /// </summary>
     /// <param name="rotation">The rotation to set.</param>
     /// <param name="immediateUpdate">A value indicating whether to broadcast a sync to streamed-in players immediately instead of waiting for the next tick.</param>
-    public virtual void SetRotation(GTAQuat rotation, bool immediateUpdate)
+    public virtual void SetRotation(Quaternion rotation, bool immediateUpdate)
     {
         _npc.SetRotation(rotation, immediateUpdate);
     }
@@ -749,7 +749,7 @@ public class Npc : IdProvider
     /// <param name="autoUnload">If <see langword="true" />, the record is unloaded when playback ends.</param>
     /// <param name="point">The starting position for playback (zero vector for current position).</param>
     /// <param name="rotation">The starting rotation for playback.</param>
-    public virtual bool StartPlayback(string recordName, bool autoUnload = true, Vector3 point = default, GTAQuat rotation = default)
+    public virtual bool StartPlayback(string recordName, bool autoUnload = true, Vector3 point = default, Quaternion rotation = default)
     {
         ArgumentNullException.ThrowIfNull(recordName);
         return _npc.StartPlaybackByName(recordName, autoUnload, point, rotation);
@@ -762,7 +762,7 @@ public class Npc : IdProvider
     /// <param name="autoUnload">If <see langword="true" />, the record is unloaded when playback ends.</param>
     /// <param name="point">The starting position for playback (zero vector for current position).</param>
     /// <param name="rotation">The starting rotation for playback.</param>
-    public virtual bool StartPlayback(int recordId, bool autoUnload = true, Vector3 point = default, GTAQuat rotation = default)
+    public virtual bool StartPlayback(int recordId, bool autoUnload = true, Vector3 point = default, Quaternion rotation = default)
     {
         return _npc.StartPlaybackById(recordId, autoUnload, point, rotation);
     }

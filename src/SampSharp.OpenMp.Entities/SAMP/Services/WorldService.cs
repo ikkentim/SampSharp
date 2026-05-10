@@ -15,6 +15,7 @@ internal class WorldService(SampSharpEnvironment environment, IEntityManager ent
     private readonly ITextDrawsComponent _textDraws = environment.Components.QueryComponent<ITextDrawsComponent>();
     private readonly ITextLabelsComponent _textLabels = environment.Components.QueryComponent<ITextLabelsComponent>();
     private readonly IVehiclesComponent _vehicles = environment.Components.QueryComponent<IVehiclesComponent>();
+    private readonly INPCComponent _npcs = environment.Components.QueryComponent<INPCComponent>();
 
     public float Gravity
     {
@@ -28,6 +29,24 @@ internal class WorldService(SampSharpEnvironment environment, IEntityManager ent
 
         var entityId = EntityId.NewEntityId();
         var component = entityManager.AddComponent<Actor>(entityId, parent, _actors, native);
+
+        var extension = new ComponentExtension(component);
+        native.AddExtension(extension);
+
+        return component;
+    }
+
+    public Npc CreateNpc(string name, EntityId parent = default)
+    {
+        if(_npcs == null)
+        {
+            throw new InvalidOperationException("NPC component not loaded.");
+        }
+
+        var native = _npcs.Create(name);
+
+        var entityId = EntityId.NewEntityId();
+        var component = entityManager.AddComponent<Npc>(entityId, parent, _npcs, native);
 
         var extension = new ComponentExtension(component);
         native.AddExtension(extension);
