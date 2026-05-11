@@ -9,15 +9,11 @@ public class BasicsSystem : ISystem
     [Event]
     public void OnGameModeInit(IServerService svr)
     {
-        var cls1 = new PlayerSpawnData(0, 3, new Vector3(0, 0, 10), 0, new PlayerWeaponSlots
-        {
-            [0] = new PlayerWeaponSlot(Weapon.Colt45, 14)
-        }); // Andre
+        var cls1 = new PlayerSpawnData(0, 3, new Vector3(0, 0, 10), 0,
+            [new PlayerWeaponSlot(Weapon.Colt45, 14)]); // Andre
 
-        var cls2 = new PlayerSpawnData(0, 6, new Vector3(0, 0, 10), 0, new PlayerWeaponSlots
-        {
-            [0] = new PlayerWeaponSlot(Weapon.Deagle, 14)
-        }); // Emmet
+        var cls2 = new PlayerSpawnData(0, 6, new Vector3(0, 0, 10), 0,
+            [new PlayerWeaponSlot(Weapon.Deagle, 14)]); // Emmet
 
         svr.AddPlayerClass(cls1).AddComponent(new ClassNameComponent("Andre"));
         svr.AddPlayerClass(cls2).AddComponent(new ClassNameComponent("Emmet"));
