@@ -86,9 +86,7 @@ jobs:
           files: SampSharp-${{ env.VERSION }}.zip
 
       - name: Pack NuGet packages
-        run: ./build.sh legacy-libraries publish
-        env:
-          CiVersion: ${{ env.VERSION }}
+        run: ./build.sh legacy-libraries publish --version="${{ env.VERSION }}"
 
       - name: Publish to NuGet
         run: |
