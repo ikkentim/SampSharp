@@ -53,10 +53,16 @@ public class CommandScannerTests
         logger.Verify(l => l.Log(
                 LogLevel.Warning,
                 It.IsAny<EventId>(),
-                It.Is<It.IsAnyType>((state, _) => state.ToString() != null && state.ToString()!.Contains(messageFragment, StringComparison.Ordinal)),
+                It.Is<It.IsAnyType>((state, _) => LogStateContains(state, messageFragment)),
                 It.IsAny<Exception>(),
                 It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
             times);
+    }
+
+    private static bool LogStateContains(object state, string messageFragment)
+    {
+        var message = state.ToString();
+        return message != null && message.Contains(messageFragment, StringComparison.Ordinal);
     }
 
     // Player commands use prefixParams=1, so each method must have at least 1 parameter.
