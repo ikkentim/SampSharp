@@ -1,12 +1,11 @@
-using System;
 using System.Reflection;
 using Moq;
-using Shouldly;
-using Xunit;
 using SampSharp.Entities;
 using SampSharp.Entities.SAMP.Commands;
+using Shouldly;
+using Xunit;
 
-namespace SampSharp.OpenMp.Entities.Commands.UnitTests.Core;
+namespace SampSharp.OpenMp.Entities.Commands.Tests.Core;
 
 /// <summary>
 /// Tests for CommandExecutor, which invokes a matched command with parsed arguments.

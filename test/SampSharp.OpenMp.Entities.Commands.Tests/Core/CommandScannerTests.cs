@@ -1,15 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Reflection;
 using Microsoft.Extensions.Logging;
 using Moq;
-using Shouldly;
-using Xunit;
 using SampSharp.Entities;
 using SampSharp.Entities.SAMP;
 using SampSharp.Entities.SAMP.Commands;
+using Shouldly;
+using Xunit;
 
-namespace SampSharp.OpenMp.Entities.Commands.UnitTests.Core;
+namespace SampSharp.OpenMp.Entities.Commands.Tests.Core;
 
 /// <summary>
 /// Tests for CommandScanner, which uses reflection to discover command methods from ISystem types.

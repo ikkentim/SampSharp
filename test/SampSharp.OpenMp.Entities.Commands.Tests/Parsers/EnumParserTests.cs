@@ -1,10 +1,9 @@
-using System;
 using Moq;
 using SampSharp.Entities.SAMP.Commands;
 using Shouldly;
 using Xunit;
 
-namespace SampSharp.OpenMp.Entities.Commands.UnitTests.Parsers;
+namespace SampSharp.OpenMp.Entities.Commands.Tests.Parsers;
 
 /// <summary>
 /// Tests for EnumParser.

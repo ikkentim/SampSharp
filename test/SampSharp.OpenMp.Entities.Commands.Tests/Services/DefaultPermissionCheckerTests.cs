@@ -1,8 +1,8 @@
+using SampSharp.Entities.SAMP.Commands;
 using Shouldly;
 using Xunit;
-using SampSharp.Entities.SAMP.Commands;
 
-namespace SampSharp.OpenMp.Entities.Commands.UnitTests.Services;
+namespace SampSharp.OpenMp.Entities.Commands.Tests.Services;
 
 public class DefaultPermissionCheckerTests
 {

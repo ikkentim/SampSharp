@@ -1,11 +1,10 @@
-using System;
 using System.Reflection;
 using Moq;
+using SampSharp.Entities.SAMP.Commands;
 using Shouldly;
 using Xunit;
-using SampSharp.Entities.SAMP.Commands;
 
-namespace SampSharp.OpenMp.Entities.Commands.UnitTests.Core;
+namespace SampSharp.OpenMp.Entities.Commands.Tests.Core;
 
 /// <summary>
 /// Tests for CommandDefinition, representing a single command overload.

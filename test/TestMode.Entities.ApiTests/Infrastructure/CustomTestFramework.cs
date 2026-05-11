@@ -2,7 +2,7 @@
 using Xunit.Internal;
 using Xunit.v3;
 
-namespace TestMode.UnitTests;
+namespace TestMode.Entities.ApiTests;
 
 public class CustomTestFramework : XunitTestFramework
 {

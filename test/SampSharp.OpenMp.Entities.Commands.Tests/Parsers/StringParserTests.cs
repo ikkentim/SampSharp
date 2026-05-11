@@ -1,11 +1,9 @@
-using System;
-using System.Linq;
 using Moq;
+using SampSharp.Entities.SAMP.Commands;
 using Shouldly;
 using Xunit;
-using SampSharp.Entities.SAMP.Commands;
 
-namespace SampSharp.OpenMp.Entities.Commands.UnitTests.Parsers;
+namespace SampSharp.OpenMp.Entities.Commands.Tests.Parsers;
 
 /// <summary>
 /// Tests for StringParser, which consumes all remaining input text.

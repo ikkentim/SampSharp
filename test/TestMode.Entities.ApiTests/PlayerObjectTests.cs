@@ -6,7 +6,7 @@ using Xunit;
 using ObjectMaterialSize = SampSharp.Entities.SAMP.ObjectMaterialSize;
 using ObjectMaterialTextAlign = SampSharp.Entities.SAMP.ObjectMaterialTextAlign;
 
-namespace TestMode.UnitTests;
+namespace TestMode.Entities.ApiTests;
 
 public class PlayerObjectTests : TestBase
 {

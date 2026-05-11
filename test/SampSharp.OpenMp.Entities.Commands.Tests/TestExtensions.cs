@@ -1,8 +1,6 @@
-using System.Collections.Generic;
-using System.Linq;
 using Shouldly;
 
-namespace SampSharp.OpenMp.Entities.Commands.UnitTests;
+namespace SampSharp.OpenMp.Entities.Commands.Tests;
 
 /// <summary>
 /// Extension methods for test assertions.

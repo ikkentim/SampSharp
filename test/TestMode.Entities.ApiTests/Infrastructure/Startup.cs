@@ -2,7 +2,7 @@
 using SampSharp.OpenMp.Core;
 using Shouldly;
 
-namespace TestMode.UnitTests;
+namespace TestMode.Entities.ApiTests;
 
 public class Startup : IStartup
 {

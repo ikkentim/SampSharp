@@ -1,13 +1,12 @@
-using System;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
-using Shouldly;
-using Xunit;
 using SampSharp.Entities;
 using SampSharp.Entities.SAMP;
 using SampSharp.Entities.SAMP.Commands;
+using Shouldly;
+using Xunit;
 
-namespace SampSharp.OpenMp.Entities.Commands.UnitTests.Parsers;
+namespace SampSharp.OpenMp.Entities.Commands.Tests.Parsers;
 
 /// <summary>
 /// Tests for PlayerParser, which resolves player names or IDs from command input.

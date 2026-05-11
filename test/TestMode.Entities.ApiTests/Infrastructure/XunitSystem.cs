@@ -4,7 +4,7 @@ using SampSharp.Entities;
 using SampSharp.Entities.SAMP;
 using Xunit.Runner.InProc.SystemConsole;
 
-namespace TestMode.UnitTests;
+namespace TestMode.Entities.ApiTests;
 
 public class XunitSystem : ISystem
 {

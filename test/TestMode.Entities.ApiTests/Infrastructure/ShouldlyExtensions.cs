@@ -1,7 +1,7 @@
 ﻿using System.Numerics;
 using Shouldly;
 
-namespace TestMode.UnitTests;
+namespace TestMode.Entities.ApiTests;
 
 public static class ShouldlyExtensions
 {

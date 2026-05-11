@@ -1,12 +1,10 @@
-using System;
-using System.Collections.Generic;
 using System.Reflection;
 using Moq;
+using SampSharp.Entities.SAMP.Commands;
 using Shouldly;
 using Xunit;
-using SampSharp.Entities.SAMP.Commands;
 
-namespace SampSharp.OpenMp.Entities.Commands.UnitTests.Console;
+namespace SampSharp.OpenMp.Entities.Commands.Tests.Console;
 
 /// <summary>
 /// Tests for DefaultConsoleCommandMessageService, which formats and sends usage messages to the console.
