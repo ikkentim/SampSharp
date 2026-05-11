@@ -2,7 +2,7 @@
 
 namespace SampSharp.Entities.SAMP;
 
-internal class DialogService : IDialogService
+internal sealed class DialogService : IDialogService
 {
     /// <summary>
     /// The dialog ID used by the dialog service.

@@ -1,6 +1,6 @@
 ﻿namespace SampSharp.SourceGenerator.Marshalling;
 
-public static class MarshallingCodeGenDocumentation
+internal static class MarshallingCodeGenDocumentation
 {
     public const string COMMENT_SETUP = "// Setup - Perform required setup.";
     public const string COMMENT_MARSHAL = "// Marshal - Convert managed data to native data.";

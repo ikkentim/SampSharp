@@ -2,7 +2,7 @@
 
 namespace SampSharp.Entities;
 
-internal class UnhandledExceptionHandlerImpl: IUnhandledExceptionHandler
+internal sealed class UnhandledExceptionHandlerImpl: IUnhandledExceptionHandler
 {
     public void Handle(string context, Exception exception)
     {

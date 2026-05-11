@@ -2,7 +2,7 @@ using SampSharp.OpenMp.Core.Api;
 
 namespace SampSharp.Entities.SAMP;
 
-internal class CheckpointSystem : DisposableSystem, IPlayerCheckpointEventHandler
+internal sealed class CheckpointSystem : DisposableSystem, IPlayerCheckpointEventHandler
 {
     private readonly IOmpEntityProvider _entityProvider;
     private readonly IEventDispatcher _eventDispatcher;

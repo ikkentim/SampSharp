@@ -1,6 +1,6 @@
 ﻿namespace SampSharp.Entities;
 
-internal class EventContextImpl : EventContext
+internal sealed class EventContextImpl : EventContext
 {
     private object[]? _arguments;
 

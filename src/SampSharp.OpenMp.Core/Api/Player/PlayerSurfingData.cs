@@ -12,7 +12,7 @@ public readonly struct PlayerSurfingData
     /// <summary>
     /// Represents the type of surface the player is surfing on.
     /// </summary>
-    public enum Type
+    public enum SurfType
     {
         /// <summary>
         /// The player is not surfing on any surface.
@@ -38,7 +38,7 @@ public readonly struct PlayerSurfingData
     /// <summary>
     /// The type of surface the player is surfing on.
     /// </summary>
-    public readonly Type type;
+    public readonly SurfType Type;
 
     /// <summary>
     /// The ID of the surface the player is surfing on.
@@ -48,5 +48,5 @@ public readonly struct PlayerSurfingData
     /// <summary>
     /// The offset of the player relative to the surface they are surfing on.
     /// </summary>
-    public readonly Vector3 offset;
+    public readonly Vector3 Offset;
 }

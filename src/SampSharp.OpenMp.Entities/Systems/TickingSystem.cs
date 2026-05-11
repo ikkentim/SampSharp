@@ -3,7 +3,7 @@ using SampSharp.OpenMp.Core.Std.Chrono;
 
 namespace SampSharp.Entities;
 
-internal class TickingSystem : DisposableSystem, ICoreEventHandler
+internal sealed class TickingSystem : DisposableSystem, ICoreEventHandler
 {
     private ITickingSystem[] _tickers = [];
 

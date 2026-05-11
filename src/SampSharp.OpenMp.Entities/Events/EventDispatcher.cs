@@ -9,7 +9,7 @@ using SampSharp.OpenMp.Core;
 namespace SampSharp.Entities;
 
 #pragma warning disable CS0618 // Type or member is obsolete
-internal class EventDispatcher : IEventDispatcher, IEventService
+internal sealed class EventDispatcher : IEventDispatcher, IEventService
 #pragma warning restore CS0618 // Type or member is obsolete
 {
     private static readonly Type[] _defaultParameterTypes =
@@ -190,7 +190,7 @@ internal class EventDispatcher : IEventDispatcher, IEventService
         {
             if (_logger.IsEnabled(LogLevel.Debug))
             {
-                _logger.LogDebug("Adding event listener on {type}.{method}.", method.DeclaringType, method.Name);
+                _logger.LogDebug("Adding event listener on {Type}.{Method}.", method.DeclaringType, method.Name);
             }
 
             var name = attribute.Name ?? method.Name;
@@ -252,7 +252,7 @@ internal class EventDispatcher : IEventDispatcher, IEventService
                 }
 
                 _logger.LogError(
-                    "Event \"{eventName}\" argument count mismatch: dispatcher passed {argsLength} arg(s), handler {targetSite}({handlerParams}) expects {sourceParamCount}",
+                    "Event \"{EventName}\" argument count mismatch: dispatcher passed {ArgsLength} arg(s), handler {TargetSite}({HandlerParams}) expects {SourceParamCount}",
                     eventContext.Name,
                     args.Length,
                     targetSiteName,

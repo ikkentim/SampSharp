@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Globalization;
+using System.Runtime.InteropServices;
 
 namespace SampSharp.OpenMp.Core.Std.Chrono;
 
@@ -56,6 +57,6 @@ public readonly struct TimePoint
     /// <inheritdoc />
     public override string ToString()
     {
-        return _value.ToString();
+        return _value.ToString(CultureInfo.InvariantCulture);
     }
 }

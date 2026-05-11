@@ -4,7 +4,7 @@ using INPCComponent = SampSharp.OpenMp.Core.Api.INPCComponent;
 
 namespace SampSharp.Entities.SAMP;
 
-internal class NpcService : INpcService
+internal sealed class NpcService : INpcService
 {
     private readonly INPCComponent _npcs;
 

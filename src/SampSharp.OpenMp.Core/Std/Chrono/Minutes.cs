@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Runtime.InteropServices;
 
 namespace SampSharp.OpenMp.Core.Std.Chrono;
@@ -50,6 +51,6 @@ public readonly struct Minutes
     /// <inheritdoc />
     public override string ToString()
     {
-        return _value.ToString();
+        return _value.ToString(CultureInfo.InvariantCulture);
     }
 }

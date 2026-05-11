@@ -6,7 +6,7 @@ using static SampSharp.SourceGenerator.SyntaxFactories.StatementFactory;
 
 namespace SampSharp.SourceGenerator.Marshalling.ShapeGenerators;
 
-internal class StatelessUnmanagedToManagedGuaranteed(IMarshalShapeGenerator innerGenerator) : IMarshalShapeGenerator
+internal sealed class StatelessUnmanagedToManagedGuaranteed(IMarshalShapeGenerator innerGenerator) : IMarshalShapeGenerator
 {
     public bool UsesNativeIdentifier => true;
 

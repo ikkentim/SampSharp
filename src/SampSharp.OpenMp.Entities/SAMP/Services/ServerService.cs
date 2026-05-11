@@ -6,7 +6,7 @@ using SampSharp.OpenMp.Core.Api;
 
 namespace SampSharp.Entities.SAMP;
 
-internal class ServerService : IServerService
+internal sealed class ServerService : IServerService
 {
     private readonly IActorsComponent _actors;
     private readonly IClassesComponent _classes;
@@ -190,7 +190,7 @@ internal class ServerService : IServerService
         {
             if (res.Item1)
             {
-                _logger.LogWarning("Deprecated console variable \"{old}\", use \"{new}\" instead.", variableName, res.Item2);
+                _logger.LogWarning("Deprecated console variable \"{Old}\", use \"{New}\" instead.", variableName, res.Item2);
             }
 
             v0 = _config.GetBool(res.Item2);
@@ -217,7 +217,7 @@ internal class ServerService : IServerService
 
         if (v1.HasValue)
         {
-            _logger.LogWarning( "Integer console variable \"{name}\" retrieved as boolean.", variableName);
+            _logger.LogWarning( "Integer console variable \"{Name}\" retrieved as boolean.", variableName);
             return v1.Value != 0;
         }
 
@@ -236,7 +236,7 @@ internal class ServerService : IServerService
         {
             if (res.Item1)
             {
-                _logger.LogWarning("Deprecated console variable \"{old}\", use \"{new}\" instead.", variableName, res.Item2);
+                _logger.LogWarning("Deprecated console variable \"{Old}\", use \"{New}\" instead.", variableName, res.Item2);
             }
 
             v1 = _config.GetInt(res.Item2);
@@ -264,7 +264,7 @@ internal class ServerService : IServerService
 
         if (v0.HasValue)
         {
-            _logger.LogWarning( "Boolean console variable \"{name}\" retrieved as integer.", variableName);
+            _logger.LogWarning( "Boolean console variable \"{Name}\" retrieved as integer.", variableName);
             return v0.Value ? 1 : 0;
         }
 
@@ -275,14 +275,14 @@ internal class ServerService : IServerService
     {
         ArgumentNullException.ThrowIfNull(variableName);
 
-        var gm = variableName.StartsWith("gamemode");
+        var gm = variableName.StartsWith("gamemode", StringComparison.Ordinal);
         var res = _config.GetNameFromAlias(gm ? "gamemode" : variableName);
 
         if (!string.IsNullOrEmpty(res.Item2))
         {
             if (res.Item1)
             {
-                _logger.LogWarning("Deprecated console variable \"{old}\", use \"{new}\" instead.", variableName, res.Item2);
+                _logger.LogWarning("Deprecated console variable \"{Old}\", use \"{New}\" instead.", variableName, res.Item2);
             }
 
             if (gm)

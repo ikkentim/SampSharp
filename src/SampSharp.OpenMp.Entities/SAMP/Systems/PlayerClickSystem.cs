@@ -3,7 +3,7 @@ using SampSharp.OpenMp.Core.Api;
 
 namespace SampSharp.Entities.SAMP;
 
-internal class PlayerClickSystem : DisposableSystem, IPlayerClickEventHandler
+internal sealed class PlayerClickSystem : DisposableSystem, IPlayerClickEventHandler
 {
     private readonly IOmpEntityProvider _entityProvider;
     private readonly IEventDispatcher _eventDispatcher;

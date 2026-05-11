@@ -5,7 +5,7 @@ using SampSharp.OpenMp.Core;
 
 namespace SampSharp.Entities;
 
-internal class TimerSystem : ITickingSystem, ITimerService
+internal sealed class TimerSystem : ITickingSystem, ITimerService
 {
     private static readonly TimeSpan _lowIntervalThreshold = TimeSpan.FromSeconds(1.0 / 50); // 50Hz
     private readonly ILogger<TimerSystem> _logger;
@@ -129,12 +129,12 @@ internal class TimerSystem : ITickingSystem, ITimerService
         {
             if (_logger.IsEnabled(LogLevel.Debug))
             {
-                _logger.LogDebug("Adding timer on {type}.{method}.", target, method.Name);
+                _logger.LogDebug("Adding timer on {Type}.{Method}.", target, method.Name);
             }
          
             if (!IsValidInterval(attribute.IntervalTimeSpan))
             {
-                _logger.LogError("Timer {method} could not be registered the interval {interval} is invalid.", method, attribute.IntervalTimeSpan);
+                _logger.LogError("Timer {Method} could not be registered the interval {Interval} is invalid.", method, attribute.IntervalTimeSpan);
                 continue;
             }
 
@@ -154,7 +154,7 @@ internal class TimerSystem : ITickingSystem, ITimerService
 
             if (attribute.IntervalTimeSpan < _lowIntervalThreshold)
             {
-                _logger.LogWarning("Timer {type}.{method} has a low interval of {interval}.", target, method.Name, attribute.IntervalTimeSpan);
+                _logger.LogWarning("Timer {Type}.{Method} has a low interval of {Interval}.", target, method.Name, attribute.IntervalTimeSpan);
             }
 
             var timer = new TimerInfo(

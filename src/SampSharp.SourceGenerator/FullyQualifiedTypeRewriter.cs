@@ -46,7 +46,7 @@ public class FullyQualifiedTypeRewriter : CSharpSyntaxRewriter
     {
         var symbol = _semanticModel.GetSymbolInfo(node.Name).Symbol;
     
-        if (symbol != null && !node.Name.ToString().StartsWith("global::"))
+        if (symbol != null && !node.Name.ToString().StartsWith("global::", StringComparison.Ordinal))
         {
             node = node
                 .WithName(ParseName($"global::{symbol.ContainingNamespace}.{node.Name}"))

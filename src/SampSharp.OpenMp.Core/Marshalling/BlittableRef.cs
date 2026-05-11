@@ -55,7 +55,7 @@ public readonly struct BlittableRef<T> where T : unmanaged
     /// </summary>
     /// <param name="defaultValue">The default value to return if the pointer is null.</param>
     /// <returns>The value this pointer points to or the default value if the pointer is null.</returns>
-    public T GetValueorDefault(T defaultValue)
+    public T GetValueOrDefault(T defaultValue)
     {
         return HasValue ? Value : defaultValue;
     }

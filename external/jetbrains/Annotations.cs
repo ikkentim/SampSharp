@@ -633,7 +633,7 @@ internal sealed class InstantHandleAttribute : Attribute
 
   /// <summary>
   /// Indicates that the method does not make any observable state changes.
-  /// The same as <see cref="T:System.Diagnostics.Contracts.PureAttribute" />.
+  /// The same as <see cref="System.Diagnostics.Contracts.PureAttribute" />.
   /// </summary>
   /// <example><code>
   /// [Pure] int Multiply(int x, int y) => x * y;

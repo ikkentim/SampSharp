@@ -4,7 +4,7 @@ using SampSharp.OpenMp.Core.Std;
 
 namespace SampSharp.OpenMp.Core.Api;
 
-internal partial class EventDispatcherInterop
+internal static partial class EventDispatcherInterop
 {
     [LibraryImport("SampSharp", EntryPoint = "IEventDispatcher_addEventHandler")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]

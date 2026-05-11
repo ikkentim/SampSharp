@@ -273,6 +273,22 @@ dotnet_naming_style.begins_with_underscore.capitalization = camel_case
 # IDE0290: Use primary constructor
 dotnet_diagnostic.IDE0290.severity = silent
 
+# CA1707: Identifiers should not contain underscores
+# Justification: We mirror the names from the open.mp API, including types, interfaces and constants.
+dotnet_diagnostic.CA1707.severity = none
+
+# CA1711: Identifiers should not have incorrect suffix
+# Justification: We mirror the names from the open.mp API, including types, interfaces and constants.
+dotnet_diagnostic.CA1711.severity = none
+
+# CA1716: Identifiers should not match keywords
+# Justification: Too many false positives for identifiers such as 'overloads' or 'loop'.
+dotnet_diagnostic.CA1716.severity = none
+
+# CA1720: Identifier contains type name
+# Justification: We use 'Object' in many places to reference SA-MP objects.
+dotnet_diagnostic.CA1720.severity = none
+
 # CA1822: Mark members as static
 # Justification: Event handlers in ECS must be instance methods.
 dotnet_diagnostic.CA1822.severity = none

@@ -4,7 +4,7 @@ using INPCComponent = SampSharp.OpenMp.Core.Api.INPCComponent;
 
 namespace SampSharp.Entities.SAMP;
 
-internal class OmpEntityProvider(SampSharpEnvironment environment, IEntityManager entityManager) : IOmpEntityProvider
+internal sealed class OmpEntityProvider(SampSharpEnvironment environment, IEntityManager entityManager) : IOmpEntityProvider
 {
     private readonly IActorsComponent _actors = environment.Components.QueryComponent<IActorsComponent>();
     private readonly IClassesComponent _classes = environment.Components.QueryComponent<IClassesComponent>();

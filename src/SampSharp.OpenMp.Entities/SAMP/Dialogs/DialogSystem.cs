@@ -2,7 +2,7 @@
 
 namespace SampSharp.Entities.SAMP;
 
-internal class DialogSystem : DisposableSystem, IPlayerDialogEventHandler
+internal sealed class DialogSystem : DisposableSystem, IPlayerDialogEventHandler
 {
     private readonly IOmpEntityProvider _entityProvider;
     private readonly IEventDispatcher _eventDispatcher;

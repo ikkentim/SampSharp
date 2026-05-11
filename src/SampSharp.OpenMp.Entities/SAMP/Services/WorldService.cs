@@ -1,9 +1,10 @@
-﻿using System.Numerics;
+﻿using System.Globalization;
+using System.Numerics;
 using SampSharp.OpenMp.Core.Api;
 
 namespace SampSharp.Entities.SAMP;
 
-internal class WorldService(SampSharpEnvironment environment, IEntityManager entityManager, IOmpEntityProvider entityProvider) : IWorldService
+internal sealed class WorldService(SampSharpEnvironment environment, IEntityManager entityManager, IOmpEntityProvider entityProvider) : IWorldService
 {
     private readonly IActorsComponent _actors = environment.Components.QueryComponent<IActorsComponent>();
     private readonly ICore _core = environment.Core;
@@ -289,7 +290,7 @@ internal class WorldService(SampSharpEnvironment environment, IEntityManager ent
 
     public void SendClientMessage(Color color, string messageFormat, params object[] args)
     {
-        var message = string.Format(messageFormat, args);
+        var message = string.Format(CultureInfo.InvariantCulture, messageFormat, args);
         SendClientMessage(color, message);
     }
 
@@ -300,7 +301,7 @@ internal class WorldService(SampSharpEnvironment environment, IEntityManager ent
 
     public void SendClientMessage(string messageFormat, params object[] args)
     {
-        var message = string.Format(messageFormat, args);
+        var message = string.Format(CultureInfo.InvariantCulture, messageFormat, args);
         SendClientMessage(message);
     }
 

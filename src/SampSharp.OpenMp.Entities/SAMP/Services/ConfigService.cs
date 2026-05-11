@@ -2,7 +2,7 @@ using SampSharp.OpenMp.Core.Api;
 
 namespace SampSharp.Entities.SAMP;
 
-internal class ConfigService(SampSharpEnvironment environment) : IConfigService
+internal sealed class ConfigService(SampSharpEnvironment environment) : IConfigService
 {
     private readonly IConfig _config = environment.Core.GetConfig();
 

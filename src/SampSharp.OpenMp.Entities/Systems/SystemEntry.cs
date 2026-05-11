@@ -1,6 +1,6 @@
 ﻿namespace SampSharp.Entities;
 
-internal class SystemEntry
+internal sealed class SystemEntry
 {
     public SystemEntry(Type type)
     {

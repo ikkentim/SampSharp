@@ -2,7 +2,7 @@ using SampSharp.OpenMp.Core.Api;
 
 namespace SampSharp.Entities.SAMP;
 
-internal class CustomModelsSystem : DisposableSystem, IPlayerModelsEventHandler
+internal sealed class CustomModelsSystem : DisposableSystem, IPlayerModelsEventHandler
 {
     private readonly IOmpEntityProvider _entityProvider;
     private readonly IEventDispatcher _eventDispatcher;

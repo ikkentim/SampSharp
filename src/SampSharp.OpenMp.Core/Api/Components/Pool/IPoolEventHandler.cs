@@ -29,10 +29,12 @@ public interface IPoolEventHandler<T> : IEventHandler<IPoolEventHandler<T>> wher
     /// </summary>
     class NativeEventHandlerManager : EventHandlerMarshaller<IPoolEventHandler<T>>
     {
+#pragma warning disable CA1000 // Do not declare static members on generic types
         /// <summary>
         /// Gets the singleton instance of the <see cref="NativeEventHandlerManager" />.
         /// </summary>
         public static NativeEventHandlerManager Instance { get; } = new();
+#pragma warning restore CA1000 // Do not declare static members on generic types
 
         /// <inheritdoc />
         protected override (nint, object) Create(IPoolEventHandler<T> handler)

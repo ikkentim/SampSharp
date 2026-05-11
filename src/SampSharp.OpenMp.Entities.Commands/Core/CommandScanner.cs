@@ -112,7 +112,7 @@ internal class CommandScanner
 
     private void LogRejectedCommand(string commandKind, Type systemType, MethodInfo method, string reason)
     {
-        _logger.LogWarning("Rejected {commandKind} command {systemType}.{method}: {reason}",
+        _logger.LogWarning("Rejected {CommandKind} command {SystemType}.{Method}: {Reason}",
             commandKind, systemType.FullName ?? systemType.Name, method.Name, reason);
     }
 
