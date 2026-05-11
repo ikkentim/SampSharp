@@ -53,8 +53,13 @@ export CXX=clang++
 conan profile new default --detect 2>/dev/null || true
 
 CLANG_MAJOR=$(clang --version 2>&1 | sed 's/.*version \([0-9]*\).*/\1/' | head -1)
+# Conan 1.x recognises clang versions up to 17; cap to 17 for newer toolchains.
+CONAN_CLANG_VERSION=$CLANG_MAJOR
+if [ "$CLANG_MAJOR" -gt 17 ] 2>/dev/null; then
+    CONAN_CLANG_VERSION=17
+fi
 conan profile update settings.compiler=clang default
-conan profile update "settings.compiler.version=$CLANG_MAJOR" default
+conan profile update "settings.compiler.version=$CONAN_CLANG_VERSION" default
 conan profile update settings.compiler.libcxx=libstdc++11 default
 
 echo "Conan profile:"
