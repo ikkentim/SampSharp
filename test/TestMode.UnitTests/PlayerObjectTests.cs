@@ -3,6 +3,8 @@ using Microsoft.Extensions.DependencyInjection;
 using SampSharp.Entities.SAMP;
 using Shouldly;
 using Xunit;
+using ObjectMaterialSize = SampSharp.Entities.SAMP.ObjectMaterialSize;
+using ObjectMaterialTextAlign = SampSharp.Entities.SAMP.ObjectMaterialTextAlign;
 
 namespace TestMode.UnitTests;
 
@@ -79,6 +81,19 @@ public class PlayerObjectTests : TestBase
     public void SetMaterialText_should_succeed()
     {
         _object.SetMaterialText(0, "test", ObjectMaterialSize.X128X128, "Arial", 12, true, Color.White, Color.White, ObjectMaterialTextAlign.Center);
+    }
+
+    [Fact]
+    public void SetMaterialText_with_text_exceeding_2048_chars_should_throw()
+    {
+        var longText = new string('a', 2049);
+        Should.Throw<ArgumentOutOfRangeException>(() => _object.SetMaterialText(0, longText, ObjectMaterialSize.X128X128, "Arial", 12, true, Color.White, Color.White, ObjectMaterialTextAlign.Center));
+    }
+
+    [Fact]
+    public void SetMaterialText_with_font_size_above_255_should_throw()
+    {
+        Should.Throw<ArgumentOutOfRangeException>(() => _object.SetMaterialText(0, "test", ObjectMaterialSize.X128X128, "Arial", 256, true, Color.White, Color.White, ObjectMaterialTextAlign.Center));
     }
 
     [Fact]

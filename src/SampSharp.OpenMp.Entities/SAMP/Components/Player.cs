@@ -936,6 +936,9 @@ public class Player : WorldEntity
     /// <param name="ammo">The ammunition in the slot, passed by reference.</param>
     public virtual void GetWeaponData(int slot, out Weapon weapon, out int ammo)
     {
+        ArgumentOutOfRangeException.ThrowIfNegative(slot, nameof(slot));
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(slot, 12, nameof(slot));
+
         var data = _player.GetWeaponSlot(slot);
         weapon = (Weapon)data.Id;
         ammo = data.Ammo;
@@ -982,6 +985,11 @@ public class Player : WorldEntity
     /// <param name="minutes">The <paramref name="minutes" /> to set (0-59).</param>
     public virtual void SetTime(int hour, int minutes)
     {
+        ArgumentOutOfRangeException.ThrowIfNegative(hour, nameof(hour));
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(hour, 23, nameof(hour));
+        ArgumentOutOfRangeException.ThrowIfNegative(minutes, nameof(minutes));
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(minutes, 59, nameof(minutes));
+
         _player.SetTime(TimeSpan.FromHours(hour), TimeSpan.FromMinutes(minutes));
     }
 
@@ -1873,6 +1881,9 @@ public class Player : WorldEntity
     /// <param name="style">The <see cref="MapIconType" /> style.</param>
     public virtual void SetMapIcon(int iconId, Vector3 position, MapIcon type, Color color, MapIconType style)
     {
+        ArgumentOutOfRangeException.ThrowIfNegative(iconId, nameof(iconId));
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(iconId, 99, nameof(iconId));
+
         _player.SetMapIcon(iconId, position, (int)type, color, (MapIconStyle)style);
     }
 

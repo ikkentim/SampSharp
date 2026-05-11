@@ -93,6 +93,19 @@ public class GlobalObjectTests : TestBase
     }
 
     [Fact]
+    public void SetMaterialText_with_text_exceeding_2048_chars_should_throw()
+    {
+        var longText = new string('a', 2049);
+        Should.Throw<ArgumentOutOfRangeException>(() => _object.SetMaterialText(0, longText, ObjectMaterialSize.X128X128, "Arial", 12, true, Color.White, Color.White, ObjectMaterialTextAlign.Center));
+    }
+
+    [Fact]
+    public void SetMaterialText_with_font_size_above_255_should_throw()
+    {
+        Should.Throw<ArgumentOutOfRangeException>(() => _object.SetMaterialText(0, "test", ObjectMaterialSize.X128X128, "Arial", 256, true, Color.White, Color.White, ObjectMaterialTextAlign.Center));
+    }
+
+    [Fact]
     public void Core_GetMaterialData_should_succeed()
     {
         _object.SetMaterial(0, 123, "none", "none", Color.White);

@@ -156,7 +156,9 @@ public class GlobalObject : WorldEntity
     {
         ArgumentNullException.ThrowIfNull(text);
         ArgumentNullException.ThrowIfNull(fontface);
-        
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(text.Length, 2048, nameof(text));
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(fontSize, 255, nameof(fontSize));
+
         _object.SetMaterialText((uint)materialIndex, text, (OpenMp.Core.Api.ObjectMaterialSize)materialSize, fontface, fontSize, bold, foreColor, backColor, (OpenMp.Core.Api.ObjectMaterialTextAlign)textAlignment);
     }
 
