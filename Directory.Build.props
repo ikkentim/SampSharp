@@ -1,6 +1,6 @@
 <Project>
     <PropertyGroup>
-        <IsTestProject>$(MSBuildProjectName.Contains('.UnitTests'))</IsTestProject>
+        <IsTestProject>$(MSBuildProjectName.Contains('.Tests'))</IsTestProject>
         <IsTestMode>$(MSBuildProjectName.Contains('TestMode.'))</IsTestMode>
         <IsDeliverable Condition="'$(IsTestMode)' != 'True' and '$(IsTestProject)' != 'True' and '$(MSBuildProjectExtension)' == '.csproj'">True</IsDeliverable>
     </PropertyGroup>
@@ -12,7 +12,14 @@
         <PackageOutputPath>$(MSBuildThisFileDirectory)build/artifacts/packages</PackageOutputPath>
     </PropertyGroup>
 
-    <!-- Packaging -->
+    <PropertyGroup>
+	    <TargetFramework>net10.0</TargetFramework>
+	    <ImplicitUsings>enable</ImplicitUsings>
+	    <Nullable>enable</Nullable>
+	    <LangVersion>latest</LangVersion>
+    </PropertyGroup>
+
+	<!-- Packaging -->
     <PropertyGroup>
         <Company>Tim Potze</Company>
         <Authors>Tim Potze</Authors>
