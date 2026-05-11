@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace SampSharp.Entities.SAMP.Commands;
@@ -15,7 +16,8 @@ internal class ConsoleCommandService : IConsoleCommandService
     private readonly IConsoleCommandMessageService _messageService;
 
     public ConsoleCommandService(IEntityManager entityManager, ISystemRegistry systemRegistry, IConsoleCommandMessageService messageService,
-        IUnhandledExceptionHandler unhandledExceptionHandler, ICommandParameterParserFactory parserFactory, IOptions<ConsoleCommandServiceOptions> options)
+        IUnhandledExceptionHandler unhandledExceptionHandler, ICommandParameterParserFactory parserFactory, IOptions<ConsoleCommandServiceOptions> options,
+        ILoggerFactory loggerFactory)
     {
         _unhandledExceptionHandler = unhandledExceptionHandler;
         _messageService = messageService;
@@ -24,7 +26,7 @@ internal class ConsoleCommandService : IConsoleCommandService
         _registry = new CommandRegistry(options.Value.StringComparison);
 
         // Scan for console commands
-        var scanner = new CommandScanner(systemRegistry, unhandledExceptionHandler);
+        var scanner = new CommandScanner(systemRegistry, unhandledExceptionHandler, loggerFactory.CreateLogger<CommandScanner>());
         scanner.ScanConsoleCommands(_registry, parserFactory);
     }
 
