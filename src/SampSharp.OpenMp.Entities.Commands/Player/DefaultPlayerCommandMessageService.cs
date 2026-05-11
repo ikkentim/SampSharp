@@ -22,6 +22,10 @@ public class DefaultPlayerCommandMessageService : IPlayerCommandMessageService
     /// <inheritdoc />
     public virtual void SendUsage(Player player, IReadOnlyList<CommandDefinition> overloads, string usedCommandName = "")
     {
+        ArgumentNullException.ThrowIfNull(player);
+        ArgumentNullException.ThrowIfNull(overloads);
+        ArgumentNullException.ThrowIfNull(usedCommandName);
+
         var messages = new List<string>();
 
         if (overloads.Count == 1)
@@ -81,6 +85,9 @@ public class DefaultPlayerCommandMessageService : IPlayerCommandMessageService
     /// <inheritdoc />
     public virtual bool SendPermissionDenied(Player player, CommandDefinition overload)
     {
+        ArgumentNullException.ThrowIfNull(player);
+        ArgumentNullException.ThrowIfNull(overload);
+
         const string message = "You do not have permission to use this command.";
         player.SendClientMessage(message);
         return true;

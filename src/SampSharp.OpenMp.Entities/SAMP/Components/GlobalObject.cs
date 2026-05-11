@@ -255,8 +255,8 @@ public class GlobalObject : WorldEntity
     /// <summary>
     /// Performs an implicit conversion from <see cref="GlobalObject" /> to <see cref="IObject" />.
     /// </summary>
-    public static implicit operator IObject(GlobalObject @object)
+    public static implicit operator IObject(GlobalObject? @object)
     {
-        return @object._object;
+        return @object?._object ?? default;
     }
 }

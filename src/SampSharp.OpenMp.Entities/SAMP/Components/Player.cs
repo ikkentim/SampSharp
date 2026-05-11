@@ -2021,8 +2021,8 @@ public class Player : WorldEntity
     /// <summary>
     /// Performs an implicit conversion from <see cref="Player" /> to <see cref="IPlayer" />.
     /// </summary>
-    public static implicit operator IPlayer(Player player)
+    public static implicit operator IPlayer(Player? player)
     {
-        return player._player;
+        return player?._player ?? default;
     }
 }

@@ -1996,6 +1996,8 @@ public static class Animation
     /// <returns><see langword="true" /> if the specified animation library is valid; <see langword="false" /> otherwise.</returns>
     public static bool IsLibraryValid(string library, bool v1Compat = true)
     {
+        ArgumentNullException.ThrowIfNull(library);
+
         library = library.ToUpperInvariant();
 
         if (_animLibs.Contains(library))

@@ -26,6 +26,8 @@ public readonly struct WeaponSlots
     /// <exception cref="ArgumentException">Thrown if the length of <paramref name="data" /> is not equal to <see cref="MAX_WEAPON_SLOTS" />.</exception>
     public WeaponSlots(WeaponSlotData[] data)
     {
+        ArgumentNullException.ThrowIfNull(data);
+
         if (data.Length != MAX_WEAPON_SLOTS)
         {
             throw new ArgumentException("Slot count should be MAX_WEAPON_SLOTS", nameof(data));

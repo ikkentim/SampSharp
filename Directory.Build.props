@@ -62,7 +62,7 @@
         <AnalysisLevel>latest</AnalysisLevel>
 
         <!-- What -->
-        <AnalysisMode>Recommended</AnalysisMode><!-- TODO: switch to AllEnabledByDefault -->
+        <AnalysisMode>Recommended</AnalysisMode>
         <EnforceCodeStyleInBuild>false</EnforceCodeStyleInBuild>
 
         <!-- Severity -->

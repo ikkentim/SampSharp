@@ -22,6 +22,9 @@ public static class SafeEventHandlerSampSharpEnvironmentExtensions
             where TComponent : unmanaged, IComponent.IManagedInterface
             where TEventHandler : class, IEventHandler<TEventHandler>
         {
+            ArgumentNullException.ThrowIfNull(dispatcherProvider);
+            ArgumentNullException.ThrowIfNull(handler);
+
             var component = environment.Components.QueryComponent<TComponent>();
 
             if (!component.HasValue)
@@ -78,6 +81,9 @@ public static class SafeEventHandlerSampSharpEnvironmentExtensions
         public IDisposable? TryAddEventHandler<TEventHandler>(Func<ICore, IEventDispatcher<TEventHandler>> dispatcherProvider, TEventHandler handler, EventPriority priority = EventPriority.Default)
             where TEventHandler : class, IEventHandler<TEventHandler>
         {
+            ArgumentNullException.ThrowIfNull(dispatcherProvider);
+            ArgumentNullException.ThrowIfNull(handler);
+
             if (!environment.Core.HasValue)
             {
                 return null;

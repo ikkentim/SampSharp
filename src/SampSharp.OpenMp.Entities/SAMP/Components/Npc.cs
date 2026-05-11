@@ -875,8 +875,8 @@ public class Npc : IdProvider
     /// <summary>
     /// Performs an implicit conversion from <see cref="Npc" /> to <see cref="INPC" />.
     /// </summary>
-    public static implicit operator INPC(Npc npc)
+    public static implicit operator INPC(Npc? npc)
     {
-        return npc._npc;
+        return npc?._npc ?? default;
     }
 }

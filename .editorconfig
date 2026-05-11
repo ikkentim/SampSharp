@@ -292,3 +292,7 @@ dotnet_diagnostic.CA1720.severity = none
 # CA1822: Mark members as static
 # Justification: Event handlers in ECS must be instance methods.
 dotnet_diagnostic.CA1822.severity = none
+
+# CA1062: Validate arguments of public methods
+[src/SampSharp.OpenMp.*/**/*.cs]
+dotnet_diagnostic.CA1062.severity = warning

@@ -10,6 +10,10 @@ public class DefaultCommandParameterParserFactory : ICommandParameterParserFacto
     /// <inheritdoc />
     public virtual ICommandParameterParser? CreateParser(ParameterInfo[] parameters, int index)
     {
+        ArgumentNullException.ThrowIfNull(parameters);
+        ArgumentOutOfRangeException.ThrowIfNegative(index);
+        ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, parameters.Length);
+
         var param = parameters[index];
         var paramType = param.ParameterType;
 

@@ -14,6 +14,8 @@ public static class StartupContextEcsExtensions
     /// <returns>A <see cref="IEcsHostBuilder" /> instance which can be used to further configure the ECS system.</returns>
     public static IEcsHostBuilder UseEntities(this IStartupContext context)
     {
+        ArgumentNullException.ThrowIfNull(context);
+
         var builder = context.Core.TryGetExtension<EcsHostBuilder>();
         if (builder != null)
         {
