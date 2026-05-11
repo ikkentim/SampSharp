@@ -26,6 +26,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      checks: write
 
     steps:
     - uses: actions/checkout@v6
@@ -37,6 +40,28 @@ jobs:
 
     - name: Build legacy libraries
       run: ./build.sh legacy-libraries
+
+    - name: Test legacy libraries
+      run: ./build.sh legacy-libraries test
+      env:
+        DotNetTestNoBuild: 'true'
+
+    - name: Publish legacy library test results
+      if: ${{ !cancelled() && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) }}
+      uses: EnricoMi/publish-unit-test-result-action@v2.23.0
+      with:
+        files: build/artifacts/test-results/legacy-libraries/*.trx
+        check_name: Legacy library test results
+        comment_mode: off
+
+    - name: Upload legacy library test results
+      if: (!cancelled())
+      uses: actions/upload-artifact@v7
+      with:
+        name: legacy-library-test-results
+        path: build/artifacts/test-results/legacy-libraries/
+        if-no-files-found: error
+        retention-days: ${{ github.event_name == 'pull_request' && 14 || 90 }}
 
     - name: Pack legacy libraries
       run: ./build.sh legacy-libraries publish

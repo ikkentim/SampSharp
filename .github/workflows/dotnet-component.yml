@@ -11,6 +11,7 @@ on:
       - test/**
       - SampSharp.slnx
       - Directory.Build.props
+      - build.cmd
       - build.sh
 
   pull_request:
@@ -23,11 +24,15 @@ on:
       - test/**
       - SampSharp.slnx
       - Directory.Build.props
+      - build.cmd
       - build.sh
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      checks: write
 
     steps:
     - uses: actions/checkout@v6
@@ -41,7 +46,26 @@ jobs:
       run: ./build.sh component-libraries
 
     - name: Test component libraries
-      run: dotnet test SampSharp.slnx -c Release --no-build
+      run: ./build.sh component-libraries test
+      env:
+        DotNetTestNoBuild: 'true'
+
+    - name: Publish component library test results
+      if: ${{ !cancelled() && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) }}
+      uses: EnricoMi/publish-unit-test-result-action@v2.23.0
+      with:
+        files: build/artifacts/test-results/component-libraries/*.trx
+        check_name: Component library test results
+        comment_mode: off
+
+    - name: Upload component library test results
+      if: (!cancelled())
+      uses: actions/upload-artifact@v7
+      with:
+        name: component-library-test-results
+        path: build/artifacts/test-results/component-libraries/
+        if-no-files-found: error
+        retention-days: ${{ github.event_name == 'pull_request' && 14 || 90 }}
 
     - name: Pack component libraries
       run: ./build.sh component-libraries publish

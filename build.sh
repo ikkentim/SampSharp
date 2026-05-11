@@ -2,9 +2,9 @@
 # Root build dispatcher for SampSharp plugins
 # Usage: build.sh <target> [action]
 # Targets: legacy-plugin, legacy-libraries, component, component-libraries
-# Actions: (empty), publish
+# Actions: (empty), test, publish
 
-set -e
+set -euo pipefail
 
 show_usage() {
     echo ""
@@ -12,10 +12,12 @@ show_usage() {
     echo "  build.sh legacy-plugin            - Build legacy x86 plugin"
     echo "  build.sh legacy-plugin publish    - Build and publish legacy x86 plugin"
     echo "  build.sh legacy-libraries         - Build legacy C# libraries"
+    echo "  build.sh legacy-libraries test    - Test legacy C# libraries"
     echo "  build.sh legacy-libraries publish - Build and pack legacy C# libraries"
     echo "  build.sh component                - Build open.mp component"
     echo "  build.sh component publish        - Build and publish open.mp component"
     echo "  build.sh component-libraries      - Build C# libraries"
+    echo "  build.sh component-libraries test - Test C# libraries"
     echo "  build.sh component-libraries publish - Build and pack C# libraries"
     echo "  build.sh clean                    - Delete build directory contents"
 }
@@ -26,11 +28,34 @@ build_component_libraries() {
 
     echo ""
     echo "Building C# libraries..."
-    if [ -n "$CiVersion" ]; then
+    if [ -n "${CiVersion:-}" ]; then
         dotnet build SampSharp.slnx -c Release "/p:CiVersion=$CiVersion"
     else
         dotnet build SampSharp.slnx -c Release
     fi
+}
+
+test_component_libraries() {
+    local SCRIPTDIR="$1"
+    local RESULTSDIR="$SCRIPTDIR/build/artifacts/test-results/component-libraries"
+    cd "$SCRIPTDIR"
+
+    mkdir -p "$RESULTSDIR"
+
+    echo ""
+    echo "Testing C# libraries..."
+
+    local command=(dotnet test SampSharp.slnx -c Release --results-directory "$RESULTSDIR" --logger "trx;LogFilePrefix=component-libraries")
+
+    if [ "${DotNetTestNoBuild:-}" = "1" ] || [ "${DotNetTestNoBuild:-}" = "true" ]; then
+        command+=(--no-build)
+    fi
+
+    if [ -n "${CiVersion:-}" ]; then
+        command+=("/p:CiVersion=$CiVersion")
+    fi
+
+    "${command[@]}"
 }
 
 pack_component_libraries() {
@@ -39,7 +64,7 @@ pack_component_libraries() {
 
     echo ""
     echo "Packing C# libraries..."
-    if [ -n "$CiVersion" ]; then
+    if [ -n "${CiVersion:-}" ]; then
         dotnet pack SampSharp.slnx -c Release "/p:CiVersion=$CiVersion"
     else
         dotnet pack SampSharp.slnx -c Release
@@ -55,11 +80,34 @@ build_legacy_libraries() {
     
     echo ""
     echo "Building C# libraries..."
-    if [ -n "$CiVersion" ]; then
+    if [ -n "${CiVersion:-}" ]; then
         dotnet build SampSharp.Legacy.slnx -c Release "/p:CiVersion=$CiVersion"
     else
         dotnet build SampSharp.Legacy.slnx -c Release
     fi
+}
+
+test_legacy_libraries() {
+    local SCRIPTDIR="$1"
+    local RESULTSDIR="$SCRIPTDIR/build/artifacts/test-results/legacy-libraries"
+    cd "$SCRIPTDIR/src/legacy"
+
+    mkdir -p "$RESULTSDIR"
+
+    echo ""
+    echo "Testing legacy C# libraries..."
+
+    local command=(dotnet test SampSharp.Legacy.slnx -c Release --results-directory "$RESULTSDIR" --logger "trx;LogFilePrefix=legacy-libraries")
+
+    if [ "${DotNetTestNoBuild:-}" = "1" ] || [ "${DotNetTestNoBuild:-}" = "true" ]; then
+        command+=(--no-build)
+    fi
+
+    if [ -n "${CiVersion:-}" ]; then
+        command+=("/p:CiVersion=$CiVersion")
+    fi
+
+    "${command[@]}"
 }
 
 pack_legacy_libraries() {
@@ -68,7 +116,7 @@ pack_legacy_libraries() {
     
     echo ""
     echo "Packing C# libraries..."
-    if [ -n "$CiVersion" ]; then
+    if [ -n "${CiVersion:-}" ]; then
         dotnet pack SampSharp.Legacy.slnx -c Release "/p:CiVersion=$CiVersion"
     else
         dotnet pack SampSharp.Legacy.slnx -c Release
@@ -78,8 +126,8 @@ pack_legacy_libraries() {
     echo "NuGet packages created in: $SCRIPTDIR/build/artifacts/packages"
 }
 
-TARGET="${1}"
-ACTION="${2}"
+TARGET="${1:-}"
+ACTION="${2:-}"
 SCRIPTDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 if [ -z "$TARGET" ]; then
@@ -104,6 +152,8 @@ case "$TARGET" in
     legacy-libraries)
         if [ -z "$ACTION" ]; then
             build_legacy_libraries "$SCRIPTDIR"
+        elif [ "$ACTION" = "test" ]; then
+            test_legacy_libraries "$SCRIPTDIR"
         elif [ "$ACTION" = "publish" ]; then
             pack_legacy_libraries "$SCRIPTDIR"
         else
@@ -127,6 +177,8 @@ case "$TARGET" in
     component-libraries)
         if [ -z "$ACTION" ]; then
             build_component_libraries "$SCRIPTDIR"
+        elif [ "$ACTION" = "test" ]; then
+            test_component_libraries "$SCRIPTDIR"
         elif [ "$ACTION" = "publish" ]; then
             pack_component_libraries "$SCRIPTDIR"
         else

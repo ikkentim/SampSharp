@@ -34,6 +34,7 @@ Use the build scripts in the root to build components:
 .\build.cmd component                  # Build open.mp component
 .\build.cmd component publish          # Build and publish open.mp component
 .\build.cmd component-libraries        # Build C# libraries
+.\build.cmd component-libraries test   # Test C# libraries
 .\build.cmd component-libraries publish # Build and pack C# libraries
 .\build.cmd clean                      # Clean build directory
 ```
@@ -43,11 +44,12 @@ Use the build scripts in the root to build components:
 ./build.sh component                   # Build open.mp component
 ./build.sh component publish           # Build and publish open.mp component
 ./build.sh component-libraries         # Build C# libraries
+./build.sh component-libraries test    # Test C# libraries
 ./build.sh component-libraries publish # Build and pack C# libraries
 ./build.sh clean                       # Clean build directory
 ```
 
-Artifacts are placed in `build/artifacts/`.
+Artifacts are placed in `build/artifacts/`. Test result files are written to `build/artifacts/test-results/`.
 
 **Requirements:**
 - **.NET SDK 10** (for building C# libraries)
@@ -64,6 +66,7 @@ The legacy SampSharp code (v0.x) is located in the `src/legacy/` directory. Use 
 .\build.cmd legacy-plugin           # Build x86 plugin
 .\build.cmd legacy-plugin publish   # Build and publish plugin
 .\build.cmd legacy-libraries        # Build C# libraries
+.\build.cmd legacy-libraries test   # Test C# libraries
 .\build.cmd legacy-libraries publish # Build and pack NuGet packages
 .\build.cmd clean                   # Clean build directory
 ```
@@ -73,11 +76,12 @@ The legacy SampSharp code (v0.x) is located in the `src/legacy/` directory. Use 
 ./build.sh legacy-plugin            # Build x86 plugin
 ./build.sh legacy-plugin publish    # Build and publish plugin
 ./build.sh legacy-libraries         # Build C# libraries
+./build.sh legacy-libraries test    # Test C# libraries
 ./build.sh legacy-libraries publish # Build and pack NuGet packages
 ./build.sh clean                    # Clean build directory
 ```
 
-Artifacts are placed in `build/artifacts/`.
+Artifacts are placed in `build/artifacts/`. Test result files are written to `build/artifacts/test-results/`.
 
 **Requirements:**
 - **.NET SDK 6.0** (for building C# libraries)

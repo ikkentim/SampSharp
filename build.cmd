@@ -32,6 +32,11 @@ if /i "%TARGET%"=="legacy-libraries" (
         call :build_legacy_libraries
         if errorlevel 1 exit /b 1
         goto end
+    ) else if /i "%ACTION%"=="test" (
+        echo Testing legacy C# libraries...
+        call :test_legacy_libraries
+        if errorlevel 1 exit /b 1
+        goto end
     ) else if /i "%ACTION%"=="publish" (
         echo Building and packing legacy C# libraries...
         call :pack_legacy_libraries
@@ -66,6 +71,11 @@ if /i "%TARGET%"=="component-libraries" (
         call :build_component_libraries
         if errorlevel 1 exit /b 1
         goto end
+    ) else if /i "%ACTION%"=="test" (
+        echo Testing C# libraries...
+        call :test_component_libraries
+        if errorlevel 1 exit /b 1
+        goto end
     ) else if /i "%ACTION%"=="publish" (
         echo Building and packing C# libraries...
         call :pack_component_libraries
@@ -89,16 +99,18 @@ if /i "%TARGET%"=="clean" (
 goto usage
 
 :usage
-echo Invalid target: %TARGET%
+if not "%TARGET%"=="" echo Invalid target: %TARGET%
 echo.
 echo Usage:
 echo   build.cmd legacy-plugin           - Build legacy x86 plugin
 echo   build.cmd legacy-plugin publish   - Build and publish legacy x86 plugin
 echo   build.cmd legacy-libraries        - Build legacy C# libraries
+echo   build.cmd legacy-libraries test   - Test legacy C# libraries
 echo   build.cmd legacy-libraries publish - Build and pack legacy C# libraries
 echo   build.cmd component               - Build open.mp component
 echo   build.cmd component publish       - Build and publish open.mp component
 echo   build.cmd component-libraries        - Build C# libraries
+echo   build.cmd component-libraries test   - Test C# libraries
 echo   build.cmd component-libraries publish - Build and pack C# libraries
 echo   build.cmd clean                   - Delete build directory contents
 exit /b 1
@@ -107,7 +119,28 @@ exit /b 1
 cd /d "%SCRIPTDIR%src\legacy"
 echo.
 echo Building C# libraries...
-dotnet build SampSharp.Legacy.slnx -c Release
+if defined CiVersion (
+    dotnet build SampSharp.Legacy.slnx -c Release "/p:CiVersion=%CiVersion%"
+) else (
+    dotnet build SampSharp.Legacy.slnx -c Release
+)
+if errorlevel 1 exit /b 1
+exit /b 0
+
+:test_legacy_libraries
+cd /d "%SCRIPTDIR%src\legacy"
+set "RESULTSDIR=%SCRIPTDIR%build\artifacts\test-results\legacy-libraries"
+set "NO_BUILD_ARG="
+if /i "%DotNetTestNoBuild%"=="1" set "NO_BUILD_ARG=--no-build"
+if /i "%DotNetTestNoBuild%"=="true" set "NO_BUILD_ARG=--no-build"
+if not exist "%RESULTSDIR%" mkdir "%RESULTSDIR%"
+echo.
+echo Testing legacy C# libraries...
+if defined CiVersion (
+    dotnet test SampSharp.Legacy.slnx -c Release %NO_BUILD_ARG% --results-directory "%RESULTSDIR%" --logger "trx;LogFilePrefix=legacy-libraries" "/p:CiVersion=%CiVersion%"
+) else (
+    dotnet test SampSharp.Legacy.slnx -c Release %NO_BUILD_ARG% --results-directory "%RESULTSDIR%" --logger "trx;LogFilePrefix=legacy-libraries"
+)
 if errorlevel 1 exit /b 1
 exit /b 0
 
@@ -115,7 +148,11 @@ exit /b 0
 cd /d "%SCRIPTDIR%src\legacy"
 echo.
 echo Packing C# libraries...
-dotnet pack SampSharp.Legacy.slnx -c Release
+if defined CiVersion (
+    dotnet pack SampSharp.Legacy.slnx -c Release "/p:CiVersion=%CiVersion%"
+) else (
+    dotnet pack SampSharp.Legacy.slnx -c Release
+)
 if errorlevel 1 exit /b 1
 echo.
 echo NuGet packages created in: %SCRIPTDIR%build\artifacts\packages
@@ -125,7 +162,28 @@ exit /b 0
 cd /d "%SCRIPTDIR%"
 echo.
 echo Building C# libraries...
-dotnet build SampSharp.slnx -c Release
+if defined CiVersion (
+    dotnet build SampSharp.slnx -c Release "/p:CiVersion=%CiVersion%"
+) else (
+    dotnet build SampSharp.slnx -c Release
+)
+if errorlevel 1 exit /b 1
+exit /b 0
+
+:test_component_libraries
+cd /d "%SCRIPTDIR%"
+set "RESULTSDIR=%SCRIPTDIR%build\artifacts\test-results\component-libraries"
+set "NO_BUILD_ARG="
+if /i "%DotNetTestNoBuild%"=="1" set "NO_BUILD_ARG=--no-build"
+if /i "%DotNetTestNoBuild%"=="true" set "NO_BUILD_ARG=--no-build"
+if not exist "%RESULTSDIR%" mkdir "%RESULTSDIR%"
+echo.
+echo Testing C# libraries...
+if defined CiVersion (
+    dotnet test SampSharp.slnx -c Release %NO_BUILD_ARG% --results-directory "%RESULTSDIR%" --logger "trx;LogFilePrefix=component-libraries" "/p:CiVersion=%CiVersion%"
+) else (
+    dotnet test SampSharp.slnx -c Release %NO_BUILD_ARG% --results-directory "%RESULTSDIR%" --logger "trx;LogFilePrefix=component-libraries"
+)
 if errorlevel 1 exit /b 1
 exit /b 0
 
@@ -133,7 +191,11 @@ exit /b 0
 cd /d "%SCRIPTDIR%"
 echo.
 echo Packing C# libraries...
-dotnet pack SampSharp.slnx -c Release
+if defined CiVersion (
+    dotnet pack SampSharp.slnx -c Release "/p:CiVersion=%CiVersion%"
+) else (
+    dotnet pack SampSharp.slnx -c Release
+)
 if errorlevel 1 exit /b 1
 echo.
 echo NuGet packages created in: %SCRIPTDIR%build\artifacts\packages
