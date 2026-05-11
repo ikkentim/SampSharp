@@ -1,11 +1,12 @@
 ﻿using System.Diagnostics;
+using System.Reflection;
 using Microsoft.Extensions.Logging;
 using SampSharp.Entities.Utilities;
 using SampSharp.OpenMp.Core;
 
 namespace SampSharp.Entities;
 
-internal sealed class TimerSystem : ITickingSystem, ITimerService
+internal sealed partial class TimerSystem : ITickingSystem, ITimerService
 {
     private static readonly TimeSpan _lowIntervalThreshold = TimeSpan.FromSeconds(1.0 / 50); // 50Hz
     private readonly ILogger<TimerSystem> _logger;
@@ -129,12 +130,12 @@ internal sealed class TimerSystem : ITickingSystem, ITimerService
         {
             if (_logger.IsEnabled(LogLevel.Debug))
             {
-                _logger.LogDebug("Adding timer on {Type}.{Method}.", target, method.Name);
+                LogTimerAdded(target, method.Name);
             }
          
             if (!IsValidInterval(attribute.IntervalTimeSpan))
             {
-                _logger.LogError("Timer {Method} could not be registered the interval {Interval} is invalid.", method, attribute.IntervalTimeSpan);
+                LogInvalidInterval(method, attribute.IntervalTimeSpan);
                 continue;
             }
 
@@ -142,7 +143,7 @@ internal sealed class TimerSystem : ITickingSystem, ITimerService
 
             if (service == null)
             {
-                _logger.LogDebug("Skipping timer registration because the service could not be loaded.");
+                LogMissingService();
                 continue;
             }
 
@@ -154,7 +155,7 @@ internal sealed class TimerSystem : ITickingSystem, ITimerService
 
             if (attribute.IntervalTimeSpan < _lowIntervalThreshold)
             {
-                _logger.LogWarning("Timer {Type}.{Method} has a low interval of {Interval}.", target, method.Name, attribute.IntervalTimeSpan);
+                LogLowInterval(target, method.Name, attribute.IntervalTimeSpan);
             }
 
             var timer = new TimerInfo(
@@ -168,4 +169,16 @@ internal sealed class TimerSystem : ITickingSystem, ITimerService
             _timers.Add(timer);
         }
     }
+
+    [LoggerMessage(LogLevel.Debug, "Adding timer on {Type}.{Method}.")]
+    private partial void LogTimerAdded(Type type, string method);
+
+    [LoggerMessage(LogLevel.Error, "Timer {Method} could not be registered the interval {Interval} is invalid.")]
+    private partial void LogInvalidInterval(MethodInfo method, TimeSpan interval);
+
+    [LoggerMessage(LogLevel.Warning, "Timer {Type}.{Method} has a low interval of {Interval}.")]
+    private partial void LogLowInterval(Type type, string method, TimeSpan interval);
+
+    [LoggerMessage(LogLevel.Debug, "Skipping timer registration because the service could not be loaded.")]
+    private partial void LogMissingService();
 }

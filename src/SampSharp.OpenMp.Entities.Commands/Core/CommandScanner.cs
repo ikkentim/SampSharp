@@ -10,7 +10,7 @@ namespace SampSharp.Entities.SAMP.Commands;
 /// Scans ISystem types for command methods marked with [PlayerCommand] or [ConsoleCommand].
 /// Builds CommandDefinition objects and registers them in a registry.
 /// </summary>
-internal class CommandScanner
+internal partial class CommandScanner
 {
     private readonly ISystemRegistry _systemRegistry;
     private readonly IUnhandledExceptionHandler _unhandledExceptionHandler;
@@ -108,12 +108,6 @@ internal class CommandScanner
         var allParts = classGroups.SelectMany(g => g.Parts).Concat(methodGroups.SelectMany(g => g.Parts)).ToList();
 
         return allParts.Count > 0 ? new CommandGroup(allParts) : null;
-    }
-
-    private void LogRejectedCommand(string commandKind, Type systemType, MethodInfo method, string reason)
-    {
-        _logger.LogWarning("Rejected {CommandKind} command {SystemType}.{Method}: {Reason}",
-            commandKind, systemType.FullName ?? systemType.Name, method.Name, reason);
     }
 
     private bool TryBuildOverload(string commandName, CommandGroup? commandGroup, MethodInfo method, Type systemType, ICommandParameterParserFactory parserFactory,
@@ -360,4 +354,12 @@ internal class CommandScanner
 
         return name;
     }
+
+    private void LogRejectedCommand(string commandKind, Type systemType, MethodInfo method, string reason)
+    {
+        LogRejectedCommand(commandKind, systemType.FullName ?? systemType.Name, method.Name, reason);
+    }
+
+    [LoggerMessage(LogLevel.Warning, "Rejected {CommandKind} command {SystemType}.{Method}: {Reason}")]
+    private partial void LogRejectedCommand(string commandKind, string systemType, string method, string reason);
 }

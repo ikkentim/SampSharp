@@ -9,7 +9,7 @@ using SampSharp.OpenMp.Core;
 namespace SampSharp.Entities;
 
 #pragma warning disable CS0618 // Type or member is obsolete
-internal sealed class EventDispatcher : IEventDispatcher, IEventService
+internal sealed partial class EventDispatcher : IEventDispatcher, IEventService
 #pragma warning restore CS0618 // Type or member is obsolete
 {
     private static readonly Type[] _defaultParameterTypes =
@@ -190,7 +190,7 @@ internal sealed class EventDispatcher : IEventDispatcher, IEventService
         {
             if (_logger.IsEnabled(LogLevel.Debug))
             {
-                _logger.LogDebug("Adding event listener on {Type}.{Method}.", method.DeclaringType, method.Name);
+                LogAddingEventListener(method.DeclaringType, method.Name);
             }
 
             var name = attribute.Name ?? method.Name;
@@ -251,13 +251,7 @@ internal sealed class EventDispatcher : IEventDispatcher, IEventService
                     return compiled.Invoke(instance, args, eventContext.EventServices, _entityManager);
                 }
 
-                _logger.LogError(
-                    "Event \"{EventName}\" argument count mismatch: dispatcher passed {ArgsLength} arg(s), handler {TargetSite}({HandlerParams}) expects {SourceParamCount}",
-                    eventContext.Name,
-                    args.Length,
-                    targetSiteName,
-                    string.Join(", ", method.GetParameters().Select(p => $"{p.ParameterType.Name} {p.Name}")),
-                    sourceParamCount);
+                LogEventArgumentsCountMismatch(eventContext.Name, args.Length, targetSiteName, string.Join(", ", method.GetParameters().Select(p => $"{p.ParameterType.Name} {p.Name}")), sourceParamCount);
             }
             catch(Exception ex)
             {
@@ -321,4 +315,10 @@ internal sealed class EventDispatcher : IEventDispatcher, IEventService
     {
         public object? Target { get; set; }
     }
+
+    [LoggerMessage(LogLevel.Debug, "Adding event listener on {Type}.{Method}.")]
+    private partial void LogAddingEventListener(Type? type, string method);
+
+    [LoggerMessage(LogLevel.Error, "Event \"{EventName}\" argument count mismatch: dispatcher passed {ArgsLength} arg(s), handler {TargetSite}({HandlerParams}) expects {SourceParamCount}")]
+    partial void LogEventArgumentsCountMismatch(string eventName, int argsLength, string targetSite, string handlerParams, int sourceParamCount);
 }

@@ -3,10 +3,11 @@ using System.Reflection.Metadata;
 using Microsoft.Extensions.Logging;
 using SampSharp.OpenMp.Core;
 using SampSharp.OpenMp.Core.Api;
+using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace SampSharp.Entities.SAMP;
 
-internal sealed class ServerService : IServerService
+internal sealed partial class ServerService : IServerService
 {
     private readonly IActorsComponent _actors;
     private readonly IClassesComponent _classes;
@@ -190,7 +191,7 @@ internal sealed class ServerService : IServerService
         {
             if (res.Item1)
             {
-                _logger.LogWarning("Deprecated console variable \"{Old}\", use \"{New}\" instead.", variableName, res.Item2);
+                LogDeprecatedConsoleVariable(variableName, res.Item2);
             }
 
             v0 = _config.GetBool(res.Item2);
@@ -217,7 +218,7 @@ internal sealed class ServerService : IServerService
 
         if (v1.HasValue)
         {
-            _logger.LogWarning( "Integer console variable \"{Name}\" retrieved as boolean.", variableName);
+            LogIntegerRetrievedAsBoolean(variableName);
             return v1.Value != 0;
         }
 
@@ -236,7 +237,7 @@ internal sealed class ServerService : IServerService
         {
             if (res.Item1)
             {
-                _logger.LogWarning("Deprecated console variable \"{Old}\", use \"{New}\" instead.", variableName, res.Item2);
+                LogDeprecatedConsoleVariable(variableName, res.Item2);
             }
 
             v1 = _config.GetInt(res.Item2);
@@ -264,7 +265,7 @@ internal sealed class ServerService : IServerService
 
         if (v0.HasValue)
         {
-            _logger.LogWarning( "Boolean console variable \"{Name}\" retrieved as integer.", variableName);
+            LogBooleanRetrievedAsInteger(variableName);
             return v0.Value ? 1 : 0;
         }
 
@@ -282,7 +283,7 @@ internal sealed class ServerService : IServerService
         {
             if (res.Item1)
             {
-                _logger.LogWarning("Deprecated console variable \"{Old}\", use \"{New}\" instead.", variableName, res.Item2);
+                LogDeprecatedConsoleVariable(variableName, res.Item2);
             }
 
             if (gm)
@@ -444,4 +445,13 @@ internal sealed class ServerService : IServerService
     {
         return _players.GetDefaultColour(playerId);
     }
+
+    [LoggerMessage(LogLevel.Warning, "Deprecated console variable \"{Old}\", use \"{New}\" instead.")]
+    private partial void LogDeprecatedConsoleVariable(string old, string @new);
+
+    [LoggerMessage(LogLevel.Warning, "Integer console variable \"{Name}\" retrieved as boolean.")]
+    private partial void LogIntegerRetrievedAsBoolean(string name);
+
+    [LoggerMessage(LogLevel.Warning, "Boolean console variable \"{Name}\" retrieved as integer.")]
+    private partial void LogBooleanRetrievedAsInteger(string name);
 }
