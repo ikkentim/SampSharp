@@ -91,6 +91,7 @@ public class PlayerWeaponSlots : IEnumerable<PlayerWeaponSlot>
 
     /// <summary>
     /// Gets the weapon slot at the specified index.
+    /// Use <see cref="Add" />, <see cref="Reset" />, or <see cref="Remove(Weapon)" /> to modify slots.
     /// </summary>
     /// <param name="slot">The zero-based index of the weapon slot.</param>
     /// <returns>A <see cref="PlayerWeaponSlot"/> containing the weapon and ammo information.</returns>
