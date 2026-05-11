@@ -19,8 +19,7 @@ public interface IEventDispatcher
     /// </summary>
     /// <param name="name">The name of the event.</param>
     /// <param name="arguments">The arguments of the event.</param>
-    /// <returns>The result of the event.</returns>
-    object? Invoke(string name, params ReadOnlySpan<object> arguments);
+    void Invoke(string name, params ReadOnlySpan<object> arguments);
 
     /// <summary>
     /// Invokes the event with the specified <paramref name="name" /> and <paramref name="arguments" />.
@@ -28,7 +27,8 @@ public interface IEventDispatcher
     /// <param name="name">The name of the event.</param>
     /// <param name="defaultValue">The default value to be returned in case no event handler returned a result.</param>
     /// <param name="arguments">The arguments of the event.</param>
+    /// <typeparam name="T">The type of the return value of the event.</typeparam>
     /// <returns>The result as returned by an event handler or <paramref name="defaultValue" /> if no non-null value was returned.</returns>
     [return: NotNullIfNotNull(nameof(defaultValue))]
-    T? InvokeAs<T>(string name, T defaultValue, params ReadOnlySpan<object> arguments);
+    T InvokeAs<T>(string name, T defaultValue, params ReadOnlySpan<object> arguments);
 }
