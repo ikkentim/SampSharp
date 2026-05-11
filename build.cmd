@@ -1,12 +1,57 @@
 @echo off
 setlocal enabledelayedexpansion
 
-set "TARGET=%1"
-set "ACTION=%2"
+set "TARGET=%~1"
+if "%TARGET%"=="" goto usage
+shift
+
+set "ACTION="
+if /i "%~1"=="test" (
+    set "ACTION=test"
+    shift
+) else if /i "%~1"=="publish" (
+    set "ACTION=publish"
+    shift
+)
+
+set "CI_VERSION="
+set "NO_BUILD_ARG="
+
+:parse_options
+if "%~1"=="" goto options_done
+
+if /i "%~1"=="--no-build" (
+    set "NO_BUILD_ARG=--no-build"
+    shift
+    goto parse_options
+)
+
+set "ARG=%~1"
+if /i "!ARG:~0,10!"=="--version=" (
+    set "CI_VERSION=!ARG:~10!"
+    if "!CI_VERSION!"=="" goto missing_version
+    shift
+    goto parse_options
+)
+
+if /i "%~1"=="--version" (
+    if "%~2"=="" goto missing_version
+    set "CI_VERSION=%~2"
+    shift
+    shift
+    goto parse_options
+)
+
+echo Invalid option: %~1
+goto usage
+
+:missing_version
+echo Missing value for --version
+exit /b 1
+
+:options_done
 
 set "SCRIPTDIR=%~dp0"
-
-if "%TARGET%"=="" goto usage
 
 if /i "%TARGET%"=="legacy-plugin" (
     if "%ACTION%"=="" (
@@ -30,11 +75,6 @@ if /i "%TARGET%"=="legacy-libraries" (
     if "%ACTION%"=="" (
         echo Building legacy C# libraries...
         call :build_legacy_libraries
-        if errorlevel 1 exit /b 1
-        goto end
-    ) else if /i "%ACTION%"=="test" (
-        echo Testing legacy C# libraries...
-        call :test_legacy_libraries
         if errorlevel 1 exit /b 1
         goto end
     ) else if /i "%ACTION%"=="publish" (
@@ -96,16 +136,15 @@ if /i "%TARGET%"=="clean" (
     goto end
 )
 
+echo Invalid target: %TARGET%
 goto usage
 
 :usage
-if not "%TARGET%"=="" echo Invalid target: %TARGET%
 echo.
 echo Usage:
 echo   build.cmd legacy-plugin           - Build legacy x86 plugin
 echo   build.cmd legacy-plugin publish   - Build and publish legacy x86 plugin
 echo   build.cmd legacy-libraries        - Build legacy C# libraries
-echo   build.cmd legacy-libraries test   - Test legacy C# libraries
 echo   build.cmd legacy-libraries publish - Build and pack legacy C# libraries
 echo   build.cmd component               - Build open.mp component
 echo   build.cmd component publish       - Build and publish open.mp component
@@ -113,33 +152,20 @@ echo   build.cmd component-libraries        - Build C# libraries
 echo   build.cmd component-libraries test   - Test C# libraries
 echo   build.cmd component-libraries publish - Build and pack C# libraries
 echo   build.cmd clean                   - Delete build directory contents
+echo.
+echo Options:
+echo   --no-build            - Skip the build step for tests
+echo   --version^=<version^>   - Set the CI package version
 exit /b 1
 
 :build_legacy_libraries
 cd /d "%SCRIPTDIR%src\legacy"
 echo.
 echo Building C# libraries...
-if defined CiVersion (
-    dotnet build SampSharp.Legacy.slnx -c Release "/p:CiVersion=%CiVersion%"
+if defined CI_VERSION (
+    dotnet build SampSharp.Legacy.slnx -c Release "/p:CiVersion=%CI_VERSION%"
 ) else (
     dotnet build SampSharp.Legacy.slnx -c Release
-)
-if errorlevel 1 exit /b 1
-exit /b 0
-
-:test_legacy_libraries
-cd /d "%SCRIPTDIR%src\legacy"
-set "RESULTSDIR=%SCRIPTDIR%build\artifacts\test-results\legacy-libraries"
-set "NO_BUILD_ARG="
-if /i "%DotNetTestNoBuild%"=="1" set "NO_BUILD_ARG=--no-build"
-if /i "%DotNetTestNoBuild%"=="true" set "NO_BUILD_ARG=--no-build"
-if not exist "%RESULTSDIR%" mkdir "%RESULTSDIR%"
-echo.
-echo Testing legacy C# libraries...
-if defined CiVersion (
-    dotnet test SampSharp.Legacy.slnx -c Release %NO_BUILD_ARG% --results-directory "%RESULTSDIR%" --logger "trx;LogFilePrefix=legacy-libraries" "/p:CiVersion=%CiVersion%"
-) else (
-    dotnet test SampSharp.Legacy.slnx -c Release %NO_BUILD_ARG% --results-directory "%RESULTSDIR%" --logger "trx;LogFilePrefix=legacy-libraries"
 )
 if errorlevel 1 exit /b 1
 exit /b 0
@@ -148,8 +174,8 @@ exit /b 0
 cd /d "%SCRIPTDIR%src\legacy"
 echo.
 echo Packing C# libraries...
-if defined CiVersion (
-    dotnet pack SampSharp.Legacy.slnx -c Release "/p:CiVersion=%CiVersion%"
+if defined CI_VERSION (
+    dotnet pack SampSharp.Legacy.slnx -c Release "/p:CiVersion=%CI_VERSION%"
 ) else (
     dotnet pack SampSharp.Legacy.slnx -c Release
 )
@@ -162,8 +188,8 @@ exit /b 0
 cd /d "%SCRIPTDIR%"
 echo.
 echo Building C# libraries...
-if defined CiVersion (
-    dotnet build SampSharp.slnx -c Release "/p:CiVersion=%CiVersion%"
+if defined CI_VERSION (
+    dotnet build SampSharp.slnx -c Release "/p:CiVersion=%CI_VERSION%"
 ) else (
     dotnet build SampSharp.slnx -c Release
 )
@@ -172,15 +198,12 @@ exit /b 0
 
 :test_component_libraries
 cd /d "%SCRIPTDIR%"
-set "RESULTSDIR=%SCRIPTDIR%build\artifacts\test-results\component-libraries"
-set "NO_BUILD_ARG="
-if /i "%DotNetTestNoBuild%"=="1" set "NO_BUILD_ARG=--no-build"
-if /i "%DotNetTestNoBuild%"=="true" set "NO_BUILD_ARG=--no-build"
+set "RESULTSDIR=%SCRIPTDIR%build\test-results\component-libraries"
 if not exist "%RESULTSDIR%" mkdir "%RESULTSDIR%"
 echo.
 echo Testing C# libraries...
-if defined CiVersion (
-    dotnet test SampSharp.slnx -c Release %NO_BUILD_ARG% --results-directory "%RESULTSDIR%" --logger "trx;LogFilePrefix=component-libraries" "/p:CiVersion=%CiVersion%"
+if defined CI_VERSION (
+    dotnet test SampSharp.slnx -c Release %NO_BUILD_ARG% --results-directory "%RESULTSDIR%" --logger "trx;LogFilePrefix=component-libraries" "/p:CiVersion=%CI_VERSION%"
 ) else (
     dotnet test SampSharp.slnx -c Release %NO_BUILD_ARG% --results-directory "%RESULTSDIR%" --logger "trx;LogFilePrefix=component-libraries"
 )
@@ -191,8 +214,8 @@ exit /b 0
 cd /d "%SCRIPTDIR%"
 echo.
 echo Packing C# libraries...
-if defined CiVersion (
-    dotnet pack SampSharp.slnx -c Release "/p:CiVersion=%CiVersion%"
+if defined CI_VERSION (
+    dotnet pack SampSharp.slnx -c Release "/p:CiVersion=%CI_VERSION%"
 ) else (
     dotnet pack SampSharp.slnx -c Release
 )

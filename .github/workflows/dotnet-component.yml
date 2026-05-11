@@ -46,15 +46,13 @@ jobs:
       run: ./build.sh component-libraries
 
     - name: Test component libraries
-      run: ./build.sh component-libraries test
-      env:
-        DotNetTestNoBuild: 'true'
+      run: ./build.sh component-libraries test --no-build
 
     - name: Publish component library test results
       if: ${{ !cancelled() && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) }}
       uses: EnricoMi/publish-unit-test-result-action@v2.23.0
       with:
-        files: build/artifacts/test-results/component-libraries/*.trx
+        files: build/test-results/component-libraries/*.trx
         check_name: Component library test results
         comment_mode: off
 
@@ -63,7 +61,7 @@ jobs:
       uses: actions/upload-artifact@v7
       with:
         name: component-library-test-results
-        path: build/artifacts/test-results/component-libraries/
+        path: build/test-results/component-libraries/
         if-no-files-found: error
         retention-days: ${{ github.event_name == 'pull_request' && 14 || 90 }}
 

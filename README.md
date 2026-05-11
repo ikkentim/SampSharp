@@ -49,7 +49,7 @@ Use the build scripts in the root to build components:
 ./build.sh clean                       # Clean build directory
 ```
 
-Artifacts are placed in `build/artifacts/`. Test result files are written to `build/artifacts/test-results/`.
+Artifacts are placed in `build/artifacts/`. Test result files are written to `build/test-results/`. Pass `--no-build` to skip rebuilding during tests and `--version=<version>` to set the CI package version.
 
 **Requirements:**
 - **.NET SDK 10** (for building C# libraries)
@@ -66,7 +66,6 @@ The legacy SampSharp code (v0.x) is located in the `src/legacy/` directory. Use 
 .\build.cmd legacy-plugin           # Build x86 plugin
 .\build.cmd legacy-plugin publish   # Build and publish plugin
 .\build.cmd legacy-libraries        # Build C# libraries
-.\build.cmd legacy-libraries test   # Test C# libraries
 .\build.cmd legacy-libraries publish # Build and pack NuGet packages
 .\build.cmd clean                   # Clean build directory
 ```
@@ -76,12 +75,11 @@ The legacy SampSharp code (v0.x) is located in the `src/legacy/` directory. Use 
 ./build.sh legacy-plugin            # Build x86 plugin
 ./build.sh legacy-plugin publish    # Build and publish plugin
 ./build.sh legacy-libraries         # Build C# libraries
-./build.sh legacy-libraries test    # Test C# libraries
 ./build.sh legacy-libraries publish # Build and pack NuGet packages
 ./build.sh clean                    # Clean build directory
 ```
 
-Artifacts are placed in `build/artifacts/`. Test result files are written to `build/artifacts/test-results/`.
+Artifacts are placed in `build/artifacts/`. Pass `--version=<version>` to set the CI package version when packing release builds.
 
 **Requirements:**
 - **.NET SDK 6.0** (for building C# libraries)
