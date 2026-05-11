@@ -1,12 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Moq;
+using SampSharp.Entities.SAMP.Commands;
 using Shouldly;
 using Xunit;
-using SampSharp.Entities.SAMP.Commands;
 
-namespace SampSharp.OpenMp.Entities.Commands.UnitTests.Services;
+namespace SampSharp.OpenMp.Entities.Commands.Tests.Services;
 
 /// <summary>
 /// Tests for DefaultCommandHelpProvider, which provides help information about registered commands.

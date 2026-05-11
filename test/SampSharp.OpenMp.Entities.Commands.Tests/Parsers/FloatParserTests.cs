@@ -1,10 +1,9 @@
-using System;
 using Moq;
+using SampSharp.Entities.SAMP.Commands;
 using Shouldly;
 using Xunit;
-using SampSharp.Entities.SAMP.Commands;
 
-namespace SampSharp.OpenMp.Entities.Commands.UnitTests.Parsers;
+namespace SampSharp.OpenMp.Entities.Commands.Tests.Parsers;
 
 public class FloatParserTests
 {

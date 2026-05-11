@@ -1,6 +1,6 @@
 ﻿using SampSharp.Entities.SAMP;
 
-namespace TestMode.UnitTests;
+namespace TestMode.Entities.ApiTests;
 
 public class TestBase : IDisposable
 {

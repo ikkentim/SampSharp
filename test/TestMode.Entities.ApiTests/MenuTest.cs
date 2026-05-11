@@ -5,7 +5,7 @@ using SampSharp.OpenMp.Core.Api;
 using Shouldly;
 using Xunit;
 
-namespace TestMode.UnitTests;
+namespace TestMode.Entities.ApiTests;
 
 public class MenuTest : TestBase
 {

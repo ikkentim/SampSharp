@@ -1,9 +1,8 @@
-using System;
+using SampSharp.Entities.SAMP.Commands;
 using Shouldly;
 using Xunit;
-using SampSharp.Entities.SAMP.Commands;
 
-namespace SampSharp.OpenMp.Entities.Commands.UnitTests.Console;
+namespace SampSharp.OpenMp.Entities.Commands.Tests.Console;
 
 /// <summary>
 /// Tests for ConsoleCommandDispatchContext, which provides context and message handling for console commands.

@@ -1,12 +1,10 @@
-using System;
-using System.Collections.Generic;
 using System.Reflection;
-using Shouldly;
-using Xunit;
 using SampSharp.Entities.SAMP;
 using SampSharp.Entities.SAMP.Commands;
+using Shouldly;
+using Xunit;
 
-namespace SampSharp.OpenMp.Entities.Commands.UnitTests.Parsers;
+namespace SampSharp.OpenMp.Entities.Commands.Tests.Parsers;
 
 /// <summary>
 /// Tests for DefaultCommandParameterParserFactory, which maps parameter types to parsers.

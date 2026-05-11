@@ -1,11 +1,9 @@
-using System;
-using System.Linq;
 using Moq;
+using SampSharp.Entities.SAMP.Commands;
 using Shouldly;
 using Xunit;
-using SampSharp.Entities.SAMP.Commands;
 
-namespace SampSharp.OpenMp.Entities.Commands.UnitTests.Core;
+namespace SampSharp.OpenMp.Entities.Commands.Tests.Core;
 
 /// <summary>
 /// Tests for CommandRegistry, which manages command registration and lookup.
