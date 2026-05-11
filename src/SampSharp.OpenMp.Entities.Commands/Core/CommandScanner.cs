@@ -264,27 +264,27 @@ internal class CommandScanner
     {
         if (task.IsCompleted)
         {
-            // Get result to observe any exceptions
-            task.GetAwaiter().GetResult();
+            HandleTaskException(task);
         }
         else
         {
-            // Fire-and-forget: exceptions will be handled by unhandled exception handler
-            task.ContinueWith(t =>
+            task.ContinueWith(HandleTaskException);
+        }
+    }
+
+    private void HandleTaskException(Task task)
+    {
+        if (task is { IsFaulted: true, Exception: not null })
+        {
+            // Exception from async task - would typically be logged
+            if (task.Exception.InnerExceptions.Count == 1)
             {
-                if (t is { IsFaulted: true, Exception: not null })
-                {
-                    // Exception from async task - would typically be logged
-                    if (t.Exception.InnerExceptions.Count == 1)
-                    {
-                        _unhandledExceptionHandler.Handle("async-command", t.Exception.InnerExceptions[0]);
-                    }
-                    else
-                    {
-                        _unhandledExceptionHandler.Handle("async-command", t.Exception);
-                    }
-                }
-            });
+                _unhandledExceptionHandler.Handle("async-command", task.Exception.InnerExceptions[0]);
+            }
+            else
+            {
+                _unhandledExceptionHandler.Handle("async-command", task.Exception);
+            }
         }
     }
 
