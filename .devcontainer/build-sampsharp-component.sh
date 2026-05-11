@@ -9,7 +9,7 @@
 set -e
 
 OPENMP_DIR="/openmp"
-OPENMP_SERVER_DIR="$OPENMP_DIR/build/Output/RelWithDebInfo/Server"
+OPENMP_SERVER_DIR="$OPENMP_DIR/Server"
 OPENMP_COMPONENTS_DIR="$OPENMP_SERVER_DIR/components"
 
 SCRIPTDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
