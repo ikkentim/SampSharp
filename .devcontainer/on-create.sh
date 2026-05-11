@@ -27,20 +27,21 @@ sudo apt-get install -y \
     clang \
     cmake \
     ninja-build \
-    python3-pip \
+    python3-venv \
     git
 
 # ---------------------------------------------------------------------------
-# Install Conan 1.x (open.mp requires Conan 1.57+; v2.x is not supported)
+# Install Conan 1.x (open.mp requires Conan 1.57+; v2.x is not supported).
+# A dedicated virtual environment is used to avoid conflicts with the
+# system-managed Python installation (PEP 668).
 # ---------------------------------------------------------------------------
 echo "--- Installing Conan 1.x ---"
-pip3 install --user "conan==1.64.1"
+CONAN_VENV="/opt/conan-env"
+sudo python3 -m venv "$CONAN_VENV"
+sudo "$CONAN_VENV/bin/pip" install "conan==1.64.1"
 
-# Persist ~/.local/bin in PATH for all future terminal sessions in the container
-if ! grep -q '\.local/bin' "$HOME/.bashrc" 2>/dev/null; then
-    echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$HOME/.bashrc"
-fi
-export PATH="$HOME/.local/bin:$PATH"
+# Expose the conan binary at a location that is always on PATH
+sudo ln -sf "$CONAN_VENV/bin/conan" /usr/local/bin/conan
 
 # ---------------------------------------------------------------------------
 # Initialise the default Conan profile for the current host (x86_64 / clang)
