@@ -2,11 +2,11 @@
     "name": "SampSharp",
     "image": "mcr.microsoft.com/devcontainers/dotnet:10.0",
     "onCreateCommand": "bash .devcontainer/on-create.sh",
-    "forwardPorts": [7777],
-    "portsAttributes": {
-        "7777": {
-            "label": "open.mp server",
-            "protocol": "udp"
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-dotnettools.csdevkit"
+            ]
         }
     }
 }
