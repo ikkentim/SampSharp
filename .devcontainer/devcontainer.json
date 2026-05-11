@@ -1,0 +1,12 @@
+{
+    "name": "SampSharp",
+    "image": "mcr.microsoft.com/devcontainers/dotnet:10.0",
+    "onCreateCommand": "bash .devcontainer/on-create.sh",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-dotnettools.csdevkit"
+            ]
+        }
+    }
+}
