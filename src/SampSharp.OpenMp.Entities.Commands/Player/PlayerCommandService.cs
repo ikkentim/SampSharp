@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace SampSharp.Entities.SAMP.Commands;
@@ -14,7 +15,7 @@ internal class PlayerCommandService : IPlayerCommandService
 
     public PlayerCommandService(IEntityManager entityManager, ISystemRegistry systemRegistry, IPlayerCommandMessageService messageService,
         IPermissionChecker permissionChecker, IUnhandledExceptionHandler unhandledExceptionHandler, ICommandParameterParserFactory parserFactory,
-        IOptions<PlayerCommandServiceOptions> options)
+        IOptions<PlayerCommandServiceOptions> options, ILoggerFactory loggerFactory)
     {
         _entityManager = entityManager;
         _unhandledExceptionHandler = unhandledExceptionHandler;
@@ -25,7 +26,7 @@ internal class PlayerCommandService : IPlayerCommandService
         _executor = new CommandExecutor(entityManager);
 
         // Scan for player commands into the shared registry
-        var scanner = new CommandScanner(systemRegistry, unhandledExceptionHandler);
+        var scanner = new CommandScanner(systemRegistry, unhandledExceptionHandler, loggerFactory.CreateLogger<CommandScanner>());
         scanner.ScanPlayerCommands(_registry, parserFactory);
     }
 

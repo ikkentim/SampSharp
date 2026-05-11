@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 using SampSharp.Entities.Utilities;
 
 namespace SampSharp.Entities.SAMP.Commands;
@@ -13,11 +14,13 @@ internal class CommandScanner
 {
     private readonly ISystemRegistry _systemRegistry;
     private readonly IUnhandledExceptionHandler _unhandledExceptionHandler;
+    private readonly ILogger _logger;
 
-    public CommandScanner(ISystemRegistry systemRegistry, IUnhandledExceptionHandler unhandledExceptionHandler)
+    public CommandScanner(ISystemRegistry systemRegistry, IUnhandledExceptionHandler unhandledExceptionHandler, ILogger logger)
     {
         _systemRegistry = systemRegistry;
         _unhandledExceptionHandler = unhandledExceptionHandler;
+        _logger = logger;
     }
 
     public void ScanPlayerCommands(CommandRegistry registry, ICommandParameterParserFactory parserFactory)
@@ -35,21 +38,24 @@ internal class CommandScanner
 
             if (string.IsNullOrWhiteSpace(commandName) || commandName.Contains(' '))
             {
+                LogRejectedCommand("player", systemType, method,
+                    $"invalid command name '{commandName ?? "<null>"}'. Command names must not be empty or contain spaces.");
                 continue;
             }
 
             var parameters = method.GetParameters();
             if (parameters.Length == 0 || (!parameters[0].ParameterType.IsAssignableTo(typeof(Component)) && parameters[0].ParameterType != typeof(EntityId)))
             {
-                // First parameter must be an entity/component (player).
+                LogRejectedCommand("player", systemType, method, "the first parameter must be a Component or EntityId.");
                 continue;
             }
 
             var aliases = method.GetCustomAttributes<AliasAttribute>().SelectMany(a => a.Aliases).Select(a => new CommandAlias(a)).ToArray();
             var tags = method.GetCustomAttributes<CommandTagAttribute>().Select(t => new CommandTag(t.Key, t.Value)).ToArray();
 
-            if (!TryBuildOverload(commandName, commandGroup, method, systemType, parserFactory, 1, aliases, tags, out var overload))
+            if (!TryBuildOverload(commandName, commandGroup, method, systemType, parserFactory, 1, aliases, tags, out var overload, out var rejectionReason))
             {
+                LogRejectedCommand("player", systemType, method, rejectionReason!);
                 continue;
             }
 
@@ -72,6 +78,8 @@ internal class CommandScanner
 
             if (string.IsNullOrWhiteSpace(commandName) || commandName.Contains(' '))
             {
+                LogRejectedCommand("console", systemType, method,
+                    $"invalid command name '{commandName ?? "<null>"}'. Command names must not be empty or contain spaces.");
                 continue;
             }
 
@@ -85,8 +93,9 @@ internal class CommandScanner
                 prefixParams = 1;
             }
 
-            if (!TryBuildOverload(commandName, commandGroup, method, systemType, parserFactory, prefixParams, aliases, tags, out var overload))
+            if (!TryBuildOverload(commandName, commandGroup, method, systemType, parserFactory, prefixParams, aliases, tags, out var overload, out var rejectionReason))
             {
+                LogRejectedCommand("console", systemType, method, rejectionReason!);
                 continue;
             }
 
@@ -101,25 +110,34 @@ internal class CommandScanner
         return allParts.Count > 0 ? new CommandGroup(allParts) : null;
     }
 
+    private void LogRejectedCommand(string commandKind, Type systemType, MethodInfo method, string reason)
+    {
+        _logger.LogWarning("Rejected {commandKind} command {systemType}.{method}: {reason}",
+            commandKind, systemType.FullName ?? systemType.Name, method.Name, reason);
+    }
+
     private bool TryBuildOverload(string commandName, CommandGroup? commandGroup, MethodInfo method, Type systemType, ICommandParameterParserFactory parserFactory,
-        int prefixParameters, CommandAlias[] aliases, CommandTag[] tags, [NotNullWhen(true)] out CommandDefinition? overload)
+        int prefixParameters, CommandAlias[] aliases, CommandTag[] tags, [NotNullWhen(true)] out CommandDefinition? overload, [NotNullWhen(false)] out string? rejectionReason)
     {
         overload = null;
+        rejectionReason = null;
 
         var parameters = method.GetParameters();
         if (parameters.Length < prefixParameters)
         {
+            rejectionReason = "the command signature is missing required dispatch context parameters.";
             return false;
         }
 
         // Validate return type: bool, int, void, Task, Task<T>
         if (!IsValidReturnType(method.ReturnType))
         {
+            rejectionReason = $"invalid return type '{method.ReturnType}'. Supported return types are void, bool, Task, and Task<bool>.";
             return false;
         }
 
         // Collect parsed parameters (skip prefix, handle DI)
-        if (!TryCollectParameters(parameters, prefixParameters, parserFactory, out var parsedParams))
+        if (!TryCollectParameters(parameters, prefixParameters, parserFactory, out var parsedParams, out rejectionReason))
         {
             return false;
         }
@@ -278,12 +296,15 @@ internal class CommandScanner
                returnType == typeof(Task<bool>);
     }
 
-    private static bool TryCollectParameters(ParameterInfo[] parameters, int prefixParameters, ICommandParameterParserFactory parserFactory, out CommandParameterInfo[]? result)
+    private static bool TryCollectParameters(ParameterInfo[] parameters, int prefixParameters, ICommandParameterParserFactory parserFactory,
+        out CommandParameterInfo[]? result, [NotNullWhen(false)] out string? rejectionReason)
     {
         result = null;
+        rejectionReason = null;
 
         if (parameters.Length < prefixParameters)
         {
+            rejectionReason = "the command signature is missing required dispatch context parameters.";
             return false;
         }
 
@@ -316,6 +337,7 @@ internal class CommandScanner
             else if (isRequired && optionalSeen)
             {
                 // Required parameter after optional - invalid
+                rejectionReason = "required parameters cannot follow optional parameters.";
                 return false;
             }
 
