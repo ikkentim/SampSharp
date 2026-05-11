@@ -20,7 +20,12 @@ internal class WorldService(SampSharpEnvironment environment, IEntityManager ent
     public float Gravity
     {
         get => _core.GetGravity();
-        set => _core.SetGravity(value);
+        set
+        {
+            ArgumentOutOfRangeException.ThrowIfLessThan(value, -50.0f, nameof(value));
+            ArgumentOutOfRangeException.ThrowIfGreaterThan(value, 50.0f, nameof(value));
+            _core.SetGravity(value);
+        }
     }
 
     public Actor CreateActor(int modelId, Vector3 position, float rotation, EntityId parent = default)

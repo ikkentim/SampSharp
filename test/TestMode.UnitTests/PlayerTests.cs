@@ -719,4 +719,58 @@ public class PlayerTests : TestBase
     {
         Player.RemoveMapIcon(1);
     }
+
+    [Fact]
+    public void SetMapIcon_should_succeed()
+    {
+        Player.SetMapIcon(0, new Vector3(1, 2, 3), MapIcon.AirYard, Color.White, MapIconType.Local);
+    }
+
+    [Fact]
+    public void SetMapIcon_with_icon_id_below_0_should_throw()
+    {
+        Should.Throw<ArgumentOutOfRangeException>(() => Player.SetMapIcon(-1, new Vector3(1, 2, 3), MapIcon.AirYard, Color.White, MapIconType.Local));
+    }
+
+    [Fact]
+    public void SetMapIcon_with_icon_id_above_99_should_throw()
+    {
+        Should.Throw<ArgumentOutOfRangeException>(() => Player.SetMapIcon(100, new Vector3(1, 2, 3), MapIcon.AirYard, Color.White, MapIconType.Local));
+    }
+
+    [Fact]
+    public void GetWeaponData_with_slot_below_0_should_throw()
+    {
+        Should.Throw<ArgumentOutOfRangeException>(() => Player.GetWeaponData(-1, out _, out _));
+    }
+
+    [Fact]
+    public void GetWeaponData_with_slot_above_12_should_throw()
+    {
+        Should.Throw<ArgumentOutOfRangeException>(() => Player.GetWeaponData(13, out _, out _));
+    }
+
+    [Fact]
+    public void SetTime_with_hour_below_0_should_throw()
+    {
+        Should.Throw<ArgumentOutOfRangeException>(() => Player.SetTime(-1, 0));
+    }
+
+    [Fact]
+    public void SetTime_with_hour_above_23_should_throw()
+    {
+        Should.Throw<ArgumentOutOfRangeException>(() => Player.SetTime(24, 0));
+    }
+
+    [Fact]
+    public void SetTime_with_minutes_below_0_should_throw()
+    {
+        Should.Throw<ArgumentOutOfRangeException>(() => Player.SetTime(0, -1));
+    }
+
+    [Fact]
+    public void SetTime_with_minutes_above_59_should_throw()
+    {
+        Should.Throw<ArgumentOutOfRangeException>(() => Player.SetTime(0, 60));
+    }
 }
