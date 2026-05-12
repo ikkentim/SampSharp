@@ -20,6 +20,8 @@
   </Folder>
   <Folder Name="/test/">
     <Project Path="test/SampSharp.OpenMp.Entities.Commands.Tests/SampSharp.OpenMp.Entities.Commands.Tests.csproj" />
+    <Project Path="test/SampSharp.OpenMp.Core.Tests/SampSharp.OpenMp.Core.Tests.csproj" />
+    <Project Path="test/SampSharp.OpenMp.Entities.Tests/SampSharp.OpenMp.Entities.Tests.csproj" />
     <Project Path="test/SampSharp.SourceGenerator.Tests/SampSharp.SourceGenerator.Tests.csproj" />
     <Project Path="test/TestMode.OpenMp.Core/TestMode.OpenMp.Core.csproj" />
     <Project Path="test/TestMode.OpenMp.Entities/TestMode.OpenMp.Entities.csproj" />
