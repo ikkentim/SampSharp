@@ -27,6 +27,13 @@ public static class SampSharpExceptionHandler
     /// <param name="exception">The exception which occured.</param>
     public static void HandleException(string context, Exception exception)
     {
+        if (exception is null)
+        {
+            return;
+        }
+
+        context ??= string.Empty;
+
         try
         {
             _exceptionHandler(context, exception);

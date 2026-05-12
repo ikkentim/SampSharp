@@ -5,7 +5,7 @@ using SampSharp.OpenMp.Core;
 namespace SampSharp.Entities;
 
 [Extension(0x57e43771d28c5e7e)]
-internal class EcsHost(IServiceProvider serviceProvider, UnhandledExceptionHandler? exceptionHandler) : Extension
+internal sealed partial class EcsHost(IServiceProvider serviceProvider, UnhandledExceptionHandler? exceptionHandler) : Extension
 {
     private IServiceProvider? _serviceProvider = serviceProvider;
 
@@ -49,8 +49,7 @@ internal class EcsHost(IServiceProvider serviceProvider, UnhandledExceptionHandl
 
     private void DefaultExceptionHandler(string context, Exception exception)
     {
-        ServiceProvider.GetRequiredService<ILoggerFactory>().CreateLogger(context)
-            .LogError(exception, "Unhandled exception during: {context}", context);
+        LogUnhandledException(ServiceProvider.GetRequiredService<ILoggerFactory>().CreateLogger(context), context, exception);
     }
 
     private void OnGameModeInit()
@@ -68,4 +67,6 @@ internal class EcsHost(IServiceProvider serviceProvider, UnhandledExceptionHandl
         ServiceProvider.GetRequiredService<SystemRegistry>().LoadSystems();
     }
 
+    [LoggerMessage(LogLevel.Error, "Unhandled exception during: {Context}")]
+    private static partial void LogUnhandledException(ILogger logger, string context, Exception exception);
 }

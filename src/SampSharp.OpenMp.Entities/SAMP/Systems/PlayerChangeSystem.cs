@@ -2,7 +2,7 @@
 
 namespace SampSharp.Entities.SAMP;
 
-internal class PlayerChangeSystem : DisposableSystem, IPlayerChangeEventHandler
+internal sealed class PlayerChangeSystem : DisposableSystem, IPlayerChangeEventHandler
 {
     private readonly IOmpEntityProvider _entityProvider;
     private readonly IEventDispatcher _eventDispatcher;

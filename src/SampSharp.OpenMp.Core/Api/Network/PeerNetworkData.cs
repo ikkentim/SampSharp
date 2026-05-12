@@ -18,12 +18,12 @@ public readonly struct PeerNetworkData
         /// <summary>
         /// Gets the address of the peer.
         /// </summary>
-        public readonly PeerAddress address;
+        public readonly PeerAddress Address;
 
         /// <summary>
         /// Gets the port of the peer.
         /// </summary>
-        public readonly ushort port;
+        public readonly ushort Port;
 
         /// <summary>
         /// Converts the network ID to an <see cref="IPEndPoint" /> instance.
@@ -31,17 +31,17 @@ public readonly struct PeerNetworkData
         /// <returns>An <see cref="IPEndPoint" /> representing the peer's address and port.</returns>
         public IPEndPoint ToEndpoint()
         {
-            return new IPEndPoint(address.ToAddress(), port);
+            return new IPEndPoint(Address.ToAddress(), Port);
         }
     }
 
     /// <summary>
     /// Gets the network interface associated with the peer.
     /// </summary>
-    public readonly INetwork network;
+    public readonly INetwork Network;
 
     /// <summary>
     /// Gets the network ID of the peer.
     /// </summary>
-    public readonly NetworkID networkID;
+    public readonly NetworkID PeerNetworkID;
 }

@@ -9,6 +9,9 @@ public class DefaultCommandTextFormatter : ICommandTextFormatter
     /// <inheritdoc />
     public string FormatCommandUsage(string commandName, string? group, CommandParameterInfo[] parameters, bool includeSlash = true)
     {
+        ArgumentNullException.ThrowIfNull(commandName);
+        ArgumentNullException.ThrowIfNull(parameters);
+
         var prefix = group != null ? $"{group} {commandName}" : commandName;
         var slash = includeSlash ? "/" : "";
 

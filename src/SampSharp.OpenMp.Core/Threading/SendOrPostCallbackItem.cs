@@ -2,7 +2,7 @@
 
 namespace SampSharp.OpenMp.Core;
 
-internal class SendOrPostCallbackItem : IDisposable
+internal sealed class SendOrPostCallbackItem : IDisposable
 {
     private readonly ManualResetEvent _asyncWaitHandle = new(false);
     private ExecutionType _executionType;

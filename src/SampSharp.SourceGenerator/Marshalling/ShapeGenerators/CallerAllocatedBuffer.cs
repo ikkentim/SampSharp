@@ -54,7 +54,7 @@ public class CallerAllocatedBuffer(IMarshalShapeGenerator innerGenerator) : IMar
         }
     }
 
-    private class InvocationRewriter(string bufferName) : CSharpSyntaxRewriter
+    private sealed class InvocationRewriter(string bufferName) : CSharpSyntaxRewriter
     {
         public override SyntaxNode VisitInvocationExpression(InvocationExpressionSyntax node)
         {

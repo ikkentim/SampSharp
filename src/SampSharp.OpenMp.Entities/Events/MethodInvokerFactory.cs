@@ -25,6 +25,9 @@ public static class MethodInvokerFactory
     /// <returns>The method invoker.</returns>
     public static MethodInvoker Compile(MethodInfo methodInfo, MethodParameterSource[] parameterSources, object? uninvokedReturnValue = null)
     {
+        ArgumentNullException.ThrowIfNull(methodInfo);
+        ArgumentNullException.ThrowIfNull(parameterSources);
+
         if (methodInfo.DeclaringType == null)
         {
             throw new ArgumentException("Method must have declaring type", nameof(methodInfo));

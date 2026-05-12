@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Globalization;
+using System.Runtime.InteropServices;
 
 namespace SampSharp.OpenMp.Core.Api;
 
@@ -22,6 +23,6 @@ public readonly struct UID
     /// <inheritdoc />
     public override string ToString()
     {
-        return _value.ToString("x16");
+        return _value.ToString("x16", CultureInfo.InvariantCulture);
     }
 }

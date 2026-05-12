@@ -2,7 +2,7 @@
 
 namespace SampSharp.Entities.SAMP;
 
-internal class MenuSystem : DisposableSystem, IMenuEventHandler
+internal sealed class MenuSystem : DisposableSystem, IMenuEventHandler
 {
     private readonly IOmpEntityProvider _entityProvider;
     private readonly IEventDispatcher _eventDispatcher;

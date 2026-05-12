@@ -3,7 +3,7 @@ using Microsoft.Extensions.ObjectPool;
 
 namespace SampSharp.Entities;
 
-internal class EntityManager : IEntityManager
+internal sealed class EntityManager : IEntityManager
 {
     private readonly ComponentStore _components;
     private readonly Dictionary<EntityId, EntityNode> _entities = new(100);

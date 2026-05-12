@@ -3,7 +3,7 @@ using SampSharp.OpenMp.Core.Api;
 
 namespace SampSharp.Entities.SAMP;
 
-internal class ObjectSystem : DisposableSystem, IObjectEventHandler
+internal sealed class ObjectSystem : DisposableSystem, IObjectEventHandler
 {
     private readonly IOmpEntityProvider _entityProvider;
     private readonly IEventDispatcher _eventDispatcher;

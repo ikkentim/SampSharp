@@ -1,3 +1,5 @@
+using System.Runtime.InteropServices;
+
 namespace SampSharp.OpenMp.Core.Api;
 
 /// <summary>
@@ -27,33 +29,33 @@ public readonly struct WeaponInfo
     /// <summary>
     /// The weapon's category (melee, bullet, rocket, etc.).
     /// </summary>
-    public readonly PlayerWeaponType Type;
+    public PlayerWeaponType Type { get; }
 
     /// <summary>
     /// The weapon's slot (0-12). <c>-1</c> for IDs that don't map to a real weapon
     /// (matches the SDK's <c>INVALID_WEAPON_SLOT</c> sentinel).
     /// </summary>
-    public readonly int Slot;
+    public int Slot { get; }
 
     /// <summary>
     /// Effective range, in game units.
     /// </summary>
-    public readonly float Range;
+    public float Range { get; }
 
     /// <summary>
     /// Magazine capacity. 0 if not applicable.
     /// </summary>
-    public readonly int ClipSize;
+    public int ClipSize { get; }
 
     /// <summary>
     /// Time between shots, in milliseconds.
     /// </summary>
-    public readonly int ShootTime;
+    public int ShootTime { get; }
 
     /// <summary>
     /// Reload time in milliseconds. 0 if the weapon doesn't reload.
     /// </summary>
-    public readonly int ReloadTime;
+    public int ReloadTime { get; }
 
     private static readonly WeaponInfo _invalid = new(PlayerWeaponType.None, -1, 0f, 0, 0, 0);
 

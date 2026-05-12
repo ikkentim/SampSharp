@@ -397,7 +397,7 @@ public abstract class MarshallingGeneratorBase(MarshalDirection direction)
         return result;
     }
 
-    private record MarshallingPhases(
+    private sealed record MarshallingPhases(
         SyntaxList<StatementSyntax> Setup,
         SyntaxList<StatementSyntax> Marshal,
         SyntaxList<StatementSyntax> PinnedMarshal,

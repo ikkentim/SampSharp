@@ -2,7 +2,7 @@
 
 namespace SampSharp.Entities.SAMP;
 
-internal class ActorSystem : DisposableSystem, IActorEventHandler
+internal sealed class ActorSystem : DisposableSystem, IActorEventHandler
 {
     private readonly IOmpEntityProvider _entityProvider;
     private readonly IEventDispatcher _eventDispatcher;

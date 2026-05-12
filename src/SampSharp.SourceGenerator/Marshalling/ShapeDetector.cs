@@ -3,7 +3,7 @@
 /// <summary>
 /// Provides methods for determining the shape of a custom marshaller.
 /// </summary>
-public static class ShapeDetector
+internal static class ShapeDetector
 {
     public static (MarshallerShape shape, ManagedType nativeType) GetShapeOfMarshaller(CustomMarshallerInfo marshaller)
     {

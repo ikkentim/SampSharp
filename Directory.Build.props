@@ -62,7 +62,7 @@
         <AnalysisLevel>latest</AnalysisLevel>
 
         <!-- What -->
-        <AnalysisMode>Minimum</AnalysisMode><!-- TODO: switch to AllEnabledByDefault -->
+        <AnalysisMode>Recommended</AnalysisMode>
         <EnforceCodeStyleInBuild>false</EnforceCodeStyleInBuild>
 
         <!-- Severity -->
@@ -72,7 +72,6 @@
         <!-- When -->
         <RunAnalyzersDuringBuild>true</RunAnalyzersDuringBuild>
         <RunAnalyzersDuringLiveAnalysis>true</RunAnalyzersDuringLiveAnalysis>
-        
     </PropertyGroup>
 
     <!-- Analyzer helpers -->
@@ -84,9 +83,6 @@
     <PropertyGroup Condition="'$(IsDeliverable)' == 'True'">
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    </PropertyGroup>
-
-    <PropertyGroup>
         <EmbedUntrackedSources>true</EmbedUntrackedSources>
     </PropertyGroup>
 

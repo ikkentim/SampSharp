@@ -3,7 +3,7 @@ using SampSharp.OpenMp.Core.Std.Chrono;
 
 namespace SampSharp.Entities.SAMP;
 
-internal class PlayerUpdateSystem : DisposableSystem, IPlayerUpdateEventHandler
+internal sealed class PlayerUpdateSystem : DisposableSystem, IPlayerUpdateEventHandler
 {
     private readonly IOmpEntityProvider _entityProvider;
     private readonly IEventDispatcher _eventDispatcher;

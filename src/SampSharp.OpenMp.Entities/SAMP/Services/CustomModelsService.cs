@@ -2,7 +2,7 @@ using SampSharp.OpenMp.Core.Api;
 
 namespace SampSharp.Entities.SAMP;
 
-internal class CustomModelsService(SampSharpEnvironment environment) : ICustomModelsService
+internal sealed class CustomModelsService(SampSharpEnvironment environment) : ICustomModelsService
 {
     private readonly ICustomModelsComponent _customModels = environment.Components.QueryComponent<ICustomModelsComponent>();
 

@@ -123,8 +123,8 @@ public class Actor : WorldEntity
     /// <summary>
     /// Performs an implicit conversion from <see cref="Actor" /> to <see cref="IActor" />.
     /// </summary>
-    public static implicit operator IActor(Actor actor)
+    public static implicit operator IActor(Actor? actor)
     {
-        return actor._actor;
+        return actor?._actor ?? default;
     }
 }

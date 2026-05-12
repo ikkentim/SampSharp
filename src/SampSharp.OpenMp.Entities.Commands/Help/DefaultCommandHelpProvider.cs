@@ -39,6 +39,8 @@ public class DefaultCommandHelpProvider : ICommandHelpProvider
     /// <inheritdoc />
     public IEnumerable<CommandDefinition> SearchCommands(string query)
     {
+        ArgumentNullException.ThrowIfNull(query);
+
         var lower = query.ToLowerInvariant();
         return _registry.GetAll()
             .Where(c => c.Name.Contains(lower, StringComparison.OrdinalIgnoreCase) || c.FullName.Contains(lower, StringComparison.OrdinalIgnoreCase) ||

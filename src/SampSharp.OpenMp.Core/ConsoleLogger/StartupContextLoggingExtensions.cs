@@ -14,6 +14,8 @@ public static class StartupContextLoggingExtensions
     /// <returns>The startup context.</returns>
     public static IStartupContext UseOpenMpLogger(this IStartupContext context)
     {
+        ArgumentNullException.ThrowIfNull(context);
+
         Console.SetOut(new LoggerTextWriter((ILogger)context.Core, LogLevel.Message));
         Console.SetError(new LoggerTextWriter((ILogger)context.Core, LogLevel.Error));
 

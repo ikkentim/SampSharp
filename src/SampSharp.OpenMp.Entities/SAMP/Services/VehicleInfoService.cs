@@ -3,7 +3,7 @@ using SampSharp.OpenMp.Core.Api;
 
 namespace SampSharp.Entities.SAMP;
 
-internal class VehicleInfoService : IVehicleInfoService
+internal sealed class VehicleInfoService : IVehicleInfoService
 {
     public CarModType GetComponentType(int componentId)
     {

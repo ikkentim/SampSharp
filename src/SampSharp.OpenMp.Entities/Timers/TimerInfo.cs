@@ -1,6 +1,6 @@
 ﻿namespace SampSharp.Entities;
 
-internal class TimerInfo
+internal sealed class TimerInfo
 {
     public long IntervalTicks;
     public Action Invoke;

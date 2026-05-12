@@ -2,7 +2,7 @@
 
 namespace SampSharp.Entities.SAMP;
 
-internal class VehicleSystem : DisposableSystem, IVehicleEventHandler
+internal sealed class VehicleSystem : DisposableSystem, IVehicleEventHandler
 {
     private readonly IOmpEntityProvider _entityProvider;
     private readonly IEventDispatcher _eventDispatcher;

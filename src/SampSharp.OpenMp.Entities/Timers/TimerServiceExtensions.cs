@@ -18,6 +18,7 @@ public static class TimerServiceExtensions
     /// <returns>A reference to the started timer.</returns>
     public static TimerReference Start(this ITimerService timerService, object target, MethodInfo method, TimeSpan interval)
     {
+        ArgumentNullException.ThrowIfNull(timerService);
         ArgumentNullException.ThrowIfNull(target);
         ArgumentNullException.ThrowIfNull(method);
 

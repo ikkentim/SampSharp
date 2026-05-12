@@ -36,7 +36,7 @@ public readonly struct StringSpan : IEquatable<string>, IEquatable<StringSpan>
     /// <summary>
     /// Gets an empty <see cref="StringSpan"/>.
     /// </summary>
-    public static readonly StringSpan Empty = new();
+    public static readonly StringSpan Empty;
 
     /// <summary>
     /// Gets the range of characters within the string.

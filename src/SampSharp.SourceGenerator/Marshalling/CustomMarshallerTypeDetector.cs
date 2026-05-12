@@ -181,7 +181,7 @@ public class CustomMarshallerTypeDetector
             .marshaller;
     }
 
-    private record MarshalDirectionInfo(MarshalMode In, MarshalMode Out, MarshalMode Ref)
+    private sealed record MarshalDirectionInfo(MarshalMode In, MarshalMode Out, MarshalMode Ref)
     {
         public static readonly MarshalDirectionInfo ManagedToUnmanaged =
             new(MarshalMode.ManagedToUnmanagedIn,

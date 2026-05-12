@@ -18,6 +18,8 @@ public static unsafe class AnimationDataMarshaller
 
         public static BlittableStructRef<Native> ConvertToUnmanaged(AnimationData managed, Span<byte> callerAllocatedBuffer)
         {
+            ArgumentNullException.ThrowIfNull(managed);
+
             var native = ToNative(managed);
 
             

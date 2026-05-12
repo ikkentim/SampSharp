@@ -120,8 +120,8 @@ public abstract class BasePickup : WorldEntity
     /// <summary>
     /// Performs an implicit conversion from <see cref="BasePickup" /> to <see cref="IPickup" />.
     /// </summary>
-    public static implicit operator IPickup(BasePickup pickup)
+    public static implicit operator IPickup(BasePickup? pickup)
     {
-        return pickup._pickup;
+        return pickup?._pickup ?? default;
     }
 }

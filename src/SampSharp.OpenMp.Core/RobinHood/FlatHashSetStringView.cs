@@ -9,6 +9,7 @@ namespace SampSharp.OpenMp.Core.RobinHood;
 /// library.
 /// </summary>
 [StructLayout(LayoutKind.Sequential)]
+[System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1710:Identifiers should have correct suffix", Justification = "Match native type name")]
 public readonly struct FlatHashSetStringView : IReadOnlyCollection<string?>
 {
     private readonly nint _data;

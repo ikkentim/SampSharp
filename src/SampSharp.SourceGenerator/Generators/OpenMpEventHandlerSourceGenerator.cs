@@ -396,7 +396,7 @@ public class OpenMpEventHandlerSourceGenerator : IIncrementalGenerator
             .Value.Value as string ?? "SampSharp";
 
         var nativeTypeName = attribute.NamedArguments.FirstOrDefault(x => x.Key == "NativeTypeName")
-            .Value.Value as string ?? (symbol.Name.StartsWith("I") ? symbol.Name.Substring(1) : symbol.Name);
+            .Value.Value as string ?? (symbol.Name.StartsWith("I", StringComparison.Ordinal) ? symbol.Name.Substring(1) : symbol.Name);
 
         var wellKnownMarshallerTypes = WellKnownMarshallerTypes.Create(ctx.SemanticModel.Compilation);
         var ctxFactory = new IdentifierStubContextFactory(wellKnownMarshallerTypes);

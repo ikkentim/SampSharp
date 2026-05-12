@@ -12,6 +12,8 @@ public static class StartupContextThreadingExtensions
     /// <returns>The startup context.</returns>
     public static IStartupContext UseSynchronizationContext(this IStartupContext context)
     {
+        ArgumentNullException.ThrowIfNull(context);
+
         var ext = context.Core.TryGetExtension<SynchronizationContextExtension>();
 
         if (ext == null)

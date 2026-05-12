@@ -4,7 +4,7 @@ using SampSharp.OpenMp.Core.Std.Chrono;
 namespace SampSharp.OpenMp.Core;
 
 [Extension(0x05e87f7adbdc0b7d)]
-internal class SynchronizationContextExtension : Extension, ICoreEventHandler
+internal sealed class SynchronizationContextExtension : Extension, ICoreEventHandler
 {
     private static SynchronizationContextExtension? _active;
     private readonly SampSharpSynchronizationContext _context = new();

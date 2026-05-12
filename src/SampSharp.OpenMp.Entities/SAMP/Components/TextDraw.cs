@@ -281,8 +281,8 @@ public class TextDraw : IdProvider
     /// <summary>
     /// Performs an implicit conversion from <see cref="TextDraw" /> to <see cref="ITextDraw" />.
     /// </summary>
-    public static implicit operator ITextDraw(TextDraw textDraw)
+    public static implicit operator ITextDraw(TextDraw? textDraw)
     {
-        return textDraw._textDraw;
+        return textDraw?._textDraw ?? default;
     }
 }

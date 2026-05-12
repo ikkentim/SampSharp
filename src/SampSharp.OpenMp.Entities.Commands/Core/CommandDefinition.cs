@@ -24,6 +24,8 @@ public class CommandDefinition
         ArgumentNullException.ThrowIfNull(parameters);
         ArgumentNullException.ThrowIfNull(declaringSystemType);
         ArgumentNullException.ThrowIfNull(parsedParameters);
+        ArgumentNullException.ThrowIfNull(aliases);
+        ArgumentNullException.ThrowIfNull(tags);
 
         Name = name;
         Group = group;

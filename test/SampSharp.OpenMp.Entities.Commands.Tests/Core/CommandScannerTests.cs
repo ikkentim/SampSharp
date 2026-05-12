@@ -32,7 +32,9 @@ public class CommandScannerTests
 
     private static Mock<ILogger> CreateLogger()
     {
-        return new Mock<ILogger>();
+        var logger = new Mock<ILogger>();
+        logger.Setup(l => l.IsEnabled(LogLevel.Warning)).Returns(true);
+        return logger;
     }
 
     private static CommandRegistry CreateCommandRegistry()

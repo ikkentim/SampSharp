@@ -2,7 +2,7 @@
 
 namespace SampSharp.Entities.SAMP;
 
-internal class PlayerSpawnSystem : DisposableSystem, IPlayerSpawnEventHandler
+internal sealed class PlayerSpawnSystem : DisposableSystem, IPlayerSpawnEventHandler
 {
     private readonly IOmpEntityProvider _entityProvider;
     private readonly IEventDispatcher _eventDispatcher;
