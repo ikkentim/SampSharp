@@ -26,3 +26,6 @@ desktop.ini
 *.tmp
 *.swp
 *.swo
+
+# Verify snapshot received files (auto-generated during test runs; never committed)
+*.received.*
