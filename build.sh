@@ -1,7 +1,7 @@
 #!/bin/bash
 # Root build dispatcher for SampSharp plugins
 # Usage: build.sh <target> [action] [options]
-# Targets: legacy-plugin, legacy-libraries, component, component-libraries
+# Targets: legacy-plugin, legacy-libraries, component, libraries
 # Actions: (empty), test, publish
 # Options: --no-build, --version=<version>
 
@@ -16,9 +16,9 @@ show_usage() {
     echo "  build.sh legacy-libraries publish - Build and pack legacy C# libraries"
     echo "  build.sh component                - Build open.mp component"
     echo "  build.sh component publish        - Build and publish open.mp component"
-    echo "  build.sh component-libraries      - Build C# libraries"
-    echo "  build.sh component-libraries test - Test C# libraries"
-    echo "  build.sh component-libraries publish - Build and pack C# libraries"
+    echo "  build.sh libraries                - Build C# libraries"
+    echo "  build.sh libraries test           - Test C# libraries"
+    echo "  build.sh libraries publish        - Build and pack C# libraries"
     echo "  build.sh clean                    - Delete build directory contents"
     echo ""
     echo "Options:"
@@ -41,7 +41,7 @@ build_component_libraries() {
 
 test_component_libraries() {
     local SCRIPTDIR="$1"
-    local RESULTSDIR="$SCRIPTDIR/build/test-results/component-libraries"
+    local RESULTSDIR="$SCRIPTDIR/build/test-results/libraries"
     cd "$SCRIPTDIR"
 
     mkdir -p "$RESULTSDIR"
@@ -49,7 +49,7 @@ test_component_libraries() {
     echo ""
     echo "Testing C# libraries..."
 
-    local command=(dotnet test SampSharp.slnx -c Release --results-directory "$RESULTSDIR" --logger "trx;LogFilePrefix=component-libraries")
+    local command=(dotnet test SampSharp.slnx -c Release --results-directory "$RESULTSDIR" --logger "trx;LogFilePrefix=libraries")
 
     if [ "$NO_BUILD" = true ]; then
         command+=(--no-build)
@@ -161,6 +161,12 @@ while [ $# -gt 0 ]; do
 done
 
 case "$TARGET" in
+    component-libraries)
+        TARGET="libraries"
+        ;;
+esac
+
+case "$TARGET" in
     legacy-plugin)
         if [ -z "$ACTION" ]; then
             echo "Building legacy plugin (x86)..."
@@ -197,7 +203,7 @@ case "$TARGET" in
             exit 1
         fi
         ;;
-    component-libraries)
+    libraries)
         if [ -z "$ACTION" ]; then
             build_component_libraries "$SCRIPTDIR"
         elif [ "$ACTION" = "test" ]; then

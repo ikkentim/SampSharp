@@ -90,7 +90,7 @@ jobs:
           files: SampSharp-${{ env.VERSION }}.zip
 
       - name: Pack NuGet packages
-        run: ./build.sh component-libraries publish --version="${{ env.VERSION }}"
+        run: ./build.sh libraries publish --version="${{ env.VERSION }}"
 
       - name: Publish to NuGet
         run: |

@@ -105,7 +105,9 @@ if /i "%TARGET%"=="component" (
     )
 )
 
-if /i "%TARGET%"=="component-libraries" (
+if /i "%TARGET%"=="component-libraries" set "TARGET=libraries"
+
+if /i "%TARGET%"=="libraries" (
     if "%ACTION%"=="" (
         echo Building C# libraries...
         call :build_component_libraries
@@ -148,9 +150,9 @@ echo   build.cmd legacy-libraries        - Build legacy C# libraries
 echo   build.cmd legacy-libraries publish - Build and pack legacy C# libraries
 echo   build.cmd component               - Build open.mp component
 echo   build.cmd component publish       - Build and publish open.mp component
-echo   build.cmd component-libraries        - Build C# libraries
-echo   build.cmd component-libraries test   - Test C# libraries
-echo   build.cmd component-libraries publish - Build and pack C# libraries
+echo   build.cmd libraries                  - Build C# libraries
+echo   build.cmd libraries test             - Test C# libraries
+echo   build.cmd libraries publish          - Build and pack C# libraries
 echo   build.cmd clean                   - Delete build directory contents
 echo.
 echo Options:
@@ -198,14 +200,14 @@ exit /b 0
 
 :test_component_libraries
 cd /d "%SCRIPTDIR%"
-set "RESULTSDIR=%SCRIPTDIR%build\test-results\component-libraries"
+set "RESULTSDIR=%SCRIPTDIR%build\test-results\libraries"
 if not exist "%RESULTSDIR%" mkdir "%RESULTSDIR%"
 echo.
 echo Testing C# libraries...
 if defined CI_VERSION (
-    dotnet test SampSharp.slnx -c Release %NO_BUILD_ARG% --results-directory "%RESULTSDIR%" --logger "trx;LogFilePrefix=component-libraries" "/p:CiVersion=%CI_VERSION%"
+    dotnet test SampSharp.slnx -c Release %NO_BUILD_ARG% --results-directory "%RESULTSDIR%" --logger "trx;LogFilePrefix=libraries" "/p:CiVersion=%CI_VERSION%"
 ) else (
-    dotnet test SampSharp.slnx -c Release %NO_BUILD_ARG% --results-directory "%RESULTSDIR%" --logger "trx;LogFilePrefix=component-libraries"
+    dotnet test SampSharp.slnx -c Release %NO_BUILD_ARG% --results-directory "%RESULTSDIR%" --logger "trx;LogFilePrefix=libraries"
 )
 if errorlevel 1 exit /b 1
 exit /b 0

@@ -1,0 +1,69 @@
+name: CI - .NET Libraries
+
+on:
+  push:
+    branches:
+      - main
+      - release/1.*
+    paths:
+      - .github/workflows/dotnet-libraries.yml
+      - src/SampSharp.*/**
+      - test/**
+      - SampSharp.slnx
+      - Directory.Build.props
+      - build.cmd
+      - build.sh
+
+  pull_request:
+    branches:
+      - main
+      - release/1.*
+    paths:
+      - .github/workflows/dotnet-libraries.yml
+      - src/SampSharp.*/**
+      - test/**
+      - SampSharp.slnx
+      - Directory.Build.props
+      - build.cmd
+      - build.sh
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      checks: write
+      pull-requests: write
+
+    steps:
+    - uses: actions/checkout@v6
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v5
+      with:
+        dotnet-version: '10.0.x'
+
+    - name: Build .NET libraries
+      run: ./build.sh libraries
+
+    - name: Test .NET libraries
+      run: ./build.sh libraries test --no-build
+
+    - name: Publish .NET libraries test results
+      if: ${{ !cancelled() }}
+      uses: EnricoMi/publish-unit-test-result-action@v2
+      with:
+        files: build/test-results/libraries/*.trx
+        check_name: .NET libraries test results
+        comment_mode: ${{ (github.event.workflow_run.event == 'pull_request' || github.event_name == 'pull_request') && 'always' || 'off' }}
+
+    - name: Pack .NET libraries
+      run: ./build.sh libraries publish
+
+    - name: Upload NuGet packages
+      uses: actions/upload-artifact@v7
+      with:
+        name: sampsharp-dotnet-nuget-packages
+        path: build/artifacts/packages/
+        if-no-files-found: error
+        retention-days: ${{ github.event_name == 'pull_request' && 14 || 90 }}
