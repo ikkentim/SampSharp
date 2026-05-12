@@ -33,6 +33,7 @@ jobs:
     permissions:
       contents: read
       checks: write
+      pull-requests: write
 
     steps:
     - uses: actions/checkout@v6
@@ -50,11 +51,11 @@ jobs:
 
     - name: Publish component library test results
       if: ${{ !cancelled() }}
-      uses: EnricoMi/publish-unit-test-result-action@v2.23.0
+      uses: EnricoMi/publish-unit-test-result-action@v2
       with:
         files: build/test-results/component-libraries/*.trx
         check_name: Component library test results
-        comment_mode: off
+        comment_mode: ${{ (github.event.workflow_run.event == 'pull_request' || github.event_name == 'pull_request') && 'always' || 'off' }}
 
     - name: Pack component libraries
       run: ./build.sh component-libraries publish
