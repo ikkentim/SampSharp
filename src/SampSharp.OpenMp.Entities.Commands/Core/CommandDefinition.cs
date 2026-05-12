@@ -8,12 +8,13 @@ namespace SampSharp.Entities.SAMP.Commands;
 /// </summary>
 public class CommandDefinition
 {
+    private static readonly CommandComponentMatcher _allowAllComponentMatches = (_, _, _) => true;
     private readonly CommandAlias[] _aliases;
     private readonly Dictionary<string, string> _tags;
 
     /// <summary>Initializes a new instance.</summary>
     public CommandDefinition(string name, CommandGroup? group, MethodInfo method, ParameterInfo[] parameters, Type declaringSystemType, CommandParameterInfo[] parsedParameters, CommandInvoker invoker,
-        int prefixParameterCount, CommandAlias[] aliases, CommandTag[] tags, Func<object?[], IEntityManager, bool>? componentMatcher = null)
+        int prefixParameterCount, CommandAlias[] aliases, CommandTag[] tags, CommandComponentMatcher? componentMatcher = null)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
@@ -34,7 +35,7 @@ public class CommandDefinition
         DeclaringSystemType = declaringSystemType;
         ParsedParameters = parsedParameters;
         CompiledInvoker = invoker;
-        CompiledComponentMatcher = componentMatcher;
+        CompiledComponentMatcher = componentMatcher ?? _allowAllComponentMatches;
         PrefixParameterCount = prefixParameterCount;
         _aliases = aliases;
         _tags = new Dictionary<string, string>();
@@ -73,7 +74,7 @@ public class CommandDefinition
     /// <summary>The pre-compiled method invoker (compiled at discovery time).</summary>
     public CommandInvoker CompiledInvoker { get; }
 
-    internal Func<object?[], IEntityManager, bool>? CompiledComponentMatcher { get; }
+    internal CommandComponentMatcher CompiledComponentMatcher { get; }
 
     /// <summary>The number of prefix parameters (e.g., Player for player commands, ConsoleCommandSender for console commands).</summary>
     public int PrefixParameterCount { get; }

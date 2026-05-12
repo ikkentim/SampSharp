@@ -52,13 +52,10 @@ internal class CommandDispatcher
         {
             var entityManager = services.GetService(typeof(IEntityManager)) as IEntityManager
                 ?? throw new InvalidOperationException($"{nameof(IEntityManager)} is not registered in the service provider but is required for player command validation.");
-            if (bestMatch.overload.CompiledComponentMatcher != null)
+
+            if (!bestMatch.overload.CompiledComponentMatcher(prefixArgs, bestMatch.parsedArguments ?? [], entityManager))
             {
-                var arguments = BuildArguments(bestMatch.overload, prefixArgs, bestMatch.parsedArguments);
-                if (!bestMatch.overload.CompiledComponentMatcher(arguments, entityManager))
-                {
-                    return CreatePermissionDenied(bestMatch.overload, overloads, usedCommandName);
-                }
+                return CreatePermissionDenied(bestMatch.overload, overloads, usedCommandName);
             }
 
             var playerComponent = entityManager.GetComponent<Player>(entityId);
@@ -177,32 +174,6 @@ internal class CommandDispatcher
         }
 
         return (true, parsedValues.ToArray());
-    }
-
-    private static object?[] BuildArguments(CommandDefinition overload, object[] prefixArgs, object?[]? parsedArgs)
-    {
-        var parameters = overload.MethodParameters;
-        var args = new object?[parameters.Length];
-
-        var prefixCount = Math.Min(overload.PrefixParameterCount, prefixArgs.Length);
-        for (var i = 0; i < prefixCount; i++)
-        {
-            args[i] = prefixArgs[i];
-        }
-
-        if (parsedArgs == null || parsedArgs.Length == 0)
-        {
-            return args;
-        }
-
-        var parsedIdx = 0;
-        var argStartIndex = overload.PrefixParameterCount;
-        while (parsedIdx < parsedArgs.Length && argStartIndex < parameters.Length)
-        {
-            args[argStartIndex++] = parsedArgs[parsedIdx++];
-        }
-
-        return args;
     }
 
     private static DispatchResult CreatePermissionDenied(CommandDefinition overload, IReadOnlyList<CommandDefinition> overloads, string usedCommandName)

@@ -141,7 +141,7 @@ internal partial class CommandScanner
 
         var parameterSources = BuildMethodParameterSources(parameters, prefixParameters, parsedParams!);
         var invoker = CompileCommandInvoker(method, parameterSources);
-        var componentMatcher = CompileComponentMatcher(parameterSources);
+        var componentMatcher = CompileComponentMatcher(parameterSources, prefixParameters);
 
         overload = new CommandDefinition(commandName, commandGroup, method, parameters, systemType, parsedParams!, invoker, prefixParameters, aliases, tags, componentMatcher);
 
@@ -195,7 +195,7 @@ internal partial class CommandScanner
         return ToCommandInvoker(methodInvoker, method);
     }
 
-    private static Func<object?[], IEntityManager, bool>? CompileComponentMatcher(MethodParameterSource[] sources)
+    private static CommandComponentMatcher? CompileComponentMatcher(MethodParameterSource[] sources, int prefixParameterCount)
     {
         var componentSources = sources.Where(s => s.IsComponent && s.ParameterIndex >= 0).ToArray();
         if (componentSources.Length == 0)
@@ -203,14 +203,21 @@ internal partial class CommandScanner
             return null;
         }
 
-        var args = Expression.Parameter(typeof(object[]), "args");
+        var prefixArgs = Expression.Parameter(typeof(object[]), "prefixArgs");
+        var parsedArgs = Expression.Parameter(typeof(object[]), "parsedArgs");
         var entityManager = Expression.Parameter(typeof(IEntityManager), "entityManager");
         var entityEmpty = Expression.Constant(EntityId.Empty, typeof(EntityId));
 
         Expression? body = null;
         foreach (var source in componentSources)
         {
-            var entity = Expression.Convert(Expression.ArrayIndex(args, Expression.Constant(source.ParameterIndex)), typeof(EntityId));
+            var sourceArgs = source.ParameterIndex < prefixParameterCount ? prefixArgs : parsedArgs;
+            var sourceIndex = source.ParameterIndex < prefixParameterCount
+                ? source.ParameterIndex
+                : source.ParameterIndex - prefixParameterCount;
+            var entityValue = Expression.ArrayIndex(sourceArgs, Expression.Constant(sourceIndex));
+
+            var entity = Expression.Convert(entityValue, typeof(EntityId));
             var componentType = source.Info.ParameterType;
             var component = Expression.Condition(
                 Expression.Equal(entity, entityEmpty),
@@ -224,7 +231,7 @@ internal partial class CommandScanner
             body = body == null ? check : Expression.AndAlso(body, check);
         }
 
-        return Expression.Lambda<Func<object?[], IEntityManager, bool>>(body!, args, entityManager).Compile();
+        return Expression.Lambda<CommandComponentMatcher>(body!, prefixArgs, parsedArgs, entityManager).Compile();
     }
 
     private CommandInvoker ToCommandInvoker(MethodInvoker methodInvoker, MethodInfo method)
