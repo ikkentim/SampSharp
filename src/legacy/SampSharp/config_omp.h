@@ -17,12 +17,10 @@
 #include "config.h"
 #include <map>
 
-class config_omp final : public config
-{
-public:
+class config_omp final : public config {
+ public:
     config_omp();
-    bool get_config_string(std::string name, std::string& result) override;
-
+    bool get_config_string(std::string name, std::string &result) override;
 private:
     std::map<std::string, std::string> values_;
 };

@@ -16,21 +16,17 @@
 #include "config.h"
 #include "strutil.h"
 
-bool config::get_config_bool(std::string name, bool& result)
-{
+bool config::get_config_bool(std::string name, bool& result) {
     std::string value;
-    if (!get_config_string(name, value))
-    {
+    if (!get_config_string(name, value)) {
         return false;
     }
 
-    if (iequals(value, "on") || iequals(value, "yes") || iequals(value, "true"))
-    {
+    if (iequals(value, "on") || iequals(value, "yes") || iequals(value, "true")) {
         result = true;
         return true;
     }
-    if (iequals(value, "off") || iequals(value, "no") || iequals(value, "false"))
-    {
+    if (iequals(value, "off") || iequals(value, "no") || iequals(value, "false")) {
         result = false;
         return true;
     }

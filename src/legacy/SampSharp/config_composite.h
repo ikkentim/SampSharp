@@ -17,13 +17,11 @@
 #include "config.h"
 #include <vector>
 
-class config_composite final : public config
-{
-public:
+class config_composite final : public config {
+ public:
     void add_config(config* config);
-    bool get_config_string(std::string name, std::string& result) override;
+    bool get_config_string(std::string name, std::string &result) override;
     bool get_config_bool(std::string name, bool& result) override;
-
 private:
-    std::vector<config*> configs_;
+    std::vector<config *> configs_;
 };

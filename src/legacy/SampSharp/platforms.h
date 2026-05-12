@@ -16,39 +16,39 @@
 #pragma once
 
 #if (defined __CYGWIN32__ || defined RC_INVOKED) && !defined WIN32
-#define WIN32
+#  define WIN32
 #endif
 
 #if defined WIN32 || defined _WIN32 || defined __WIN32__
-#define SAMPSHARP_LINUX 0
-#define SAMPSHARP_WINDOWS 1
+#  define SAMPSHARP_LINUX 0
+#  define SAMPSHARP_WINDOWS 1
 #endif
 
 #if defined __linux__ || defined __linux || defined linux
-#if !defined LINUX
-#define LINUX
-#endif
-#define SAMPSHARP_LINUX 1
-#define SAMPSHARP_WINDOWS 0
+#  if !defined LINUX
+#    define LINUX
+#  endif
+#  define SAMPSHARP_LINUX 1
+#  define SAMPSHARP_WINDOWS 0
 #endif
 
 #ifdef __cplusplus
-#define SAMPSHARP_EXPORT extern "C"
+#  define SAMPSHARP_EXPORT extern "C"
 #else
-#define SAMPSHARP_EXPORT
+#  define SAMPSHARP_EXPORT
 #endif
 
 #if defined DEBUG || defined _DEBUG
-#define ENABLE_TEST_NATIVES
-#define LOG_DEBUG
+#  define ENABLE_TEST_NATIVES
+#  define LOG_DEBUG
 #endif
 
 #if SAMPSHARP_WINDOWS
-#define SAMPSHARP_CALL __stdcall
-#define SAMPSHARP_CALL_PTR *SAMPSHARP_CALL
+#  define SAMPSHARP_CALL __stdcall
+#  define SAMPSHARP_CALL_PTR *SAMPSHARP_CALL
 #elif SAMPSHARP_LINUX
-#define SAMPSHARP_CALL __attribute__((visibility("default")))
-#define SAMPSHARP_CALL_PTR SAMPSHARP_CALL*
+#  define SAMPSHARP_CALL __attribute__((visibility("default")))
+#  define SAMPSHARP_CALL_PTR SAMPSHARP_CALL *
 #else
 #error Unsupported platform
 #endif

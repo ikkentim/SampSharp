@@ -15,23 +15,28 @@
 
 #pragma once
 
-#define PLUGIN_VERSION_MAJOR 0
-#define PLUGIN_VERSION_MINOR 11
-#define PLUGIN_VERSION_PATCH 0
-#define PLUGIN_VERSION_ALPHA 0
+#define PLUGIN_VERSION_MAJOR        0
+#define PLUGIN_VERSION_MINOR        11
+#define PLUGIN_VERSION_PATCH        0
+#define PLUGIN_VERSION_ALPHA        0
 
-#define __PLUGIN_STRINGIZE(x) #x
-#define __PLUGIN_STRINGIZEX(x) __PLUGIN_STRINGIZE(x)
+#define __PLUGIN_STRINGIZE(x)       #x
+#define __PLUGIN_STRINGIZEX(x)      __PLUGIN_STRINGIZE(x)
 
-#define __PLUGIN_VERSION_STR                                                                                           \
-    __PLUGIN_STRINGIZEX(PLUGIN_VERSION_MAJOR)                                                                          \
-    "." __PLUGIN_STRINGIZEX(PLUGIN_VERSION_MINOR) "." __PLUGIN_STRINGIZEX(PLUGIN_VERSION_PATCH)
+#define __PLUGIN_VERSION_STR        \
+    __PLUGIN_STRINGIZEX(PLUGIN_VERSION_MAJOR) "." \
+    __PLUGIN_STRINGIZEX(PLUGIN_VERSION_MINOR) "." \
+    __PLUGIN_STRINGIZEX(PLUGIN_VERSION_PATCH)
 
 #if PLUGIN_VERSION_ALPHA > 0
-#define PLUGIN_VERSION_STR __PLUGIN_VERSION_STR "-alpha" __PLUGIN_STRINGIZEX(PLUGIN_VERSION_ALPHA)
+#  define PLUGIN_VERSION_STR          __PLUGIN_VERSION_STR "-alpha" \
+    __PLUGIN_STRINGIZEX(PLUGIN_VERSION_ALPHA)
 #else
-#define PLUGIN_VERSION_STR __PLUGIN_VERSION_STR
+#  define PLUGIN_VERSION_STR          __PLUGIN_VERSION_STR
 #endif
 
-#define PLUGIN_VERSION                                                                                                 \
-    ((PLUGIN_VERSION_MAJOR << 16) | (PLUGIN_VERSION_MINOR << 8) | (PLUGIN_VERSION_PATCH) | (PLUGIN_VERSION_ALPHA << 24))
+#define PLUGIN_VERSION              ( \
+                                        (PLUGIN_VERSION_MAJOR << 16) | \
+                                        (PLUGIN_VERSION_MINOR << 8) | \
+                                        (PLUGIN_VERSION_PATCH) | \
+                                        (PLUGIN_VERSION_ALPHA << 24))

@@ -25,20 +25,19 @@ namespace fs = std::filesystem;
 class locator
 {
 public:
-    locator(config* cfg);
+    locator(config *cfg);
     /* returns path to libhostfxr. */
     fs::path get_hostfxr() const;
     /* returns path to libcoreclr. */
     fs::path get_coreclr() const;
     /* returns path to runtimeconfig of gamemode. */
     fs::path get_gamemode() const;
-
+    
 private:
     static bool detect_lib_recursive(fs::path& result, const fs::path& search_path, const std::string& lib);
-    static bool detect_lib(fs::path& result, const std::string& path_hint, const std::string& lib);
-    static bool detect_gamemode_recursive(fs::path& result, const std::string& search_name,
-                                          const fs::path& search_path);
-    static bool detect_gamemode(const std::string& dir_hint, const std::string& name, fs::path& result);
+    static bool detect_lib(fs::path &result, const std::string &path_hint, const std::string &lib);
+    static bool detect_gamemode_recursive(fs::path& result, const std::string& search_name, const fs::path& search_path);
+    static bool detect_gamemode(const std::string &dir_hint, const std::string &name, fs::path &result);
 
-    config* cfg_;
+    config *cfg_;
 };

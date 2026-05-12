@@ -16,24 +16,21 @@
 #include "nethost_coreclr.h"
 #include "logging.h"
 
-nethost_coreclr::~nethost_coreclr()
-{
+nethost_coreclr::~nethost_coreclr() {
     release();
 }
 
-bool nethost_coreclr::setup(locator* locator, config* cfg)
-{
+bool nethost_coreclr::setup(locator *locator, config* cfg) {
     coreclr_ = locator->get_coreclr();
     gamemode_ = locator->get_gamemode();
 
-    if (coreclr_.empty() || !exists(coreclr_))
-    {
+    if(coreclr_.empty() || !exists(coreclr_)) {
         log_error("Invalid coreclr directory specified in server.cfg.");
         return false;
     }
-
-    if (gamemode_.empty() || !exists(gamemode_))
-    {
+    
+    
+    if(gamemode_.empty() || !exists(gamemode_)) {
         log_error("Invalid gamemode specified in server.cfg.");
         return false;
     }
@@ -43,8 +40,7 @@ bool nethost_coreclr::setup(locator* locator, config* cfg)
     return true;
 }
 
-void nethost_coreclr::start()
-{
+void nethost_coreclr::start() {
     int retval;
     unsigned int exitcode;
 
@@ -52,26 +48,23 @@ void nethost_coreclr::start()
     const auto exe_path = (gamemode_).string();
 
     log_info("Initializing .NET runtime...");
-    if ((retval = app_.initialize(clr_dir.c_str(), exe_path.c_str(), "SampSharp Host")) < 0)
-    {
+    if((retval = app_.initialize(clr_dir.c_str(), exe_path.c_str(), "SampSharp Host")) < 0) {
         log_error("Failed to initialize CoreCLR runtime. Error %d.", retval);
         return;
     }
 
     host_init_ = true;
-
+    
     log_info("Starting game mode host...");
-    const char* args[1];
+    const char *args[1];
     args[0] = "--hosted";
 
-    if ((retval = app_.execute_assembly(std::size(args), args, &exitcode)) < 0)
-    {
+    if((retval = app_.execute_assembly(std::size(args), args, &exitcode)) < 0)  {
         log_error("Failed to prepare game mode. Error %d.", retval);
         return;
     }
 
-    if (exitcode)
-    {
+    if(exitcode) {
         log_error("Failed to prepare game mode. Exit code %d.", exitcode);
         return;
     }
@@ -80,16 +73,13 @@ void nethost_coreclr::start()
     running_ = true;
 }
 
-void nethost_coreclr::stop()
-{
+void nethost_coreclr::stop() {
     release();
 }
 
-void nethost_coreclr::release()
-{
-    if (host_init_)
-    {
+void nethost_coreclr::release() {
+     if(host_init_) {
         app_.release();
         host_init_ = false;
-    }
+    }   
 }

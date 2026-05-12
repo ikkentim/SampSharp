@@ -2,14 +2,12 @@
 #include "coreclr_app.h"
 #include "nethost.h"
 
-class nethost_coreclr : public nethost
-{
+class nethost_coreclr : public nethost {
 public:
     ~nethost_coreclr() override;
-    bool setup(locator* locator, config* cfg) override;
+    bool setup(locator *locator, config* cfg) override;
     void start() override;
     void stop() override;
-
 private:
     void release();
 

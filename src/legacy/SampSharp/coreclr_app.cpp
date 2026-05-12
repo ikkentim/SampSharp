@@ -30,41 +30,41 @@
 #include <json/json.hpp>
 
 #if SAMPSHARP_LINUX
-#include <dirent.h>
-#include <dlfcn.h>
-#include <unistd.h>
-#include <sys/stat.h>
-#if defined(__FreeBSD__)
-#include <sys/types.h>
-#include <sys/param.h>
-#endif
-#if defined(HAVE_SYS_SYSCTL_H) || defined(__FreeBSD__)
-#include <sys/sysctl.h>
-#endif
+#  include <dirent.h>
+#  include <dlfcn.h>
+#  include <unistd.h>
+#  include <sys/stat.h>
+#  if defined(__FreeBSD__)
+#    include <sys/types.h>
+#    include <sys/param.h>
+#  endif
+#  if defined(HAVE_SYS_SYSCTL_H) || defined(__FreeBSD__)
+#    include <sys/sysctl.h>
+#  endif
 #endif
 
 #if SAMPSHARP_LINUX
-#define __DIR_SEPARATOR_FORWARD
+#  define __DIR_SEPARATOR_FORWARD
 #endif
 
 #ifdef __DIR_SEPARATOR_FORWARD
-#define DIR_SEPARATOR "/"
+#  define DIR_SEPARATOR "/"
 #else
-#define DIR_SEPARATOR "\\"
+#  define DIR_SEPARATOR "\\"
 #endif
 
+
 #if !defined(PATH_MAX) && defined(MAX_PATH)
-#define PATH_MAX MAX_PATH
+#  define PATH_MAX MAX_PATH
 #endif
 
 #if SAMPSHARP_LINUX
-bool coreclr_app::load_symbol(void* coreclr_lib, const char* symbol, void** ptr)
-{
+bool coreclr_app::load_symbol(void *coreclr_lib, const char *symbol,
+    void **ptr) {
 
     *ptr = dlsym(coreclr_lib, symbol);
 
-    if (!*ptr)
-    {
+    if(!*ptr) {
         log_error("Function %s not found in the libcoreclr.so.", symbol);
         return false;
     }
@@ -73,8 +73,8 @@ bool coreclr_app::load_symbol(void* coreclr_lib, const char* symbol, void** ptr)
 }
 #endif
 
-int coreclr_app::initialize(const char* clr_dir_c, const char* exe_path, const char* app_domain_friendly_name)
-{
+int coreclr_app::initialize(const char *clr_dir_c, const char* exe_path,
+    const char* app_domain_friendly_name) {
     std::filesystem::path exe_path_p = exe_path;
     std::filesystem::path clr_dir_p = clr_dir_c;
 
@@ -116,39 +116,37 @@ int coreclr_app::initialize(const char* clr_dir_c, const char* exe_path, const c
 #if SAMPSHARP_LINUX
     module_ = dlopen(coreclr_dll.c_str(), RTLD_NOW | RTLD_LOCAL);
 
-    if (!module_)
-    {
-        const char* error = dlerror();
+    if(!module_) {
+        const char *error = dlerror();
         log_error("Failed to load CoreCLR library: %s.", error);
         return -1;
     }
 
-    if (!load_symbol(module_, "coreclr_initialize", (void**)&coreclr_initialize_))
-    {
+    if(!load_symbol(module_, "coreclr_initialize", (void **)&coreclr_initialize_)) {
         return -1;
     }
-    if (!load_symbol(module_, "coreclr_shutdown", (void**)&coreclr_shutdown_))
-    {
+    if(!load_symbol(module_, "coreclr_shutdown", (void **)&coreclr_shutdown_)) {
         return -1;
     }
-    if (!load_symbol(module_, "coreclr_shutdown_2", (void**)&coreclr_shutdown_2_))
-    {
+    if(!load_symbol(module_, "coreclr_shutdown_2", (void **)&coreclr_shutdown_2_)) {
         return -1;
     }
-    if (!load_symbol(module_, "coreclr_create_delegate", (void**)&coreclr_create_delegate_))
-    {
+    if(!load_symbol(module_, "coreclr_create_delegate", (void **)&coreclr_create_delegate_)) {
         return -1;
     }
-    if (!load_symbol(module_, "coreclr_execute_assembly", (void**)&coreclr_execute_assembly_))
-    {
+    if(!load_symbol(module_, "coreclr_execute_assembly", (void **)&coreclr_execute_assembly_)) {
         return -1;
     }
 
-    const char* property_keys[] = {
-        "TRUSTED_PLATFORM_ASSEMBLIES",   "APP_PATHS",        "APP_NI_PATHS",
-        "NATIVE_DLL_SEARCH_DIRECTORIES", "System.GC.Server", "System.Globalization.Invariant",
+    const char *property_keys[] = {
+        "TRUSTED_PLATFORM_ASSEMBLIES",
+        "APP_PATHS",
+        "APP_NI_PATHS",
+        "NATIVE_DLL_SEARCH_DIRECTORIES",
+        "System.GC.Server",
+        "System.Globalization.Invariant",
     };
-    const char* property_values[] = {
+    const char *property_values[] = {
         // TRUSTED_PLATFORM_ASSEMBLIES
         tpa_list.c_str(),
         // APP_PATHS
@@ -163,9 +161,15 @@ int coreclr_app::initialize(const char* clr_dir_c, const char* exe_path, const c
         "false",
     };
 
-    return coreclr_initialize_(abs_exe_path_.c_str(), app_domain_friendly_name,
-                               sizeof(property_keys) / sizeof(property_keys[0]), property_keys, property_values, &host_,
-                               &domain_id_);
+    return coreclr_initialize_(
+        abs_exe_path_.c_str(),
+        app_domain_friendly_name,
+        sizeof(property_keys) / sizeof(property_keys[0]),
+        property_keys,
+        property_values,
+        &host_,
+        &domain_id_
+    );
 #elif SAMPSHARP_WINDOWS
     std::wstring wapp_dir = std::wstring(app_dir.begin(), app_dir.end());
     std::wstring wclr_dir = std::wstring(clr_dir.begin(), clr_dir.end());
@@ -181,8 +185,9 @@ int coreclr_app::initialize(const char* clr_dir_c, const char* exe_path, const c
         return -1;
     }
 
-    const FnGetCLRRuntimeHost get_clr_runtime_host =
-        FnGetCLRRuntimeHost(::GetProcAddress(module_, "GetCLRRuntimeHost"));
+
+    const FnGetCLRRuntimeHost get_clr_runtime_host = FnGetCLRRuntimeHost(
+        ::GetProcAddress(module_, "GetCLRRuntimeHost"));
 
     if (!get_clr_runtime_host)
     {
@@ -199,15 +204,18 @@ int coreclr_app::initialize(const char* clr_dir_c, const char* exe_path, const c
         return -1;
     }
 
-    hr = host_->SetStartupFlags(static_cast<STARTUP_FLAGS>(
-        // STARTUP_SERVER_GC |                                // Use server GC
-        // STARTUP_LOADER_OPTIMIZATION_MULTI_DOMAIN |        // Maximize domain-neutral loading
-        // STARTUP_LOADER_OPTIMIZATION_MULTI_DOMAIN_HOST |    // Domain-neutral loading for strongly-named assemblies
-        STARTUP_CONCURRENT_GC |                   // Use concurrent GC
-        STARTUP_SINGLE_APPDOMAIN |                // All code executes in the default AppDomain
-                                                  // (required to use the runtimeHost->ExecuteAssembly helper function)
-        STARTUP_LOADER_OPTIMIZATION_SINGLE_DOMAIN // Prevents domain-neutral loading
-        ));
+
+    hr = host_->SetStartupFlags(
+        static_cast<STARTUP_FLAGS>(
+            // STARTUP_SERVER_GC |                                // Use server GC
+            // STARTUP_LOADER_OPTIMIZATION_MULTI_DOMAIN |        // Maximize domain-neutral loading
+            // STARTUP_LOADER_OPTIMIZATION_MULTI_DOMAIN_HOST |    // Domain-neutral loading for strongly-named assemblies
+            STARTUP_CONCURRENT_GC |                        // Use concurrent GC
+            STARTUP_SINGLE_APPDOMAIN |                    // All code executes in the default AppDomain
+                                                                        // (required to use the runtimeHost->ExecuteAssembly helper function)
+            STARTUP_LOADER_OPTIMIZATION_SINGLE_DOMAIN    // Prevents domain-neutral loading
+        )
+    );
 
     if (FAILED(hr))
     {
@@ -225,32 +233,45 @@ int coreclr_app::initialize(const char* clr_dir_c, const char* exe_path, const c
 
     const int app_domain_flags =
         // APPDOMAIN_FORCE_TRIVIAL_WAIT_OPERATIONS |        // Do not pump messages during wait
-        // APPDOMAIN_SECURITY_SANDBOXED |                    // Causes assemblies not from the TPA list to be loaded as
-        // partially trusted
-        APPDOMAIN_ENABLE_PLATFORM_SPECIFIC_APPS |         // Enable platform-specific assemblies to run
-        APPDOMAIN_ENABLE_PINVOKE_AND_CLASSIC_COMINTEROP | // Allow PInvoking from non-TPA assemblies
-        APPDOMAIN_DISABLE_TRANSPARENCY_ENFORCEMENT;       // Entirely disables transparency checks
+        // APPDOMAIN_SECURITY_SANDBOXED |                    // Causes assemblies not from the TPA list to be loaded as partially trusted
+        APPDOMAIN_ENABLE_PLATFORM_SPECIFIC_APPS |            // Enable platform-specific assemblies to run
+        APPDOMAIN_ENABLE_PINVOKE_AND_CLASSIC_COMINTEROP |    // Allow PInvoking from non-TPA assemblies
+        APPDOMAIN_DISABLE_TRANSPARENCY_ENFORCEMENT;            // Entirely disables transparency checks
 
     // Setup key/value pairs for AppDomain  properties
-    const wchar_t* propertyKeys[] = {L"TRUSTED_PLATFORM_ASSEMBLIES",
-                                     L"APP_PATHS",
-                                     L"APP_NI_PATHS",
-                                     L"NATIVE_DLL_SEARCH_DIRECTORIES",
-                                     L"PLATFORM_RESOURCE_ROOTS",
-                                     L"AppDomainCompatSwitch"};
+    const wchar_t* propertyKeys[] = {
+        L"TRUSTED_PLATFORM_ASSEMBLIES",
+        L"APP_PATHS",
+        L"APP_NI_PATHS",
+        L"NATIVE_DLL_SEARCH_DIRECTORIES",
+        L"PLATFORM_RESOURCE_ROOTS",
+        L"AppDomainCompatSwitch"
+    };
 
     std::wstring wtpa_list = std::wstring(tpa_list.begin(), tpa_list.end());
     std::wstring wnative_search_dirs = std::wstring(native_search_dirs.begin(), native_search_dirs.end());
 
     // Property values which were constructed in step 5
-    const wchar_t* propertyValues[] = {wtpa_list.c_str(), wapp_dir.c_str(),
-                                       wapp_dir.c_str(),  wnative_search_dirs.c_str(),
-                                       wapp_dir.c_str(),  L"UseLatestBehaviorWhenTFMNotSpecified"};
+    const wchar_t* propertyValues[] = {
+        wtpa_list.c_str(),
+        wapp_dir.c_str(),
+        wapp_dir.c_str(),
+        wnative_search_dirs.c_str(),
+         wapp_dir.c_str(),
+        L"UseLatestBehaviorWhenTFMNotSpecified"
+    };
+
 
     // Create the AppDomain
-    hr = host_->CreateAppDomainWithManager(wapp_domain_friendly_name.c_str(), app_domain_flags, nullptr, nullptr,
-                                           sizeof(propertyKeys) / sizeof(wchar_t*), propertyKeys, propertyValues,
-                                           &domain_id_);
+    hr = host_->CreateAppDomainWithManager(
+        wapp_domain_friendly_name.c_str(),
+        app_domain_flags,
+        nullptr,
+        nullptr,
+        sizeof(propertyKeys)/sizeof(wchar_t*),
+        propertyKeys,
+        propertyValues,
+        &domain_id_);
 
     if (FAILED(hr))
     {
@@ -262,15 +283,14 @@ int coreclr_app::initialize(const char* clr_dir_c, const char* exe_path, const c
 #endif
 }
 
-int coreclr_app::construct_tpa(const char* directory, std::string& tpa_list)
-{
+int coreclr_app::construct_tpa(const char *directory, std::string &tpa_list) {
 #if SAMPSHARP_LINUX
-    const char* const tpaExtensions[] = {
-        ".ni.dll", // Probe for .ni.dll first so that it's preferred if ni and il coexist in the same dir
-        ".dll",
-        ".ni.exe",
-        ".exe",
-    };
+    const char * const tpaExtensions[] = {
+                ".ni.dll",      // Probe for .ni.dll first so that it's preferred if ni and il coexist in the same dir
+                ".dll",
+                ".ni.exe",
+                ".exe",
+                };
 
     DIR* dir = opendir(directory);
     if (dir == nullptr)
@@ -302,25 +322,25 @@ int coreclr_app::construct_tpa(const char* directory, std::string& tpa_list)
             // Handle symlinks and file systems that do not support d_type
             case DT_LNK:
             case DT_UNKNOWN:
-            {
-                std::string fullFilename;
-
-                fullFilename.append(directory);
-                fullFilename.append("/");
-                fullFilename.append(entry->d_name);
-
-                struct stat sb;
-                if (stat(fullFilename.c_str(), &sb) == -1)
                 {
-                    continue;
-                }
+                    std::string fullFilename;
 
-                if (!S_ISREG(sb.st_mode))
-                {
-                    continue;
+                    fullFilename.append(directory);
+                    fullFilename.append("/");
+                    fullFilename.append(entry->d_name);
+
+                    struct stat sb;
+                    if (stat(fullFilename.c_str(), &sb) == -1)
+                    {
+                        continue;
+                    }
+
+                    if (!S_ISREG(sb.st_mode))
+                    {
+                        continue;
+                    }
                 }
-            }
-            break;
+                break;
 
             default:
                 continue;
@@ -356,7 +376,11 @@ int coreclr_app::construct_tpa(const char* directory, std::string& tpa_list)
 
     closedir(dir);
 #elif SAMPSHARP_WINDOWS
-    const wchar_t* tpaExtensions[] = {L"*.dll", L"*.exe", L"*.winmd"};
+    const wchar_t *tpaExtensions[] = {
+        L"*.dll",
+        L"*.exe",
+        L"*.winmd"
+    };
 
     for (int i = 0; i < _countof(tpaExtensions); i++)
     {
@@ -377,13 +401,16 @@ int coreclr_app::construct_tpa(const char* directory, std::string& tpa_list)
                 std::wstring wname = std::wstring(find.cFileName);
 
                 std::string name(wname.length(), 0);
-                std::transform(wname.begin(), wname.end(), name.begin(), [](wchar_t c) { return (char)c; });
+                std::transform(wname.begin(), wname.end(), name.begin(), [] (wchar_t c) {
+                    return (char)c;
+                });
 
                 tpa_list.append(std::string(directory));
                 tpa_list.append(DIR_SEPARATOR);
                 tpa_list.append(name);
                 tpa_list.append(TPA_DELIMITER);
-            } while (FindNextFileW(fhandle, &find));
+            }
+            while (FindNextFileW(fhandle, &find));
             FindClose(fhandle);
         }
     }
@@ -391,10 +418,9 @@ int coreclr_app::construct_tpa(const char* directory, std::string& tpa_list)
     return 0;
 }
 
-void coreclr_app::add_deps_to_tpa(std::string abs_exe_path, std::string& tpa_list)
-{
-    if (std::filesystem::path(abs_exe_path).extension() != ".dll")
-    {
+void coreclr_app::add_deps_to_tpa(std::string abs_exe_path,
+    std::string &tpa_list) {
+    if(std::filesystem::path(abs_exe_path).extension() != ".dll") {
         return;
     }
 
@@ -406,14 +432,12 @@ void coreclr_app::add_deps_to_tpa(std::string abs_exe_path, std::string& tpa_lis
     runtimeconfig_path_p = abs_exe_path;
     runtimeconfig_path_p = runtimeconfig_path_p.replace_extension(".runtimeconfig.dev.json");
 
-    if (!exists(runtimeconfig_path_p))
-    {
-        runtimeconfig_path_p = abs_exe_path;
-        runtimeconfig_path_p = runtimeconfig_path_p.replace_extension(".runtimeconfig.json");
+    if(!exists(runtimeconfig_path_p)) {
+    runtimeconfig_path_p = abs_exe_path;
+    runtimeconfig_path_p = runtimeconfig_path_p.replace_extension(".runtimeconfig.json");
     }
-
-    if (!exists(runtimeconfig_path_p))
-    {
+    
+    if(!exists(runtimeconfig_path_p)) {
         return;
     }
 
@@ -423,8 +447,7 @@ void coreclr_app::add_deps_to_tpa(std::string abs_exe_path, std::string& tpa_lis
     std::filesystem::path deps_path_p(abs_exe_path);
     deps_path_p = deps_path_p.replace_extension(".deps.json");
 
-    if (!exists(deps_path_p))
-    {
+    if(!exists(deps_path_p)) {
         return;
     }
 
@@ -437,43 +460,44 @@ void coreclr_app::add_deps_to_tpa(std::string abs_exe_path, std::string& tpa_lis
     std::ifstream runtimeconfig_stream(runtimeconfig_path);
     std::string runtimeconfig_json;
 
-    runtimeconfig_stream.seekg(0, std::ios::end);
+    runtimeconfig_stream.seekg(0, std::ios::end);   
     runtimeconfig_json.reserve((size_t)runtimeconfig_stream.tellg());
     runtimeconfig_stream.seekg(0, std::ios::beg);
 
-    runtimeconfig_json.assign(std::istreambuf_iterator<char>(runtimeconfig_stream), std::istreambuf_iterator<char>());
+    runtimeconfig_json.assign(
+        std::istreambuf_iterator<char>(runtimeconfig_stream),
+        std::istreambuf_iterator<char>());
 
     runtimeconfig_stream.close();
 
     std::ifstream deps_stream(deps_path);
     std::string deps_json;
 
-    deps_stream.seekg(0, std::ios::end);
+    deps_stream.seekg(0, std::ios::end);   
     deps_json.reserve((size_t)deps_stream.tellg());
     deps_stream.seekg(0, std::ios::beg);
 
-    deps_json.assign(std::istreambuf_iterator<char>(deps_stream), std::istreambuf_iterator<char>());
+    deps_json.assign(
+        std::istreambuf_iterator<char>(deps_stream),
+        std::istreambuf_iterator<char>());
 
     deps_stream.close();
 
     // Find probing paths
-
+    
     nlohmann::json runtimeconfig = nlohmann::json::parse(runtimeconfig_json);
-
+    
     std::vector<std::string> probing_paths;
-
+    
     auto probes = runtimeconfig["runtimeOptions"]["additionalProbingPaths"];
-    for (auto it = probes.begin(); it != probes.end(); ++it)
-    {
-        if (!it.value().is_string())
-        {
+    for (auto it = probes.begin(); it != probes.end(); ++it) {
+        if(!it.value().is_string()) {
             continue;
         }
 
         std::string path = it.value().get<std::string>();
-
-        if (is_directory(std::filesystem::path(path)))
-        {
+        
+        if(is_directory(std::filesystem::path(path))) {
             probing_paths.push_back(path);
 
             log_debug("Probe path found: %s", path.c_str());
@@ -485,13 +509,11 @@ int coreclr_app::release()
 {
     int retval = -1;
 #if SAMPSHARP_LINUX
-    if (coreclr_shutdown_)
-    {
+    if(coreclr_shutdown_) {
         retval = coreclr_shutdown_(host_, domain_id_);
     }
 
-    if (module_)
-    {
+    if(module_) {
         dlclose(module_);
         module_ = NULL;
     }
@@ -502,8 +524,7 @@ int coreclr_app::release()
     host_->Stop();
     retval = (int)host_->Release();
 
-    if (module_)
-    {
+    if(module_) {
         FreeLibrary(module_);
         module_ = nullptr;
     }
@@ -512,16 +533,15 @@ int coreclr_app::release()
     return retval;
 }
 
-int coreclr_app::create_delegate(const char* assembly_name, const char* type_name, const char* method_name,
-                                 void** delegate)
-{
+int coreclr_app::create_delegate(const char* assembly_name,
+    const char* type_name, const char* method_name, void** delegate) {
 #if SAMPSHARP_LINUX
-    if (!coreclr_create_delegate_)
-    {
+    if(!coreclr_create_delegate_) {
         return -1;
     }
 
-    return coreclr_create_delegate_(host_, domain_id_, assembly_name, type_name, method_name, delegate);
+    return coreclr_create_delegate_(host_, domain_id_, assembly_name,
+        type_name, method_name, delegate);
 #elif SAMPSHARP_WINDOWS
 
     std::string an = std::string(assembly_name);
@@ -532,15 +552,13 @@ int coreclr_app::create_delegate(const char* assembly_name, const char* type_nam
     std::wstring wtn = std::wstring(tn.begin(), tn.end());
     std::wstring wmn = std::wstring(mn.begin(), mn.end());
 
-    return host_->CreateDelegate(domain_id_, wan.c_str(), wtn.c_str(), wmn.c_str(), (INT_PTR*)delegate);
+    return  host_->CreateDelegate(domain_id_, wan.c_str(), wtn.c_str(), wmn.c_str(), (INT_PTR*)delegate);
 #endif
 }
 
-int coreclr_app::execute_assembly(int argc, const char** argv, unsigned int* exit_code)
-{
+int coreclr_app::execute_assembly(int argc, const char** argv, unsigned int* exit_code) {
 #if SAMPSHARP_LINUX
-    if (!coreclr_execute_assembly_)
-    {
+    if(!coreclr_execute_assembly_) {
         return -1;
     }
 
@@ -553,16 +571,14 @@ int coreclr_app::execute_assembly(int argc, const char** argv, unsigned int* exi
     size_t written;
     size_t len = argc;
 
-    for (int i = 0; i < argc; i++)
-    {
+    for(int i = 0; i < argc; i++) {
         len += strlen(argv[i]);
     }
+    
+    wchar_t *wargs = new wchar_t[len];
+    wchar_t **wargv = new wchar_t*[argc];
 
-    wchar_t* wargs = new wchar_t[len];
-    wchar_t** wargv = new wchar_t*[argc];
-
-    for (int i = 0; i < argc; i++)
-    {
+    for(int i = 0; i < argc; i++) {
         wargs[pos] = L'\0';
         mbstowcs_s(&written, wargs + pos, len - pos, argv[i], len - pos);
 
@@ -572,8 +588,7 @@ int coreclr_app::execute_assembly(int argc, const char** argv, unsigned int* exi
 
     // Execute
     DWORD dexit_code = -1;
-    const DWORD retval =
-        host_->ExecuteAssembly(domain_id_, wabs_exe_path.c_str(), argc, (const wchar_t**)wargv, &dexit_code);
+    const DWORD retval = host_->ExecuteAssembly(domain_id_, wabs_exe_path.c_str(), argc, (const wchar_t **)wargv, &dexit_code);
 
     *exit_code = dexit_code;
 
