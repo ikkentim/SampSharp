@@ -14,11 +14,8 @@ public class CommandTreeTests
     {
         var method = typeof(CommandTreeTests).GetMethod(nameof(DummyMethod), System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!;
         var mockInvoker = new Mock<CommandInvoker>();
-        return new CommandDefinition(
-            name, group, method, method.GetParameters(),
-            typeof(CommandTreeTests), Array.Empty<CommandParameterInfo>(),
-            mockInvoker.Object, 0,
-            Array.Empty<CommandAlias>(), Array.Empty<CommandTag>());
+        var mockMatcher = new Mock<CommandComponentMatcher>();
+        return new CommandDefinition(name, group, method, method.GetParameters(), typeof(CommandTreeTests), [], mockInvoker.Object, 0, [], [], mockMatcher.Object);
     }
 
     private void DummyMethod() { }

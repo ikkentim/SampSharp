@@ -1,5 +1,6 @@
 using System.Reflection;
 using Moq;
+using SampSharp.Entities;
 using SampSharp.Entities.SAMP.Commands;
 using Shouldly;
 using Xunit;
@@ -21,7 +22,12 @@ public class DefaultConsoleCommandMessageServiceTests
             typeof(DefaultConsoleCommandMessageServiceTests),
             parsedParams ?? Array.Empty<CommandParameterInfo>(),
             mockInvoker.Object, 0,
-            Array.Empty<CommandAlias>(), Array.Empty<CommandTag>());
+            Array.Empty<CommandAlias>(), Array.Empty<CommandTag>(), ComponentMatcher);
+    }
+
+    private static bool ComponentMatcher(object?[] prefixArgs, object?[] parsedArgs, IEntityManager entityManager)
+    {
+        return true;
     }
 
     private void DummyMethod() { }

@@ -48,6 +48,7 @@ public class CommandDispatcherTests
         }
 
         var mockInvoker = new Mock<CommandInvoker>();
+        var mockMatcher = new Mock<CommandComponentMatcher>();
 
         return new CommandDefinition(
             name,
@@ -58,8 +59,9 @@ public class CommandDispatcherTests
             parsedParams,
             mockInvoker.Object,
             0,
-            Array.Empty<CommandAlias>(),
-            Array.Empty<CommandTag>()
+            [],
+            [],
+            mockMatcher.Object
         );
     }
 
@@ -78,11 +80,11 @@ public class CommandDispatcherTests
     [Fact]
     public void Dispatch_SimpleCommand_Succeeds()
     {
-        var registry = CreateRegistry(CreateCommand("test"));
+        var registry = CreateRegistry(CreateCommand());
         var dispatcher = new CommandDispatcher();
         var services = new Mock<IServiceProvider>().Object;
 
-        var result = dispatcher.Dispatch(registry, services, StringSpan.For("test"), Array.Empty<object>());
+        var result = dispatcher.Dispatch(registry, services, StringSpan.For("test"), []);
 
         result.Response.ShouldBe(DispatchResponse.Success);
         result.CommandOverload.ShouldNotBeNull();
@@ -91,11 +93,11 @@ public class CommandDispatcherTests
     [Fact]
     public void Dispatch_UnknownCommand_ReturnNotFound()
     {
-        var registry = CreateRegistry(CreateCommand("test"));
+        var registry = CreateRegistry(CreateCommand());
         var dispatcher = new CommandDispatcher();
         var services = new Mock<IServiceProvider>().Object;
 
-        var result = dispatcher.Dispatch(registry, services, StringSpan.For("unknown"), Array.Empty<object>());
+        var result = dispatcher.Dispatch(registry, services, StringSpan.For("unknown"), []);
 
         result.Response.ShouldBe(DispatchResponse.CommandNotFound);
     }
@@ -103,11 +105,11 @@ public class CommandDispatcherTests
     [Fact]
     public void Dispatch_EmptyInput_ReturnNotFound()
     {
-        var registry = CreateRegistry(CreateCommand("test"));
+        var registry = CreateRegistry(CreateCommand());
         var dispatcher = new CommandDispatcher();
         var services = new Mock<IServiceProvider>().Object;
 
-        var result = dispatcher.Dispatch(registry, services, StringSpan.Empty, Array.Empty<object>());
+        var result = dispatcher.Dispatch(registry, services, StringSpan.Empty, []);
 
         result.Response.ShouldBe(DispatchResponse.CommandNotFound);
     }
@@ -115,11 +117,11 @@ public class CommandDispatcherTests
     [Fact]
     public void Dispatch_WhitespaceInput_ReturnNotFound()
     {
-        var registry = CreateRegistry(CreateCommand("test"));
+        var registry = CreateRegistry(CreateCommand());
         var dispatcher = new CommandDispatcher();
         var services = new Mock<IServiceProvider>().Object;
 
-        var result = dispatcher.Dispatch(registry, services, StringSpan.For("   \t  "), Array.Empty<object>());
+        var result = dispatcher.Dispatch(registry, services, StringSpan.For("   \t  "), []);
 
         result.Response.ShouldBe(DispatchResponse.CommandNotFound);
     }
@@ -131,10 +133,10 @@ public class CommandDispatcherTests
         var dispatcher = new CommandDispatcher();
         var services = new Mock<IServiceProvider>().Object;
 
-        var result = dispatcher.Dispatch(registry, services, StringSpan.For("test"), Array.Empty<object>());
+        var result = dispatcher.Dispatch(registry, services, StringSpan.For("test"), []);
         result.Response.ShouldBe(DispatchResponse.Success);
 
-        var result2 = dispatcher.Dispatch(registry, services, StringSpan.For("TEST"), Array.Empty<object>());
+        var result2 = dispatcher.Dispatch(registry, services, StringSpan.For("TEST"), []);
         result2.Response.ShouldBe(DispatchResponse.Success);
     }
 
@@ -146,7 +148,7 @@ public class CommandDispatcherTests
         var dispatcher = new CommandDispatcher();
         var services = new Mock<IServiceProvider>().Object;
 
-        var result = dispatcher.Dispatch(registry, services, StringSpan.For("admin money give"), Array.Empty<object>());
+        var result = dispatcher.Dispatch(registry, services, StringSpan.For("admin money give"), []);
 
         result.Response.ShouldBe(DispatchResponse.Success);
         result.UsedCommandName.ShouldBe("admin money give");
@@ -155,12 +157,12 @@ public class CommandDispatcherTests
     [Fact]
     public void Dispatch_CommandWithParameters()
     {
-        var cmd = CreateCommand("test", paramCount: 2);
+        var cmd = CreateCommand(paramCount: 2);
         var registry = CreateRegistry(cmd);
         var dispatcher = new CommandDispatcher();
         var services = new Mock<IServiceProvider>().Object;
 
-        var result = dispatcher.Dispatch(registry, services, StringSpan.For("test arg1 arg2"), Array.Empty<object>());
+        var result = dispatcher.Dispatch(registry, services, StringSpan.For("test arg1 arg2"), []);
 
         result.Response.ShouldBe(DispatchResponse.Success);
         result.ParsedArguments.ShouldNotBeNull().Length.ShouldBe(2);
@@ -169,13 +171,13 @@ public class CommandDispatcherTests
     [Fact]
     public void Dispatch_MultipleOverloads_SelectsBestMatch()
     {
-        var cmd1 = CreateCommand("test", paramCount: 1);
-        var cmd2 = CreateCommand("test", paramCount: 2);
+        var cmd1 = CreateCommand(paramCount: 1);
+        var cmd2 = CreateCommand(paramCount: 2);
         var registry = CreateRegistry(cmd1, cmd2);
         var dispatcher = new CommandDispatcher();
         var services = new Mock<IServiceProvider>().Object;
 
-        var result = dispatcher.Dispatch(registry, services, StringSpan.For("test arg1"), Array.Empty<object>());
+        var result = dispatcher.Dispatch(registry, services, StringSpan.For("test arg1"), []);
 
         result.Response.ShouldBe(DispatchResponse.Success);
     }
@@ -183,11 +185,11 @@ public class CommandDispatcherTests
     [Fact]
     public void Dispatch_LeadingWhitespace_Trimmed()
     {
-        var registry = CreateRegistry(CreateCommand("test"));
+        var registry = CreateRegistry(CreateCommand());
         var dispatcher = new CommandDispatcher();
         var services = new Mock<IServiceProvider>().Object;
 
-        var result = dispatcher.Dispatch(registry, services, StringSpan.For("   test"), Array.Empty<object>());
+        var result = dispatcher.Dispatch(registry, services, StringSpan.For("   test"), []);
 
         result.Response.ShouldBe(DispatchResponse.Success);
     }
@@ -195,11 +197,11 @@ public class CommandDispatcherTests
     [Fact]
     public void Dispatch_TrailingWhitespace_Ignored()
     {
-        var registry = CreateRegistry(CreateCommand("test"));
+        var registry = CreateRegistry(CreateCommand());
         var dispatcher = new CommandDispatcher();
         var services = new Mock<IServiceProvider>().Object;
 
-        var result = dispatcher.Dispatch(registry, services, StringSpan.For("test   "), Array.Empty<object>());
+        var result = dispatcher.Dispatch(registry, services, StringSpan.For("test   "), []);
 
         result.Response.ShouldBe(DispatchResponse.Success);
     }
@@ -210,16 +212,16 @@ public class CommandDispatcherTests
         var dispatcher = new CommandDispatcher();
         var services = new Mock<IServiceProvider>().Object;
 
-        Should.Throw<ArgumentNullException>(() => dispatcher.Dispatch(null!, services, StringSpan.For("test"), Array.Empty<object>()));
+        Should.Throw<ArgumentNullException>(() => dispatcher.Dispatch(null!, services, StringSpan.For("test"), []));
     }
 
     [Fact]
     public void Dispatch_NullServices_ThrowsArgumentNullException()
     {
-        var registry = CreateRegistry(CreateCommand("test"));
+        var registry = CreateRegistry(CreateCommand());
         var dispatcher = new CommandDispatcher();
 
-        Should.Throw<ArgumentNullException>(() => dispatcher.Dispatch(registry, null!, StringSpan.For("test"), Array.Empty<object>()));
+        Should.Throw<ArgumentNullException>(() => dispatcher.Dispatch(registry, null!, StringSpan.For("test"), []));
     }
 
     [Fact]
@@ -230,7 +232,7 @@ public class CommandDispatcherTests
         var dispatcher = new CommandDispatcher();
         var services = new Mock<IServiceProvider>().Object;
 
-        var result = dispatcher.Dispatch(registry, services, StringSpan.For("admin   test"), Array.Empty<object>());
+        var result = dispatcher.Dispatch(registry, services, StringSpan.For("admin   test"), []);
 
         result.Response.ShouldBe(DispatchResponse.Success);
     }
@@ -243,7 +245,7 @@ public class CommandDispatcherTests
         var dispatcher = new CommandDispatcher();
         var services = new Mock<IServiceProvider>().Object;
 
-        var result = dispatcher.Dispatch(registry, services, StringSpan.For("mycommand"), Array.Empty<object>());
+        var result = dispatcher.Dispatch(registry, services, StringSpan.For("mycommand"), []);
 
         result.UsedCommandName.ShouldBe("mycommand");
     }
@@ -256,7 +258,7 @@ public class CommandDispatcherTests
         var dispatcher = new CommandDispatcher();
         var services = new Mock<IServiceProvider>().Object;
 
-        var result = dispatcher.Dispatch(registry, services, StringSpan.For("admin money give"), Array.Empty<object>());
+        var result = dispatcher.Dispatch(registry, services, StringSpan.For("admin money give"), []);
 
         result.UsedCommandName.ShouldBe("admin money give");
     }

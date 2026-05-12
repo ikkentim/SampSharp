@@ -195,7 +195,7 @@ internal partial class CommandScanner
         return ToCommandInvoker(methodInvoker, method);
     }
 
-    private static CommandComponentMatcher? CompileComponentMatcher(MethodParameterSource[] sources, int prefixParameterCount)
+    private static CommandComponentMatcher CompileComponentMatcher(MethodParameterSource[] sources, int prefixParameterCount)
     {
         var componentSources = sources.Where(s => s.IsComponent && s.ParameterIndex >= 0).ToArray();
         if (componentSources.Length == 0)

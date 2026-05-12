@@ -13,11 +13,12 @@ public class CommandRegistryTests
     private static CommandDefinition CreateCommand(
         string name = "test",
         CommandGroup? group = null,
-        CommandAlias[] aliases = null!)
+        CommandAlias[]? aliases = null)
     {
         var method = typeof(CommandRegistryTests).GetMethod(nameof(DummyMethod), System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!;
         var parameters = method.GetParameters();
         var mockInvoker = new Mock<CommandInvoker>();
+        var mockMatcher = new Mock<CommandComponentMatcher>();
 
         return new CommandDefinition(
             name,
@@ -25,11 +26,12 @@ public class CommandRegistryTests
             method,
             parameters,
             typeof(CommandRegistryTests),
-            Array.Empty<CommandParameterInfo>(),
+            [],
             mockInvoker.Object,
             0,
-            aliases ?? Array.Empty<CommandAlias>(),
-            Array.Empty<CommandTag>()
+            aliases ?? [],
+            [],
+            mockMatcher.Object
         );
     }
 
@@ -44,7 +46,7 @@ public class CommandRegistryTests
     public void Register_SingleCommand_StoresCorrectly()
     {
         var registry = CreateRegistry();
-        var command = CreateCommand("test");
+        var command = CreateCommand();
 
         registry.Register(command);
 
@@ -64,15 +66,15 @@ public class CommandRegistryTests
         var span = StringSpan.For("admin money give");
         var found = registry.FindCommands(ref span);
         found.ShouldNotBeNull();
-        found![0].FullName.ShouldBe("admin money give");
+        found[0].FullName.ShouldBe("admin money give");
     }
 
     [Fact]
     public void Register_MultipleOverloads_AllStoredInGetAll()
     {
         var registry = CreateRegistry();
-        var command1 = CreateCommand("test");
-        var command2 = CreateCommand("test");
+        var command1 = CreateCommand();
+        var command2 = CreateCommand();
 
         registry.Register(command1);
         registry.Register(command2);
@@ -125,7 +127,7 @@ public class CommandRegistryTests
         var span = StringSpan.For("pm");
         var found = registry.FindCommands(ref span);
         found.ShouldNotBeNull();
-        found!.Count.ShouldBe(2);
+        found.Count.ShouldBe(2);
     }
 
     [Fact]
@@ -148,9 +150,9 @@ public class CommandRegistryTests
     public void GetAll_WithMultipleOverloads_IncludesAllOverloads()
     {
         var registry = CreateRegistry();
-        var cmd1 = CreateCommand("test");
-        var cmd2 = CreateCommand("test");
-        var cmd3 = CreateCommand("test");
+        var cmd1 = CreateCommand();
+        var cmd2 = CreateCommand();
+        var cmd3 = CreateCommand();
 
         registry.Register(cmd1);
         registry.Register(cmd2);
@@ -167,7 +169,7 @@ public class CommandRegistryTests
         var group = new CommandGroup("admin");
         var cmd1 = CreateCommand("kick", group);
         var cmd2 = CreateCommand("ban", group);
-        var cmd3 = CreateCommand("test");
+        var cmd3 = CreateCommand();
 
         registry.Register(cmd1);
         registry.Register(cmd2);
@@ -212,7 +214,7 @@ public class CommandRegistryTests
     public void GetGroups_WithNoGroups_ReturnsEmpty()
     {
         var registry = CreateRegistry();
-        var cmd1 = CreateCommand("test");
+        var cmd1 = CreateCommand();
         registry.Register(cmd1);
 
         var groups = ((ICommandRegistry)registry).GetGroups().ToList();

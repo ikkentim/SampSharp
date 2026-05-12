@@ -42,7 +42,7 @@ public class SampleCommandsSystem : ISystem
     }
 
     /// <summary>
-    /// Player command: /slap [player] - damages a player (requires admin permission)
+    /// Player command: /admin slap [player] - damages a player (requires admin permission)
     /// </summary>
     [PlayerCommand(Name = "slap")]
     [CommandGroup("admin")]
