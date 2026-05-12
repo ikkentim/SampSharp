@@ -17,7 +17,8 @@ extern "C" SDK_EXPORT bool vehicles_getVehicleModelInfo(int model, VehicleModelI
 {
     return Impl::getVehicleModelInfo(model, type, out);
 }
-extern "C" SDK_EXPORT void vehicles_getRandomVehicleColour(int modelid, int& colour1, int& colour2, int& colour3, int& colour4)
+extern "C" SDK_EXPORT void vehicles_getRandomVehicleColour(int modelid, int& colour1, int& colour2, int& colour3,
+                                                           int& colour4)
 {
     return Impl::getRandomVehicleColour(modelid, colour1, colour2, colour3, colour4);
 }

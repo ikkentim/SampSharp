@@ -17,23 +17,23 @@
 
 #include "platforms.h"
 
-void log_debug2(const char *format, ...);
+void log_debug2(const char* format, ...);
 
 /** prints text to the output */
-void log_print(const char *format, ...);
+void log_print(const char* format, ...);
 
 /** log an error */
-void log_error(const char *format, ...);
+void log_error(const char* format, ...);
 
 /** log a warning */
-void log_warning(const char *format, ...);
+void log_warning(const char* format, ...);
 
 /** log debug info */
 #ifdef LOG_DEBUG
 #define log_debug(format, ...) log_debug2(format, ##__VA_ARGS__)
 #else
-#define log_debug(format, ...) while(0)
+#define log_debug(format, ...) while (0)
 #endif
 
 /** log info */
-void log_info(const char *format, ...);
+void log_info(const char* format, ...);

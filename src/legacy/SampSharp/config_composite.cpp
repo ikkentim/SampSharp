@@ -16,13 +16,17 @@
 #include "config_composite.h"
 #include <utility>
 
-void config_composite::add_config(config* config) {
+void config_composite::add_config(config* config)
+{
     configs_.push_back(config);
 }
 
-bool config_composite::get_config_string(std::string name, std::string& result) {
-    for (auto && config : configs_) {
-        if(config->get_config_string(name, result)) {
+bool config_composite::get_config_string(std::string name, std::string& result)
+{
+    for (auto&& config : configs_)
+    {
+        if (config->get_config_string(name, result))
+        {
             return true;
         }
     }
@@ -30,9 +34,12 @@ bool config_composite::get_config_string(std::string name, std::string& result) 
     return false;
 }
 
-bool config_composite::get_config_bool(std::string name, bool& result) {
-    for (auto && config : configs_) {
-        if(config->get_config_bool(name, result)) {
+bool config_composite::get_config_bool(std::string name, bool& result)
+{
+    for (auto&& config : configs_)
+    {
+        if (config->get_config_bool(name, result))
+        {
             return true;
         }
     }

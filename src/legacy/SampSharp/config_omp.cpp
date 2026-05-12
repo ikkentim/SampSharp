@@ -18,26 +18,31 @@
 #include <fstream>
 #include <json/json.hpp>
 
-config_omp::config_omp() {
+config_omp::config_omp()
+{
     // read config file as json
     std::ifstream input_file("config.json");
-    if (!input_file.is_open()) {
+    if (!input_file.is_open())
+    {
         return;
     }
     const auto str = std::string((std::istreambuf_iterator(input_file)), std::istreambuf_iterator<char>());
 
     nlohmann::json json = nlohmann::json::parse(str);
 
-    if(!json.is_object()) {
+    if (!json.is_object())
+    {
         return;
     }
 
     // map the json to a simple flat structure like regular SA-MP config file. We'll only be using a few
     // keys in SampSharp. If open.mp will provide a different config API in their SDK we'll use that
     // instead of the json file, once the SDK is released.
-    for (auto it = json.begin(); it != json.end(); ++it) {
-        switch (it.value().type()) {
-            
+    for (auto it = json.begin(); it != json.end(); ++it)
+    {
+        switch (it.value().type())
+        {
+
         case nlohmann::detail::value_t::string:
             values_[it.key()] = it.value().get<std::string>();
             break;
@@ -53,26 +58,29 @@ config_omp::config_omp() {
         case nlohmann::detail::value_t::number_float:
             values_[it.key()] = std::to_string(it.value().get<float>());
             break;
-        default: ;
+        default:;
         }
     }
 
-    
     // Map the main_scripts (pawn game modes) into gamemodeN keys.
     auto main_scripts = json["pawn"]["main_scripts"];
     int index = 0;
-    for (auto it = main_scripts.begin(); it != main_scripts.end(); ++it) {
-        if(it.value().is_string()) {
+    for (auto it = main_scripts.begin(); it != main_scripts.end(); ++it)
+    {
+        if (it.value().is_string())
+        {
             std::string key = "gamemode" + std::to_string(index++);
             values_[key] = it.value().get<std::string>();
         }
     }
 }
 
-bool config_omp::get_config_string(std::string name, std::string& result) {
+bool config_omp::get_config_string(std::string name, std::string& result)
+{
     const auto iterator = values_.find(name);
 
-    if (iterator == values_.end()) {
+    if (iterator == values_.end())
+    {
         return false;
     }
 

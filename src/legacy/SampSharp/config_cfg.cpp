@@ -20,23 +20,23 @@
 #include <fstream>
 #include <sstream>
 
-static void trim(std::string& s) {
-    s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](unsigned char ch) {
-        return !std::isspace(ch);
-    }));
+static void trim(std::string& s)
+{
+    s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](unsigned char ch) { return !std::isspace(ch); }));
 
-    s.erase(std::find_if(s.rbegin(), s.rend(), [](unsigned char ch) {
-        return !std::isspace(ch);
-    }).base(), s.end());
+    s.erase(std::find_if(s.rbegin(), s.rend(), [](unsigned char ch) { return !std::isspace(ch); }).base(), s.end());
 }
 
-config_cfg::config_cfg() {
+config_cfg::config_cfg()
+{
     std::ifstream file("server.cfg");
-    
-    if (file.is_open()) {
+
+    if (file.is_open())
+    {
         std::string line, name, value;
 
-        while (std::getline(file, line, '\n')) {
+        while (std::getline(file, line, '\n'))
+        {
             std::stringstream stream(line);
 
             std::getline(stream, name, ' ');
@@ -50,10 +50,12 @@ config_cfg::config_cfg() {
     }
 }
 
-bool config_cfg::get_config_string(std::string name, std::string& result) {
+bool config_cfg::get_config_string(std::string name, std::string& result)
+{
     const auto iterator = values_.find(name);
 
-    if (iterator == values_.end()) {
+    if (iterator == values_.end())
+    {
         return false;
     }
 

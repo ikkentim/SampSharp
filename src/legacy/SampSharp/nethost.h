@@ -17,10 +17,11 @@
 #include "config.h"
 #include "locator.h"
 
-class nethost {
+class nethost
+{
 public:
     virtual ~nethost() = default;
-    virtual bool setup(locator *locator, config* cfg) = 0;
+    virtual bool setup(locator* locator, config* cfg) = 0;
     virtual void start() = 0;
     virtual void stop() = 0;
 };

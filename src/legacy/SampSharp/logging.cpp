@@ -21,13 +21,14 @@
 
 /* platform specifics */
 #if SAMPSHARP_WINDOWS
-#  define vsnprintf vsprintf_s
+#define vsnprintf vsprintf_s
 #endif
 
-#define LEN_PRINT_BUFFER    (1024)
+#define LEN_PRINT_BUFFER (1024)
 
 /** log a message */
-void vlog(const char* prefix, const char *format, va_list args) {
+void vlog(const char* prefix, const char* format, va_list args)
+{
     char buffer[LEN_PRINT_BUFFER];
     vsnprintf(buffer, LEN_PRINT_BUFFER, format, args);
     buffer[LEN_PRINT_BUFFER - 1] = '\0';
@@ -35,7 +36,8 @@ void vlog(const char* prefix, const char *format, va_list args) {
     sampgdk_logprintf("[SampSharp:%s] %s", prefix, buffer);
 }
 
-void log_print(const char *format, ...) {
+void log_print(const char* format, ...)
+{
     va_list args;
     va_start(args, format);
     sampgdk_vlogprintf(format, args);
@@ -43,7 +45,8 @@ void log_print(const char *format, ...) {
 }
 
 /** log error */
-void log_error(const char * format, ...) {
+void log_error(const char* format, ...)
+{
     va_list args;
     va_start(args, format);
     vlog("ERROR", format, args);
@@ -51,7 +54,8 @@ void log_error(const char * format, ...) {
 }
 
 /** log error */
-void log_warning(const char * format, ...) {
+void log_warning(const char* format, ...)
+{
     va_list args;
     va_start(args, format);
     vlog("WARNING", format, args);
@@ -59,7 +63,8 @@ void log_warning(const char * format, ...) {
 }
 
 /** log debug */
-void log_debug2(const char * format, ...) {
+void log_debug2(const char* format, ...)
+{
     va_list args;
     va_start(args, format);
     vlog("DEBUG", format, args);
@@ -67,7 +72,8 @@ void log_debug2(const char * format, ...) {
 }
 
 /** log info */
-void log_info(const char * format, ...) {
+void log_info(const char* format, ...)
+{
     va_list args;
     va_start(args, format);
     vlog("INFO", format, args);
