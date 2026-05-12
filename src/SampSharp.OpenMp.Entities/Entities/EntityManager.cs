@@ -469,5 +469,9 @@ internal sealed class EntityManager : IEntityManager
                 RemoveOne(node.Parent);
             }
         }
+
+        _entities.Remove(node.Id);
+        node.Reset();
+        _entityPool.Return(node);
     }
 }
