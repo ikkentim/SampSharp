@@ -13,4 +13,5 @@ namespace SampSharp.Entities;
 /// <param name="EntryAssembly">The assembly which was configured to launch in open.mp. Used to discover game mode classes and other application types.</param>
 /// <param name="Core">The <see cref="ICore" /> interface for the open.mp server. Provides access to core server functionality and extensions.</param>
 /// <param name="Components">The <see cref="IComponentList" /> of open.mp. Manages all game components (players, vehicles, objects, etc.) accessible on the server.</param>
-public record SampSharpEnvironment(Assembly EntryAssembly, ICore Core, IComponentList Components);
+/// <param name="SafeComponentHandleProvider">A provider of safe handles of open.mp components.</param>
+public record SampSharpEnvironment(Assembly EntryAssembly, ICore Core, IComponentList Components, ISafeComponentHandleProvider SafeComponentHandleProvider);

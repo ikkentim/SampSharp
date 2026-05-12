@@ -6,17 +6,28 @@ namespace SampSharp.Entities.SAMP;
 
 internal sealed class OmpEntityProvider(SampSharpEnvironment environment, IEntityManager entityManager) : IOmpEntityProvider
 {
-    private readonly IActorsComponent _actors = environment.Components.QueryComponent<IActorsComponent>();
-    private readonly IClassesComponent _classes = environment.Components.QueryComponent<IClassesComponent>();
-    private readonly IGangZonesComponent _gangZones = environment.Components.QueryComponent<IGangZonesComponent>();
-    private readonly IMenusComponent _menus = environment.Components.QueryComponent<IMenusComponent>();
-    private readonly INPCComponent _npcs = environment.Components.QueryComponent<INPCComponent>();
-    private readonly IObjectsComponent _objects = environment.Components.QueryComponent<IObjectsComponent>();
-    private readonly IPickupsComponent _pickups = environment.Components.QueryComponent<IPickupsComponent>();
-    private readonly IPlayerPool _players = environment.Core.GetPlayers();
-    private readonly ITextDrawsComponent _textDraws = environment.Components.QueryComponent<ITextDrawsComponent>();
-    private readonly ITextLabelsComponent _textLabels = environment.Components.QueryComponent<ITextLabelsComponent>();
-    private readonly IVehiclesComponent _vehicles = environment.Components.QueryComponent<IVehiclesComponent>();
+    private readonly SafeComponentHandle<IActorsComponent> _actors = environment.SafeComponentHandleProvider.Get<IActorsComponent>();
+    private readonly SafeComponentHandle<IClassesComponent> _classes = environment.SafeComponentHandleProvider.Get<IClassesComponent>();
+    private readonly SafeComponentHandle<IGangZonesComponent> _gangZones = environment.SafeComponentHandleProvider.Get<IGangZonesComponent>();
+    private readonly SafeComponentHandle<IMenusComponent> _menus = environment.SafeComponentHandleProvider.Get<IMenusComponent>();
+    private readonly SafeComponentHandle<INPCComponent> _npcs = environment.SafeComponentHandleProvider.Get<INPCComponent>();
+    private readonly SafeComponentHandle<IObjectsComponent> _objects = environment.SafeComponentHandleProvider.Get<IObjectsComponent>();
+    private readonly SafeComponentHandle<IPickupsComponent> _pickups = environment.SafeComponentHandleProvider.Get<IPickupsComponent>();
+    private readonly SafeComponentHandle<ITextDrawsComponent> _textDraws = environment.SafeComponentHandleProvider.Get<ITextDrawsComponent>();
+    private readonly SafeComponentHandle<ITextLabelsComponent> _textLabels = environment.SafeComponentHandleProvider.Get<ITextLabelsComponent>();
+    private readonly SafeComponentHandle<IVehiclesComponent> _vehicles = environment.SafeComponentHandleProvider.Get<IVehiclesComponent>();
+
+    private IActorsComponent Actors => _actors;
+    private IClassesComponent Classes => _classes;
+    private IGangZonesComponent GangZones => _gangZones;
+    private IMenusComponent Menus => _menus;
+    private INPCComponent Npcs => _npcs;
+    private IObjectsComponent Objects => _objects;
+    private IPickupsComponent Pickups => _pickups;
+    private IPlayerPool Players { get; } = environment.Core.GetPlayers();
+    private ITextDrawsComponent TextDraws => _textDraws;
+    private ITextLabelsComponent TextLabels => _textLabels;
+    private IVehiclesComponent Vehicles => _vehicles;
 
     public EntityId GetEntity(IActor actor)
     {
@@ -98,7 +109,7 @@ internal sealed class OmpEntityProvider(SampSharpEnvironment environment, IEntit
         var ext = playerClass.TryGetExtension<ComponentExtension>();
         if (ext == null)
         {
-            var component = entityManager.AddComponent<Class>(EntityId.NewEntityId(), _classes, playerClass);
+            var component = entityManager.AddComponent<Class>(EntityId.NewEntityId(), Classes, playerClass);
             ext = new ComponentExtension(component);
             playerClass.AddExtension(ext);
 
@@ -118,7 +129,7 @@ internal sealed class OmpEntityProvider(SampSharpEnvironment environment, IEntit
         var ext = actor.TryGetExtension<ComponentExtension>();
         if (ext == null)
         {
-            var component = entityManager.AddComponent<Actor>(EntityId.NewEntityId(), _actors, actor);
+            var component = entityManager.AddComponent<Actor>(EntityId.NewEntityId(), Actors, actor);
             ext = new ComponentExtension(component);
             actor.AddExtension(ext);
 
@@ -141,7 +152,7 @@ internal sealed class OmpEntityProvider(SampSharpEnvironment environment, IEntit
             return (Npc)ext.Component;
         }
 
-        var component = entityManager.AddComponent<Npc>(EntityId.NewEntityId(), _npcs, npc);
+        var component = entityManager.AddComponent<Npc>(EntityId.NewEntityId(), Npcs, npc);
         ext = new ComponentExtension(component);
         npc.AddExtension(ext);
         return component;
@@ -158,8 +169,8 @@ internal sealed class OmpEntityProvider(SampSharpEnvironment environment, IEntit
         if (ext == null)
         {
             BaseGangZone component = gangZone.GetLegacyPlayer().HasValue
-                ? entityManager.AddComponent<PlayerGangZone>(EntityId.NewEntityId(), this, _gangZones, gangZone)
-                : entityManager.AddComponent<GangZone>(EntityId.NewEntityId(), this, _gangZones, gangZone);
+                ? entityManager.AddComponent<PlayerGangZone>(EntityId.NewEntityId(), this, GangZones, gangZone)
+                : entityManager.AddComponent<GangZone>(EntityId.NewEntityId(), this, GangZones, gangZone);
             ext = new ComponentExtension(component);
             gangZone.AddExtension(ext);
 
@@ -196,7 +207,7 @@ internal sealed class OmpEntityProvider(SampSharpEnvironment environment, IEntit
         var ext = @object.TryGetExtension<ComponentExtension>();
         if (ext == null)
         {
-            var component = entityManager.AddComponent<GlobalObject>(EntityId.NewEntityId(), this, _objects, @object);
+            var component = entityManager.AddComponent<GlobalObject>(EntityId.NewEntityId(), this, Objects, @object);
             ext = new ComponentExtension(component);
             @object.AddExtension(ext);
 
@@ -217,8 +228,8 @@ internal sealed class OmpEntityProvider(SampSharpEnvironment environment, IEntit
         if (ext == null)
         {
             BasePickup component = pickup.GetLegacyPlayer().HasValue
-                ? entityManager.AddComponent<PlayerPickup>(EntityId.NewEntityId(), _pickups, pickup)
-                : entityManager.AddComponent<Pickup>(EntityId.NewEntityId(), _pickups, pickup);
+                ? entityManager.AddComponent<PlayerPickup>(EntityId.NewEntityId(), Pickups, pickup)
+                : entityManager.AddComponent<Pickup>(EntityId.NewEntityId(), Pickups, pickup);
             ext = new ComponentExtension(component);
             pickup.AddExtension(ext);
 
@@ -348,7 +359,7 @@ internal sealed class OmpEntityProvider(SampSharpEnvironment environment, IEntit
         var ext = textDraw.TryGetExtension<ComponentExtension>();
         if (ext == null)
         {
-            var component = entityManager.AddComponent<TextDraw>(EntityId.NewEntityId(), _textDraws, textDraw);
+            var component = entityManager.AddComponent<TextDraw>(EntityId.NewEntityId(), TextDraws, textDraw);
             ext = new ComponentExtension(component);
             textDraw.AddExtension(ext);
 
@@ -368,7 +379,7 @@ internal sealed class OmpEntityProvider(SampSharpEnvironment environment, IEntit
         var ext = textLabel.TryGetExtension<ComponentExtension>();
         if (ext == null)
         {
-            var component = entityManager.AddComponent<TextLabel>(EntityId.NewEntityId(), this, _textLabels, textLabel);
+            var component = entityManager.AddComponent<TextLabel>(EntityId.NewEntityId(), this, TextLabels, textLabel);
             ext = new ComponentExtension(component);
             textLabel.AddExtension(ext);
 
@@ -389,7 +400,7 @@ internal sealed class OmpEntityProvider(SampSharpEnvironment environment, IEntit
 
         if (ext == null)
         {
-            var component = entityManager.AddComponent<Vehicle>(EntityId.NewEntityId(), this, _vehicles, vehicle);
+            var component = entityManager.AddComponent<Vehicle>(EntityId.NewEntityId(), this, Vehicles, vehicle);
             ext = new ComponentExtension(component);
             vehicle.AddExtension(ext);
 
@@ -401,37 +412,37 @@ internal sealed class OmpEntityProvider(SampSharpEnvironment environment, IEntit
 
     public Class? GetPlayerClass(int id)
     {
-        return GetComponent(_classes.AsPool().Get(id));
+        return GetComponent(Classes.AsPool().Get(id));
     }
 
     public Actor? GetActor(int id)
     {
-        return GetComponent(_actors.AsPool().Get(id));
+        return GetComponent(Actors.AsPool().Get(id));
     }
 
     public Npc? GetNpc(int id)
     {
-        if (!_npcs.HasValue)
+        if (!Npcs.HasValue)
         {
             return null;
         }
 
-        return GetComponent(_npcs.Get(id));
+        return GetComponent(Npcs.Get(id));
     }
 
     public BaseGangZone? GetGangZone(int id)
     {
-        return GetComponent(_gangZones.AsPool().Get(id));
+        return GetComponent(GangZones.AsPool().Get(id));
     }
 
     public BasePickup? GetPickup(int id)
     {
-        return GetComponent(_pickups.AsPool().Get(id));
+        return GetComponent(Pickups.AsPool().Get(id));
     }
 
     public Player? GetPlayer(int id)
     {
-        return GetComponent(_players.Get(id));
+        return GetComponent(Players.Get(id));
     }
 
     public PlayerObject? GetPlayerObject(IPlayer player, int id)
@@ -463,26 +474,26 @@ internal sealed class OmpEntityProvider(SampSharpEnvironment environment, IEntit
 
     public TextDraw? GetTextDraw(int id)
     {
-        return GetComponent(_textDraws.AsPool().Get(id));
+        return GetComponent(TextDraws.AsPool().Get(id));
     }
 
     public TextLabel? GetTextLabel(int id)
     {
-        return GetComponent(_textLabels.AsPool().Get(id));
+        return GetComponent(TextLabels.AsPool().Get(id));
     }
 
     public Vehicle? GetVehicle(int id)
     {
-        return GetComponent(_vehicles.AsPool().Get(id));
+        return GetComponent(Vehicles.AsPool().Get(id));
     }
 
     public GlobalObject? GetObject(int id)
     {
-        return GetComponent(_objects.AsPool().Get(id));
+        return GetComponent(Objects.AsPool().Get(id));
     }
 
     public Menu? GetMenu(int id)
     {
-        return GetComponent(_menus.AsPool().Get(id));
+        return GetComponent(Menus.AsPool().Get(id));
     }
 }

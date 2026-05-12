@@ -41,4 +41,9 @@ public interface IStartupContext
     /// Occurs when the application has been initialized.
     /// </summary>
     event EventHandler? Initialized;
+
+    /// <summary>
+    /// Occurs when an open.mp component is being freed. The component which is being freed is passed as an argument.
+    /// </summary>
+    event EventHandler<IComponent>? ComponentFreed;
 }
