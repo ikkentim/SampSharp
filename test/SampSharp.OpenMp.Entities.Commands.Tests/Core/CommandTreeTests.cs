@@ -14,11 +14,8 @@ public class CommandTreeTests
     {
         var method = typeof(CommandTreeTests).GetMethod(nameof(DummyMethod), System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!;
         var mockInvoker = new Mock<CommandInvoker>();
-        return new CommandDefinition(
-            name, group, method, method.GetParameters(),
-            typeof(CommandTreeTests), Array.Empty<CommandParameterInfo>(),
-            mockInvoker.Object, 0,
-            Array.Empty<CommandAlias>(), Array.Empty<CommandTag>());
+        var mockMatcher = new Mock<CommandComponentMatcher>();
+        return new CommandDefinition(name, group, method, method.GetParameters(), typeof(CommandTreeTests), [], mockInvoker.Object, 0, [], [], mockMatcher.Object);
     }
 
     private void DummyMethod() { }
@@ -37,7 +34,7 @@ public class CommandTreeTests
         tree.Register(def, null, "test");
 
         var span = StringSpan.For("test");
-        var found = tree.FindCommand(ref span);
+        var found = tree.FindCommands(ref span);
         found.ShouldNotBeNull();
         found.Count.ShouldBe(1);
         found[0].Name.ShouldBe("test");
@@ -70,7 +67,7 @@ public class CommandTreeTests
         tree.Register(def, group, "give");
 
         var span = StringSpan.For("admin money give");
-        var found = tree.FindCommand(ref span);
+        var found = tree.FindCommands(ref span);
         found.ShouldNotBeNull();
         found![0].Name.ShouldBe("give");
         span.Length.ShouldBe(0); // all consumed
@@ -82,7 +79,7 @@ public class CommandTreeTests
         var tree = CreateTree();
 
         var span = StringSpan.For("unknown");
-        var found = tree.FindCommand(ref span);
+        var found = tree.FindCommands(ref span);
 
         found.ShouldBeNull();
     }
@@ -95,7 +92,7 @@ public class CommandTreeTests
         tree.Register(def, null, "test");
 
         var span = StringSpan.Empty;
-        var found = tree.FindCommand(ref span);
+        var found = tree.FindCommands(ref span);
 
         found.ShouldBeNull();
     }
@@ -108,13 +105,13 @@ public class CommandTreeTests
         tree.Register(def, null, "Test");
 
         var span1 = StringSpan.For("test");
-        tree.FindCommand(ref span1).ShouldNotBeNull();
+        tree.FindCommands(ref span1).ShouldNotBeNull();
 
         var span2 = StringSpan.For("TEST");
-        tree.FindCommand(ref span2).ShouldNotBeNull();
+        tree.FindCommands(ref span2).ShouldNotBeNull();
 
         var span3 = StringSpan.For("Test");
-        tree.FindCommand(ref span3).ShouldNotBeNull();
+        tree.FindCommands(ref span3).ShouldNotBeNull();
     }
 
     [Fact]
@@ -126,7 +123,7 @@ public class CommandTreeTests
         tree.Register(def, group, "kick");
 
         var span = StringSpan.For("admin kick arg1");
-        tree.FindCommand(ref span);
+        tree.FindCommands(ref span);
 
         // span should be advanced past "admin kick"
         span.TrimStart().ToString().ShouldBe("arg1");
@@ -143,7 +140,7 @@ public class CommandTreeTests
         // "foo" is not a child of "admin", so traversal stops at "admin" which has no commands
         // registered, returning null.
         var span = StringSpan.For("admin foo");
-        var found = tree.FindCommand(ref span);
+        var found = tree.FindCommands(ref span);
 
         found.ShouldBeNull();
         span.TrimStart().ToString().ShouldBe("foo");
@@ -160,7 +157,7 @@ public class CommandTreeTests
         tree.Register(def2, null, "test");
 
         var span = StringSpan.For("test");
-        var found = tree.FindCommand(ref span);
+        var found = tree.FindCommands(ref span);
 
         found.ShouldNotBeNull();
         found!.Count.ShouldBe(2);
@@ -175,7 +172,7 @@ public class CommandTreeTests
         tree.Register(def, null, "pm");
 
         var span = StringSpan.For("pm");
-        var found = tree.FindCommand(ref span);
+        var found = tree.FindCommands(ref span);
 
         found.ShouldNotBeNull();
     }
@@ -192,9 +189,9 @@ public class CommandTreeTests
         tree.Clear();
 
         var span1 = StringSpan.For("test");
-        tree.FindCommand(ref span1).ShouldBeNull();
+        tree.FindCommands(ref span1).ShouldBeNull();
         var span2 = StringSpan.For("admin kick");
-        tree.FindCommand(ref span2).ShouldBeNull();
+        tree.FindCommands(ref span2).ShouldBeNull();
     }
 
     [Fact]
@@ -209,18 +206,10 @@ public class CommandTreeTests
         tree.Register(def3, new CommandGroup("admin"), "ban");
 
         var span1 = StringSpan.For("help");
-        tree.FindCommand(ref span1).ShouldNotBeNull();
+        tree.FindCommands(ref span1).ShouldNotBeNull();
         var span2 = StringSpan.For("admin kick");
-        tree.FindCommand(ref span2).ShouldNotBeNull();
+        tree.FindCommands(ref span2).ShouldNotBeNull();
         var span3 = StringSpan.For("admin ban");
-        tree.FindCommand(ref span3).ShouldNotBeNull();
-    }
-
-    [Fact]
-    public void Root_IsAccessible()
-    {
-        var tree = CreateTree();
-
-        tree.Root.ShouldNotBeNull();
+        tree.FindCommands(ref span3).ShouldNotBeNull();
     }
 }

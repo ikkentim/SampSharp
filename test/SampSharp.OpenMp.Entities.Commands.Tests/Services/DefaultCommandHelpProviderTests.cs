@@ -1,5 +1,6 @@
 using Moq;
 using SampSharp.Entities.SAMP.Commands;
+using SampSharp.OpenMp.Entities.Commands.Tests.Core;
 using Shouldly;
 using Xunit;
 
@@ -12,15 +13,10 @@ public class DefaultCommandHelpProviderTests
 {
     private static CommandDefinition CreateDefinition(string name, CommandGroup? group = null)
     {
-        var method = typeof(DefaultCommandHelpProviderTests).GetMethod(nameof(DummyMethod), System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!;
+        var method = typeof(CommandTreeTests).GetMethod(nameof(DummyMethod), System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!;
         var mockInvoker = new Mock<CommandInvoker>();
-
-        return new CommandDefinition(
-            name, group, method, method.GetParameters(),
-            typeof(DefaultCommandHelpProviderTests),
-            Array.Empty<CommandParameterInfo>(),
-            mockInvoker.Object, 0,
-            Array.Empty<CommandAlias>(), Array.Empty<CommandTag>());
+        var mockMatcher = new Mock<CommandComponentMatcher>();
+        return new CommandDefinition(name, group, method, method.GetParameters(), typeof(CommandTreeTests), [], mockInvoker.Object, 0, [], [], mockMatcher.Object);
     }
 
     private void DummyMethod() { }

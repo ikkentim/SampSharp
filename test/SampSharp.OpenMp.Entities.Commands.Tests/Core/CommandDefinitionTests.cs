@@ -32,6 +32,7 @@ public class CommandDefinitionTests
         var parameters = method.GetParameters();
         var parsedParams = CreateParamInfo(paramCount);
         var mockInvoker = new Mock<CommandInvoker>();
+        var mockMatcher = new Mock<CommandComponentMatcher>();
 
         return new CommandDefinition(
             name,
@@ -42,8 +43,9 @@ public class CommandDefinitionTests
             parsedParams,
             mockInvoker.Object,
             0,
-            aliases ?? Array.Empty<CommandAlias>(),
-            Array.Empty<CommandTag>()
+            aliases ?? [],
+            [],
+            mockMatcher.Object
         );
     }
 
@@ -64,6 +66,7 @@ public class CommandDefinitionTests
     {
         var method = typeof(CommandDefinitionTests).GetMethod(nameof(DummyMethod), System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!;
         var mockInvoker = new Mock<CommandInvoker>();
+        var mockMatcher = new Mock<CommandComponentMatcher>();
 
         Should.Throw<ArgumentException>(() => new CommandDefinition(
             null!,
@@ -71,11 +74,12 @@ public class CommandDefinitionTests
             method,
             method.GetParameters(),
             typeof(CommandDefinitionTests),
-            Array.Empty<CommandParameterInfo>(),
+            [],
             mockInvoker.Object,
             0,
-            Array.Empty<CommandAlias>(),
-            Array.Empty<CommandTag>()
+            [],
+            [],
+            mockMatcher.Object
         ));
     }
 
@@ -84,6 +88,7 @@ public class CommandDefinitionTests
     {
         var method = typeof(CommandDefinitionTests).GetMethod(nameof(DummyMethod), System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!;
         var mockInvoker = new Mock<CommandInvoker>();
+        var mockMatcher = new Mock<CommandComponentMatcher>();
 
         Should.Throw<ArgumentException>(() => new CommandDefinition(
             "",
@@ -91,11 +96,12 @@ public class CommandDefinitionTests
             method,
             method.GetParameters(),
             typeof(CommandDefinitionTests),
-            Array.Empty<CommandParameterInfo>(),
+            [],
             mockInvoker.Object,
             0,
-            Array.Empty<CommandAlias>(),
-            Array.Empty<CommandTag>()
+            [],
+            [],
+            mockMatcher.Object
         ));
     }
 
@@ -103,18 +109,20 @@ public class CommandDefinitionTests
     public void Constructor_WithNullMethod_ThrowsArgumentNullException()
     {
         var mockInvoker = new Mock<CommandInvoker>();
+        var mockMatcher = new Mock<CommandComponentMatcher>();
 
         Should.Throw<ArgumentNullException>(() => new CommandDefinition(
             "test",
             null,
             null!,
-            Array.Empty<ParameterInfo>(),
+            [],
             typeof(CommandDefinitionTests),
-            Array.Empty<CommandParameterInfo>(),
+            [],
             mockInvoker.Object,
             0,
-            Array.Empty<CommandAlias>(),
-            Array.Empty<CommandTag>()
+            [],
+            [],
+            mockMatcher.Object
         ));
     }
 
@@ -164,6 +172,7 @@ public class CommandDefinitionTests
         var method = typeof(CommandDefinitionTests).GetMethod(nameof(DummyMethod), System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!;
         var parameters = method.GetParameters();
         var mockInvoker = new Mock<CommandInvoker>();
+        var mockMatcher = new Mock<CommandComponentMatcher>();
 
         var def = new CommandDefinition(
             "test",
@@ -171,11 +180,12 @@ public class CommandDefinitionTests
             method,
             parameters,
             typeof(CommandDefinitionTests),
-            Array.Empty<CommandParameterInfo>(),
+            [],
             mockInvoker.Object,
             0,
-            Array.Empty<CommandAlias>(),
-            tags
+            [],
+            tags,
+            mockMatcher.Object
         );
 
         def.Tags.Count.ShouldBe(2);
@@ -188,6 +198,7 @@ public class CommandDefinitionTests
     {
         var method = typeof(CommandDefinitionTests).GetMethod(nameof(DummyMethod), System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!;
         var mockInvoker = new Mock<CommandInvoker>();
+        var mockMatcher = new Mock<CommandComponentMatcher>();
 
         var def = new CommandDefinition(
             "test",
@@ -195,11 +206,12 @@ public class CommandDefinitionTests
             method,
             method.GetParameters(),
             typeof(CommandDefinitionTests),
-            Array.Empty<CommandParameterInfo>(),
+            [],
             mockInvoker.Object,
             1,
-            Array.Empty<CommandAlias>(),
-            Array.Empty<CommandTag>()
+            [],
+            [],
+            mockMatcher.Object
         );
 
         def.PrefixParameterCount.ShouldBe(1);

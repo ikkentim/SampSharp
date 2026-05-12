@@ -14,11 +14,9 @@ public class CommandTreeNodeTests
     {
         var method = typeof(CommandTreeNodeTests).GetMethod(nameof(DummyMethod), System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!;
         var mockInvoker = new Mock<CommandInvoker>();
-        return new CommandDefinition(
-            name, null, method, method.GetParameters(),
-            typeof(CommandTreeNodeTests), Array.Empty<CommandParameterInfo>(),
-            mockInvoker.Object, 0,
-            Array.Empty<CommandAlias>(), Array.Empty<CommandTag>());
+        var mockMatcher = new Mock<CommandComponentMatcher>();
+
+        return new CommandDefinition(name, null, method, method.GetParameters(), typeof(CommandTreeNodeTests), [], mockInvoker.Object, 0, [], [], mockMatcher.Object);
     }
 
     private void DummyMethod() { }
@@ -113,38 +111,6 @@ public class CommandTreeNodeTests
 
         child1.ShouldNotBeSameAs(child2);
         node.Children.Count.ShouldBe(2);
-    }
-
-    [Fact]
-    public void TryGetChild_ExistingChild_ReturnsTrue()
-    {
-        var node = CreateNode();
-        node.GetOrCreateChild("test");
-
-        var found = node.TryGetChild("test", out var child);
-
-        found.ShouldBeTrue();
-        child.ShouldNotBeNull();
-    }
-
-    [Fact]
-    public void TryGetChild_NonExistentChild_ReturnsFalse()
-    {
-        var node = CreateNode();
-
-        var found = node.TryGetChild("nonexistent", out _);
-
-        found.ShouldBeFalse();
-    }
-
-    [Fact]
-    public void TryGetChild_CaseInsensitive()
-    {
-        var node = CreateNode();
-        node.GetOrCreateChild("Test");
-
-        node.TryGetChild("test", out _).ShouldBeTrue();
-        node.TryGetChild("TEST", out _).ShouldBeTrue();
     }
 
     [Fact]

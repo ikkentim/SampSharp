@@ -14,9 +14,8 @@ public class CommandExecutorTests
 {
     // Methods with different parameter counts to match prefixParamCount + parsedParams scenarios
     private void DummyOneParam(object p1) { }
-    private void DummyTwoParams(object p1, object p2) { }
     private void DummyThreeParams(object p1, object p2, object p3) { }
-    private void DummyNoParams() { }
+    private bool ComponentMatcher(object?[] prefixArgs, object?[] parsedArgs, IEntityManager entityManager) => true;
 
     private CommandDefinition CreateDefinition(
         CommandInvoker invoker,
@@ -30,14 +29,15 @@ public class CommandExecutorTests
             typeof(CommandExecutorTests),
             parsedParams ?? Array.Empty<CommandParameterInfo>(),
             invoker, prefixParamCount,
-            Array.Empty<CommandAlias>(), Array.Empty<CommandTag>());
+            Array.Empty<CommandAlias>(), Array.Empty<CommandTag>(), ComponentMatcher);
     }
+
 
     [Fact]
     public void Execute_InvokesCompiledInvoker()
     {
         var invoked = false;
-        CommandInvoker invoker = (target, args, svc, em) => { invoked = true; return true; };
+        CommandInvoker invoker = (_, _, _, _) => { invoked = true; return true; };
 
         var entityManager = new Mock<IEntityManager>().Object;
         var executor = new CommandExecutor(entityManager);
@@ -53,7 +53,7 @@ public class CommandExecutorTests
     [Fact]
     public void Execute_ReturnsInvokerReturnValue_True()
     {
-        CommandInvoker invoker = (target, args, svc, em) => true;
+        CommandInvoker invoker = (_, _, _, _) => true;
 
         var entityManager = new Mock<IEntityManager>().Object;
         var executor = new CommandExecutor(entityManager);
@@ -69,7 +69,7 @@ public class CommandExecutorTests
     [Fact]
     public void Execute_ReturnsInvokerReturnValue_False()
     {
-        CommandInvoker invoker = (target, args, svc, em) => false;
+        CommandInvoker invoker = (_, _, _, _) => false;
 
         var entityManager = new Mock<IEntityManager>().Object;
         var executor = new CommandExecutor(entityManager);
@@ -86,7 +86,7 @@ public class CommandExecutorTests
     public void Execute_PassesParsedArgsToInvoker()
     {
         object?[]? capturedArgs = null;
-        CommandInvoker invoker = (target, args, svc, em) => { capturedArgs = args; return true; };
+        CommandInvoker invoker = (_, args, _, _) => { capturedArgs = args; return true; };
 
         var entityManager = new Mock<IEntityManager>().Object;
         var executor = new CommandExecutor(entityManager);
@@ -107,7 +107,7 @@ public class CommandExecutorTests
     public void Execute_PassesSystemAsTarget()
     {
         object? capturedTarget = null;
-        CommandInvoker invoker = (target, args, svc, em) => { capturedTarget = target; return true; };
+        CommandInvoker invoker = (target, _, _, _) => { capturedTarget = target; return true; };
 
         var entityManager = new Mock<IEntityManager>().Object;
         var executor = new CommandExecutor(entityManager);
@@ -124,7 +124,7 @@ public class CommandExecutorTests
     public void Execute_PassesEntityManagerToInvoker()
     {
         IEntityManager? capturedEntityManager = null;
-        CommandInvoker invoker = (target, args, svc, em) => { capturedEntityManager = em; return true; };
+        CommandInvoker invoker = (_, _, _, em) => { capturedEntityManager = em; return true; };
 
         var entityManagerMock = new Mock<IEntityManager>();
         var executor = new CommandExecutor(entityManagerMock.Object);
@@ -141,7 +141,7 @@ public class CommandExecutorTests
     public void Execute_PassesServiceProviderToInvoker()
     {
         IServiceProvider? capturedServices = null;
-        CommandInvoker invoker = (target, args, svc, em) => { capturedServices = svc; return true; };
+        CommandInvoker invoker = (_, _, svc, _) => { capturedServices = svc; return true; };
 
         var entityManager = new Mock<IEntityManager>().Object;
         var executor = new CommandExecutor(entityManager);
@@ -158,7 +158,7 @@ public class CommandExecutorTests
     public void Execute_NoPrefixParameters_ParsedArgGoesFirst()
     {
         object?[]? capturedArgs = null;
-        CommandInvoker invoker = (target, args, svc, em) => { capturedArgs = args; return true; };
+        CommandInvoker invoker = (_, args, _, _) => { capturedArgs = args; return true; };
 
         var entityManager = new Mock<IEntityManager>().Object;
         var executor = new CommandExecutor(entityManager);
