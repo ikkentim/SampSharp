@@ -49,7 +49,7 @@ jobs:
       run: ./build.sh component-libraries test --no-build
 
     - name: Publish component library test results
-      if: (!cancelled())
+      if: ${{ !cancelled() }}
       uses: EnricoMi/publish-unit-test-result-action@v2.23.0
       with:
         files: build/test-results/component-libraries/*.trx
