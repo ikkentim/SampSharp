@@ -62,7 +62,7 @@ public class CommandRegistryTests
         registry.Register(command);
 
         var span = StringSpan.For("admin money give");
-        var found = registry.GetCommandGroupByPath(ref span);
+        var found = registry.FindCommands(ref span);
         found.ShouldNotBeNull();
         found![0].FullName.ShouldBe("admin money give");
     }
@@ -91,7 +91,7 @@ public class CommandRegistryTests
         registry.Register(command);
 
         var span = StringSpan.For("pm");
-        var found = registry.GetCommandGroupByPath(ref span);
+        var found = registry.FindCommands(ref span);
         found.ShouldNotBeNull();
     }
 
@@ -105,9 +105,9 @@ public class CommandRegistryTests
         registry.Register(command);
 
         var span1 = StringSpan.For("pm");
-        registry.GetCommandGroupByPath(ref span1).ShouldNotBeNull();
+        registry.FindCommands(ref span1).ShouldNotBeNull();
         var span2 = StringSpan.For("msg");
-        registry.GetCommandGroupByPath(ref span2).ShouldNotBeNull();
+        registry.FindCommands(ref span2).ShouldNotBeNull();
     }
 
     [Fact]
@@ -123,7 +123,7 @@ public class CommandRegistryTests
         registry.Register(command2);
 
         var span = StringSpan.For("pm");
-        var found = registry.GetCommandGroupByPath(ref span);
+        var found = registry.FindCommands(ref span);
         found.ShouldNotBeNull();
         found!.Count.ShouldBe(2);
     }
@@ -234,7 +234,7 @@ public class CommandRegistryTests
         registry.Register(command);
 
         var span = StringSpan.For("admin money give");
-        var found = registry.GetCommandGroupByPath(ref span);
+        var found = registry.FindCommands(ref span);
         found.ShouldNotBeNull();
         span.Length.ShouldBe(0); // all words consumed
     }
@@ -244,7 +244,7 @@ public class CommandRegistryTests
     {
         var registry = CreateRegistry();
         var span = StringSpan.Empty;
-        var found = registry.GetCommandGroupByPath(ref span);
+        var found = registry.FindCommands(ref span);
         found.ShouldBeNull();
     }
 }

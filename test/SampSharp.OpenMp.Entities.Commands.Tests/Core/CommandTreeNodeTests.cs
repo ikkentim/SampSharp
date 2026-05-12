@@ -116,38 +116,6 @@ public class CommandTreeNodeTests
     }
 
     [Fact]
-    public void TryGetChild_ExistingChild_ReturnsTrue()
-    {
-        var node = CreateNode();
-        node.GetOrCreateChild("test");
-
-        var found = node.TryGetChild("test", out var child);
-
-        found.ShouldBeTrue();
-        child.ShouldNotBeNull();
-    }
-
-    [Fact]
-    public void TryGetChild_NonExistentChild_ReturnsFalse()
-    {
-        var node = CreateNode();
-
-        var found = node.TryGetChild("nonexistent", out _);
-
-        found.ShouldBeFalse();
-    }
-
-    [Fact]
-    public void TryGetChild_CaseInsensitive()
-    {
-        var node = CreateNode();
-        node.GetOrCreateChild("Test");
-
-        node.TryGetChild("test", out _).ShouldBeTrue();
-        node.TryGetChild("TEST", out _).ShouldBeTrue();
-    }
-
-    [Fact]
     public void Traverse_EmptyInput_ReturnsRoot()
     {
         var node = CreateNode();

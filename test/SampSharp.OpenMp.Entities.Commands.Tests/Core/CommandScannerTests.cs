@@ -181,14 +181,14 @@ public class CommandScannerTests
     private static CommandDefinition? FindByName(CommandRegistry registry, string name)
     {
         var span = StringSpan.For(name);
-        var overloads = registry.GetCommandGroupByPath(ref span);
+        var overloads = registry.FindCommands(ref span);
         return overloads?.Count > 0 ? overloads[0] : null;
     }
 
     private static CommandDefinition? FindByPath(CommandRegistry registry, params string[] parts)
     {
         var span = StringSpan.For(string.Join(" ", parts));
-        var overloads = registry.GetCommandGroupByPath(ref span);
+        var overloads = registry.FindCommands(ref span);
         return overloads?.Count > 0 ? overloads[0] : null;
     }
 

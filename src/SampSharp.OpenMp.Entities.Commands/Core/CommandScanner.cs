@@ -200,7 +200,7 @@ internal partial class CommandScanner
         var componentSources = sources.Where(s => s.IsComponent && s.ParameterIndex >= 0).ToArray();
         if (componentSources.Length == 0)
         {
-            return null;
+            return (_, _, _) => true;
         }
 
         var prefixArgs = Expression.Parameter(typeof(object[]), "prefixArgs");

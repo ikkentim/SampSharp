@@ -23,9 +23,9 @@ internal class CommandRegistry(StringComparison stringComparison) : ICommandRegi
 
     // Internal method for dispatcher: get command overloads by path.
     // Advances 'input' past the consumed command path words.
-    internal IReadOnlyList<CommandDefinition>? GetCommandGroupByPath(ref StringSpan input)
+    internal IReadOnlyList<CommandDefinition>? FindCommands(ref StringSpan input)
     {
-        return _tree.FindCommand(ref input);
+        return _tree.FindCommands(ref input);
     }
 
     IEnumerable<CommandDefinition> ICommandRegistry.GetAll()
