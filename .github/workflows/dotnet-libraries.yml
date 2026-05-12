@@ -1,4 +1,4 @@
-name: CI - Component Libraries
+name: CI - .NET Libraries
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main
       - release/1.*
     paths:
-      - .github/workflows/dotnet-component.yml
+      - .github/workflows/dotnet-libraries.yml
       - src/SampSharp.*/**
       - test/**
       - SampSharp.slnx
@@ -19,7 +19,7 @@ on:
       - main
       - release/1.*
     paths:
-      - .github/workflows/dotnet-component.yml
+      - .github/workflows/dotnet-libraries.yml
       - src/SampSharp.*/**
       - test/**
       - SampSharp.slnx
@@ -43,21 +43,21 @@ jobs:
       with:
         dotnet-version: '10.0.x'
 
-    - name: Build component libraries
+    - name: Build .NET libraries
       run: ./build.sh component-libraries
 
-    - name: Test component libraries
+    - name: Test .NET libraries
       run: ./build.sh component-libraries test --no-build
 
-    - name: Publish component library test results
+    - name: Publish .NET libraries test results
       if: ${{ !cancelled() }}
       uses: EnricoMi/publish-unit-test-result-action@v2
       with:
         files: build/test-results/component-libraries/*.trx
-        check_name: Component library test results
+        check_name: .NET libraries test results
         comment_mode: ${{ (github.event.workflow_run.event == 'pull_request' || github.event_name == 'pull_request') && 'always' || 'off' }}
 
-    - name: Pack component libraries
+    - name: Pack .NET libraries
       run: ./build.sh component-libraries publish
 
     - name: Upload NuGet packages
