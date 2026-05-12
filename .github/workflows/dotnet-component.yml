@@ -56,15 +56,6 @@ jobs:
         check_name: Component library test results
         comment_mode: off
 
-    - name: Upload component library test results
-      if: (!cancelled())
-      uses: actions/upload-artifact@v7
-      with:
-        name: component-library-test-results
-        path: build/test-results/component-libraries/
-        if-no-files-found: error
-        retention-days: ${{ github.event_name == 'pull_request' && 14 || 90 }}
-
     - name: Pack component libraries
       run: ./build.sh component-libraries publish
 
