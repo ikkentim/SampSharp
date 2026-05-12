@@ -2,7 +2,7 @@
 
 namespace SampSharp.Entities;
 
-internal sealed class SafeEventHandlerRegistration<TComponent, TEventHandler>(SampSharpEnvironment environment, TEventHandler handler, Func<TComponent, IEventDispatcher<TEventHandler>> dispatcherProvider) : IDisposable
+internal sealed class SafeEventHandlerRegistration<TComponent, TEventHandler>(SafeComponentHandle<TComponent> component, TEventHandler handler, Func<TComponent, IEventDispatcher<TEventHandler>> dispatcherProvider) : IDisposable
     where TComponent : unmanaged, IComponent.IManagedInterface
     where TEventHandler : class, IEventHandler<TEventHandler>
 {
@@ -16,8 +16,6 @@ internal sealed class SafeEventHandlerRegistration<TComponent, TEventHandler>(Sa
         }
 
         _disposed = true;
-
-        var component = environment.Components.QueryComponent<TComponent>();
 
         if (!component.HasValue)
         {

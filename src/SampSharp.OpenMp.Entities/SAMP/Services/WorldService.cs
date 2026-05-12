@@ -6,35 +6,46 @@ namespace SampSharp.Entities.SAMP;
 
 internal sealed class WorldService(SampSharpEnvironment environment, IEntityManager entityManager, IOmpEntityProvider entityProvider) : IWorldService
 {
-    private readonly IActorsComponent _actors = environment.Components.QueryComponent<IActorsComponent>();
-    private readonly ICore _core = environment.Core;
-    private readonly IGangZonesComponent _gangZones = environment.Components.QueryComponent<IGangZonesComponent>();
-    private readonly IMenusComponent _menus = environment.Components.QueryComponent<IMenusComponent>();
-    private readonly IObjectsComponent _objects = environment.Components.QueryComponent<IObjectsComponent>();
-    private readonly IPickupsComponent _pickups = environment.Components.QueryComponent<IPickupsComponent>();
-    private readonly IPlayerPool _players = environment.Core.GetPlayers();
-    private readonly ITextDrawsComponent _textDraws = environment.Components.QueryComponent<ITextDrawsComponent>();
-    private readonly ITextLabelsComponent _textLabels = environment.Components.QueryComponent<ITextLabelsComponent>();
-    private readonly IVehiclesComponent _vehicles = environment.Components.QueryComponent<IVehiclesComponent>();
-    private readonly INPCComponent _npcs = environment.Components.QueryComponent<INPCComponent>();
+    private readonly SafeComponentHandle<IActorsComponent> _actors = environment.SafeComponentHandleProvider.Get<IActorsComponent>();
+    private readonly SafeComponentHandle<IGangZonesComponent> _gangZones = environment.SafeComponentHandleProvider.Get<IGangZonesComponent>();
+    private readonly SafeComponentHandle<IMenusComponent> _menus = environment.SafeComponentHandleProvider.Get<IMenusComponent>();
+    private readonly SafeComponentHandle<IObjectsComponent> _objects = environment.SafeComponentHandleProvider.Get<IObjectsComponent>();
+    private readonly SafeComponentHandle<IPickupsComponent> _pickups = environment.SafeComponentHandleProvider.Get<IPickupsComponent>();
+    private readonly SafeComponentHandle<ITextDrawsComponent> _textDraws = environment.SafeComponentHandleProvider.Get<ITextDrawsComponent>();
+    private readonly SafeComponentHandle<ITextLabelsComponent> _textLabels = environment.SafeComponentHandleProvider.Get<ITextLabelsComponent>();
+    private readonly SafeComponentHandle<IVehiclesComponent> _vehicles = environment.SafeComponentHandleProvider.Get<IVehiclesComponent>();
+    private readonly SafeComponentHandle<INPCComponent> _npcs = environment.SafeComponentHandleProvider.Get<INPCComponent>();
+
+    private ICore Core { get; } = environment.Core;
+    private IPlayerPool Players { get; } = environment.Core.GetPlayers();
+
+    private IActorsComponent Actors => _actors;
+    private IGangZonesComponent GangZones => _gangZones;
+    private IMenusComponent Menus => _menus;
+    private IObjectsComponent Objects => _objects;
+    private IPickupsComponent Pickups => _pickups;
+    private ITextDrawsComponent TextDraws => _textDraws;
+    private ITextLabelsComponent TextLabels => _textLabels;
+    private IVehiclesComponent Vehicles => _vehicles;
+    private INPCComponent Npcs => _npcs;
 
     public float Gravity
     {
-        get => _core.GetGravity();
+        get => Core.GetGravity();
         set
         {
             ArgumentOutOfRangeException.ThrowIfLessThan(value, -50.0f, nameof(value));
             ArgumentOutOfRangeException.ThrowIfGreaterThan(value, 50.0f, nameof(value));
-            _core.SetGravity(value);
+            Core.SetGravity(value);
         }
     }
 
     public Actor CreateActor(int modelId, Vector3 position, float rotation, EntityId parent = default)
     {
-        var native = _actors.Create(modelId, position, rotation);
+        var native = Actors.Create(modelId, position, rotation);
 
         var entityId = EntityId.NewEntityId();
-        var component = entityManager.AddComponent<Actor>(entityId, parent, _actors, native);
+        var component = entityManager.AddComponent<Actor>(entityId, parent, Actors, native);
 
         var extension = new ComponentExtension(component);
         native.AddExtension(extension);
@@ -44,12 +55,12 @@ internal sealed class WorldService(SampSharpEnvironment environment, IEntityMana
 
     public Npc CreateNpc(string name, EntityId parent = default)
     {
-        if(_npcs == null)
+        if(Npcs == null)
         {
             throw new InvalidOperationException("NPC component not loaded.");
         }
 
-        var native = _npcs.Create(name);
+        var native = Npcs.Create(name);
 
         if (!native.HasValue)
         {
@@ -57,7 +68,7 @@ internal sealed class WorldService(SampSharpEnvironment environment, IEntityMana
         }
 
         var entityId = EntityId.NewEntityId();
-        var component = entityManager.AddComponent<Npc>(entityId, parent, _npcs, native);
+        var component = entityManager.AddComponent<Npc>(entityId, parent, Npcs, native);
 
         var extension = native.TryGetExtension<ComponentExtension>();
         if (extension is null)
@@ -88,9 +99,9 @@ internal sealed class WorldService(SampSharpEnvironment environment, IEntityMana
 
     public GangZone CreateGangZone(Vector2 min, Vector2 max, EntityId parent = default)
     {
-        var native = _gangZones.Create(new GangZonePos(min, max));
+        var native = GangZones.Create(new GangZonePos(min, max));
         var entityId = EntityId.NewEntityId();
-        var component = entityManager.AddComponent<GangZone>(entityId, parent, entityProvider, _gangZones, native);
+        var component = entityManager.AddComponent<GangZone>(entityId, parent, entityProvider, GangZones, native);
 
         var extension = new ComponentExtension(component);
         native.AddExtension(extension);
@@ -102,11 +113,11 @@ internal sealed class WorldService(SampSharpEnvironment environment, IEntityMana
     {
         ArgumentNullException.ThrowIfNull(owner);
 
-        var native = _gangZones.Create(new GangZonePos(min, max));
+        var native = GangZones.Create(new GangZonePos(min, max));
         native.SetLegacyPlayer(owner);
 
         var entityId = EntityId.NewEntityId();
-        var component = entityManager.AddComponent<PlayerGangZone>(entityId, parent, entityProvider, _gangZones, native);
+        var component = entityManager.AddComponent<PlayerGangZone>(entityId, parent, entityProvider, GangZones, native);
 
         var extension = new ComponentExtension(component);
         native.AddExtension(extension);
@@ -117,14 +128,14 @@ internal sealed class WorldService(SampSharpEnvironment environment, IEntityMana
     public void UseGangZoneCheck(BaseGangZone zone, bool enable)
     {
         ArgumentNullException.ThrowIfNull(zone);
-        _gangZones.UseGangZoneCheck(zone, enable);
+        GangZones.UseGangZoneCheck(zone, enable);
     }
 
     public Pickup CreatePickup(int model, PickupType type, Vector3 position, int virtualWorld = -1, EntityId parent = default)
     {
-        var native = _pickups.Create(model, (byte)type, position, (uint)virtualWorld, false);
+        var native = Pickups.Create(model, (byte)type, position, (uint)virtualWorld, false);
         var entityId = EntityId.NewEntityId();
-        var component = entityManager.AddComponent<Pickup>(entityId, parent, _pickups, native);
+        var component = entityManager.AddComponent<Pickup>(entityId, parent, Pickups, native);
 
         var extension = new ComponentExtension(component);
         native.AddExtension(extension);
@@ -136,11 +147,11 @@ internal sealed class WorldService(SampSharpEnvironment environment, IEntityMana
     {
         ArgumentNullException.ThrowIfNull(owner);
 
-        var native = _pickups.Create(model, (byte)type, position, (uint)virtualWorld, false);
+        var native = Pickups.Create(model, (byte)type, position, (uint)virtualWorld, false);
         native.SetLegacyPlayer(owner);
 
         var entityId = EntityId.NewEntityId();
-        var component = entityManager.AddComponent<PlayerPickup>(entityId, parent, _pickups, native);
+        var component = entityManager.AddComponent<PlayerPickup>(entityId, parent, Pickups, native);
 
         var extension = new ComponentExtension(component);
         native.AddExtension(extension);
@@ -150,9 +161,9 @@ internal sealed class WorldService(SampSharpEnvironment environment, IEntityMana
 
     public Pickup CreateStaticPickup(int model, PickupType type, Vector3 position, int virtualWorld = -1, EntityId parent = default)
     {
-        var native = _pickups.Create(model, (byte)type, position, (uint)virtualWorld, true);
+        var native = Pickups.Create(model, (byte)type, position, (uint)virtualWorld, true);
         var entityId = EntityId.NewEntityId();
-        var component = entityManager.AddComponent<Pickup>(entityId, parent, _objects, native);
+        var component = entityManager.AddComponent<Pickup>(entityId, parent, Objects, native);
 
         var extension = new ComponentExtension(component);
         native.AddExtension(extension);
@@ -162,9 +173,9 @@ internal sealed class WorldService(SampSharpEnvironment environment, IEntityMana
 
     public GlobalObject CreateObject(int modelId, Vector3 position, Vector3 rotation, float drawDistance = 0, EntityId parent = default)
     {
-        var native = _objects.Create(modelId, position, rotation, drawDistance);
+        var native = Objects.Create(modelId, position, rotation, drawDistance);
         var entityId = EntityId.NewEntityId();
-        var component = entityManager.AddComponent<GlobalObject>(entityId, parent, entityProvider, _objects, native);
+        var component = entityManager.AddComponent<GlobalObject>(entityId, parent, entityProvider, Objects, native);
 
         var extension = new ComponentExtension(component);
         native.AddExtension(extension);
@@ -194,9 +205,9 @@ internal sealed class WorldService(SampSharpEnvironment environment, IEntityMana
     {
         ArgumentNullException.ThrowIfNull(text);
 
-        var native = _textLabels.Create(text, color, position, drawDistance, virtualWorld, testLos);
+        var native = TextLabels.Create(text, color, position, drawDistance, virtualWorld, testLos);
         var entityId = EntityId.NewEntityId();
-        var component = entityManager.AddComponent<TextLabel>(entityId, parent, entityProvider, _textLabels, native);
+        var component = entityManager.AddComponent<TextLabel>(entityId, parent, entityProvider, TextLabels, native);
 
         var extension = new ComponentExtension(component);
         native.AddExtension(extension);
@@ -230,9 +241,9 @@ internal sealed class WorldService(SampSharpEnvironment environment, IEntityMana
     {
         ArgumentNullException.ThrowIfNull(text);
 
-        var native = _textDraws.Create(position, text);
+        var native = TextDraws.Create(position, text);
         var entityId = EntityId.NewEntityId();
-        var component = entityManager.AddComponent<TextDraw>(entityId, parent, _textDraws, native);
+        var component = entityManager.AddComponent<TextDraw>(entityId, parent, TextDraws, native);
 
         var extension = new ComponentExtension(component);
         native.AddExtension(extension);
@@ -265,9 +276,9 @@ internal sealed class WorldService(SampSharpEnvironment environment, IEntityMana
     {
         ArgumentNullException.ThrowIfNull(title);
 
-        var native = _menus.Create(title, position, col1Width.HasValue ? (byte)2 : (byte)1, col0Width, col1Width ?? 0);
+        var native = Menus.Create(title, position, col1Width.HasValue ? (byte)2 : (byte)1, col0Width, col1Width ?? 0);
         var entityId = EntityId.NewEntityId();
-        var component = entityManager.AddComponent<Menu>(entityId, parent, _menus, native, title);
+        var component = entityManager.AddComponent<Menu>(entityId, parent, Menus, native, title);
 
         var extension = new ComponentExtension(component);
         native.AddExtension(extension);
@@ -277,7 +288,7 @@ internal sealed class WorldService(SampSharpEnvironment environment, IEntityMana
 
     public void SetObjectsDefaultCameraCollision(bool disable)
     {
-        _objects.SetDefaultCameraCollision(disable);
+        Objects.SetDefaultCameraCollision(disable);
     }
 
     public void SendClientMessage(Color color, string message)
@@ -285,7 +296,7 @@ internal sealed class WorldService(SampSharpEnvironment environment, IEntityMana
         ArgumentNullException.ThrowIfNull(message);
 
         Colour clr = color;
-        _players.SendClientMessageToAll(ref clr, message);
+        Players.SendClientMessageToAll(ref clr, message);
     }
 
     public void SendClientMessage(Color color, string messageFormat, params object[] args)
@@ -309,12 +320,12 @@ internal sealed class WorldService(SampSharpEnvironment environment, IEntityMana
     {
         ArgumentNullException.ThrowIfNull(sender);
         ArgumentNullException.ThrowIfNull(message);
-        _players.SendChatMessageToAll(sender, message);
+        Players.SendChatMessageToAll(sender, message);
     }
 
     public void SendDeathMessage(Player killer, Player killee, Weapon weapon)
     {
-        _players.SendDeathMessageToAll(killer, killee, (int)weapon);
+        Players.SendDeathMessageToAll(killer, killee, (int)weapon);
     }
 
     public void GameText(string text, int time, int style)
@@ -324,32 +335,32 @@ internal sealed class WorldService(SampSharpEnvironment environment, IEntityMana
 
     public void GameText(string text, TimeSpan time, GameTextStyle style)
     {
-        _players.SendGameTextToAll(text, time, (int)style);
+        Players.SendGameTextToAll(text, time, (int)style);
     }
 
     public void HideGameText(GameTextStyle style)
     {
-        _players.HideGameTextForAll((int)style);
+        Players.HideGameTextForAll((int)style);
     }
 
     public void CreateExplosion(Vector3 position, ExplosionType type, float radius)
     {
-        _players.CreateExplosionForAll(position, (int)type, radius);
+        Players.CreateExplosionForAll(position, (int)type, radius);
     }
 
     public void SetWeather(int weather)
     {
-        _core.SetWeather(weather);
+        Core.SetWeather(weather);
     }
 
     private Vehicle CreateVehicle(bool isStatic, VehicleModelType type, Vector3 position, float rotation, int color1, int color2, int respawnDelay = -1, bool addSiren = false,
         EntityId parent = default)
     {
         var respawnDelaySpan = respawnDelay < 0 ? TimeSpan.Zero : TimeSpan.FromSeconds(respawnDelay);
-        var native = _vehicles.Create(isStatic, (int)type, position, rotation, color1, color2, respawnDelaySpan, addSiren);
+        var native = Vehicles.Create(isStatic, (int)type, position, rotation, color1, color2, respawnDelaySpan, addSiren);
 
         var entityId = EntityId.NewEntityId();
-        var component = entityManager.AddComponent<Vehicle>(entityId, parent, entityProvider, _vehicles, native);
+        var component = entityManager.AddComponent<Vehicle>(entityId, parent, entityProvider, Vehicles, native);
 
         var extension = new ComponentExtension(component);
         native.AddExtension(extension);

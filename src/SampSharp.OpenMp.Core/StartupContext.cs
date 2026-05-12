@@ -1,4 +1,5 @@
 ﻿using SampSharp.OpenMp.Core.Api;
+using System.Runtime.InteropServices;
 
 namespace SampSharp.OpenMp.Core;
 
@@ -7,6 +8,12 @@ namespace SampSharp.OpenMp.Core;
 /// </summary>
 public sealed class StartupContext : IStartupContext
 {
+    // Delegates must be kept in memory to prevent GC
+    // ReSharper disable PrivateFieldCanBeConvertedToLocalVariable
+    private readonly Action _cleanup;
+    private readonly OnFreeComponent _freeComponent;
+    // ReSharper restore PrivateFieldCanBeConvertedToLocalVariable
+
     /// <summary>
     /// The API version of the native open.mp component which supports this version of the managed API. This is used to check for version mismatches between the managed and native
     /// components.
@@ -32,6 +39,19 @@ public sealed class StartupContext : IStartupContext
             Core.LogLine(LogLevel.Error, ex.ToString());
         };
         SampSharpExceptionHandler.SetExceptionHandler(_unhandledExceptionHandler);
+
+        // Keep delegates in memory to prevent GC
+        _cleanup = EntryOnCleanup;
+        _freeComponent = EntryOnFreeComponent;
+
+        var cleanupPtr = Marshal.GetFunctionPointerForDelegate(_cleanup);
+        var freeComponentPtr = Marshal.GetFunctionPointerForDelegate(_freeComponent);
+
+        unsafe
+        {
+            init.SetOnCleanup(cleanupPtr);
+            init.SetOnFreeComponent(freeComponentPtr);
+        }
     }
 
     /// <inheritdoc />
@@ -63,6 +83,9 @@ public sealed class StartupContext : IStartupContext
     /// <inheritdoc />
     public event EventHandler? Initialized;
 
+    /// <inheritdoc />
+    public event EventHandler<IComponent>? ComponentFreed;
+
     /// <summary>
     /// Internal method. Do not invoke manually.
     /// </summary>
@@ -74,12 +97,14 @@ public sealed class StartupContext : IStartupContext
         Initialized?.Invoke(this, EventArgs.Empty);
     }
 
-    /// <summary>
-    /// Internal method. Do not invoke manually.
-    /// </summary>
-    public void InvokeCleanup()
+    private void EntryOnCleanup()
     {
         Cleanup?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void EntryOnFreeComponent(IComponent component)
+    {
+        ComponentFreed?.Invoke(this, component);
     }
 
     /// <summary>
@@ -116,4 +141,7 @@ public sealed class StartupContext : IStartupContext
             Environment.FailFast(message);
         }
     }
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    private delegate void OnFreeComponent(IComponent component);
 }

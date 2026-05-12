@@ -7,15 +7,20 @@ namespace SampSharp.Entities;
 [Extension(0x57e43771d28c5e7e)]
 internal sealed partial class EcsHost(IServiceProvider serviceProvider, UnhandledExceptionHandler? exceptionHandler) : Extension
 {
+    private IStartupContext? _context;
     private IServiceProvider? _serviceProvider = serviceProvider;
 
     public IServiceProvider ServiceProvider => _serviceProvider ?? throw new InvalidOperationException();
 
     public void Start(IStartupContext context)
     {
+        _context = context;
+
         context.UseSynchronizationContext();
 
         context.UnhandledExceptionHandler = UnhandledExceptionHandler;
+
+        context.Cleanup += ContextOnCleanup;
 
         LoadSystems();
 
@@ -23,16 +28,19 @@ internal sealed partial class EcsHost(IServiceProvider serviceProvider, Unhandle
         OnGameModeInit();
     }
 
-    protected override void Cleanup()
+    private void ContextOnCleanup(object? sender, EventArgs e)
     {
+        _context?.Cleanup -= ContextOnCleanup;
+        _context = null;
+
         OnGameModeExit();
 
         if (_serviceProvider is IDisposable disposable)
         {
-            //  TODO: This cleanup is called so late - we can't unsubscribe event handlers anymore, but the disposables in registered systems will try to unsubscribe them. This may cause a System.ExecutionEngineException on shutdown.
             disposable.Dispose();
-            _serviceProvider = null;
         }
+
+        _serviceProvider = null;
     }
 
     private void UnhandledExceptionHandler(string context, Exception exception)
