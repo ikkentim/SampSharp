@@ -190,9 +190,14 @@ internal class CommandDispatcher
             args[i] = prefixArgs[i];
         }
 
+        if (parsedArgs == null || parsedArgs.Length == 0)
+        {
+            return args;
+        }
+
         var parsedIdx = 0;
         var argStartIndex = overload.PrefixParameterCount;
-        while (parsedArgs != null && parsedIdx < parsedArgs.Length && argStartIndex < parameters.Length)
+        while (parsedIdx < parsedArgs.Length && argStartIndex < parameters.Length)
         {
             args[argStartIndex++] = parsedArgs[parsedIdx++];
         }
