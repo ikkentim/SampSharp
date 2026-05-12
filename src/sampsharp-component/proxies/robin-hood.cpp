@@ -1,27 +1,31 @@
 #include <sdk.hpp>
 #include "../proxy-api.hpp"
 
-struct FlatHashSetPtr { void* a; void* b; };
+struct FlatHashSetPtr
+{
+    void* a;
+    void* b;
+};
 
-extern "C" SDK_EXPORT FlatHashSetPtr __CDECL FlatPtrHashSet_begin(FlatPtrHashSet<void *>& set)
+extern "C" SDK_EXPORT FlatHashSetPtr __CDECL FlatPtrHashSet_begin(FlatPtrHashSet<void*>& set)
 {
     auto it = set.begin();
     return *(FlatHashSetPtr*)&it;
 }
 
-extern "C" SDK_EXPORT FlatHashSetPtr __CDECL FlatPtrHashSet_end(FlatPtrHashSet<void *>& set)
+extern "C" SDK_EXPORT FlatHashSetPtr __CDECL FlatPtrHashSet_end(FlatPtrHashSet<void*>& set)
 {
     auto it = set.end();
     return *(FlatHashSetPtr*)&it;
 }
 
-extern "C" SDK_EXPORT FlatHashSetPtr __CDECL FlatPtrHashSet_inc(FlatPtrHashSet<void *>::iterator value)
+extern "C" SDK_EXPORT FlatHashSetPtr __CDECL FlatPtrHashSet_inc(FlatPtrHashSet<void*>::iterator value)
 {
     value++;
     return *(FlatHashSetPtr*)&value;
 }
 
-extern "C" SDK_EXPORT size_t  __CDECL FlatPtrHashSet_size(FlatPtrHashSet<void *>& set)
+extern "C" SDK_EXPORT size_t __CDECL FlatPtrHashSet_size(FlatPtrHashSet<void*>& set)
 {
     return set.size();
 }
@@ -44,7 +48,7 @@ extern "C" SDK_EXPORT FlatHashSetPtr __CDECL FlatHashSetStringView_inc(FlatHashS
     return *(FlatHashSetPtr*)&value;
 }
 
-extern "C" SDK_EXPORT size_t  __CDECL FlatHashSetStringView_size(FlatHashSet<StringView>& set)
+extern "C" SDK_EXPORT size_t __CDECL FlatHashSetStringView_size(FlatHashSet<StringView>& set)
 {
     return set.size();
 }

@@ -1,0 +1,49 @@
+---
+Language: Cpp
+BasedOnStyle: LLVM
+
+# Indentation
+IndentWidth: 4
+TabWidth: 4
+UseTab: Never
+ContinuationIndentWidth: 4
+ConstructorInitializerIndentWidth: 4
+NamespaceIndentation: All
+IndentCaseLabels: false
+AccessModifierOffset: -4
+
+# Column limit
+ColumnLimit: 120
+
+# Braces – Allman style (opening brace on its own line)
+BreakBeforeBraces: Allman
+
+# Pointer and reference alignment
+PointerAlignment: Left
+ReferenceAlignment: Left
+
+# Spaces
+SpaceBeforeParens: ControlStatements
+SpaceAfterTemplateKeyword: true
+SpaceBeforeCpp11BracedList: false
+SpaceBeforeCtorInitializerColon: true
+SpaceBeforeInheritanceColon: true
+SpaceBeforeRangeBasedForLoopColon: true
+
+# Constructor initializers
+BreakConstructorInitializers: AfterColon
+PackConstructorInitializers: Never
+
+# Template declarations
+AlwaysBreakTemplateDeclarations: Yes
+
+# Short constructs
+AllowShortFunctionsOnASingleLine: InlineOnly
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortLoopsOnASingleLine: false
+AllowShortCaseLabelsOnASingleLine: false
+AllowShortBlocksOnASingleLine: Empty
+
+# Include sorting – preserve existing order to avoid breaking build dependencies
+SortIncludes: Never
+...
