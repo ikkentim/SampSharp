@@ -1,5 +1,4 @@
-﻿using Microsoft.CodeAnalysis.CSharp;
-using SampSharp.SourceGenerator.Generators;
+﻿using SampSharp.SourceGenerator.Generators;
 using VerifyXunit;
 
 namespace SampSharp.SourceGenerator.Tests;
@@ -23,9 +22,7 @@ public class OpenMpEventHandlerSourceGeneratorTests : VerifyBase
             }
             """;
 
-        var compilation = CompilationHelper.CreateCompilation(source);
-        var generator = new OpenMpEventHandlerSourceGenerator();
-        var driver = CSharpGeneratorDriver.Create(generator).RunGenerators(compilation);
+        var driver = CompilationHelper.RunGenerator(source, new OpenMpEventHandlerSourceGenerator());
 
         return Verify(driver);
     }
@@ -45,9 +42,7 @@ public class OpenMpEventHandlerSourceGeneratorTests : VerifyBase
             }
             """;
 
-        var compilation = CompilationHelper.CreateCompilation(source);
-        var generator = new OpenMpEventHandlerSourceGenerator();
-        var driver = CSharpGeneratorDriver.Create(generator).RunGenerators(compilation);
+        var driver = CompilationHelper.RunGenerator(source, new OpenMpEventHandlerSourceGenerator());
 
         return Verify(driver);
     }
@@ -67,9 +62,7 @@ public class OpenMpEventHandlerSourceGeneratorTests : VerifyBase
             }
             """;
 
-        var compilation = CompilationHelper.CreateCompilation(source);
-        var generator = new OpenMpEventHandlerSourceGenerator();
-        var driver = CSharpGeneratorDriver.Create(generator).RunGenerators(compilation);
+        var driver = CompilationHelper.RunGenerator(source, new OpenMpEventHandlerSourceGenerator());
 
         return Verify(driver);
     }
@@ -94,9 +87,7 @@ public class OpenMpEventHandlerSourceGeneratorTests : VerifyBase
             }
             """;
 
-        var compilation = CompilationHelper.CreateCompilation(source);
-        var generator = new OpenMpEventHandlerSourceGenerator();
-        var driver = CSharpGeneratorDriver.Create(generator).RunGenerators(compilation);
+        var driver = CompilationHelper.RunGenerator(source, new OpenMpEventHandlerSourceGenerator());
 
         return Verify(driver);
     }

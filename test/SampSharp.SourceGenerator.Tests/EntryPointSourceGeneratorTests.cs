@@ -1,5 +1,4 @@
-﻿using Microsoft.CodeAnalysis.CSharp;
-using SampSharp.SourceGenerator.Generators;
+﻿using SampSharp.SourceGenerator.Generators;
 using VerifyXunit;
 
 namespace SampSharp.SourceGenerator.Tests;
@@ -19,9 +18,7 @@ public class EntryPointSourceGeneratorTests : VerifyBase
             }
             """;
 
-        var compilation = CompilationHelper.CreateCompilation(source);
-        var generator = new EntryPointSourceGenerator();
-        var driver = CSharpGeneratorDriver.Create(generator).RunGenerators(compilation);
+        var driver = CompilationHelper.RunGenerator(source, new EntryPointSourceGenerator());
 
         return Verify(driver);
     }
@@ -38,9 +35,7 @@ public class EntryPointSourceGeneratorTests : VerifyBase
             }
             """;
 
-        var compilation = CompilationHelper.CreateCompilation(source);
-        var generator = new EntryPointSourceGenerator();
-        var driver = CSharpGeneratorDriver.Create(generator).RunGenerators(compilation);
+        var driver = CompilationHelper.RunGenerator(source, new EntryPointSourceGenerator());
 
         return Verify(driver);
     }
@@ -57,9 +52,7 @@ public class EntryPointSourceGeneratorTests : VerifyBase
             }
             """;
 
-        var compilation = CompilationHelper.CreateCompilation(source);
-        var generator = new EntryPointSourceGenerator();
-        var driver = CSharpGeneratorDriver.Create(generator).RunGenerators(compilation);
+        var driver = CompilationHelper.RunGenerator(source, new EntryPointSourceGenerator());
 
         return Verify(driver);
     }

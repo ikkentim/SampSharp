@@ -14,6 +14,16 @@ public static class CompilationHelper
     private static readonly Lazy<IReadOnlyList<MetadataReference>> _defaultReferences = new(BuildDefaultReferences);
 
     /// <summary>
+    /// Creates a <see cref="CSharpGeneratorDriver" /> by running <paramref name="generator" /> against a compilation
+    /// built from <paramref name="source" />.
+    /// </summary>
+    public static GeneratorDriver RunGenerator(string source, IIncrementalGenerator generator)
+    {
+        var compilation = CreateCompilation(source);
+        return CSharpGeneratorDriver.Create(generator).RunGenerators(compilation);
+    }
+
+    /// <summary>
     /// Creates a <see cref="CSharpCompilation" /> with the given source text and all default metadata references
     /// (BCL + SampSharp.OpenMp.Core).
     /// </summary>

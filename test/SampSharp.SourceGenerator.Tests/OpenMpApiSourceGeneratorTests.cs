@@ -1,5 +1,4 @@
-﻿using Microsoft.CodeAnalysis.CSharp;
-using SampSharp.SourceGenerator.Generators;
+﻿using SampSharp.SourceGenerator.Generators;
 using VerifyXunit;
 
 namespace SampSharp.SourceGenerator.Tests;
@@ -24,9 +23,7 @@ public class OpenMpApiSourceGeneratorTests : VerifyBase
             }
             """;
 
-        var compilation = CompilationHelper.CreateCompilation(source);
-        var generator = new OpenMpApiSourceGenerator();
-        var driver = CSharpGeneratorDriver.Create(generator).RunGenerators(compilation);
+        var driver = CompilationHelper.RunGenerator(source, new OpenMpApiSourceGenerator());
 
         return Verify(driver);
     }
@@ -52,9 +49,7 @@ public class OpenMpApiSourceGeneratorTests : VerifyBase
             }
             """;
 
-        var compilation = CompilationHelper.CreateCompilation(source);
-        var generator = new OpenMpApiSourceGenerator();
-        var driver = CSharpGeneratorDriver.Create(generator).RunGenerators(compilation);
+        var driver = CompilationHelper.RunGenerator(source, new OpenMpApiSourceGenerator());
 
         return Verify(driver);
     }
@@ -76,9 +71,7 @@ public class OpenMpApiSourceGeneratorTests : VerifyBase
             }
             """;
 
-        var compilation = CompilationHelper.CreateCompilation(source);
-        var generator = new OpenMpApiSourceGenerator();
-        var driver = CSharpGeneratorDriver.Create(generator).RunGenerators(compilation);
+        var driver = CompilationHelper.RunGenerator(source, new OpenMpApiSourceGenerator());
 
         return Verify(driver);
     }
@@ -98,9 +91,7 @@ public class OpenMpApiSourceGeneratorTests : VerifyBase
             }
             """;
 
-        var compilation = CompilationHelper.CreateCompilation(source);
-        var generator = new OpenMpApiSourceGenerator();
-        var driver = CSharpGeneratorDriver.Create(generator).RunGenerators(compilation);
+        var driver = CompilationHelper.RunGenerator(source, new OpenMpApiSourceGenerator());
 
         return Verify(driver);
     }
@@ -121,9 +112,7 @@ public class OpenMpApiSourceGeneratorTests : VerifyBase
             }
             """;
 
-        var compilation = CompilationHelper.CreateCompilation(source);
-        var generator = new OpenMpApiSourceGenerator();
-        var driver = CSharpGeneratorDriver.Create(generator).RunGenerators(compilation);
+        var driver = CompilationHelper.RunGenerator(source, new OpenMpApiSourceGenerator());
 
         return Verify(driver);
     }
@@ -145,9 +134,7 @@ public class OpenMpApiSourceGeneratorTests : VerifyBase
             }
             """;
 
-        var compilation = CompilationHelper.CreateCompilation(source);
-        var generator = new OpenMpApiSourceGenerator();
-        var driver = CSharpGeneratorDriver.Create(generator).RunGenerators(compilation);
+        var driver = CompilationHelper.RunGenerator(source, new OpenMpApiSourceGenerator());
 
         return Verify(driver);
     }
@@ -168,9 +155,7 @@ public class OpenMpApiSourceGeneratorTests : VerifyBase
             }
             """;
 
-        var compilation = CompilationHelper.CreateCompilation(source);
-        var generator = new OpenMpApiSourceGenerator();
-        var driver = CSharpGeneratorDriver.Create(generator).RunGenerators(compilation);
+        var driver = CompilationHelper.RunGenerator(source, new OpenMpApiSourceGenerator());
 
         return Verify(driver);
     }

@@ -1,5 +1,4 @@
-﻿using Microsoft.CodeAnalysis.CSharp;
-using SampSharp.SourceGenerator.Generators;
+﻿using SampSharp.SourceGenerator.Generators;
 using VerifyXunit;
 
 namespace SampSharp.SourceGenerator.Tests;
@@ -28,9 +27,7 @@ public class NumberedTypeSourceGeneratorTests : VerifyBase
             }
             """;
 
-        var compilation = CompilationHelper.CreateCompilation(source);
-        var generator = new NumberedTypeSourceGenerator();
-        var driver = CSharpGeneratorDriver.Create(generator).RunGenerators(compilation);
+        var driver = CompilationHelper.RunGenerator(source, new NumberedTypeSourceGenerator());
 
         return Verify(driver);
     }
@@ -57,9 +54,7 @@ public class NumberedTypeSourceGeneratorTests : VerifyBase
             }
             """;
 
-        var compilation = CompilationHelper.CreateCompilation(source);
-        var generator = new NumberedTypeSourceGenerator();
-        var driver = CSharpGeneratorDriver.Create(generator).RunGenerators(compilation);
+        var driver = CompilationHelper.RunGenerator(source, new NumberedTypeSourceGenerator());
 
         return Verify(driver);
     }
