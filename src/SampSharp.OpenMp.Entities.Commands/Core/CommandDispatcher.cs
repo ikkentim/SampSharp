@@ -48,19 +48,25 @@ internal class CommandDispatcher
 
         // Check permission if a permission checker is provided
         if (bestMatch.overload is not null &&
-            permissionChecker is not null &&
             prefixArgs is [EntityId entityId, ..])
         {
             var entityManager = services.GetService(typeof(IEntityManager)) as IEntityManager
-                ?? throw new InvalidOperationException($"{nameof(IEntityManager)} is not registered in the service provider but is required for permission checking.");
-            var playerComponent = entityManager.GetComponent<Player>(entityId);
-            if (playerComponent != null && !permissionChecker.HasPermission(playerComponent, bestMatch.overload))
+                ?? throw new InvalidOperationException($"{nameof(IEntityManager)} is not registered in the service provider but is required for player command validation.");
+            if (bestMatch.overload.CompiledComponentMatcher != null)
             {
-                var permDenied = DispatchResult.CreatePermissionDenied();
-                permDenied.CommandOverload = bestMatch.overload;
-                permDenied.AllOverloads = overloads;
-                permDenied.UsedCommandName = usedCommandName;
-                return permDenied;
+                var arguments = BuildArguments(bestMatch.overload, prefixArgs, bestMatch.parsedArguments);
+                if (!bestMatch.overload.CompiledComponentMatcher(arguments, entityManager))
+                {
+                    return CreatePermissionDenied(bestMatch.overload, overloads, usedCommandName);
+                }
+            }
+
+            var playerComponent = entityManager.GetComponent<Player>(entityId);
+            if (permissionChecker is not null &&
+                playerComponent != null &&
+                !permissionChecker.HasPermission(playerComponent, bestMatch.overload))
+            {
+                return CreatePermissionDenied(bestMatch.overload, overloads, usedCommandName);
             }
         }
 
@@ -171,5 +177,35 @@ internal class CommandDispatcher
         }
 
         return (true, parsedValues.ToArray());
+    }
+
+    private static object?[] BuildArguments(CommandDefinition overload, object[] prefixArgs, object?[]? parsedArgs)
+    {
+        var parameters = overload.MethodParameters;
+        var args = new object?[parameters.Length];
+
+        var prefixCount = Math.Min(overload.PrefixParameterCount, prefixArgs.Length);
+        for (var i = 0; i < prefixCount; i++)
+        {
+            args[i] = prefixArgs[i];
+        }
+
+        var parsedIdx = 0;
+        var argStartIndex = overload.PrefixParameterCount;
+        while (parsedArgs != null && parsedIdx < parsedArgs.Length && argStartIndex < parameters.Length)
+        {
+            args[argStartIndex++] = parsedArgs[parsedIdx++];
+        }
+
+        return args;
+    }
+
+    private static DispatchResult CreatePermissionDenied(CommandDefinition overload, IReadOnlyList<CommandDefinition> overloads, string usedCommandName)
+    {
+        var permDenied = DispatchResult.CreatePermissionDenied();
+        permDenied.CommandOverload = overload;
+        permDenied.AllOverloads = overloads;
+        permDenied.UsedCommandName = usedCommandName;
+        return permDenied;
     }
 }
