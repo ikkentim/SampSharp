@@ -11,7 +11,7 @@ public sealed class StartupContext : IStartupContext
     // Delegates must be kept in memory to prevent GC
     // ReSharper disable PrivateFieldCanBeConvertedToLocalVariable
     private readonly Action _cleanup;
-    private readonly OnFreeComponent _freeComponent;
+    private readonly OnFreeComponentDelegate _freeComponent;
     // ReSharper restore PrivateFieldCanBeConvertedToLocalVariable
 
     /// <summary>
@@ -41,8 +41,8 @@ public sealed class StartupContext : IStartupContext
         SampSharpExceptionHandler.SetExceptionHandler(_unhandledExceptionHandler);
 
         // Keep delegates in memory to prevent GC
-        _cleanup = EntryOnCleanup;
-        _freeComponent = EntryOnFreeComponent;
+        _cleanup = OnCleanup;
+        _freeComponent = OnFreeComponent;
 
         var cleanupPtr = Marshal.GetFunctionPointerForDelegate(_cleanup);
         var freeComponentPtr = Marshal.GetFunctionPointerForDelegate(_freeComponent);
@@ -97,16 +97,6 @@ public sealed class StartupContext : IStartupContext
         Initialized?.Invoke(this, EventArgs.Empty);
     }
 
-    private void EntryOnCleanup()
-    {
-        Cleanup?.Invoke(this, EventArgs.Empty);
-    }
-
-    private void EntryOnFreeComponent(IComponent component)
-    {
-        ComponentFreed?.Invoke(this, component);
-    }
-
     /// <summary>
     /// Internal method. Do not invoke manually.
     /// </summary>
@@ -142,6 +132,16 @@ public sealed class StartupContext : IStartupContext
         }
     }
 
+    private void OnCleanup()
+    {
+        Cleanup?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void OnFreeComponent(IComponent component)
+    {
+        ComponentFreed?.Invoke(this, component);
+    }
+
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    private delegate void OnFreeComponent(IComponent component);
+    private delegate void OnFreeComponentDelegate(IComponent component);
 }
