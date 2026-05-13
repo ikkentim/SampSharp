@@ -9,7 +9,7 @@
   "name": "SampSharp ECS GameMode for open.mp",
   "identity": "SampSharp.Templates.EcsGameMode.OpenMp.CSharp",
   "groupIdentity": "SampSharp.Templates.EcsGameMode.OpenMp",
-  "shortName": "sampsharp-ecs-gamemode",
+  "shortName": "sampsharp",
   "sourceName": "Company.GameMode",
   "preferNameDirectory": true,
   "tags": {
