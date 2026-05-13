@@ -1,6 +1,6 @@
 using PlayerComponent = SampSharp.Entities.SAMP.Player;
 
-namespace SampSharp.Entities.SAMP.Commands;
+namespace SampSharp.Entities.Commands;
 
 /// <summary>
 /// Checks whether a player has permission to invoke a specific command.

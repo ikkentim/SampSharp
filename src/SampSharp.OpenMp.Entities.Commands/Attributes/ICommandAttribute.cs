@@ -1,4 +1,4 @@
-namespace SampSharp.Entities.SAMP.Commands;
+namespace SampSharp.Entities.Commands;
 
 /// <summary>
 /// Base interface for command attributes. Implemented by [PlayerCommand] and [ConsoleCommand].

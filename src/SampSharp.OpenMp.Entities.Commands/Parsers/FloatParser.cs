@@ -1,6 +1,6 @@
 using System.Globalization;
 
-namespace SampSharp.Entities.SAMP.Commands;
+namespace SampSharp.Entities.Commands;
 
 /// <summary>Parses a single <see cref="float" /> word (invariant culture).</summary>
 public class FloatParser : ICommandParameterParser

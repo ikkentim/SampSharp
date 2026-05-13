@@ -1,7 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
-namespace SampSharp.Entities.SAMP.Commands;
+namespace SampSharp.Entities.Commands;
 
 /// <summary>
 /// Extension methods for configuring the command system in the dependency injection container.

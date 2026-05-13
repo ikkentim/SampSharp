@@ -1,7 +1,7 @@
 using System.Reflection;
 using Moq;
 using SampSharp.Entities;
-using SampSharp.Entities.SAMP.Commands;
+using SampSharp.Entities.Commands;
 using Shouldly;
 using Xunit;
 

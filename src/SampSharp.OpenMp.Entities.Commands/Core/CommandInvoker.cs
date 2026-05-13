@@ -1,4 +1,4 @@
-namespace SampSharp.Entities.SAMP.Commands;
+namespace SampSharp.Entities.Commands;
 
 /// <summary>
 /// Delegate type for the compiled method invoker of a command overload.

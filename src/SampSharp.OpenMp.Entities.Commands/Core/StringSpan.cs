@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace SampSharp.Entities.SAMP.Commands;
+namespace SampSharp.Entities.Commands;
 
 /// <summary>
 /// Represents a span of characters within a string.

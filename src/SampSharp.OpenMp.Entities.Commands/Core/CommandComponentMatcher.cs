@@ -1,4 +1,4 @@
-namespace SampSharp.Entities.SAMP.Commands;
+namespace SampSharp.Entities.Commands;
 
 /// <summary>
 /// Delegate type for validating whether command arguments can be resolved to the required component types.

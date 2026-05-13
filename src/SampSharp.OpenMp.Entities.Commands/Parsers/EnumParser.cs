@@ -1,4 +1,4 @@
-namespace SampSharp.Entities.SAMP.Commands;
+namespace SampSharp.Entities.Commands;
 
 /// <summary>Parses an enum by integer value or by (case-insensitive) substring of name.</summary>
 public class EnumParser : ICommandParameterParser

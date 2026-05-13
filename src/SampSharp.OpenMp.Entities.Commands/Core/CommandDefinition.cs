@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace SampSharp.Entities.SAMP.Commands;
+namespace SampSharp.Entities.Commands;
 
 /// <summary>
 /// Represents a single overload of a command (one specific method implementation).

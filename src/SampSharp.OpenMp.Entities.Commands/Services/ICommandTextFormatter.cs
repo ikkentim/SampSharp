@@ -1,4 +1,4 @@
-namespace SampSharp.Entities.SAMP.Commands;
+namespace SampSharp.Entities.Commands;
 
 /// <summary>
 /// Formats command usage text. Generates strings like "/cmd &lt;arg1&gt; &lt;arg2&gt;" for display.

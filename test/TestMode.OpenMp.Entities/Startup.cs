@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using SampSharp.Entities;
-using SampSharp.Entities.SAMP.Commands;
+using SampSharp.Entities.Commands;
 using SampSharp.OpenMp.Core;
 
 namespace TestMode.OpenMp.Entities;

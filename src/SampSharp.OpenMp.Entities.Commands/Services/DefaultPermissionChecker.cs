@@ -1,6 +1,6 @@
 using PlayerComponent = SampSharp.Entities.SAMP.Player;
 
-namespace SampSharp.Entities.SAMP.Commands;
+namespace SampSharp.Entities.Commands;
 
 /// <summary>
 /// Default permission checker that grants all permissions.
