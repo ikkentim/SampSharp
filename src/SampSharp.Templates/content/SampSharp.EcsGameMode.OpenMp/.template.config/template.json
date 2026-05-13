@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "Tim Potze",
+  "classifications": [
+    "SampSharp",
+    "open.mp",
+    "GameMode"
+  ],
+  "name": "SampSharp ECS GameMode for open.mp",
+  "identity": "SampSharp.Templates.EcsGameMode.OpenMp.CSharp",
+  "groupIdentity": "SampSharp.Templates.EcsGameMode.OpenMp",
+  "shortName": "sampsharp-ecs-gamemode",
+  "sourceName": "Company.GameMode",
+  "preferNameDirectory": true,
+  "tags": {
+    "language": "C#",
+    "type": "project"
+  }
+}
