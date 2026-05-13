@@ -1,4 +1,4 @@
-namespace SampSharp.Entities.Commands;
+namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>
 /// Attaches custom metadata to a command via key-value pairs.

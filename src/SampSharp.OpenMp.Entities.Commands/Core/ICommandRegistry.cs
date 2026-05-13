@@ -1,4 +1,4 @@
-namespace SampSharp.Entities.Commands;
+namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>
 /// Represents a registry for managing and retrieving command definitions by name, alias, or group.

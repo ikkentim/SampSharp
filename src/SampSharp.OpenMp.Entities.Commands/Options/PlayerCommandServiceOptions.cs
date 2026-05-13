@@ -1,4 +1,4 @@
-namespace SampSharp.Entities.Commands;
+namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>
 /// Options for configuring the player command service.

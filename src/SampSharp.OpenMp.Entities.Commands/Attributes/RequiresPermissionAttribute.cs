@@ -1,4 +1,4 @@
-namespace SampSharp.Entities.Commands;
+namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>
 /// Adds a <c>permission</c> tag to the command.

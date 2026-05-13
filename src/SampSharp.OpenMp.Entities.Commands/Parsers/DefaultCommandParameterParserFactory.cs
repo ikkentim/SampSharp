@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace SampSharp.Entities.Commands;
+namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>
 /// Default implementation that creates parsers for standard types.

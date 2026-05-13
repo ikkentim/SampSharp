@@ -1,4 +1,4 @@
-namespace SampSharp.Entities.Commands;
+namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>
 /// Extension methods for configuring the command system in the ECS host builder.

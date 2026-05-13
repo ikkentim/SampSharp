@@ -1,4 +1,4 @@
-namespace SampSharp.Entities.Commands;
+namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>
 /// Dispatches chat input from a player to a method marked with <see cref="PlayerCommandAttribute" />.

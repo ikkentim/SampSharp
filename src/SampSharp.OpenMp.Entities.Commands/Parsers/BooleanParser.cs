@@ -1,4 +1,4 @@
-namespace SampSharp.Entities.Commands;
+namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>Parses a single <see cref="bool" /> word.</summary>
 public class BooleanParser : ICommandParameterParser

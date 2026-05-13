@@ -1,4 +1,4 @@
-namespace SampSharp.Entities.Commands;
+namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>
 /// Dispatches console input to a method marked with <see cref="ConsoleCommandAttribute" />.

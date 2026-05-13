@@ -1,5 +1,5 @@
 using Moq;
-using SampSharp.Entities.Commands;
+using SampSharp.Entities.SAMP.Commands;
 using SampSharp.OpenMp.Entities.Commands.Tests.Core;
 using Shouldly;
 using Xunit;

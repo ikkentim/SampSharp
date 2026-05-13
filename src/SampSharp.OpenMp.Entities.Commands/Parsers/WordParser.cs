@@ -1,4 +1,4 @@
-namespace SampSharp.Entities.Commands;
+namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>Consumes the next whitespace-delimited word.</summary>
 public class WordParser : ICommandParameterParser

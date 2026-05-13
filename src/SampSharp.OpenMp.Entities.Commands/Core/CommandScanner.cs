@@ -5,7 +5,7 @@ using System.Reflection;
 using Microsoft.Extensions.Logging;
 using SampSharp.Entities.Utilities;
 
-namespace SampSharp.Entities.Commands;
+namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>
 /// Scans ISystem types for command methods marked with [PlayerCommand] or [ConsoleCommand].

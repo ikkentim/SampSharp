@@ -3,6 +3,7 @@
 [Oo]bj/
 build/
 build_*/
+!src/SampSharp.Sdk/build/
 publish/
 PublishProfiles/
 *.log

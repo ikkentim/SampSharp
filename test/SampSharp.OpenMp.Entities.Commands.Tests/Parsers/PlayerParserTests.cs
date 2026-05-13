@@ -2,7 +2,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using SampSharp.Entities;
 using SampSharp.Entities.SAMP;
-using SampSharp.Entities.Commands;
+using SampSharp.Entities.SAMP.Commands;
 using Shouldly;
 using Xunit;
 

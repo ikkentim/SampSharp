@@ -1,4 +1,4 @@
-namespace SampSharp.Entities.Commands;
+namespace SampSharp.Entities.SAMP.Commands;
 
 internal class CommandTreeNode(StringComparison stringComparison)
 {

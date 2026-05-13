@@ -1,6 +1,6 @@
 using JetBrains.Annotations;
 
-namespace SampSharp.Entities.Commands;
+namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>
 /// Marks an instance method on an <see cref="ISystem" /> as a console command.
