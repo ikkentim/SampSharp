@@ -20,7 +20,7 @@ public class MyFirstSystem : ISystem
     {
         var connectInfo = player.GetComponent<MyFirstComponent>();
 
-        if (!connectInfo)
+        if (connectInfo == null)
         {
             player.SendClientMessage("Your connect time is not available yet.");
             return;
