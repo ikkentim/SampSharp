@@ -1,0 +1,7 @@
+<Project>
+  <ItemGroup>
+    <Using Include="SampSharp.Entities" />
+    <Using Include="SampSharp.Entities.SAMP" />
+    <Using Include="SampSharp.Entities.SAMP.Commands" />
+  </ItemGroup>
+</Project>

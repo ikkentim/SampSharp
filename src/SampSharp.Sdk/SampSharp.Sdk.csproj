@@ -17,4 +17,8 @@
         <ProjectReference Include="..\SampSharp.SourceGenerator\SampSharp.SourceGenerator.csproj" PrivateAssets="None" />
     </ItemGroup>
 
+    <ItemGroup>
+        <None Include="build\SampSharp.Sdk.props" Pack="true" PackagePath="build\" />
+    </ItemGroup>
+
 </Project>
