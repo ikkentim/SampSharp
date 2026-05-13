@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Collections;
+using System.Diagnostics;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
@@ -20,7 +21,7 @@ internal static partial class LaunchInstructions
         Console.WriteLine("See <<TODO: Documentation URL>> for more information.");
         Console.WriteLine();
 
-        if (!IsRunningInVisualStudio())
+        if (!IsRunningInVisualStudio() && !IsRunningInVisualStudioCode())
         {
             return;
         }
@@ -95,16 +96,33 @@ internal static partial class LaunchInstructions
         Console.Write("Press (y)es / (n)o: ");
         while (true)
         {
-            var key = Console.ReadKey();
-
-            switch (key.Key)
+            try
             {
-                case ConsoleKey.N:
-                    Console.WriteLine();
-                    return false;
-                case ConsoleKey.Y:
-                    Console.WriteLine();
+                var key = Console.ReadKey();
+
+                switch (key.Key)
+                {
+                    case ConsoleKey.N:
+                        Console.WriteLine();
+                        return false;
+                    case ConsoleKey.Y:
+                        Console.WriteLine();
+                        return true;
+                }
+            }
+            catch (InvalidOperationException)
+            {
+                var c = Console.Read();
+
+                if (c == 'y')
+                {
                     return true;
+                }
+                if (c == 'n')
+                {
+                    return false;
+                }
+
             }
         }
 
@@ -142,6 +160,11 @@ internal static partial class LaunchInstructions
     private static bool IsRunningInVisualStudio()
     {
         return Debugger.IsAttached && Environment.GetEnvironmentVariable("VisualStudioVersion") != null;
+    }
+
+    private static bool IsRunningInVisualStudioCode()
+    {
+        return Debugger.IsAttached && Environment.GetEnvironmentVariable("VSCODE_PID") != null;
     }
 
     private static DirectoryInfo? GetProjectDir()
