@@ -125,7 +125,7 @@ internal class ServerLogWriter : TextWriter
 
     public override void Write(char value)
     {
-        // TODO: Buffer until a line break is sent
+        // NOTE: This writes characters immediately instead of buffering to a line break.
         switch (value)
         {
             case '\r':
@@ -246,7 +246,7 @@ internal class ServerLogWriter : TextWriter
         Write(value.ToString(CultureInfo.InvariantCulture));
     }
 
-    // TODO: Improve Async variants
+    // NOTE: Async variants are still basic wrappers around sync methods.
     public override Task WriteAsync(char value)
     {
         return new Task(() => Write(value));

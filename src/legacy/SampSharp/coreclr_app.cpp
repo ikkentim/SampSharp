@@ -519,7 +519,7 @@ int coreclr_app::release()
     }
 
 #elif SAMPSHARP_WINDOWS
-    // TODO? Other errors???
+    // NOTE: Additional Windows shutdown error handling could be added here.
     host_->UnloadAppDomain(domain_id_, true);
     host_->Stop();
     retval = (int)host_->Release();

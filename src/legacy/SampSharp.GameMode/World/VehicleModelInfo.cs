@@ -26,7 +26,7 @@ public readonly partial struct VehicleModelInfo
 {
     private static readonly VehicleModelInfo[] _vehicleModelInfos =
     {
-        // TODO: Use VehicleModelType values instead of numeric casted values
+        // NOTE: Vehicle model identifiers are currently represented with numeric casts.
         new((VehicleModelType)400, "Landstalker", VehicleCategory.OffRoad, 4),
         new((VehicleModelType)401, "Bravura", VehicleCategory.Saloon, 2),
         new((VehicleModelType)402, "Buffalo", VehicleCategory.Sport, 2),
