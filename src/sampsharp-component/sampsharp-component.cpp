@@ -25,7 +25,7 @@ StringView SampSharpComponent::componentName() const
 
 SemanticVersion SampSharpComponent::componentVersion() const
 {
-    return {VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH, VERSION_BUILD};
+    return { VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH, 0 };
 }
 
 void SampSharpComponent::onLoad(ICore* c)
@@ -37,6 +37,12 @@ void SampSharpComponent::onLoad(ICore* c)
     {
         sampsharp::crash::install(c);
     }
+
+#if VERSION_PRERELEASE > 0
+    c->logLn(LogLevel::Warning, "SampSharp - You are running a prerelease version of SampSharp. Expect instability and report any issues you encounter to the developers.");
+    c->logLn(LogLevel::Warning, "SampSharp - Version: %d.%d.%d prerelease %d", VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH, VERSION_PRERELEASE);
+    c->logLn(LogLevel::Warning, "SampSharp - Report issues here: https://github.com/ikkentim/SampSharp/issues");
+#endif
 }
 
 void SampSharpComponent::provideConfiguration(ILogger& logger, IEarlyConfig& config, const bool defaults)
