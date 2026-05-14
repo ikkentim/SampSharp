@@ -7,19 +7,14 @@ namespace SampSharp.OpenMp.Core.Std.Chrono;
 /// Represents a duration in minutes which is represented in memory like an <c>std::chrono::minutes</c> from the C++
 /// standard library. MSVC uses <c>duration&lt;int, ratio&lt;60&gt;&gt;</c>, so the layout is a single 32-bit int.
 /// </summary>
+/// <remarks>
+/// Initializes a new instance of the <see cref="Minutes" /> struct.
+/// </remarks>
+/// <param name="value">The duration value in minutes.</param>
 [StructLayout(LayoutKind.Sequential)]
-public readonly struct Minutes
+public readonly struct Minutes(int value)
 {
-    private readonly int _value;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="Minutes" /> struct.
-    /// </summary>
-    /// <param name="value">The duration value in minutes.</param>
-    public Minutes(int value)
-    {
-        _value = value;
-    }
+    private readonly int _value = value;
 
     /// <summary>
     /// Converts this duration to a <see cref="TimeSpan" />.

@@ -1,13 +1,8 @@
 ﻿namespace SampSharp.Entities.SAMP.Commands;
 
-internal class ConsoleCommandProcessingMiddleware
+internal class ConsoleCommandProcessingMiddleware(EventDelegate next)
 {
-    private readonly EventDelegate _next;
-
-    public ConsoleCommandProcessingMiddleware(EventDelegate next)
-    {
-        _next = next;
-    }
+    private readonly EventDelegate _next = next;
 
     /// <summary>Invokes the middleware.</summary>
     public object? Invoke(EventContext context, IConsoleCommandService commandService)

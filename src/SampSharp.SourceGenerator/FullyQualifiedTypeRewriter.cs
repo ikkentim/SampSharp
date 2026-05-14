@@ -7,14 +7,9 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace SampSharp.SourceGenerator;
 
-public class FullyQualifiedTypeRewriter : CSharpSyntaxRewriter
+public class FullyQualifiedTypeRewriter(SemanticModel semanticModel) : CSharpSyntaxRewriter
 {
-    private readonly SemanticModel _semanticModel;
-
-    public FullyQualifiedTypeRewriter(SemanticModel semanticModel)
-    {
-        _semanticModel = semanticModel;
-    }
+    private readonly SemanticModel _semanticModel = semanticModel;
 
     public override SyntaxNode VisitMemberAccessExpression(MemberAccessExpressionSyntax node)
     {

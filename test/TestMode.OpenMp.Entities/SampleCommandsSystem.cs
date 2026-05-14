@@ -8,14 +8,9 @@ namespace TestMode.OpenMp.Entities;
 /// <summary>
 /// Demonstrates the new Commands system with simple player and console commands.
 /// </summary>
-public class SampleCommandsSystem : ISystem
+public class SampleCommandsSystem(IEntityManager entityManager) : ISystem
 {
-    private readonly IEntityManager _entityManager;
-
-    public SampleCommandsSystem(IEntityManager entityManager)
-    {
-        _entityManager = entityManager;
-    }
+    private readonly IEntityManager _entityManager = entityManager;
 
     /// <summary>
     /// Player command: /kill or /k - kills the player

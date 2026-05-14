@@ -4,14 +4,9 @@ namespace SampSharp.Entities.SAMP.Commands;
 /// Executes a command by invoking the associated method with parsed parameters.
 /// Uses pre-compiled MethodInvoker from CommandOverload for high performance.
 /// </summary>
-internal class CommandExecutor
+internal class CommandExecutor(IEntityManager entityManager)
 {
-    private readonly IEntityManager _entityManager;
-
-    public CommandExecutor(IEntityManager entityManager)
-    {
-        _entityManager = entityManager;
-    }
+    private readonly IEntityManager _entityManager = entityManager;
 
     /// <summary>
     /// Executes a command overload with the given parameters.

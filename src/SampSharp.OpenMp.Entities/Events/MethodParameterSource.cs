@@ -5,21 +5,17 @@ namespace SampSharp.Entities;
 /// <summary>
 /// Provides information about the origin of a parameter of a method.
 /// </summary>
-public class MethodParameterSource
+/// <remarks>
+/// Initializes a new instance of the <see cref="MethodParameterSource" /> class.
+/// </remarks>
+/// <param name="info">The parameter information.</param>
+public class MethodParameterSource(ParameterInfo info)
 {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="MethodParameterSource" /> class.
-    /// </summary>
-    /// <param name="info">The parameter information.</param>
-    public MethodParameterSource(ParameterInfo info)
-    {
-        Info = info;
-    }
 
     /// <summary>
     /// Gets the parameter information.
     /// </summary>
-    public ParameterInfo Info { get; }
+    public ParameterInfo Info { get; } = info;
 
     /// <summary>
     /// The index in the arguments array which contains the value for this parameter. A value of -1 indicates this

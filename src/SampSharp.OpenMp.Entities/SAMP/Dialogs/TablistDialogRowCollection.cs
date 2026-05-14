@@ -3,18 +3,13 @@
 /// <summary>
 /// Represents a collection of dialog rows of type <see cref="TablistDialogRow" />.
 /// </summary>
-public class TablistDialogRowCollection : DialogRowCollection<TablistDialogRow>
+/// <remarks>
+/// Initializes a new instance of the <see cref="TablistDialogRowCollection" /> class.
+/// </remarks>
+/// <param name="columnCount">The required number of columns.</param>
+public class TablistDialogRowCollection(int columnCount) : DialogRowCollection<TablistDialogRow>
 {
-    private readonly int _columnCount;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="TablistDialogRowCollection" /> class.
-    /// </summary>
-    /// <param name="columnCount">The required number of columns.</param>
-    public TablistDialogRowCollection(int columnCount)
-    {
-        _columnCount = columnCount;
-    }
+    private readonly int _columnCount = columnCount;
 
     /// <summary>
     /// Adds a row to the list with the specified <paramref name="columns" />.

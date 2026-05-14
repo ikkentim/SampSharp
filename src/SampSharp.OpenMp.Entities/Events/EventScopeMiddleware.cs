@@ -5,19 +5,14 @@ namespace SampSharp.Entities;
 /// <summary>
 /// Represents a middleware which adds a Dependency Injection scope to the <see cref="EventContext" /> of an event.
 /// </summary>
-public class EventScopeMiddleware
+/// <remarks>
+/// Initializes a new instance of the <see cref="EventScopeMiddleware" /> class.
+/// </remarks>
+/// <param name="next">The next middleware handler.</param>
+public class EventScopeMiddleware(EventDelegate next)
 {
     private readonly EventContextScoped _context = new();
-    private readonly EventDelegate _next;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="EventScopeMiddleware" /> class.
-    /// </summary>
-    /// <param name="next">The next middleware handler.</param>
-    public EventScopeMiddleware(EventDelegate next)
-    {
-        _next = next;
-    }
+    private readonly EventDelegate _next = next;
 
     /// <summary>
     /// Invokes the middleware.

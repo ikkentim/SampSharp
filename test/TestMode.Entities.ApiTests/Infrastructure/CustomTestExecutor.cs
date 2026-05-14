@@ -4,12 +4,8 @@ using Xunit.v3;
 
 namespace TestMode.Entities.ApiTests;
 
-public class CustomTestExecutor : XunitTestFrameworkExecutor
+public class CustomTestExecutor(IXunitTestAssembly testAssembly) : XunitTestFrameworkExecutor(testAssembly)
 {
-    public CustomTestExecutor(IXunitTestAssembly testAssembly) : base(testAssembly)
-    {
-    }
-
     public override async ValueTask RunTestCases(IReadOnlyCollection<IXunitTestCase> testCases, IMessageSink executionMessageSink, ITestFrameworkExecutionOptions executionOptions, CancellationToken cancellationToken)
     {
         await TaskHelper.SwitchToMainThread();

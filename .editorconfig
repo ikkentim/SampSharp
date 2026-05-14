@@ -125,7 +125,7 @@ dotnet_naming_style.begins_with_underscore.capitalization = camel_case
 
 # IDE0290: Use primary constructor
 # TODO: Enable this diagnostic
-dotnet_diagnostic.IDE0290.severity = silent
+dotnet_diagnostic.IDE0290.severity = warning
 
 # CA1707: Identifiers should not contain underscores
 # Justification: We mirror the names from the open.mp API, including types, interfaces and constants.

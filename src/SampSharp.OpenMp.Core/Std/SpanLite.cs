@@ -6,22 +6,16 @@ namespace SampSharp.OpenMp.Core.Std;
 /// Represents a span which is represented in memory like an <c>std::span_t</c> from the C++ standard library.
 /// </summary>
 /// <typeparam name="T"></typeparam>
+/// <remarks>
+/// Initializes a new instance of the <see cref="SpanLite{T}" /> struct.
+/// </remarks>
+/// <param name="data">A pointer to the underlying sequence.</param>
+/// <param name="size">The number of elements.</param>
 [StructLayout(LayoutKind.Sequential)]
-public readonly unsafe struct SpanLite<T> where T : unmanaged
+public readonly unsafe struct SpanLite<T>(T* data, Size size) where T : unmanaged
 {
-    private readonly T* _data;
-    private readonly Size _size;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="SpanLite{T}" /> struct.
-    /// </summary>
-    /// <param name="data">A pointer to the underlying sequence.</param>
-    /// <param name="size">The number of elements.</param>
-    public SpanLite(T* data, Size size)
-    {
-        _data = data;
-        _size = size;
-    }
+    private readonly T* _data = data;
+    private readonly Size _size = size;
 
     /// <summary>
     /// Converts the span to a <see cref="Span{T}" />.

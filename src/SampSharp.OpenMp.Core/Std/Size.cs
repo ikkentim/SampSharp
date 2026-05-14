@@ -5,8 +5,12 @@ namespace SampSharp.OpenMp.Core.Std;
 /// <summary>
 /// Represents a size which is represented in memory like an <c>std::size_t</c> from the C++ standard library.
 /// </summary>
+/// <remarks>
+/// Initializes a new instance of the <see cref="Size" /> struct.
+/// </remarks>
+/// <param name="value">The size value.</param>
 [StructLayout(LayoutKind.Sequential)]
-public readonly struct Size
+public readonly struct Size(nint value)
 {
     /// <summary>
     /// Gets the length in bytes of the Size structure.
@@ -22,18 +26,9 @@ public readonly struct Size
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="Size" /> struct.
-    /// </summary>
-    /// <param name="value">The size value.</param>
-    public Size(nint value)
-    {
-        Value = value;
-    }
-
-    /// <summary>
     /// Gets the size value.
     /// </summary>
-    public nint Value { get; }
+    public nint Value { get; } = value;
 
     /// <summary>
     /// Converts the size to an <see cref="int" />.

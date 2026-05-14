@@ -6,20 +6,15 @@ namespace SampSharp.OpenMp.Core.Api;
 /// <summary>
 /// Represents a unique identifier.
 /// </summary>
+/// <remarks>
+/// Initializes a new instance of the <see cref="UID" /> struct.
+/// </remarks>
+/// <param name="value">The underlying value.</param>
 [StructLayout(LayoutKind.Sequential)]
-public readonly struct UID
+public readonly struct UID(ulong value)
 {
-    private readonly ulong _value;
+    private readonly ulong _value = value;
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="UID" /> struct.
-    /// </summary>
-    /// <param name="value">The underlying value.</param>
-    public UID(ulong value)
-    {
-        _value = value;
-    }
-    
     /// <inheritdoc />
     public override string ToString()
     {

@@ -2,7 +2,7 @@
 
 namespace SampSharp.SourceGenerator.Marshalling;
 
-public class IdentifierStubContextFactory
+public class IdentifierStubContextFactory(WellKnownMarshallerTypes wellKnownMarshallerTypes)
 {
     //
     // stages:
@@ -14,12 +14,7 @@ public class IdentifierStubContextFactory
     // 4. Generate marshaling code and combine with invocation code
     //
 
-    private readonly CustomMarshallerTypeDetector _customMarshallerTypeDetector;
-
-    public IdentifierStubContextFactory(WellKnownMarshallerTypes wellKnownMarshallerTypes)
-    {
-        _customMarshallerTypeDetector = new CustomMarshallerTypeDetector(wellKnownMarshallerTypes);
-    }
+    private readonly CustomMarshallerTypeDetector _customMarshallerTypeDetector = new CustomMarshallerTypeDetector(wellKnownMarshallerTypes);
 
     public IdentifierStubContext Create(IParameterSymbol parameter, MarshalDirection marshalDirection)
     {

@@ -6,20 +6,15 @@ namespace SampSharp.OpenMp.Core;
 /// Represents a pointer to a structure.
 /// </summary>
 /// <typeparam name="T"></typeparam>
+/// <remarks>
+/// Initializes a new instance of the <see cref="BlittableStructRef{T}" /> struct.
+/// </remarks>
+/// <param name="ptr">The pointer value.</param>
 [StructLayout(LayoutKind.Sequential)]
-public readonly struct BlittableStructRef<T> where T : struct
+public readonly struct BlittableStructRef<T>(nint ptr) where T : struct
 {
-    private readonly nint _ptr;
+    private readonly nint _ptr = ptr;
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="BlittableStructRef{T}" /> struct.
-    /// </summary>
-    /// <param name="ptr">The pointer value.</param>
-    public BlittableStructRef(nint ptr)
-    {
-        _ptr = ptr;
-    }
-    
     /// <summary>
     /// Gets a value indicating whether the pointer has a value (is not a null pointer).
     /// </summary>

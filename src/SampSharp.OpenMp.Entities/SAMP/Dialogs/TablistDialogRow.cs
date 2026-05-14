@@ -3,21 +3,17 @@
 /// <summary>
 /// Represents a row in a <see cref="TablistDialog" />.
 /// </summary>
-public class TablistDialogRow : IDialogRow
+/// <remarks>
+/// Initializes a new instance of the <see cref="TablistDialogRow" /> class.
+/// </remarks>
+/// <param name="columns">The columns of the row.</param>
+public class TablistDialogRow(params string[] columns) : IDialogRow
 {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="TablistDialogRow" /> class.
-    /// </summary>
-    /// <param name="columns">The columns of the row.</param>
-    public TablistDialogRow(params string[] columns)
-    {
-        Columns = columns ?? throw new ArgumentNullException(nameof(columns));
-    }
 
     /// <summary>
     /// Gets the columns of this tablist dialog row.
     /// </summary>
-    public string[] Columns { get; }
+    public string[] Columns { get; } = columns ?? throw new ArgumentNullException(nameof(columns));
 
     /// <summary>
     /// Gets the number of columns in this row.

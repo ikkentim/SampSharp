@@ -57,36 +57,24 @@ public static unsafe class AnimationDataMarshaller
     }
 
     [StructLayout(LayoutKind.Explicit)]
-    public struct Native
+    public struct Native(float delta, bool loop, bool lockX, bool lockY, bool freeze, uint time, HybridString16 lib, HybridString24 name)
     {
         [FieldOffset(0)]
-        public float Delta;
+        public float Delta = delta;
         [FieldOffset(4)]
-        public bool Loop;
+        public bool Loop = loop;
         [FieldOffset(5)]
-        public bool LockX;
+        public bool LockX = lockX;
         [FieldOffset(6)]
-        public bool LockY;
+        public bool LockY = lockY;
         [FieldOffset(7)]
-        public bool Freeze;
+        public bool Freeze = freeze;
         [FieldOffset(8)]
-        public uint Time;
+        public uint Time = time;
         [FieldOffset(16)]
-        public HybridString16 Lib;
+        public HybridString16 Lib = lib;
         [FieldOffset(40)]
-        public HybridString24 Name;
-
-        public Native(float delta, bool loop, bool lockX, bool lockY, bool freeze, uint time, HybridString16 lib, HybridString24 name)
-        {
-            Delta = delta;
-            Loop = loop;
-            LockX = lockX;
-            LockY = lockY;
-            Freeze = freeze;
-            Time = time;
-            Lib = lib;
-            Name = name;
-        }
+        public HybridString24 Name = name;
     }
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

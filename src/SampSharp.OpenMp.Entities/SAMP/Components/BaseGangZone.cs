@@ -7,21 +7,14 @@ namespace SampSharp.Entities.SAMP;
 /// Provides the shared data and functionality of a gang zone, regardless of whether it is global
 /// (<see cref="GangZone" />) or scoped to a single player (<see cref="PlayerGangZone" />).
 /// </summary>
-public abstract class BaseGangZone : IdProvider
+/// <remarks>
+/// Initializes a new instance of the <see cref="BaseGangZone" /> class.
+/// </remarks>
+public abstract class BaseGangZone(IOmpEntityProvider entityProvider, IGangZonesComponent gangZones, IGangZone gangZone) : IdProvider((IIDProvider)gangZone)
 {
-    private readonly IOmpEntityProvider _entityProvider;
-    private readonly IGangZone _gangZone;
-    private readonly IGangZonesComponent _gangZones;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="BaseGangZone" /> class.
-    /// </summary>
-    protected BaseGangZone(IOmpEntityProvider entityProvider, IGangZonesComponent gangZones, IGangZone gangZone) : base((IIDProvider)gangZone)
-    {
-        _entityProvider = entityProvider;
-        _gangZone = gangZone;
-        _gangZones = gangZones;
-    }
+    private readonly IOmpEntityProvider _entityProvider = entityProvider;
+    private readonly IGangZone _gangZone = gangZone;
+    private readonly IGangZonesComponent _gangZones = gangZones;
 
     /// <summary>
     /// Gets a value indicating whether the open.mp entity counterpart has been destroyed.
