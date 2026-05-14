@@ -81,7 +81,7 @@ public class TextLabel : Component
             if (!value.IsOfAnyType(SampEntities.PlayerType, SampEntities.VehicleType))
                 throw new InvalidEntityArgumentException(nameof(value), SampEntities.PlayerType, SampEntities.VehicleType);
 
-            // TODO: Can detach maybe if id is empty?
+            // NOTE: Detaching is not handled here when an empty entity id is provided.
 
             if (value.IsOfType(SampEntities.PlayerType))
                 GetComponent<NativeTextLabel>()

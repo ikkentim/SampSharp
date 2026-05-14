@@ -12,6 +12,7 @@
     <Project Path="src/SampSharp.OpenMp.Entities.Commands/SampSharp.OpenMp.Entities.Commands.csproj" />
     <Project Path="src/SampSharp.OpenMp.Entities/SampSharp.OpenMp.Entities.csproj" />
     <Project Path="src/SampSharp.Sdk/SampSharp.Sdk.csproj" />
+    <Project Path="src/SampSharp.Templates/SampSharp.Templates.csproj" />
   </Folder>
   <Folder Name="/src/CodeAnalysis/">
     <Project Path="src/SampSharp.Analyzer/SampSharp.Analyzer.csproj" />

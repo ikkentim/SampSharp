@@ -11,20 +11,13 @@ namespace SampSharp.Entities.SAMP.Commands;
 /// Scans ISystem types for command methods marked with [PlayerCommand] or [ConsoleCommand].
 /// Builds CommandDefinition objects and registers them in a registry.
 /// </summary>
-internal partial class CommandScanner
+internal partial class CommandScanner(ISystemRegistry systemRegistry, IUnhandledExceptionHandler unhandledExceptionHandler, ILogger logger)
 {
     private static readonly MethodInfo _getComponentInfo = typeof(IEntityManager).GetMethod(nameof(IEntityManager.GetComponent),
         BindingFlags.Public | BindingFlags.Instance, null, [typeof(EntityId)], null)!;
-    private readonly ISystemRegistry _systemRegistry;
-    private readonly IUnhandledExceptionHandler _unhandledExceptionHandler;
-    private readonly ILogger _logger;
-
-    public CommandScanner(ISystemRegistry systemRegistry, IUnhandledExceptionHandler unhandledExceptionHandler, ILogger logger)
-    {
-        _systemRegistry = systemRegistry;
-        _unhandledExceptionHandler = unhandledExceptionHandler;
-        _logger = logger;
-    }
+    private readonly ISystemRegistry _systemRegistry = systemRegistry;
+    private readonly IUnhandledExceptionHandler _unhandledExceptionHandler = unhandledExceptionHandler;
+    private readonly ILogger _logger = logger;
 
     public void ScanPlayerCommands(CommandRegistry registry, ICommandParameterParserFactory parserFactory)
     {

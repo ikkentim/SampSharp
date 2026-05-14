@@ -4,133 +4,130 @@ using INPCComponent = SampSharp.OpenMp.Core.Api.INPCComponent;
 
 namespace SampSharp.Entities.SAMP;
 
-internal sealed class NpcService : INpcService
+internal sealed class NpcService(SampSharpEnvironment environment) : INpcService
 {
-    private readonly INPCComponent _npcs;
+    private readonly SafeComponentHandle<INPCComponent> _npcs = environment.SafeComponentHandleProvider.Get<INPCComponent>();
 
-    public NpcService(SampSharpEnvironment environment)
-    {
-        _npcs = environment.Components.QueryComponent<INPCComponent>();
-    }
+    private INPCComponent Npcs => _npcs;
 
     public int CreatePath()
     {
-        return _npcs.CreatePath();
+        return Npcs.CreatePath();
     }
 
     public bool DestroyPath(int pathId)
     {
-        return _npcs.DestroyPath(pathId);
+        return Npcs.DestroyPath(pathId);
     }
 
     public void DestroyAllPaths()
     {
-        _npcs.DestroyAllPaths();
+        Npcs.DestroyAllPaths();
     }
 
     public Size GetPathCount()
     {
-        return _npcs.GetPathCount();
+        return Npcs.GetPathCount();
     }
 
     public bool AddPointToPath(int pathId, Vector3 position, float stopRange)
     {
-        return _npcs.AddPointToPath(pathId, position, stopRange);
+        return Npcs.AddPointToPath(pathId, position, stopRange);
     }
 
     public bool RemovePointFromPath(int pathId, Size pointIndex)
     {
-        return _npcs.RemovePointFromPath(pathId, pointIndex);
+        return Npcs.RemovePointFromPath(pathId, pointIndex);
     }
 
     public bool ClearPath(int pathId)
     {
-        return _npcs.ClearPath(pathId);
+        return Npcs.ClearPath(pathId);
     }
 
     public Size GetPathPointCount(int pathId)
     {
-        return _npcs.GetPathPointCount(pathId);
+        return Npcs.GetPathPointCount(pathId);
     }
 
     public bool GetPathPoint(int pathId, Size pointIndex, out Vector3 position, out float stopRange)
     {
-        return _npcs.GetPathPoint(pathId, pointIndex, out position, out stopRange);
+        return Npcs.GetPathPoint(pathId, pointIndex, out position, out stopRange);
     }
 
     public bool HasPathPointInRange(int pathId, Vector3 position, float radius)
     {
-        return _npcs.HasPathPointInRange(pathId, position, radius);
+        return Npcs.HasPathPointInRange(pathId, position, radius);
     }
 
     public bool IsValidPath(int pathId)
     {
-        return _npcs.IsValidPath(pathId);
+        return Npcs.IsValidPath(pathId);
     }
 
     public int LoadRecord(string filePath)
     {
         ArgumentNullException.ThrowIfNull(filePath);
-        return _npcs.LoadRecord(filePath);
+        return Npcs.LoadRecord(filePath);
     }
 
     public bool UnloadRecord(int recordId)
     {
-        return _npcs.UnloadRecord(recordId);
+        return Npcs.UnloadRecord(recordId);
     }
 
     public bool IsValidRecord(int recordId)
     {
-        return _npcs.IsValidRecord(recordId);
+        return Npcs.IsValidRecord(recordId);
     }
 
     public Size GetRecordCount()
     {
-        return _npcs.GetRecordCount();
+        return Npcs.GetRecordCount();
     }
 
     public void UnloadAllRecords()
     {
-        _npcs.UnloadAllRecords();
+        Npcs.UnloadAllRecords();
     }
 
     public bool OpenNode(int nodeId)
     {
-        return _npcs.OpenNode(nodeId);
+        return Npcs.OpenNode(nodeId);
     }
 
     public void CloseNode(int nodeId)
     {
-        _npcs.CloseNode(nodeId);
+        Npcs.CloseNode(nodeId);
     }
 
     public bool IsNodeOpen(int nodeId)
     {
-        return _npcs.IsNodeOpen(nodeId);
+        return Npcs.IsNodeOpen(nodeId);
     }
 
     public byte GetNodeType(int nodeId)
     {
-        return _npcs.GetNodeType(nodeId);
+        return Npcs.GetNodeType(nodeId);
     }
 
     public bool SetNodePoint(int nodeId, ushort pointId)
     {
-        return _npcs.SetNodePoint(nodeId, pointId);
+        return Npcs.SetNodePoint(nodeId, pointId);
     }
 
     public bool GetNodePointPosition(int nodeId, out Vector3 position)
     {
-        return _npcs.GetNodePointPosition(nodeId, out position);
+        return Npcs.GetNodePointPosition(nodeId, out position);
     }
 
     public int GetNodePointCount(int nodeId)
     {
-        return _npcs.GetNodePointCount(nodeId);
+        return Npcs.GetNodePointCount(nodeId);
     }
 
     public bool GetNodeInfo(int nodeId, out uint vehicleNodes, out uint pedNodes, out uint naviNodes)
     {
-        return _npcs.GetNodeInfo(nodeId, out vehicleNodes, out pedNodes, out naviNodes);
+        return Npcs.GetNodeInfo(nodeId, out vehicleNodes, out pedNodes, out naviNodes);
     }
 }
