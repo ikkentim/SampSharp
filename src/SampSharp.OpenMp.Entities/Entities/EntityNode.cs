@@ -1,8 +1,8 @@
 ﻿namespace SampSharp.Entities;
 
-internal sealed class EntityNode
+internal sealed class EntityNode(ComponentStore components)
 {
-    public readonly ComponentStore Components;
+    public readonly ComponentStore Components = components;
 
     public int ChildCount;
     public EntityNode? FirstChild;
@@ -11,12 +11,6 @@ internal sealed class EntityNode
     public EntityNode? Parent;
 
     public EntityNode? Previous;
-
-    // An entity has a 0-1 parent, 0-n children and 0-n components
-    public EntityNode(ComponentStore components)
-    {
-        Components = components;
-    }
 
     public bool IsEmpty => ChildCount == 0 && Components.IsEmpty;
 
