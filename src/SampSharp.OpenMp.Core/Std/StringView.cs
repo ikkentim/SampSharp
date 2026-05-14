@@ -6,16 +6,22 @@ namespace SampSharp.OpenMp.Core.Std;
 /// Represents a view of a string which is represented in memory like an <c>std::basic_string_view</c> from the C++
 /// standard library.
 /// </summary>
-/// <remarks>
-/// Initializes a new instance of the <see cref="StringView" /> struct.
-/// </remarks>
-/// <param name="data">A pointer to the underlying sequence.</param>
-/// <param name="size">The number of characters.</param>
 [StructLayout(LayoutKind.Sequential)]
-public readonly unsafe struct StringView(byte* data, Size size) : ISpanFormattable
+public readonly unsafe struct StringView : ISpanFormattable
 {
-    internal readonly byte* _reference = data;
-    private readonly Size _size = size;
+    internal readonly byte* _reference;
+    private readonly Size _size;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="StringView" /> struct.
+    /// </summary>
+    /// <param name="data">A pointer to the underlying sequence.</param>
+    /// <param name="size">The number of characters.</param>
+    public StringView(byte* data, Size size)
+    {
+        _reference = data;
+        _size = size;
+    }
 
     /// <summary>
     /// Converts this view to a read-only span of bytes.

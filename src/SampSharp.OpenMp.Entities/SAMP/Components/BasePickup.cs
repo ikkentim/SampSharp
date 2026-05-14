@@ -7,13 +7,19 @@ namespace SampSharp.Entities.SAMP;
 /// Provides the shared data and functionality of a pickup, regardless of whether it is global
 /// (<see cref="Pickup" />) or scoped to a single player (<see cref="PlayerPickup" />).
 /// </summary>
-/// <remarks>
-/// Initializes a new instance of the <see cref="BasePickup" /> class.
-/// </remarks>
-public abstract class BasePickup(IPickupsComponent pickups, IPickup pickup) : WorldEntity((IEntity)pickup)
+public abstract class BasePickup : WorldEntity
 {
-    private readonly IPickup _pickup = pickup;
-    private readonly IPickupsComponent _pickups = pickups;
+    private readonly IPickup _pickup;
+    private readonly IPickupsComponent _pickups;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="BasePickup" /> class.
+    /// </summary>
+    protected BasePickup(IPickupsComponent pickups, IPickup pickup) : base((IEntity)pickup)
+    {
+        _pickups = pickups;
+        _pickup = pickup;
+    }
 
     /// <summary>
     /// Gets a value indicating whether the open.mp entity counterpart has been destroyed.
