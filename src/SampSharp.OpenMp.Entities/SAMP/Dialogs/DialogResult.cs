@@ -11,7 +11,6 @@
 /// <param name="inputText">The text entered by the player in the dialog.</param>
 public struct DialogResult(DialogResponse response, int listItem, string? inputText)
 {
-
     /// <summary>
     /// Gets the way in which the player has responded to the dialog.
     /// </summary>

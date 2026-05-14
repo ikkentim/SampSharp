@@ -13,7 +13,6 @@ namespace SampSharp.OpenMp.Core.Api;
 [StructLayout(LayoutKind.Sequential)]
 public readonly struct WeaponSlotData(byte id, int ammo)
 {
-
     /// <summary>
     /// Gets the ID of the weapon in the slot.
     /// </summary>

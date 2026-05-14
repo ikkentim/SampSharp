@@ -19,7 +19,6 @@ namespace SampSharp.OpenMp.Core.Api;
 [StructLayout(LayoutKind.Sequential)]
 public readonly struct ObjectAttachmentSlotData(int model, int bone, Vector3 offset, Vector3 rotation, Vector3 scale, Colour colour1, Colour colour2)
 {
-
     /// <summary>
     /// Gets the model ID of the attached object.
     /// </summary>

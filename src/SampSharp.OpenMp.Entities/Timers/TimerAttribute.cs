@@ -13,7 +13,6 @@ namespace SampSharp.Entities;
 [MeansImplicitUse]
 public class TimerAttribute(double interval) : Attribute
 {
-
     /// <summary>
     /// Gets or sets the interval of the timer in milliseconds.
     /// </summary>

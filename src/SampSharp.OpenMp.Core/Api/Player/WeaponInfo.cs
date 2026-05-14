@@ -16,7 +16,6 @@ namespace SampSharp.OpenMp.Core.Api;
 /// </remarks>
 public readonly struct WeaponInfo(PlayerWeaponType type, int slot, float range, int clipSize, int shootTime, int reloadTime)
 {
-
     /// <summary>
     /// The weapon's category (melee, bullet, rocket, etc.).
     /// </summary>

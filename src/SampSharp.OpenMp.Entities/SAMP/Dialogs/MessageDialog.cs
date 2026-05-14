@@ -13,8 +13,7 @@
 public class MessageDialog(string? caption, string? content, string? button1, string? button2 = null) : IDialog<MessageDialogResponse>
 {
     DialogStyle IDialog.Style => DialogStyle.MessageBox;
-
-
+    
     /// <summary>
     /// Gets or sets the caption of this message dialog.
     /// </summary>

@@ -11,7 +11,6 @@ namespace SampSharp.Entities.SAMP.Commands;
 /// <param name="messageHandler">Optional handler to send response messages.</param>
 public class ConsoleCommandDispatchContext(Player? player, Action<string>? messageHandler = null)
 {
-
     /// <summary>
     /// The player who invoked this console command, or null if invoked from server console.
     /// </summary>

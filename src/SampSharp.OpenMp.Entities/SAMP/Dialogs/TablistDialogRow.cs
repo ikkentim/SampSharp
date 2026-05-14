@@ -9,7 +9,6 @@
 /// <param name="columns">The columns of the row.</param>
 public class TablistDialogRow(params string[] columns) : IDialogRow
 {
-
     /// <summary>
     /// Gets the columns of this tablist dialog row.
     /// </summary>

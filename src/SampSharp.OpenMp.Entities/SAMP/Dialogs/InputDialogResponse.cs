@@ -10,7 +10,6 @@
 /// <param name="inputText">The text the player has entered into the input field.</param>
 public struct InputDialogResponse(DialogResponse response, string? inputText)
 {
-
     /// <summary>
     /// Gets the way in which the player has responded to the dialog.
     /// </summary>

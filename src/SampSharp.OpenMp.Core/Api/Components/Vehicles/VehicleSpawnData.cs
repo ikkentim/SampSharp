@@ -13,7 +13,6 @@ namespace SampSharp.OpenMp.Core.Api;
 [StructLayout(LayoutKind.Sequential)]
 public readonly struct VehicleSpawnData(Seconds respawnDelay, int modelID, Vector3 position, float zRotation, int colour1, int colour2, BlittableBoolean siren, int interior)
 {
-
     /// <summary>
     /// Gets the respawn delay for the vehicle.
     /// </summary>

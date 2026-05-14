@@ -15,7 +15,6 @@ namespace SampSharp.OpenMp.Core.Api;
 [StructLayout(LayoutKind.Sequential)]
 public readonly struct ObjectMoveData(Vector3 targetPos, Vector3 targetRot, float speed)
 {
-
     /// <summary>
     /// Gets the target position of the object.
     /// </summary>

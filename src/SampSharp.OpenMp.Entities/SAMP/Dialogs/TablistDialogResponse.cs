@@ -11,7 +11,6 @@
 /// <param name="item">The item the player selected in the dialog.</param>
 public struct TablistDialogResponse(DialogResponse response, int itemIndex, TablistDialogRow? item)
 {
-
     /// <summary>
     /// Gets the way in which the player has responded to the dialog.
     /// </summary>

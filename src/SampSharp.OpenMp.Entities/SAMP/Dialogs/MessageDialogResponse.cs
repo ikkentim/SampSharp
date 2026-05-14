@@ -9,7 +9,6 @@
 /// <param name="response">The way in which the player has responded to the dialog.</param>
 public struct MessageDialogResponse(DialogResponse response)
 {
-
     /// <summary>
     /// Gets the way in which the player has responded to the dialog.
     /// </summary>

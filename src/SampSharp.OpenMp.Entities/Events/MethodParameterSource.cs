@@ -11,7 +11,6 @@ namespace SampSharp.Entities;
 /// <param name="info">The parameter information.</param>
 public class MethodParameterSource(ParameterInfo info)
 {
-
     /// <summary>
     /// Gets the parameter information.
     /// </summary>

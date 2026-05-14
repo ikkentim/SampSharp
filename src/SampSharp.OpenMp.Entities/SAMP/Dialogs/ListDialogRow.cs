@@ -9,7 +9,6 @@
 /// <param name="text">The text.</param>
 public class ListDialogRow(string text) : IDialogRow
 {
-
     /// <summary>
     /// Gets the text.
     /// </summary>

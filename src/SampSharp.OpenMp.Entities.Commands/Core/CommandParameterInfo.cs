@@ -6,7 +6,6 @@ namespace SampSharp.Entities.SAMP.Commands;
 /// <remarks>Initializes a new instance.</remarks>
 public class CommandParameterInfo(string name, ICommandParameterParser parser, bool isRequired, object? defaultValue, int parameterIndex)
 {
-
     /// <summary>Gets the name of the parameter.</summary>
     public string Name { get; } = name;
 
