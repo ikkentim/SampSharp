@@ -75,7 +75,7 @@ public abstract class CommandServiceBase
         var result = false;
         var invalidParameters = false;
 
-        // TODO: Commands in groups would have spaces in them, the logic above would not work.
+        // NOTE: Group command names containing spaces are not handled by this parsing logic.
 
         // Skip command name in inputText for the command
         inputText = inputText.Substring(name.Length);
