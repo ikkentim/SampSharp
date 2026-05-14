@@ -11,41 +11,51 @@ namespace SampSharp.OpenMp.Core.Api;
 /// They are GTA: San Andreas constants and don't change at runtime, so the table
 /// is mirrored here as managed data — there is no native lookup.
 /// </remarks>
-/// <remarks>
-/// Initializes a new instance of the <see cref="WeaponInfo" /> struct.
-/// </remarks>
-public readonly struct WeaponInfo(PlayerWeaponType type, int slot, float range, int clipSize, int shootTime, int reloadTime)
+public readonly struct WeaponInfo
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="WeaponInfo" /> struct.
+    /// </summary>
+    public WeaponInfo(PlayerWeaponType type, int slot, float range, int clipSize, int shootTime, int reloadTime)
+    {
+        Type = type;
+        Slot = slot;
+        Range = range;
+        ClipSize = clipSize;
+        ShootTime = shootTime;
+        ReloadTime = reloadTime;
+    }
+
     /// <summary>
     /// The weapon's category (melee, bullet, rocket, etc.).
     /// </summary>
-    public PlayerWeaponType Type { get; } = type;
+    public PlayerWeaponType Type { get; }
 
     /// <summary>
     /// The weapon's slot (0-12). <c>-1</c> for IDs that don't map to a real weapon
     /// (matches the SDK's <c>INVALID_WEAPON_SLOT</c> sentinel).
     /// </summary>
-    public int Slot { get; } = slot;
+    public int Slot { get; }
 
     /// <summary>
     /// Effective range, in game units.
     /// </summary>
-    public float Range { get; } = range;
+    public float Range { get; }
 
     /// <summary>
     /// Magazine capacity. 0 if not applicable.
     /// </summary>
-    public int ClipSize { get; } = clipSize;
+    public int ClipSize { get; }
 
     /// <summary>
     /// Time between shots, in milliseconds.
     /// </summary>
-    public int ShootTime { get; } = shootTime;
+    public int ShootTime { get; }
 
     /// <summary>
     /// Reload time in milliseconds. 0 if the weapon doesn't reload.
     /// </summary>
-    public int ReloadTime { get; } = reloadTime;
+    public int ReloadTime { get; }
 
     private static readonly WeaponInfo _invalid = new(PlayerWeaponType.None, -1, 0f, 0, 0, 0);
 

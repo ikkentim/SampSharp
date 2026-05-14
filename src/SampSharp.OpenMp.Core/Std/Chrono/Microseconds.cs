@@ -7,14 +7,19 @@ namespace SampSharp.OpenMp.Core.Std.Chrono;
 /// Represents a duration in microseconds which is represented in memory like an <c>std::chrono::Microseconds</c> from
 /// the C++ standard library.
 /// </summary>
-/// <remarks>
-/// Initializes a new instance of the <see cref="Microseconds" /> struct.
-/// </remarks>
-/// <param name="value">The duration value in microseconds.</param>
 [StructLayout(LayoutKind.Sequential)]
-public readonly struct Microseconds(long value)
+public readonly struct Microseconds
 {
-    private readonly long _value = value;
+    private readonly long _value;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Microseconds" /> struct.
+    /// </summary>
+    /// <param name="value">The duration value in microseconds.</param>
+    public Microseconds(long value)
+    {
+        _value = value;
+    }
 
     /// <summary>
     /// Converts this duration to a <see cref="TimeSpan" />.

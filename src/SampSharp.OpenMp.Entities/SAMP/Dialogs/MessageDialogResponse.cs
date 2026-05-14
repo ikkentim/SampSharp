@@ -3,14 +3,19 @@
 /// <summary>
 /// Represents a response to a <see cref="MessageDialog" />.
 /// </summary>
-/// <remarks>
-/// Initializes a new instance of the <see cref="MessageDialogResponse" /> struct.
-/// </remarks>
-/// <param name="response">The way in which the player has responded to the dialog.</param>
-public struct MessageDialogResponse(DialogResponse response)
+public struct MessageDialogResponse
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MessageDialogResponse" /> struct.
+    /// </summary>
+    /// <param name="response">The way in which the player has responded to the dialog.</param>
+    public MessageDialogResponse(DialogResponse response)
+    {
+        Response = response;
+    }
+
     /// <summary>
     /// Gets the way in which the player has responded to the dialog.
     /// </summary>
-    public DialogResponse Response { get; } = response;
+    public DialogResponse Response { get; }
 }

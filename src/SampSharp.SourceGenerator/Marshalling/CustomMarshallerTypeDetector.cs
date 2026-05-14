@@ -8,9 +8,14 @@ namespace SampSharp.SourceGenerator.Marshalling;
 /// <summary>
 /// Provides methods for finding the best fitting custom marshaller.
 /// </summary>
-public class CustomMarshallerTypeDetector(WellKnownMarshallerTypes wellKnownMarshallerTypes)
+public class CustomMarshallerTypeDetector
 {
-    private readonly WellKnownMarshallerTypes _wellKnownMarshallerTypes = wellKnownMarshallerTypes;
+    private readonly WellKnownMarshallerTypes _wellKnownMarshallerTypes;
+
+    public CustomMarshallerTypeDetector(WellKnownMarshallerTypes wellKnownMarshallerTypes)
+    {
+        _wellKnownMarshallerTypes = wellKnownMarshallerTypes;
+    }
 
     /// <summary>
     /// Gets the best fitting custom marshaller for the specified parameter.

@@ -7,14 +7,19 @@ namespace SampSharp.OpenMp.Core;
 /// Represents a pointer to an unmanaged value.
 /// </summary>
 /// <typeparam name="T">the type of the unmanaged value.</typeparam>
-/// <remarks>
-/// Initializes a new instance of the <see cref="BlittableRef{T}" /> struct.
-/// </remarks>
-/// <param name="ptr">The pointer value.</param>
 [StructLayout(LayoutKind.Sequential)]
-public readonly struct BlittableRef<T>(nint ptr) where T : unmanaged
+public readonly struct BlittableRef<T> where T : unmanaged
 {
-    private readonly nint _ptr = ptr;
+    private readonly nint _ptr;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="BlittableRef{T}" /> struct.
+    /// </summary>
+    /// <param name="ptr">The pointer value.</param>
+    public BlittableRef(nint ptr)
+    {
+        _ptr = ptr;
+    }
 
     /// <summary>
     /// Gets a value indicating whether the pointer has a value (is not a null pointer).

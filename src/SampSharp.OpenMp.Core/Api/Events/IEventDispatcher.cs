@@ -5,15 +5,20 @@ namespace SampSharp.OpenMp.Core.Api;
 /// <summary>
 /// This type represents a pointer to an unmanaged open.mp <see cref="IEventDispatcher{T}" /> interface.
 /// </summary>
-/// <remarks>
-/// Initializes a new instance of the <see cref="IEventDispatcher{T}" /> struct.
-/// </remarks>
-/// <param name="handle">The pointer handle.</param>
 [StructLayout(LayoutKind.Sequential)]
-public readonly struct IEventDispatcher<T>(nint handle) : IUnmanagedInterface where T : class, IEventHandler<T>
+public readonly struct IEventDispatcher<T> : IUnmanagedInterface where T : class, IEventHandler<T>
 {
-    private readonly nint _handle = handle;
+    private readonly nint _handle;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="IEventDispatcher{T}" /> struct.
+    /// </summary>
+    /// <param name="handle">The pointer handle.</param>
+    public IEventDispatcher(nint handle)
+    {
+        _handle = handle;
+    }
+    
     /// <inheritdoc />
     public nint Handle => _handle;
 
