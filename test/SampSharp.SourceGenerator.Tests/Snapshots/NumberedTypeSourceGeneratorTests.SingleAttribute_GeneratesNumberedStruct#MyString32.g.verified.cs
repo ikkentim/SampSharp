@@ -4,7 +4,7 @@
 namespace TestNs
 {
     [global::System.Runtime.InteropServices.StructLayout(global::System.Runtime.InteropServices.LayoutKind.Explicit)]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("SampSharp.SourceGenerator", "0.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("SampSharp.SourceGenerator", "1.0.0.0")]
     public readonly struct MyString32
     {
         private const int Size = 32;

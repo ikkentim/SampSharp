@@ -81,6 +81,10 @@ public class EntryPointSourceGenerator : IIncrementalGenerator
                                 TokenList(
                                     Token(SyntaxKind.PublicKeyword), 
                                     Token(SyntaxKind.StaticKeyword)))
+                            .WithAttributeLists(
+                                List([
+                                    AttributeFactory.GeneratedCode()
+                                ]))
                             .WithMembers(
                                 List<MemberDeclarationSyntax>([
                                     FieldDeclaration(
