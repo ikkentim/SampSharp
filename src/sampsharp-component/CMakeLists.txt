@@ -49,6 +49,16 @@ add_library(SampSharp SHARED ${component_source_list})
 set_target_properties(SampSharp PROPERTIES OUTPUT_NAME "SampSharp" PREFIX "")
 set_property(TARGET SampSharp PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 
+if(MSVC)
+    set_target_properties(SampSharp PROPERTIES
+        PDB_OUTPUT_DIRECTORY "${OUTDIR}"
+        PDB_OUTPUT_DIRECTORY_DEBUG "${OUTDIR}"
+        PDB_OUTPUT_DIRECTORY_RELEASE "${OUTDIR}"
+        PDB_OUTPUT_DIRECTORY_RELWITHDEBINFO "${OUTDIR}"
+        PDB_OUTPUT_DIRECTORY_MINSIZEREL "${OUTDIR}"
+    )
+endif()
+
 target_compile_definitions(SampSharp PUBLIC
 	WIN32_LEAN_AND_MEAN
 	VC_EXTRALEAN
