@@ -55,7 +55,7 @@ jobs:
       with:
         files: build/test-results/libraries/*.trx
         check_name: .NET libraries test results
-        comment_mode: ${{ (github.event.workflow_run.event == 'pull_request' || github.event_name == 'pull_request') && 'always' || 'off' }}
+        comment_mode: ${{ github.event_name == 'pull_request' && 'changes' || 'off' }}
 
     - name: Pack .NET libraries
       run: ./build.sh libraries publish
