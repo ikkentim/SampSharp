@@ -2,8 +2,7 @@
     <PropertyGroup>
         <_NormalizedProjectDir>$(MSBuildProjectDirectory.Replace('\', '/'))</_NormalizedProjectDir>
         <_NormalizedRepoDir>$(MSBuildThisFileDirectory.Replace('\', '/'))</_NormalizedRepoDir>
-        <IsTestProject>$(_NormalizedProjectDir.StartsWith('$(_NormalizedRepoDir)test/'))</IsTestProject>
-        <IsDeliverable Condition="!$(IsTestProject) and '$(MSBuildProjectExtension)' == '.csproj' and $(_NormalizedProjectDir.StartsWith('$(_NormalizedRepoDir)src/'))">True</IsDeliverable>
+        <IsDeliverable Condition="'$(MSBuildProjectExtension)' == '.csproj' and $(_NormalizedProjectDir.StartsWith('$(_NormalizedRepoDir)src/'))">True</IsDeliverable>
     </PropertyGroup>
 
     <!-- Building -->
@@ -44,7 +43,7 @@
         <None Include="README.md" Pack="true" PackagePath="\" />
     </ItemGroup>
 
-    <PropertyGroup Condition="'$(IsTestProject)' == 'True'">
+    <PropertyGroup Condition="'$(IsDeliverable)' != 'True'">
 	    <IsPackable>false</IsPackable>
     </PropertyGroup>
 	
