@@ -1,8 +1,8 @@
 <Project>
     <PropertyGroup>
-        <IsTestProject>$(MSBuildProjectName.Contains('.Tests'))</IsTestProject>
-        <IsTestMode>$(MSBuildProjectName.Contains('TestMode.'))</IsTestMode>
-        <IsDeliverable Condition="'$(IsTestMode)' != 'True' and '$(IsTestProject)' != 'True' and '$(MSBuildProjectExtension)' == '.csproj'">True</IsDeliverable>
+        <_NormalizedProjectDir>$(MSBuildProjectDirectory.Replace('\', '/'))</_NormalizedProjectDir>
+        <_NormalizedRepoDir>$(MSBuildThisFileDirectory.Replace('\', '/'))</_NormalizedRepoDir>
+        <IsDeliverable Condition="'$(MSBuildProjectExtension)' == '.csproj' and $(_NormalizedProjectDir.StartsWith('$(_NormalizedRepoDir)src/'))">True</IsDeliverable>
     </PropertyGroup>
 
     <!-- Building -->
@@ -20,12 +20,12 @@
     </PropertyGroup>
 
 	<!-- Packaging -->
-    <PropertyGroup>
-        <Company>Tim Potze</Company>
-        <Authors>Tim Potze</Authors>
-        <Copyright>Copyright (c) Tim Potze 2014-$([System.DateTime]::UtcNow.ToString(yyyy))</Copyright>
-        <NeutralLanguage>en-GB</NeutralLanguage>
-    </PropertyGroup>
+	<PropertyGroup>
+		<Company>Tim Potze</Company>
+		<Authors>Tim Potze</Authors>
+		<Copyright>Copyright (c) Tim Potze 2014-$([System.DateTime]::UtcNow.ToString(yyyy))</Copyright>
+		<NeutralLanguage>en-GB</NeutralLanguage>
+	</PropertyGroup>
 
     <PropertyGroup Condition="'$(IsDeliverable)' == 'True'">
         <PackageProjectUrl>https://github.com/ikkentim/SampSharp</PackageProjectUrl>
@@ -43,6 +43,10 @@
         <None Include="README.md" Pack="true" PackagePath="\" />
     </ItemGroup>
 
+    <PropertyGroup Condition="'$(IsDeliverable)' != 'True'">
+	    <IsPackable>false</IsPackable>
+    </PropertyGroup>
+	
     <!-- Versioning -->
     <PropertyGroup Label="Versioning">
         <VersionPrefix>1.0.0</VersionPrefix>
