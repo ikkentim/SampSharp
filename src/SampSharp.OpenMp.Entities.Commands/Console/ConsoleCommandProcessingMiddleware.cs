@@ -2,12 +2,10 @@
 
 internal class ConsoleCommandProcessingMiddleware(EventDelegate next)
 {
-    private readonly EventDelegate _next = next;
-
     /// <summary>Invokes the middleware.</summary>
     public object? Invoke(EventContext context, IConsoleCommandService commandService)
     {
-        var result = _next(context);
+        var result = next(context);
 
         // Successful response → done. We treat anything truthy as "handled" (matches EventDispatcher semantics).
         if (IsHandled(result))
@@ -21,7 +19,21 @@ internal class ConsoleCommandProcessingMiddleware(EventDelegate next)
             var inputText = string.IsNullOrEmpty(args) ? command : $"{command} {args}";
 
             // Create a dispatch context with message handler to send responses back
-            var cmdContext = new ConsoleCommandDispatchContext(sender.Player, msg => Console.WriteLine(msg)); // TODO: ConsoleCommandSender is missing a messageSender
+            var cmdContext = new ConsoleCommandDispatchContext(sender.Player, msg =>
+            {
+                if (sender.HandleConsoleMessage is not null)
+                {
+                    sender.HandleConsoleMessage(msg);
+                }
+                else if (sender.Player is not null)
+                {
+                    sender.Player.SendClientMessage(msg);
+                }
+                else
+                {
+                    Console.WriteLine(msg);
+                }
+            });
 
             return commandService.Invoke(context.EventServices, cmdContext, inputText);
         }
