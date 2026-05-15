@@ -120,7 +120,6 @@ public sealed class StartupContext : IStartupContext
 
             var version = typeof(StartupContext).Assembly.GetName().Version!.ToString(3);
 
-            // TODO: Write docs
             var message = $"SampSharp version mismatch. The SampSharp open.mp component does not support SampSharp.OpenMp.Core v{version}. See https://sampsharp.net/version-mismatch.html for more details.";
 
             if (initParamsSizeMatches && infoSizeMatches)

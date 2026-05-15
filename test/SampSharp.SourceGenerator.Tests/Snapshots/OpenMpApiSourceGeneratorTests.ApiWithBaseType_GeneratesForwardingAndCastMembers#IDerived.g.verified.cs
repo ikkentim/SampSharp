@@ -3,7 +3,7 @@
 #nullable enable
 namespace TestApi
 {
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("SampSharp.SourceGenerator", "0.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("SampSharp.SourceGenerator", "1.0.0.0")]
     [global::System.Runtime.CompilerServices.SkipLocalsInitAttribute]
     public readonly unsafe partial struct IDerived : global::System.IEquatable<IDerived>, global::TestApi.IDerived.IManagedInterface, global::TestApi.IBase.IManagedInterface
     {

@@ -166,6 +166,24 @@ public readonly struct StringSpan : IEquatable<string>, IEquatable<StringSpan>
     }
 
     /// <summary>
+    /// Creates a new <see cref="StringSpan"/> with trailing whitespace removed.
+    /// </summary>
+    /// <returns>A new <see cref="StringSpan"/> with trailing whitespace removed.</returns>
+    public StringSpan TrimEnd()
+    {
+        var span = AsSpan();
+        var length = span.Length;
+
+        while (length > 0 && char.IsWhiteSpace(span[length - 1]))
+        {
+            length--;
+        }
+
+        var (offset, _) = GetOffsetAndLength();
+        return new StringSpan(String, new Range(Index.FromStart(offset), Index.FromStart(offset + length)));
+    }
+
+    /// <summary>
     /// Returns a read-only span of characters that represents the current span.
     /// </summary>
     /// <returns>A read-only span of characters that represents the current span.</returns>

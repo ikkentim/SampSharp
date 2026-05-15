@@ -1,6 +1,7 @@
 ﻿//HintName: EntryPoint.g.cs
 namespace SampSharp
 {
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("SampSharp.SourceGenerator", "1.0.0.0")]
     public static class Entrypoint
     {
         private static readonly global::My.Game.Server.Startup _startup = new();

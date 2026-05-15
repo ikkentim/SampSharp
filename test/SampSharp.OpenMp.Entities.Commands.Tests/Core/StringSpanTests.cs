@@ -249,4 +249,76 @@ public class StringSpanTests
         var span = StringSpan.For("hello   world").Skip(5).TrimStart();
         span.ToString().ShouldBe("world");
     }
+
+    [Fact]
+    public void TrimEnd_RemovesTrailingWhitespace()
+    {
+        var span = StringSpan.For("hello world   ").TrimEnd();
+        span.ToString().ShouldBe("hello world");
+    }
+
+    [Fact]
+    public void TrimEnd_NoTrailingWhitespace_ReturnsSame()
+    {
+        var span = StringSpan.For("hello world").TrimEnd();
+        span.ToString().ShouldBe("hello world");
+    }
+
+    [Fact]
+    public void TrimEnd_AllWhitespace_ReturnsEmpty()
+    {
+        var span = StringSpan.For("   \t  ").TrimEnd();
+        span.Length.ShouldBe(0);
+    }
+
+    [Fact]
+    public void TrimEnd_VariousWhitespace_RemovesAll()
+    {
+        var span = StringSpan.For("hello \t\n  ").TrimEnd();
+        span.ToString().ShouldBe("hello");
+    }
+
+    [Fact]
+    public void TrimEnd_TrailingTabsAndNewlines_RemovesAll()
+    {
+        var span = StringSpan.For("hello\t\t\n\n").TrimEnd();
+        span.ToString().ShouldBe("hello");
+    }
+
+    [Fact]
+    public void TrimEnd_SingleTrailingSpace_RemovesSpace()
+    {
+        var span = StringSpan.For("hello ").TrimEnd();
+        span.ToString().ShouldBe("hello");
+        span.Length.ShouldBe(5);
+    }
+
+    [Fact]
+    public void TrimEnd_EmptyString_ReturnsEmpty()
+    {
+        var span = StringSpan.For("").TrimEnd();
+        span.Length.ShouldBe(0);
+        span.ToString().ShouldBe("");
+    }
+
+    [Fact]
+    public void TrimEnd_LeadingWhitespace_PreservedTrailingRemoved()
+    {
+        var span = StringSpan.For("   hello world   ").TrimEnd();
+        span.ToString().ShouldBe("   hello world");
+    }
+
+    [Fact]
+    public void ChainedOperations_TrimStartAndTrimEnd()
+    {
+        var span = StringSpan.For("   hello world   ").TrimStart().TrimEnd();
+        span.ToString().ShouldBe("hello world");
+    }
+
+    [Fact]
+    public void ChainedOperations_SkipAndTrimEnd()
+    {
+        var span = StringSpan.For("hello   world   ").Skip(5).TrimEnd();
+        span.ToString().ShouldBe("   world");
+    }
 }

@@ -40,7 +40,7 @@ internal class CommandDispatcher
         }
 
         // The used command name is the portion consumed during lookup (trim trailing whitespace)
-        var usedCommandName = beforeLookup.Take(beforeLookup.Length - input.Length).ToString().TrimEnd(); // TODO: add TrimEnd to StringSpan, then trim before ToString()
+        var usedCommandName = beforeLookup.Take(beforeLookup.Length - input.Length).TrimEnd().ToString();
 
         // Remaining args start after any leading whitespace that follows the command name
         var remainingArgs = input.TrimStart();
