@@ -44,7 +44,3 @@ else
     echo "ERROR: SampSharp.so not found at $ARTIFACTS_DIR/SampSharp.so"
     exit 1
 fi
-
-echo ""
-echo "To start the open.mp server:"
-echo "  cd $OPENMP_DIR && ./omp-server"

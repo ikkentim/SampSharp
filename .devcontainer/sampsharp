@@ -10,7 +10,7 @@ case "${1:-}" in
         case "${2:-}" in
             component)
                 cd "$ROOTDIR"
-                ./build.sh component publish
+                ./build-sampsharp-component.sh
                 ;;
             *)
                 echo "Usage: sampsharp build component"
