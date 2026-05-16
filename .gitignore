@@ -16,6 +16,7 @@ PublishProfiles/
 *.suo
 *.sln.DotSettings.user
 launchSettings.json
+*.lscache
 
 # OS
 .DS_Store
