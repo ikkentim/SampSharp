@@ -78,6 +78,7 @@ jobs:
         run: |
           mkdir -p SampSharp-${{ env.VERSION }}/components
           cp component-windows/SampSharp.dll SampSharp-${{ env.VERSION }}/components/
+          cp component-windows/SampSharp.pdb SampSharp-${{ env.VERSION }}/components/
           cp component-linux/SampSharp.so SampSharp-${{ env.VERSION }}/components/SampSharp.so
           zip -r SampSharp-${{ env.VERSION }}.zip SampSharp-${{ env.VERSION }}/
 
