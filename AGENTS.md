@@ -14,17 +14,20 @@ SampSharp is a comprehensive C# framework for building game modes and plugins fo
 - **SampSharp.OpenMp.Entities.Commands/** - Rich command processor and dispatcher
 - **SampSharp.Analyzer/** - Roslyn-based code analyzer for best practices
 - **SampSharp.CodeFixes/** - Automatic code fixes for analyzer diagnostics
-- **SampSharp.SourceGenerator/** - Source code generator for AOT compilation
-- **SampSharp.Sdk/** - SDK tools and utilities
+- **SampSharp.SourceGenerator/** - Source code generator for game mode entry point and open.mp interop marshalling based on API shapes defined in partial types with attributes
+- **SampSharp.Sdk/** - Primary SDK package for developing with SampSharp (single NuGet package users add to their projects)
+- **SampSharp.Templates/** - Project templates and scaffolding for game mode development
 
 #### Legacy (SA-MP v0.x)
 - **legacy/** - Legacy SA-MP implementation (limited support for critical fixes only)
 
 ### Testing (`test/`)
-- **SampSharp.OpenMp.Entities.Commands.UnitTests/** - Unit tests for the command processor (`dotnet test SampSharp.slnx`)
-- **TestMode.OpenMp.Entities/** - Integration tests for entity system
-- **TestMode.OpenMp.Core/** - Core functionality tests
-- **TestMode.UnitTests/** - Unit tests
+- **SampSharp.OpenMp.Core.Tests/** - Unit tests for core open.mp functionality
+- **SampSharp.OpenMp.Entities.Tests/** - Unit tests for entity system
+- **SampSharp.OpenMp.Entities.Commands.Tests/** - Unit tests for command processor
+- **TestMode.Entities.ApiTests/** - Integration tests for entity API functionality
+- **TestMode.OpenMp.Core/** - Manual testing for core functionality
+- **TestMode.OpenMp.Entities/** - Manual testing for entity system
 
 ### Build & Environment
 - **build/** - Build artifacts and CMake configurations
