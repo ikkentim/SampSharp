@@ -42,19 +42,19 @@ sudo chown "$(id -u):$(id -g)" "$OPENMP_DIR"
 curl -fsSL "$OPENMP_URL" | tar -xJ --strip-components=1 -C "$OPENMP_DIR"
 
 # ---------------------------------------------------------------------------
-# Build and install the SampSharp component
-# ---------------------------------------------------------------------------
-echo ""
-echo "--- Building and installing SampSharp component ---"
-bash .devcontainer/build-sampsharp-component.sh
-
-# ---------------------------------------------------------------------------
 # Install sampsharp development utility
 # ---------------------------------------------------------------------------
 echo ""
 echo "--- Installing sampsharp utility ---"
 sudo cp .devcontainer/sampsharp /usr/local/bin/sampsharp
 sudo chmod +x /usr/local/bin/sampsharp
+
+# ---------------------------------------------------------------------------
+# Build and install the SampSharp component
+# ---------------------------------------------------------------------------
+echo ""
+echo "--- Building and installing SampSharp component ---"
+sampsharp build component
 
 echo ""
 echo "=== Devcontainer setup complete ==="
