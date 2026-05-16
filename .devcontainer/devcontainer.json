@@ -1,12 +1,38 @@
 {
-    "name": "SampSharp",
-    "image": "mcr.microsoft.com/devcontainers/dotnet:10.0",
-    "onCreateCommand": "bash .devcontainer/on-create.sh",
-    "customizations": {
-        "vscode": {
-            "extensions": [
-                "ms-dotnettools.csdevkit"
-            ]
+  "name": "SampSharp",
+  "image": "mcr.microsoft.com/devcontainers/dotnet:10.0",
+  "forwardPorts": [],
+  "onCreateCommand": "bash .devcontainer/on-create.sh",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-dotnettools.csdevkit",
+        "ms-vscode.cmake-tools",
+        "ms-vscode.cpptools",
+        "ms-vscode.cpptools-extension-pack",
+        "llvm-vs-code-extensions.vscode-clangd",
+        "xaver.clang-format"
+      ],
+      "settings": {
+        "cmake.sourceDirectory": "${workspaceFolder}/src/sampsharp-component",
+        "cmake.configureOnOpen": true,
+        "C_Cpp.intelliSenseEngine": "default",
+        "C_Cpp.default.compilerPath": "/usr/bin/clang",
+        "clangd.path": "/usr/bin/clangd",
+        "clangd.checkUpdates": false,
+        "[cpp]": {
+          "editor.formatOnSave": true,
+          "editor.defaultFormatter": "xaver.clang-format"
+        },
+        "[hpp]": {
+          "editor.formatOnSave": true,
+          "editor.defaultFormatter": "xaver.clang-format"
+        },
+        "[c]": {
+          "editor.formatOnSave": true,
+          "editor.defaultFormatter": "xaver.clang-format"
         }
+      }
     }
+  }
 }

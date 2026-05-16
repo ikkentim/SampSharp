@@ -25,6 +25,8 @@ echo "--- Installing build dependencies ---"
 sudo apt-get update -y
 sudo apt-get install -y \
     clang \
+    clang-format \
+    clangd \
     cmake \
     ninja-build \
     xz-utils \
@@ -37,12 +39,22 @@ echo "--- Downloading open.mp server ($OPENMP_URL) ---"
 sudo mkdir -p "$OPENMP_DIR"
 sudo chown "$(id -u):$(id -g)" "$OPENMP_DIR"
 
-curl -fsSL "$OPENMP_URL" | tar -xJ -C "$OPENMP_DIR"
+curl -fsSL "$OPENMP_URL" | tar -xJ --strip-components=1 -C "$OPENMP_DIR"
+
+# ---------------------------------------------------------------------------
+# Build and install the SampSharp component
+# ---------------------------------------------------------------------------
+echo ""
+echo "--- Building and installing SampSharp component ---"
+bash .devcontainer/build-sampsharp-component.sh
+
+# ---------------------------------------------------------------------------
+# Install sampsharp development utility
+# ---------------------------------------------------------------------------
+echo ""
+echo "--- Installing sampsharp utility ---"
+sudo cp .devcontainer/sampsharp /usr/local/bin/sampsharp
+sudo chmod +x /usr/local/bin/sampsharp
 
 echo ""
-echo "=== Setup complete ==="
-echo ""
-echo "open.mp server: $OPENMP_DIR/Server/"
-echo ""
-echo "Next step: run .devcontainer/build-sampsharp-component.sh to build and"
-echo "install the SampSharp component, then start the server."
+echo "=== Devcontainer setup complete ==="

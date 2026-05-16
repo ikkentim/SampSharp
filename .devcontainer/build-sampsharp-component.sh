@@ -9,12 +9,11 @@
 set -e
 
 OPENMP_DIR="/openmp"
-OPENMP_SERVER_DIR="$OPENMP_DIR/Server"
-OPENMP_COMPONENTS_DIR="$OPENMP_SERVER_DIR/components"
+OPENMP_COMPONENTS_DIR="$OPENMP_DIR/components"
 
 SCRIPTDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOTDIR="$(cd "$SCRIPTDIR/.." && pwd)"
-BUILDDIR="$ROOTDIR/build/cmake/component"
+ARTIFACTS_DIR="$ROOTDIR/build/artifacts/sampsharp-component"
 
 echo "=== Building SampSharp open.mp component ==="
 echo ""
@@ -26,21 +25,26 @@ if [ ! -d "$OPENMP_COMPONENTS_DIR" ]; then
 fi
 
 echo "Component source : $ROOTDIR/src/sampsharp-component"
-echo "Build directory  : $BUILDDIR"
+echo "Build output     : $ARTIFACTS_DIR"
 echo "Install target   : $OPENMP_COMPONENTS_DIR"
 echo ""
 
-mkdir -p "$BUILDDIR"
+# Build and publish the component
+cd "$ROOTDIR"
+./build.sh component publish
 
-cmake -S "$ROOTDIR/src/sampsharp-component" -B "$BUILDDIR" \
-    -DCOMPONENTS_DIR="$OPENMP_COMPONENTS_DIR" \
-    -DCMAKE_BUILD_TYPE=RelWithDebInfo
+# Copy the built component to the open.mp server
+if [ -f "$ARTIFACTS_DIR/SampSharp.so" ]; then
+    cp "$ARTIFACTS_DIR/SampSharp.so" "$OPENMP_COMPONENTS_DIR/"
+    echo ""
+    echo "=== Build complete ==="
+    echo "SampSharp.so installed to: $OPENMP_COMPONENTS_DIR"
+else
+    echo ""
+    echo "ERROR: SampSharp.so not found at $ARTIFACTS_DIR/SampSharp.so"
+    exit 1
+fi
 
-cmake --build "$BUILDDIR" --config RelWithDebInfo --parallel "$(nproc)"
-
-echo ""
-echo "=== Build complete ==="
-echo "SampSharp.so installed to: $OPENMP_COMPONENTS_DIR"
 echo ""
 echo "To start the open.mp server:"
-echo "  cd $OPENMP_SERVER_DIR && ./omp-server"
+echo "  cd $OPENMP_DIR && ./omp-server"

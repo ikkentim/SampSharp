@@ -1,0 +1,28 @@
+#!/bin/bash
+# SampSharp development utility script
+
+set -e
+
+ROOTDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+
+case "${1:-}" in
+    build)
+        case "${2:-}" in
+            component)
+                cd "$ROOTDIR"
+                ./build.sh component publish
+                ;;
+            *)
+                echo "Usage: sampsharp build component"
+                exit 1
+                ;;
+        esac
+        ;;
+    *)
+        echo "Usage: sampsharp <command> [options]"
+        echo ""
+        echo "Commands:"
+        echo "  build component    Build and publish the SampSharp open.mp component"
+        exit 1
+        ;;
+esac
