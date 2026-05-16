@@ -16,24 +16,25 @@ public class DefaultCommandParameterParserFactory : ICommandParameterParserFacto
 
         var param = parameters[index];
         var paramType = param.ParameterType;
+        var effectiveType = Nullable.GetUnderlyingType(paramType) ?? paramType;
 
         // Standard scalar types
-        if (paramType == typeof(int))
+        if (effectiveType == typeof(int))
         {
             return new IntParser();
         }
 
-        if (paramType == typeof(float))
+        if (effectiveType == typeof(float))
         {
             return new FloatParser();
         }
 
-        if (paramType == typeof(double))
+        if (effectiveType == typeof(double))
         {
             return new DoubleParser();
         }
 
-        if (paramType == typeof(bool))
+        if (effectiveType == typeof(bool))
         {
             return new BooleanParser();
         }
@@ -51,9 +52,9 @@ public class DefaultCommandParameterParserFactory : ICommandParameterParserFacto
         }
 
         // Enum
-        if (paramType.IsEnum)
+        if (effectiveType.IsEnum)
         {
-            return new EnumParser(paramType);
+            return new EnumParser(effectiveType);
         }
 
         // No parser for this type - will be treated as DI
