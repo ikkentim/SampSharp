@@ -2,7 +2,7 @@
 using SampSharp.Entities;
 using SampSharp.Entities.SAMP;
 
-namespace TestMode.OpenMp.Entities;
+namespace TestMode.OpenMp.Entities.Systems;
 
 public class RotationTestingSystem(IWorldService worldService, IEntityManager entityManager, IVehicleInfoService vehicleInfoService, ITimerService timerService) : ISystem
 {

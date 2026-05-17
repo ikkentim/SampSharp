@@ -5,8 +5,9 @@ using SampSharp.Entities.SAMP;
 using SampSharp.Entities.SAMP.Commands;
 using SampSharp.OpenMp.Core;
 using SampSharp.OpenMp.Core.Api;
+using TestMode.OpenMp.Entities.Components;
 
-namespace TestMode.OpenMp.Entities;
+namespace TestMode.OpenMp.Entities.Systems;
 
 public class MyFirstSystem : ISystem
 {

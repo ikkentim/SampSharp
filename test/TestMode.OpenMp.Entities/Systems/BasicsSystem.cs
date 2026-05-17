@@ -1,8 +1,9 @@
 ﻿using System.Numerics;
 using SampSharp.Entities;
 using SampSharp.Entities.SAMP;
+using TestMode.OpenMp.Entities.Components;
 
-namespace TestMode.OpenMp.Entities;
+namespace TestMode.OpenMp.Entities.Systems;
 
 public class BasicsSystem : ISystem
 {
