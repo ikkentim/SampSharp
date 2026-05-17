@@ -3,7 +3,7 @@ using SampSharp.Entities;
 using SampSharp.Entities.SAMP;
 using SampSharp.Entities.SAMP.Commands;
 
-namespace TestMode.OpenMp.Entities;
+namespace TestMode.OpenMp.Entities.Systems;
 
 [CommandGroup("npc")]
 public class NpcTestSystem : ISystem

@@ -2,8 +2,9 @@ using System.Numerics;
 using SampSharp.Entities;
 using SampSharp.Entities.SAMP;
 using SampSharp.Entities.SAMP.Commands;
+using TestMode.OpenMp.Entities.Components;
 
-namespace TestMode.OpenMp.Entities;
+namespace TestMode.OpenMp.Entities.Systems;
 
 /// <summary>
 /// Demonstrates the new Commands system with simple player and console commands.
@@ -65,17 +66,6 @@ public class SampleCommandsSystem(IEntityManager entityManager) : ISystem
         {
             player.SendClientMessage($"Current money: ${player.Money}");
         }
-    }
-
-    /// <summary>
-    /// Player command: /teleport [x] [y] [z] - teleports to location
-    /// </summary>
-    [PlayerCommand(Name = "teleport")]
-    [Alias("tp", "goto")]
-    public void TeleportCommand(Player player, float x, float y, float z)
-    {
-        player.Position = new Vector3(x, y, z);
-        player.SendClientMessage($"Teleported to ({x}, {y}, {z})");
     }
 
     /// <summary>
@@ -234,5 +224,30 @@ public class SampleCommandsSystem(IEntityManager entityManager) : ISystem
     public void AdminTestCommand(AdminComponent admin)
     {
         admin.GetComponent<Player>()!.SendClientMessage("Yup, you're an admin");
+    }
+
+    [CommandGroup("teleport")]
+    [PlayerCommand(Name = "player")]
+    public void TeleportCommand(Player player, Player target)
+    {
+        player.Position = target.Position;
+        player.SendClientMessage($"Teleported to {target.Name}");
+    }
+
+    [CommandGroup("teleport")]
+    [PlayerCommand(Name = "player")]
+    [Alias("tp")]
+    public void TeleportCommand(Player player, float x, float y, float z)
+    {
+        player.Position = new Vector3(x, y, z);
+        player.SendClientMessage($"Teleported to ({x}, {y}, {z})");
+    }
+
+    [CommandGroup("teleport")]
+    [PlayerCommand(Name = "player")]
+    public void TeleportCommand(Player player, Player target, float x, float y, float z)
+    {
+        target.Position = new Vector3(x, y, z);
+        player.SendClientMessage($"Teleported {target.Name} to ({x}, {y}, {z})");
     }
 }

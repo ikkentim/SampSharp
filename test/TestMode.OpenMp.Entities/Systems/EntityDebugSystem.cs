@@ -1,7 +1,7 @@
 ﻿using SampSharp.Entities;
 using SampSharp.Entities.SAMP;
 
-namespace TestMode.OpenMp.Entities;
+namespace TestMode.OpenMp.Entities.Systems;
 
 public class EntityDebugSystem : ISystem
 {

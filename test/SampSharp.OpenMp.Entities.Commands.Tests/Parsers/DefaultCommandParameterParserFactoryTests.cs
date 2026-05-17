@@ -60,6 +60,56 @@ public class DefaultCommandParameterParserFactoryTests
     }
 
     [Fact]
+    public void CreateParser_NullableIntParameter_ReturnsIntParser()
+    {
+        var parameters = CreateParams(typeof(int?));
+
+        var parser = _factory.CreateParser(parameters, 0);
+
+        parser.ShouldBeOfType<IntParser>();
+    }
+
+    [Fact]
+    public void CreateParser_NullableFloatParameter_ReturnsFloatParser()
+    {
+        var parameters = CreateParams(typeof(float?));
+
+        var parser = _factory.CreateParser(parameters, 0);
+
+        parser.ShouldBeOfType<FloatParser>();
+    }
+
+    [Fact]
+    public void CreateParser_NullableDoubleParameter_ReturnsDoubleParser()
+    {
+        var parameters = CreateParams(typeof(double?));
+
+        var parser = _factory.CreateParser(parameters, 0);
+
+        parser.ShouldBeOfType<DoubleParser>();
+    }
+
+    [Fact]
+    public void CreateParser_NullableBoolParameter_ReturnsBooleanParser()
+    {
+        var parameters = CreateParams(typeof(bool?));
+
+        var parser = _factory.CreateParser(parameters, 0);
+
+        parser.ShouldBeOfType<BooleanParser>();
+    }
+
+    [Fact]
+    public void CreateParser_NullableEnumParameter_ReturnsEnumParser()
+    {
+        var parameters = CreateParams(typeof(DayOfWeek?));
+
+        var parser = _factory.CreateParser(parameters, 0);
+
+        parser.ShouldBeOfType<EnumParser>();
+    }
+
+    [Fact]
     public void CreateParser_StringParameterLast_ReturnsStringParser()
     {
         // When string is the last parameter, use StringParser (greedy)
@@ -148,6 +198,11 @@ internal static class ParameterInfoFactory
     private static readonly MethodInfo SingleString = typeof(ParameterInfoFactory).GetMethod(nameof(T_String), BindingFlags.Static | BindingFlags.NonPublic)!;
     private static readonly MethodInfo SinglePlayer = typeof(ParameterInfoFactory).GetMethod(nameof(T_Player), BindingFlags.Static | BindingFlags.NonPublic)!;
     private static readonly MethodInfo SingleEnum = typeof(ParameterInfoFactory).GetMethod(nameof(T_Enum), BindingFlags.Static | BindingFlags.NonPublic)!;
+    private static readonly MethodInfo SingleNullableInt = typeof(ParameterInfoFactory).GetMethod(nameof(T_NullableInt), BindingFlags.Static | BindingFlags.NonPublic)!;
+    private static readonly MethodInfo SingleNullableFloat = typeof(ParameterInfoFactory).GetMethod(nameof(T_NullableFloat), BindingFlags.Static | BindingFlags.NonPublic)!;
+    private static readonly MethodInfo SingleNullableDouble = typeof(ParameterInfoFactory).GetMethod(nameof(T_NullableDouble), BindingFlags.Static | BindingFlags.NonPublic)!;
+    private static readonly MethodInfo SingleNullableBool = typeof(ParameterInfoFactory).GetMethod(nameof(T_NullableBool), BindingFlags.Static | BindingFlags.NonPublic)!;
+    private static readonly MethodInfo SingleNullableEnum = typeof(ParameterInfoFactory).GetMethod(nameof(T_NullableEnum), BindingFlags.Static | BindingFlags.NonPublic)!;
     private static readonly MethodInfo SingleList = typeof(ParameterInfoFactory).GetMethod(nameof(T_List), BindingFlags.Static | BindingFlags.NonPublic)!;
     private static readonly MethodInfo IntString = typeof(ParameterInfoFactory).GetMethod(nameof(T_IntString), BindingFlags.Static | BindingFlags.NonPublic)!;
     private static readonly MethodInfo StringInt = typeof(ParameterInfoFactory).GetMethod(nameof(T_StringInt), BindingFlags.Static | BindingFlags.NonPublic)!;
@@ -161,6 +216,11 @@ internal static class ParameterInfoFactory
         [Key(typeof(string))] = SingleString,
         [Key(typeof(Player))] = SinglePlayer,
         [Key(typeof(DayOfWeek))] = SingleEnum,
+        [Key(typeof(int?))] = SingleNullableInt,
+        [Key(typeof(float?))] = SingleNullableFloat,
+        [Key(typeof(double?))] = SingleNullableDouble,
+        [Key(typeof(bool?))] = SingleNullableBool,
+        [Key(typeof(DayOfWeek?))] = SingleNullableEnum,
         [Key(typeof(List<string>))] = SingleList,
         [Key(typeof(int), typeof(string))] = IntString,
         [Key(typeof(string), typeof(int))] = StringInt,
@@ -187,6 +247,11 @@ internal static class ParameterInfoFactory
     private static void T_String(string x) { }
     private static void T_Player(Player x) { }
     private static void T_Enum(DayOfWeek x) { }
+    private static void T_NullableInt(int? x) { }
+    private static void T_NullableFloat(float? x) { }
+    private static void T_NullableDouble(double? x) { }
+    private static void T_NullableBool(bool? x) { }
+    private static void T_NullableEnum(DayOfWeek? x) { }
     private static void T_List(List<string> x) { }
     private static void T_IntString(int a, string b) { }
     private static void T_StringInt(string a, int b) { }
