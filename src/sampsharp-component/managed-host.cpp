@@ -250,6 +250,6 @@ const char* ManagedHost::get_error(int code) const
     case ERROR_MISSING_EXPORT:
         return "Missing export fuction in host library";
     default:
-        return "Unkown error";
+        return "Unknown error";
     }
 }
