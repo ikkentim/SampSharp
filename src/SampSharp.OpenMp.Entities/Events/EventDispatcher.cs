@@ -3,7 +3,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using Microsoft.Extensions.Logging;
-using SampSharp.Entities.Utilities;
 using SampSharp.OpenMp.Core;
 
 namespace SampSharp.Entities;

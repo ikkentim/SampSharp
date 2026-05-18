@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using SampSharp.Entities.Logging;
 using SampSharp.Entities.SAMP;
@@ -11,7 +12,9 @@ internal sealed class EcsHostBuilder : Extension, IEcsHostBuilder
 {
     private readonly List<Action<IEcsBuilder>> _ecsConfigurations = [];
     private readonly List<Action<ILoggingBuilder>> _loggerConfigurations = [];
-    private readonly List<Action<SampSharpEnvironment, IServiceCollection>> _serviceConfigurations = [];
+    private readonly List<Action<IServiceCollection, IConfiguration, SampSharpEnvironment>> _serviceConfigurations = [];
+    private readonly List<Action<IConfigurationBuilder>> _appConfigConfigurations = [];
+
     private Func<IServiceCollection, IServiceProvider>? _serviceProviderFactory;
     private bool _systemsLoadingDisabled;
     private UnhandledExceptionHandler? _unhandledExceptionHandler;
@@ -23,23 +26,36 @@ internal sealed class EcsHostBuilder : Extension, IEcsHostBuilder
         return this;
     }
 
-    public IEcsHostBuilder ConfigureServices(Action<SampSharpEnvironment, IServiceCollection> build)
+    public IEcsHostBuilder ConfigureServices(Action<IServiceCollection, IConfiguration, SampSharpEnvironment> configure)
     {
-        ArgumentNullException.ThrowIfNull(build);
-        _serviceConfigurations.Add(build);
+        ArgumentNullException.ThrowIfNull(configure);
+        _serviceConfigurations.Add(configure);
         return this;
     }
 
-    public IEcsHostBuilder ConfigureServices(Action<IServiceCollection> build)
+    public IEcsHostBuilder ConfigureServices(Action<IServiceCollection, IConfiguration> configure)
     {
-        ArgumentNullException.ThrowIfNull(build);
-        return ConfigureServices((_, services) => build(services));
+        ArgumentNullException.ThrowIfNull(configure);
+        return ConfigureServices((services, configuration, _) => configure(services, configuration));
     }
 
-    public IEcsHostBuilder ConfigureLogging(Action<ILoggingBuilder> builder)
+    public IEcsHostBuilder ConfigureServices(Action<IServiceCollection> configure)
     {
-        ArgumentNullException.ThrowIfNull(builder);
-        _loggerConfigurations.Add(builder);
+        ArgumentNullException.ThrowIfNull(configure);
+        return ConfigureServices((services, _, _) => configure(services));
+    }
+
+    public IEcsHostBuilder ConfigureLogging(Action<ILoggingBuilder> configure)
+    {
+        ArgumentNullException.ThrowIfNull(configure);
+        _loggerConfigurations.Add(configure);
+        return this;
+    }
+
+    public IEcsHostBuilder ConfigureAppConfiguration(Action<IConfigurationBuilder> configure)
+    {
+        ArgumentNullException.ThrowIfNull(configure);
+        _appConfigConfigurations.Add(configure);
         return this;
     }
 
@@ -76,12 +92,16 @@ internal sealed class EcsHostBuilder : Extension, IEcsHostBuilder
     {
         var environment = new SampSharpEnvironment(context.Configurator.GetType().Assembly, context.Core, context.ComponentList, new SafeComponentHandleProvider(context));
 
+        var configuration = CreateConfiguration(environment);
+
         var services = new ServiceCollection();
 
         ConfigureDefaultServices(services);
 
         services.AddSingleton(environment);
-        ConfigureServices(environment, services);
+        services.AddSingleton(configuration);
+
+        ConfigureServices(services, configuration, environment);
 
         var factory = _serviceProviderFactory ?? DefaultServiceProviderFactory;
         return factory(services);
@@ -111,6 +131,27 @@ internal sealed class EcsHostBuilder : Extension, IEcsHostBuilder
             ;
     }
 
+    private IConfiguration CreateConfiguration(SampSharpEnvironment environment)
+    {
+        var basePath = Path.GetDirectoryName(environment.EntryAssembly.Location) ?? ".";
+        var environmentName = environment.Core.GetConfig().GetString("environment") ?? Environment.GetEnvironmentVariable("environment");
+
+        var builder = new ConfigurationBuilder()
+            .SetBasePath(basePath)
+            .Add(new OpenMpConfigProvider(environment))
+            .AddEnvironmentVariables()
+            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+
+        if (!string.IsNullOrEmpty(environmentName))
+        {
+            builder.AddJsonFile($"appsettings.{environmentName}.json", optional: true, reloadOnChange: true);
+        }
+
+        ConfigureAppConfiguration(builder);
+
+        return builder.Build();
+    }
+
     private static IServiceProvider DefaultServiceProviderFactory(IServiceCollection services)
     {
         return services.BuildServiceProvider();
@@ -137,11 +178,21 @@ internal sealed class EcsHostBuilder : Extension, IEcsHostBuilder
         _loggerConfigurations.Clear();
     }
 
-    private void ConfigureServices(SampSharpEnvironment environment, IServiceCollection services)
+    private void ConfigureAppConfiguration(IConfigurationBuilder builder)
+    {
+        foreach (var configuration in _appConfigConfigurations)
+        {
+            configuration(builder);
+        }
+
+        _appConfigConfigurations.Clear();
+    }
+
+    private void ConfigureServices(IServiceCollection services, IConfiguration config, SampSharpEnvironment environment)
     {
         foreach (var configuration in _serviceConfigurations)
         {
-            configuration(environment, services);
+            configuration(services, config, environment);
         }
 
         if (!_systemsLoadingDisabled)

@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
-using SampSharp.Entities.Utilities;
 using SampSharp.OpenMp.Core;
 
 namespace SampSharp.Entities;

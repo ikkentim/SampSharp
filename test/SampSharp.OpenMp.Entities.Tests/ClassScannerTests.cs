@@ -1,5 +1,5 @@
 using System.Reflection;
-using SampSharp.Entities.Utilities;
+using SampSharp.Entities;
 using Shouldly;
 using Xunit;
 

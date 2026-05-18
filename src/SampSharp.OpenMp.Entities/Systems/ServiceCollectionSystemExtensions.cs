@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
-using SampSharp.Entities.Utilities;
 
 namespace SampSharp.Entities;
 

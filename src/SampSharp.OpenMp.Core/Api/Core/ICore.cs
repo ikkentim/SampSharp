@@ -37,7 +37,7 @@ public readonly partial struct ICore
     /// <summary>
     /// Gets the server configuration.
     /// </summary>
-    /// <returns>Yhe server configuration.</returns>
+    /// <returns>The server configuration.</returns>
     public partial IConfig GetConfig();
 
     /// <summary>
