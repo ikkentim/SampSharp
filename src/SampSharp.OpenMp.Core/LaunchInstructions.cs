@@ -40,7 +40,7 @@ internal static partial class LaunchInstructions
                                     "commandName": "Executable",
                                     "executablePath": "C:\path\to\server\omp-server.exe",
                                     "workingDirectory": "C:\path\to\server\",
-                                    "commandLineArgs": "-c sampsharp.directory=$(TargetDir) -c sampsharp.assembly=\"$(TargetName)\""
+                                    "commandLineArgs": "-c \"sampsharp.directory=$(TargetDir).\" -c \"sampsharp.assembly=$(TargetName)\""
                                   }
                                 }
                               }
@@ -75,7 +75,7 @@ internal static partial class LaunchInstructions
                         "commandName": "Executable",
                         "executablePath": "{{serverDir}}omp-server.exe",
                         "workingDirectory": "{{serverDir}}",
-                        "commandLineArgs": "-c sampsharp.directory=$(TargetDir) -c sampsharp.assembly=\"$(TargetName)\""
+                        "commandLineArgs": "-c \"sampsharp.directory=$(TargetDir).\" -c \"sampsharp.assembly=$(TargetName)\""
                       }
                     }
                   }
