@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace SampSharp.Entities;
@@ -19,23 +20,37 @@ public interface IEcsHostBuilder
     /// <summary>
     /// Configures the services used by the application.
     /// </summary>
-    /// <param name="build">A delegate that configures the service collection.</param>
+    /// <param name="configure">A delegate that configures the service collection.</param>
     /// <returns>The updated host builder.</returns>
-    IEcsHostBuilder ConfigureServices(Action<SampSharpEnvironment, IServiceCollection> build);
+    IEcsHostBuilder ConfigureServices(Action<IServiceCollection, IConfiguration, SampSharpEnvironment> configure);
 
     /// <summary>
     /// Configures the services used by the application.
     /// </summary>
-    /// <param name="build">A delegate that configures the service collection.</param>
+    /// <param name="configure">A delegate that configures the service collection.</param>
     /// <returns>The updated host builder.</returns>
-    IEcsHostBuilder ConfigureServices(Action<IServiceCollection> build);
+    IEcsHostBuilder ConfigureServices(Action<IServiceCollection, IConfiguration> configure);
+
+    /// <summary>
+    /// Configures the services used by the application.
+    /// </summary>
+    /// <param name="configure">A delegate that configures the service collection.</param>
+    /// <returns>The updated host builder.</returns>
+    IEcsHostBuilder ConfigureServices(Action<IServiceCollection> configure);
 
     /// <summary>
     /// Configures the logging used by the application.
     /// </summary>
-    /// <param name="builder">A delegate that configures the logging builder.</param>
+    /// <param name="configure">A delegate that configures the logging builder.</param>
     /// <returns>The updated host builder.</returns>
-    IEcsHostBuilder ConfigureLogging(Action<ILoggingBuilder> builder);
+    IEcsHostBuilder ConfigureLogging(Action<ILoggingBuilder> configure);
+
+    /// <summary>
+    /// Configures the application configuration, allowing for adding configuration sources, setting up options, etc.
+    /// </summary>
+    /// <param name="configure">A delegate that configures the configuration builder.</param>
+    /// <returns>The updated host builder.</returns>
+    IEcsHostBuilder ConfigureAppConfiguration(Action<IConfigurationBuilder> configure);
 
     /// <summary>
     /// Configures the unhandled exception handler used by the application.

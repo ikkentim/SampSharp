@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using SampSharp.OpenMp.Core;
 
 namespace SampSharp.Entities;
@@ -12,7 +13,8 @@ public interface IEcsStartup : IStartup
     /// Register services into the <see cref="IServiceCollection" />.
     /// </summary>
     /// <param name="services">The <see cref="IServiceCollection" /> to add the services to.</param>
-    void ConfigureServices(IServiceCollection services);
+    /// <param name="configuration">The <see cref="IConfiguration" /> to use for configuring services.</param>
+    void ConfigureServices(IServiceCollection services, IConfiguration configuration);
 
     /// <summary>
     /// Configures the application.

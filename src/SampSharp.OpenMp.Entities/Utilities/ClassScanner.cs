@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace SampSharp.Entities.Utilities;
+namespace SampSharp.Entities;
 
 /// <summary>
 /// Represents a utility for scanning for classes and members with specific attributes in loaded assemblies.

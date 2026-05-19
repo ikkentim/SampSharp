@@ -3,7 +3,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
-using SampSharp.Entities.Utilities;
 
 namespace SampSharp.Entities.SAMP.Commands;
 
