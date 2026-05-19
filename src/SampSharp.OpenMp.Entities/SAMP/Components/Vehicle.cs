@@ -767,8 +767,8 @@ public class Vehicle : WorldEntity
     /// <summary>
     /// Performs an implicit conversion from <see cref="Vehicle" /> to <see cref="IVehicle" />.
     /// </summary>
-    public static implicit operator IVehicle(Vehicle vehicle)
+    public static implicit operator IVehicle(Vehicle? vehicle)
     {
-        return vehicle._vehicle;
+        return vehicle?._vehicle ?? default;
     }
 }

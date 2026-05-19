@@ -26,6 +26,8 @@ public class PlayerWeaponSlots : IEnumerable<PlayerWeaponSlot>
     /// <exception cref="ArgumentException">Thrown when the data array length does not match the maximum weapon slot count.</exception>
     public PlayerWeaponSlots(WeaponSlotData[] data)
     {
+        ArgumentNullException.ThrowIfNull(data);
+
         if (data.Length != WeaponSlots.MAX_WEAPON_SLOTS)
         {
             throw new ArgumentException("Invalid weapon slot count", nameof(data));

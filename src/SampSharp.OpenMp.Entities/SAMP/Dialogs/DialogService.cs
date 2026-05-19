@@ -2,19 +2,14 @@
 
 namespace SampSharp.Entities.SAMP;
 
-internal class DialogService : IDialogService
+internal sealed class DialogService(IEntityManager entityManager) : IDialogService
 {
     /// <summary>
     /// The dialog ID used by the dialog service.
     /// </summary>
     public const int DialogId = 10000;
 
-    private readonly IEntityManager _entityManager;
-
-    public DialogService(IEntityManager entityManager)
-    {
-        _entityManager = entityManager;
-    }
+    private readonly IEntityManager _entityManager = entityManager;
 
     public void Show<TResponse>(Player player, IDialog<TResponse> dialog, Action<TResponse> responseHandler) where TResponse : struct
     {

@@ -5,17 +5,22 @@ using SampSharp.OpenMp.Core;
 namespace SampSharp.Entities;
 
 [Extension(0x57e43771d28c5e7e)]
-internal class EcsHost(IServiceProvider serviceProvider, UnhandledExceptionHandler? exceptionHandler) : Extension
+internal sealed partial class EcsHost(IServiceProvider serviceProvider, UnhandledExceptionHandler? exceptionHandler) : Extension
 {
+    private IStartupContext? _context;
     private IServiceProvider? _serviceProvider = serviceProvider;
 
     public IServiceProvider ServiceProvider => _serviceProvider ?? throw new InvalidOperationException();
 
     public void Start(IStartupContext context)
     {
+        _context = context;
+
         context.UseSynchronizationContext();
 
         context.UnhandledExceptionHandler = UnhandledExceptionHandler;
+
+        context.Cleanup += ContextOnCleanup;
 
         LoadSystems();
 
@@ -23,16 +28,19 @@ internal class EcsHost(IServiceProvider serviceProvider, UnhandledExceptionHandl
         OnGameModeInit();
     }
 
-    protected override void Cleanup()
+    private void ContextOnCleanup(object? sender, EventArgs e)
     {
+        _context?.Cleanup -= ContextOnCleanup;
+        _context = null;
+
         OnGameModeExit();
 
         if (_serviceProvider is IDisposable disposable)
         {
-            //  TODO: This cleanup is called so late - we can't unsubscribe event handlers anymore, but the disposables in registered systems will try to unsubscribe them. This may cause a System.ExecutionEngineException on shutdown.
             disposable.Dispose();
-            _serviceProvider = null;
         }
+
+        _serviceProvider = null;
     }
 
     private void UnhandledExceptionHandler(string context, Exception exception)
@@ -49,8 +57,7 @@ internal class EcsHost(IServiceProvider serviceProvider, UnhandledExceptionHandl
 
     private void DefaultExceptionHandler(string context, Exception exception)
     {
-        ServiceProvider.GetRequiredService<ILoggerFactory>().CreateLogger(context)
-            .LogError(exception, "Unhandled exception during: {context}", context);
+        LogUnhandledException(ServiceProvider.GetRequiredService<ILoggerFactory>().CreateLogger(context), context, exception);
     }
 
     private void OnGameModeInit()
@@ -68,4 +75,6 @@ internal class EcsHost(IServiceProvider serviceProvider, UnhandledExceptionHandl
         ServiceProvider.GetRequiredService<SystemRegistry>().LoadSystems();
     }
 
+    [LoggerMessage(LogLevel.Error, "Unhandled exception during: {Context}")]
+    private static partial void LogUnhandledException(ILogger logger, string context, Exception exception);
 }

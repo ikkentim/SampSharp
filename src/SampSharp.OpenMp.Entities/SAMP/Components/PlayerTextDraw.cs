@@ -241,8 +241,8 @@ public class PlayerTextDraw : IdProvider
     /// <summary>
     /// Performs an implicit conversion from <see cref="PlayerTextDraw" /> to <see cref="IPlayerTextDraw" />.
     /// </summary>
-    public static implicit operator IPlayerTextDraw(PlayerTextDraw playerTextDraw)
+    public static implicit operator IPlayerTextDraw(PlayerTextDraw? playerTextDraw)
     {
-        return playerTextDraw._playerTextDraw;
+        return playerTextDraw?._playerTextDraw ?? default;
     }
 }

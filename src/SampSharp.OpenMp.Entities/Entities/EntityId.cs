@@ -8,7 +8,7 @@ public readonly record struct EntityId
     /// <summary>
     /// An empty entity identifier.
     /// </summary>
-    public static readonly EntityId Empty = new();
+    public static readonly EntityId Empty;
 
     private readonly Guid _id;
 

@@ -2,4 +2,4 @@
 namespace System.Runtime.CompilerServices;
 
 // Enable record support
-internal class IsExternalInit;
+internal sealed class IsExternalInit;

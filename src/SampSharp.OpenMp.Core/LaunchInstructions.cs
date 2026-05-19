@@ -17,7 +17,7 @@ internal static partial class LaunchInstructions
         Console.ForegroundColor = ConsoleColor.DarkRed;
         Console.WriteLine("ERROR: This SampSharp gamemode must be run using an open.mp server.");
         Console.ResetColor();
-        Console.WriteLine("See <<TODO: Documentation URL>> for more information.");
+        Console.WriteLine("See https://sampsharp.net/docs/getting-started.html for more information.");
         Console.WriteLine();
 
         if (!IsRunningInVisualStudio())

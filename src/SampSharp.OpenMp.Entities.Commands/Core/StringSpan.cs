@@ -36,7 +36,7 @@ public readonly struct StringSpan : IEquatable<string>, IEquatable<StringSpan>
     /// <summary>
     /// Gets an empty <see cref="StringSpan"/>.
     /// </summary>
-    public static readonly StringSpan Empty = new();
+    public static readonly StringSpan Empty;
 
     /// <summary>
     /// Gets the range of characters within the string.
@@ -163,6 +163,24 @@ public readonly struct StringSpan : IEquatable<string>, IEquatable<StringSpan>
         }
 
         return Skip(trimmedStart);
+    }
+
+    /// <summary>
+    /// Creates a new <see cref="StringSpan"/> with trailing whitespace removed.
+    /// </summary>
+    /// <returns>A new <see cref="StringSpan"/> with trailing whitespace removed.</returns>
+    public StringSpan TrimEnd()
+    {
+        var span = AsSpan();
+        var length = span.Length;
+
+        while (length > 0 && char.IsWhiteSpace(span[length - 1]))
+        {
+            length--;
+        }
+
+        var (offset, _) = GetOffsetAndLength();
+        return new StringSpan(String, new Range(Index.FromStart(offset), Index.FromStart(offset + length)));
     }
 
     /// <summary>

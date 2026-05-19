@@ -25,6 +25,13 @@ public interface IWorldService
     /// <returns>The actor component of the newly created entity.</returns>
     Actor CreateActor(int modelId, Vector3 position, float rotation, EntityId parent = default);
 
+    /// <summary>
+    /// Creates a new NPC in the world.
+    /// </summary>
+    /// <param name="name">The name of the created NPC.</param>
+    /// <param name="parent">The parent of the entity to be created.</param>
+    /// <returns>The NPC component of the newly created entity.</returns>
+    /// <exception cref="InvalidOperationException">Thrown when the name is already in use or when the NPC open.mp component has not been loaded.</exception>
     Npc CreateNpc(string name, EntityId parent = default);
 
     /// <summary>

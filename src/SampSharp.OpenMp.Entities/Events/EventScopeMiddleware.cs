@@ -24,6 +24,8 @@ public class EventScopeMiddleware
     /// </summary>
     public object? Invoke(EventContext context)
     {
+        ArgumentNullException.ThrowIfNull(context);
+
         using var scope = context.EventServices.CreateScope();
 
         _context.BaseContext = context;

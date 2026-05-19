@@ -31,7 +31,7 @@ public class EventService : IEventService
     private static readonly Type[] DefaultParameterTypes =
     {
         typeof(string)
-        // TODO: Callbacks with parameter length are not yet supported
+        // NOTE: Callbacks with parameter length are not yet supported.
         //typeof(int[]),
         //typeof(bool[]),
         //typeof(float[]),
@@ -83,7 +83,7 @@ public class EventService : IEventService
     /// <inheritdoc />
     public object Invoke(string name, params object[] arguments)
     {
-        // TODO Could cache built invokers into a dictionary
+        // NOTE: Built invokers could be cached in a dictionary.
         return BuildInvoke(name)(arguments);
     }
 

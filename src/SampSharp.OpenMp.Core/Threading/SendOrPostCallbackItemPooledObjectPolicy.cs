@@ -2,7 +2,7 @@
 
 namespace SampSharp.OpenMp.Core;
 
-internal class SendOrPostCallbackItemPooledObjectPolicy : PooledObjectPolicy<SendOrPostCallbackItem>
+internal sealed class SendOrPostCallbackItemPooledObjectPolicy : PooledObjectPolicy<SendOrPostCallbackItem>
 {
     public override SendOrPostCallbackItem Create()
     {

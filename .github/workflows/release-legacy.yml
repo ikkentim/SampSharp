@@ -82,13 +82,11 @@ jobs:
         with:
           name: Legacy SampSharp ${{ env.VERSION }}
           draft: true
-          prerelease: ${{ contains(env.VERSION, 'alpha') || contains(env.VERSION, 'beta') }}
+          prerelease: ${{ contains(env.VERSION, 'prerelease') || contains(env.VERSION, 'rc') }}
           files: SampSharp-${{ env.VERSION }}.zip
 
       - name: Pack NuGet packages
-        run: ./build.sh legacy-libraries publish
-        env:
-          CiVersion: ${{ env.VERSION }}
+        run: ./build.sh legacy-libraries publish --version="${{ env.VERSION }}"
 
       - name: Publish to NuGet
         run: |

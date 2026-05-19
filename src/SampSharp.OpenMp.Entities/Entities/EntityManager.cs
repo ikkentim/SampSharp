@@ -3,7 +3,7 @@ using Microsoft.Extensions.ObjectPool;
 
 namespace SampSharp.Entities;
 
-internal class EntityManager : IEntityManager
+internal sealed class EntityManager : IEntityManager
 {
     private readonly ComponentStore _components;
     private readonly Dictionary<EntityId, EntityNode> _entities = new(100);
@@ -469,5 +469,9 @@ internal class EntityManager : IEntityManager
                 RemoveOne(node.Parent);
             }
         }
+
+        _entities.Remove(node.Id);
+        node.Reset();
+        _entityPool.Return(node);
     }
 }

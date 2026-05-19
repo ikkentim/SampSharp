@@ -17,6 +17,8 @@ public static class OmpLoggerProviderExtensions
     /// <param name="minLogLevel">The minimum log level to write to the open.mp logger.</param>
     public static void AddOpenMp(this ILoggingBuilder builder, LogLevel minLogLevel = LogLevel.Trace)
     {
+        ArgumentNullException.ThrowIfNull(builder);
+
         builder.Services.TryAddSingleton<ILoggerProvider>(sp => 
             new OmpLoggerProvider((ILogger)sp.GetRequiredService<SampSharpEnvironment>().Core, minLogLevel));
     }

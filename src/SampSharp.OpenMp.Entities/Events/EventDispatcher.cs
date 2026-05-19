@@ -9,7 +9,7 @@ using SampSharp.OpenMp.Core;
 namespace SampSharp.Entities;
 
 #pragma warning disable CS0618 // Type or member is obsolete
-internal class EventDispatcher : IEventDispatcher, IEventService
+internal sealed partial class EventDispatcher : IEventDispatcher, IEventService
 #pragma warning restore CS0618 // Type or member is obsolete
 {
     private static readonly Type[] _defaultParameterTypes =
@@ -21,17 +21,18 @@ internal class EventDispatcher : IEventDispatcher, IEventService
 
     private readonly Dictionary<string, Event> _events = new();
     private readonly ILogger<EventDispatcher> _logger;
+    private readonly IUnhandledExceptionHandler _unhandledExceptionHandler;
     private readonly IServiceProvider _serviceProvider;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="EventDispatcher" /> class.
     /// </summary>
-    public EventDispatcher(IServiceProvider serviceProvider, IEntityManager entityManager, ILogger<EventDispatcher> logger, ISystemRegistry systemRegistry)
+    public EventDispatcher(IServiceProvider serviceProvider, IEntityManager entityManager, ILogger<EventDispatcher> logger, ISystemRegistry systemRegistry, IUnhandledExceptionHandler unhandledExceptionHandler)
     {
         _serviceProvider = serviceProvider;
         _entityManager = entityManager;
         _logger = logger;
-
+        _unhandledExceptionHandler = unhandledExceptionHandler;
         systemRegistry.Register(() => LoadTargetSites(systemRegistry));
     }
 
@@ -45,13 +46,13 @@ internal class EventDispatcher : IEventDispatcher, IEventService
         @event.Middleware.Add(middleware);
     }
 
-    public object? Invoke(string name, params ReadOnlySpan<object> arguments)
+    public void Invoke(string name, params ReadOnlySpan<object> arguments)
     {
         ArgumentNullException.ThrowIfNull(name);
 
         if (!_events.TryGetValue(name, out var @event))
         {
-            return null;
+            return;
         }
 
         if(!@event.Cache.TryGetValue(NullValue.Instance, out var invoke))
@@ -60,11 +61,16 @@ internal class EventDispatcher : IEventDispatcher, IEventService
             @event.Cache.TryAdd(NullValue.Instance, invoke);
         }
 
-        return invoke(arguments);
+        var result = invoke(arguments);
+
+        if(result is Task task)
+        {
+            HandleTask(task);
+        }
     }
 
     [return: NotNullIfNotNull(nameof(defaultValue))]
-    public T? InvokeAs<T>(string name, T defaultValue, params ReadOnlySpan<object> arguments)
+    public T InvokeAs<T>(string name, T defaultValue, params ReadOnlySpan<object> arguments)
     {
         ArgumentNullException.ThrowIfNull(name);
 
@@ -82,20 +88,55 @@ internal class EventDispatcher : IEventDispatcher, IEventService
 
         var result = invoke(arguments);
 
-        if(result is Task<T> task)
-        {
-            return task.IsCompleted ? task.Result : defaultValue;
-        }
-
         if (typeof(T) == typeof(bool) && result is MethodResult m)
         {
             var value = m.Value;
             return Unsafe.As<bool, T>(ref value);
         }
 
-        return result is T resultAsT 
-            ? resultAsT 
-            : defaultValue;
+        if (result is T resultAsT)
+        {
+            return resultAsT;
+        }
+
+        if(result is Task<T> { IsCompleted: true } taskT)
+        {
+            return taskT.Result;
+        }
+
+        if(result is Task task)
+        {
+            HandleTask(task);
+        }
+
+        return defaultValue;
+    }
+
+    private void HandleTask(Task task)
+    {
+        if (task.IsCompleted)
+        {
+            HandleTaskException(task);
+        }
+        else
+        {
+            task.ContinueWith(HandleTaskException);
+        }
+    }
+
+    private void HandleTaskException(Task task)
+    {
+        if (task is { IsFaulted: true, Exception: not null })
+        {
+            if (task.Exception.InnerExceptions.Count == 1)
+            {
+                _unhandledExceptionHandler.Handle("async-event", task.Exception.InnerExceptions[0]);
+            }
+            else
+            {
+                _unhandledExceptionHandler.Handle("async-event", task.Exception);
+            }
+        }
     }
 
     private Event GetOrCreateEvent(string name)
@@ -149,7 +190,7 @@ internal class EventDispatcher : IEventDispatcher, IEventService
         {
             if (_logger.IsEnabled(LogLevel.Debug))
             {
-                _logger.LogDebug("Adding event listener on {type}.{method}.", method.DeclaringType, method.Name);
+                LogAddingEventListener(method.DeclaringType, method.Name);
             }
 
             var name = attribute.Name ?? method.Name;
@@ -210,13 +251,7 @@ internal class EventDispatcher : IEventDispatcher, IEventService
                     return compiled.Invoke(instance, args, eventContext.EventServices, _entityManager);
                 }
 
-                _logger.LogError(
-                    "Event \"{eventName}\" argument count mismatch: dispatcher passed {argsLength} arg(s), handler {targetSite}({handlerParams}) expects {sourceParamCount}",
-                    eventContext.Name,
-                    args.Length,
-                    targetSiteName,
-                    string.Join(", ", method.GetParameters().Select(p => $"{p.ParameterType.Name} {p.Name}")),
-                    sourceParamCount);
+                LogEventArgumentsCountMismatch(eventContext.Name, args.Length, targetSiteName, string.Join(", ", method.GetParameters().Select(p => $"{p.ParameterType.Name} {p.Name}")), sourceParamCount);
             }
             catch(Exception ex)
             {
@@ -246,16 +281,7 @@ internal class EventDispatcher : IEventDispatcher, IEventService
             try
             {
                 context.SetArguments(args);
-
-                var result = invoke(context);
-                return result switch
-                {
-                    // TODO - handle async failures
-                    Task<bool> task => !task.IsCompleted ? null : (task.Result ? MethodResult.True : MethodResult.False),
-                    Task<int> task => !task.IsCompleted ? null : task.Result,
-                    Task => null,
-                    _ => result
-                };
+                return invoke(context);
             }
             catch(Exception ex)
             {
@@ -289,4 +315,10 @@ internal class EventDispatcher : IEventDispatcher, IEventService
     {
         public object? Target { get; set; }
     }
+
+    [LoggerMessage(LogLevel.Debug, "Adding event listener on {Type}.{Method}.")]
+    private partial void LogAddingEventListener(Type? type, string method);
+
+    [LoggerMessage(LogLevel.Error, "Event \"{EventName}\" argument count mismatch: dispatcher passed {ArgsLength} arg(s), handler {TargetSite}({HandlerParams}) expects {SourceParamCount}")]
+    partial void LogEventArgumentsCountMismatch(string eventName, int argsLength, string targetSite, string handlerParams, int sourceParamCount);
 }

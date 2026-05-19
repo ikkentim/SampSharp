@@ -3,6 +3,7 @@
 [Oo]bj/
 build/
 build_*/
+!src/SampSharp.Sdk/build/
 publish/
 PublishProfiles/
 *.log
@@ -15,6 +16,7 @@ PublishProfiles/
 *.suo
 *.sln.DotSettings.user
 launchSettings.json
+*.lscache
 
 # OS
 .DS_Store
@@ -26,3 +28,6 @@ desktop.ini
 *.tmp
 *.swp
 *.swo
+
+# Verify snapshot received files (auto-generated during test runs; never committed)
+*.received.*

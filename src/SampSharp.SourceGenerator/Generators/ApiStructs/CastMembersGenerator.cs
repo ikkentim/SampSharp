@@ -183,7 +183,7 @@ public static class CastMembersGenerator
             else
             {
                 // For multi-step cast paths, apply the reverse cast chain directly
-                var cast = impl.CastPath.Reverse().Aggregate(
+                var cast = impl.CastPath.AsEnumerable().Reverse().Aggregate(
                     (ExpressionSyntax)IdentifierName("value"), 
                     (current, c) => CastExpression(c.Syntax, current));
 

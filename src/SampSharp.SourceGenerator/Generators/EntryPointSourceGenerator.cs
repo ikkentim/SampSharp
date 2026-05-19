@@ -81,6 +81,10 @@ public class EntryPointSourceGenerator : IIncrementalGenerator
                                 TokenList(
                                     Token(SyntaxKind.PublicKeyword), 
                                     Token(SyntaxKind.StaticKeyword)))
+                            .WithAttributeLists(
+                                List([
+                                    AttributeFactory.GeneratedCode()
+                                ]))
                             .WithMembers(
                                 List<MemberDeclarationSyntax>([
                                     FieldDeclaration(
@@ -109,24 +113,6 @@ public class EntryPointSourceGenerator : IIncrementalGenerator
                                             TokenList(
                                                 Token(SyntaxKind.PrivateKeyword), 
                                                 Token(SyntaxKind.StaticKeyword))),
-                                        MethodDeclaration(
-                                            PredefinedType(
-                                                Token(SyntaxKind.VoidKeyword)),
-                                            Identifier("Cleanup"))
-                                        .WithAttributeLists(
-                                            SingletonList(
-                                                AttributeFactory.UnmanagedCallersOnly()))
-                                        .WithModifiers(
-                                            TokenList(Token(SyntaxKind.PublicKeyword), Token(SyntaxKind.StaticKeyword)))
-                                        .WithBody(
-                                            Block(
-                                                SingletonList<StatementSyntax>(
-                                                    ExpressionStatement(
-                                                        ConditionalAccessExpression(
-                                                            IdentifierName("_context"),
-                                                            InvocationExpression(
-                                                                MemberBindingExpression(
-                                                                    IdentifierName("InvokeCleanup")))))))),
                                         MethodDeclaration(
                                             PredefinedType(
                                                 Token(SyntaxKind.VoidKeyword)),

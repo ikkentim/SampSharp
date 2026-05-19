@@ -6,19 +6,26 @@ namespace SampSharp.Entities.SAMP;
 /// <summary>
 /// Represents a component which exists in the 3D world.
 /// </summary>
-/// <remarks>
-/// Initializes a new instance of the <see cref="WorldEntity" /> class.
-/// </remarks>
-/// <param name="entity">The open.mp entity this component represents.</param>
-public abstract class WorldEntity(IEntity entity) : IdProvider((IIDProvider)entity)
+public abstract class WorldEntity : IdProvider
 {
+    private readonly IEntity _entity;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="WorldEntity" /> class.
+    /// </summary>
+    /// <param name="entity">The open.mp entity this component represents.</param>
+    protected WorldEntity(IEntity entity) : base((IIDProvider)entity)
+    {
+        _entity = entity;
+    }
+
     /// <summary>
     /// Gets or sets the position of this component.
     /// </summary>
     public virtual Vector3 Position
     {
-        get => entity.GetPosition();
-        set => entity.SetPosition(value);
+        get => _entity.GetPosition();
+        set => _entity.SetPosition(value);
     }
 
     /// <summary>
@@ -26,8 +33,8 @@ public abstract class WorldEntity(IEntity entity) : IdProvider((IIDProvider)enti
     /// </summary>
     public virtual Quaternion Rotation
     {
-        get => entity.GetRotation();
-        set => entity.SetRotation(value);
+        get => _entity.GetRotation();
+        set => _entity.SetRotation(value);
     }
 
     /// <summary>
@@ -45,7 +52,7 @@ public abstract class WorldEntity(IEntity entity) : IdProvider((IIDProvider)enti
     /// </summary>
     public virtual int VirtualWorld
     {
-        get => entity.GetVirtualWorld();
-        set => entity.SetVirtualWorld(value);
+        get => _entity.GetVirtualWorld();
+        set => _entity.SetVirtualWorld(value);
     }
 }

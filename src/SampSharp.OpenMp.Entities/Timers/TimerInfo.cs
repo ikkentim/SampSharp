@@ -1,18 +1,10 @@
 ﻿namespace SampSharp.Entities;
 
-internal class TimerInfo
+internal sealed class TimerInfo(long intervalTicks, long nextTick, Action invoke, bool isActive)
 {
-    public long IntervalTicks;
-    public Action Invoke;
-    public bool IsActive;
-    public long NextTick;
+    public long IntervalTicks = intervalTicks;
+    public Action Invoke = invoke;
+    public bool IsActive = isActive;
+    public long NextTick = nextTick;
     public TimerReference? Reference;
-
-    public TimerInfo(long intervalTicks, long nextTick, Action invoke, bool isActive)
-    {
-        IntervalTicks = intervalTicks;
-        NextTick = nextTick;
-        Invoke = invoke;
-        IsActive = isActive;
-    }
 }

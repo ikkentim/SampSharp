@@ -13,7 +13,7 @@ public class CommandDefinition
 
     /// <summary>Initializes a new instance.</summary>
     public CommandDefinition(string name, CommandGroup? group, MethodInfo method, ParameterInfo[] parameters, Type declaringSystemType, CommandParameterInfo[] parsedParameters, CommandInvoker invoker,
-        int prefixParameterCount, CommandAlias[] aliases, CommandTag[] tags)
+        int prefixParameterCount, CommandAlias[] aliases, CommandTag[] tags, CommandComponentMatcher componentMatcher)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
@@ -24,6 +24,8 @@ public class CommandDefinition
         ArgumentNullException.ThrowIfNull(parameters);
         ArgumentNullException.ThrowIfNull(declaringSystemType);
         ArgumentNullException.ThrowIfNull(parsedParameters);
+        ArgumentNullException.ThrowIfNull(aliases);
+        ArgumentNullException.ThrowIfNull(tags);
 
         Name = name;
         Group = group;
@@ -32,6 +34,7 @@ public class CommandDefinition
         DeclaringSystemType = declaringSystemType;
         ParsedParameters = parsedParameters;
         CompiledInvoker = invoker;
+        CompiledComponentMatcher = componentMatcher;
         PrefixParameterCount = prefixParameterCount;
         _aliases = aliases;
         _tags = new Dictionary<string, string>();
@@ -67,8 +70,15 @@ public class CommandDefinition
     /// </summary>
     public CommandParameterInfo[] ParsedParameters { get; }
 
-    /// <summary>The pre-compiled method invoker (compiled at discovery time).</summary>
+    /// <summary>
+    /// Gets the invoker used to execute the associated command efficiently.
+    /// </summary>
     public CommandInvoker CompiledInvoker { get; }
+
+    /// <summary>
+    /// Gets the matcher used to evaluate command components.
+    /// </summary>
+    public CommandComponentMatcher CompiledComponentMatcher { get; }
 
     /// <summary>The number of prefix parameters (e.g., Player for player commands, ConsoleCommandSender for console commands).</summary>
     public int PrefixParameterCount { get; }

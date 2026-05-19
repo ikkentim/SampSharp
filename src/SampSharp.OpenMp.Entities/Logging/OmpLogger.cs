@@ -1,6 +1,8 @@
-﻿using System.Text;
+﻿using System.Globalization;
+using System.Text;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.ObjectPool;
+using Microsoft.Extensions.Primitives;
 using SampSharp.OpenMp.Core;
 using ILogger = SampSharp.OpenMp.Core.Api.ILogger;
 using LogLevel = Microsoft.Extensions.Logging.LogLevel;
@@ -8,7 +10,7 @@ using OmpLogLevel = SampSharp.OpenMp.Core.Api.LogLevel;
 
 namespace SampSharp.Entities.Logging;
 
-internal class OmpLogger(ILogger inner, LogLevel minLogLevel, string name, ObjectPool<StringBuilder> objectPool)
+internal sealed class OmpLogger(ILogger inner, LogLevel minLogLevel, string name, ObjectPool<StringBuilder> objectPool)
     : Microsoft.Extensions.Logging.ILogger
 {
     private readonly Dictionary<OmpLogLevel, LoggerTextWriter> _writers = new()
@@ -33,15 +35,15 @@ internal class OmpLogger(ILogger inner, LogLevel minLogLevel, string name, Objec
         {
             if (eventId.Id != 0)
             {
-                sb.Append($"[{eventId.Id,2}]`");
+                sb.Append(CultureInfo.InvariantCulture, $"[{eventId.Id,2}]`");
             }
 
             if (logLevel is LogLevel.Trace or LogLevel.Critical)
             {
-                sb.Append($" [{logLevel}]");
+                sb.Append(CultureInfo.InvariantCulture, $" [{logLevel}]");
             }
 
-            sb.Append($"{name} - {formatter(state, exception)}");
+            sb.Append(CultureInfo.InvariantCulture, $"{name} - {formatter(state, exception)}");
 
             if (exception != null)
             {

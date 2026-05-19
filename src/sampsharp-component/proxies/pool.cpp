@@ -2,8 +2,10 @@
 #include "../proxy-api.hpp"
 
 template <typename T>
-struct IPoolHack : public IPool<T> {
-    const FlatPtrHashSet<T>& exposeEntries() {
+struct IPoolHack : public IPool<T>
+{
+    const FlatPtrHashSet<T>& exposeEntries()
+    {
         return this->entries(); // Accessing protected method
     }
 };

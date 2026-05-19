@@ -17,17 +17,18 @@ private:
     hostfxr_close_fn close_fptr = nullptr;
     load_assembly_and_get_function_pointer_fn load_assembly_and_get_function_pointer_fptr = nullptr;
 
-    static void * load_library(const char_t *);
-    static void * get_export(void *, const char *);
+    static void* load_library(const char_t*);
+    static void* get_export(void*, const char*);
 
-    int load_hostfxr(const char_t * assembly_path);
+    int load_hostfxr(const char_t* assembly_path);
 
-    int load_runtime(const char_t * config_path, load_assembly_and_get_function_pointer_fn * fptr) const;
-    const char * get_error(int code) const;
+    int load_runtime(const char_t* config_path, load_assembly_and_get_function_pointer_fn* fptr) const;
+    const char* get_error(int code) const;
 
 public:
     bool isReady() const;
-    bool initialize(const char ** error_ptr);
-    bool loadFor(const StringView root_path, const StringView assembly_name, const char ** error_ptr);
-    bool getEntryPoint(const StringView entry_type_name, const StringView name, void ** delegate_ptr, const char ** error_ptr) const;
+    bool initialize(const char** error_ptr);
+    bool loadFor(const StringView root_path, const StringView assembly_name, const char** error_ptr);
+    bool getEntryPoint(const StringView entry_type_name, const StringView name, void** delegate_ptr,
+                       const char** error_ptr) const;
 };

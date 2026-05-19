@@ -26,7 +26,7 @@ internal class PlayerConnectMiddleware
 
     public object Invoke(EventContext context, IEntityManager entityManager)
     {
-        // TODO: Parenting to connection
+        // NOTE: This entity is currently created without parenting it to the connection.
         var entity = SampEntities.GetPlayerId((int)context.Arguments[0]);
 
         entityManager.Create(entity);

@@ -190,8 +190,8 @@ public class Menu : IdProvider
     /// <summary>
     /// Performs an implicit conversion from <see cref="Menu" /> to <see cref="IMenu" />.
     /// </summary>
-    public static implicit operator IMenu(Menu menu)
+    public static implicit operator IMenu(Menu? menu)
     {
-        return menu._menu;
+        return menu?._menu ?? default;
     }
 }

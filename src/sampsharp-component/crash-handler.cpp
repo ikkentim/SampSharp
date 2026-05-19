@@ -25,21 +25,36 @@ namespace sampsharp::crash
         {
             switch (code)
             {
-            case EXCEPTION_ACCESS_VIOLATION:      return "ACCESS_VIOLATION";
-            case EXCEPTION_STACK_OVERFLOW:        return "STACK_OVERFLOW";
-            case EXCEPTION_ILLEGAL_INSTRUCTION:   return "ILLEGAL_INSTRUCTION";
-            case EXCEPTION_PRIV_INSTRUCTION:      return "PRIV_INSTRUCTION";
-            case EXCEPTION_INT_DIVIDE_BY_ZERO:    return "INT_DIVIDE_BY_ZERO";
-            case EXCEPTION_INT_OVERFLOW:          return "INT_OVERFLOW";
-            case EXCEPTION_FLT_DIVIDE_BY_ZERO:    return "FLT_DIVIDE_BY_ZERO";
-            case EXCEPTION_ARRAY_BOUNDS_EXCEEDED: return "ARRAY_BOUNDS_EXCEEDED";
-            case EXCEPTION_DATATYPE_MISALIGNMENT: return "DATATYPE_MISALIGNMENT";
-            case EXCEPTION_IN_PAGE_ERROR:         return "IN_PAGE_ERROR";
-            case 0xC0000374:                      return "HEAP_CORRUPTION";
-            case 0xC0000409:                      return "FAST_FAIL/STACK_BUFFER_OVERRUN";
-            case 0xE06D7363:                      return "C++ EXCEPTION";
-            case 0xE0434352:                      return "CLR EXCEPTION";
-            default:                              return "UNKNOWN";
+            case EXCEPTION_ACCESS_VIOLATION:
+                return "ACCESS_VIOLATION";
+            case EXCEPTION_STACK_OVERFLOW:
+                return "STACK_OVERFLOW";
+            case EXCEPTION_ILLEGAL_INSTRUCTION:
+                return "ILLEGAL_INSTRUCTION";
+            case EXCEPTION_PRIV_INSTRUCTION:
+                return "PRIV_INSTRUCTION";
+            case EXCEPTION_INT_DIVIDE_BY_ZERO:
+                return "INT_DIVIDE_BY_ZERO";
+            case EXCEPTION_INT_OVERFLOW:
+                return "INT_OVERFLOW";
+            case EXCEPTION_FLT_DIVIDE_BY_ZERO:
+                return "FLT_DIVIDE_BY_ZERO";
+            case EXCEPTION_ARRAY_BOUNDS_EXCEEDED:
+                return "ARRAY_BOUNDS_EXCEEDED";
+            case EXCEPTION_DATATYPE_MISALIGNMENT:
+                return "DATATYPE_MISALIGNMENT";
+            case EXCEPTION_IN_PAGE_ERROR:
+                return "IN_PAGE_ERROR";
+            case 0xC0000374:
+                return "HEAP_CORRUPTION";
+            case 0xC0000409:
+                return "FAST_FAIL/STACK_BUFFER_OVERRUN";
+            case 0xE06D7363:
+                return "C++ EXCEPTION";
+            case 0xE0434352:
+                return "CLR EXCEPTION";
+            default:
+                return "UNKNOWN";
             }
         }
 
@@ -68,9 +83,10 @@ namespace sampsharp::crash
         void logModuleFor(void* addr)
         {
             HMODULE mod = nullptr;
-            if (!GetModuleHandleExA(
-                GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
-                static_cast<LPCSTR>(addr), &mod) || !mod)
+            if (!GetModuleHandleExA(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS |
+                                        GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
+                                    static_cast<LPCSTR>(addr), &mod) ||
+                !mod)
             {
                 log("  %p  <unknown module>", addr);
                 return;
@@ -95,14 +111,12 @@ namespace sampsharp::crash
             const BOOL haveLine = SymGetLineFromAddr64(GetCurrentProcess(), pc, &lineDisp, &line);
 
             if (haveSym && haveLine)
-                log("  %p  %s!%s+0x%llx  (%s:%lu)", addr, modName, sym->Name,
-                    static_cast<unsigned long long>(disp), line.FileName, line.LineNumber);
+                log("  %p  %s!%s+0x%llx  (%s:%lu)", addr, modName, sym->Name, static_cast<unsigned long long>(disp),
+                    line.FileName, line.LineNumber);
             else if (haveSym)
-                log("  %p  %s!%s+0x%llx", addr, modName, sym->Name,
-                    static_cast<unsigned long long>(disp));
+                log("  %p  %s!%s+0x%llx", addr, modName, sym->Name, static_cast<unsigned long long>(disp));
             else
-                log("  %p  %s+0x%llx", addr, modName,
-                    static_cast<unsigned long long>(offset));
+                log("  %p  %s+0x%llx", addr, modName, static_cast<unsigned long long>(offset));
         }
 
         // Safely read 8 bytes from a possibly-bad address. Returns false on fault.
@@ -159,8 +173,7 @@ namespace sampsharp::crash
                     walkCtx.Rip = retAddr;
                     walkCtx.Rsp += sizeof(DWORD64);
                     recovered_pc = true;
-                    log("[crash] recovered caller PC: 0x%llx",
-                        static_cast<unsigned long long>(retAddr));
+                    log("[crash] recovered caller PC: 0x%llx", static_cast<unsigned long long>(retAddr));
                 }
                 else
                 {
@@ -186,8 +199,8 @@ namespace sampsharp::crash
             int walked = 0;
             for (int i = 0; i < 64; ++i)
             {
-                if (!StackWalk64(machine, process, GetCurrentThread(), &frame, &walkCtx,
-                                 nullptr, SymFunctionTableAccess64, SymGetModuleBase64, nullptr))
+                if (!StackWalk64(machine, process, GetCurrentThread(), &frame, &walkCtx, nullptr,
+                                 SymFunctionTableAccess64, SymGetModuleBase64, nullptr))
                     break;
                 if (frame.AddrPC.Offset == 0)
                     break;
@@ -209,11 +222,13 @@ namespace sampsharp::crash
                     DWORD64 val = 0;
                     if (!safeRead64(rsp + i * sizeof(DWORD64), &val))
                         break;
-                    if (val < 0x10000) continue;
+                    if (val < 0x10000)
+                        continue;
                     HMODULE mod = nullptr;
-                    if (GetModuleHandleExA(
-                            GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
-                            reinterpret_cast<LPCSTR>(val), &mod) && mod)
+                    if (GetModuleHandleExA(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS |
+                                               GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
+                                           reinterpret_cast<LPCSTR>(val), &mod) &&
+                        mod)
                     {
                         logModuleFor(reinterpret_cast<void*>(val));
                         ++found;
@@ -229,13 +244,11 @@ namespace sampsharp::crash
             char path[MAX_PATH];
             SYSTEMTIME st;
             GetLocalTime(&st);
-            snprintf(path, sizeof(path),
-                     "sampsharp_crash_%04u%02u%02u_%02u%02u%02u_%lu.dmp",
-                     st.wYear, st.wMonth, st.wDay, st.wHour, st.wMinute, st.wSecond,
-                     GetCurrentProcessId());
+            snprintf(path, sizeof(path), "sampsharp_crash_%04u%02u%02u_%02u%02u%02u_%lu.dmp", st.wYear, st.wMonth,
+                     st.wDay, st.wHour, st.wMinute, st.wSecond, GetCurrentProcessId());
 
-            const HANDLE file = CreateFileA(path, GENERIC_WRITE, 0, nullptr,
-                                            CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
+            const HANDLE file =
+                CreateFileA(path, GENERIC_WRITE, 0, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
             if (file == INVALID_HANDLE_VALUE)
             {
                 log("[crash] failed to create minidump file '%s' (err=%lu)", path, GetLastError());
@@ -247,15 +260,12 @@ namespace sampsharp::crash
             mei.ExceptionPointers = ep;
             mei.ClientPointers = FALSE;
 
-            const auto type = static_cast<MINIDUMP_TYPE>(
-                MiniDumpWithFullMemory |
-                MiniDumpWithHandleData |
-                MiniDumpWithThreadInfo |
-                MiniDumpWithUnloadedModules |
-                MiniDumpWithFullMemoryInfo);
+            const auto type =
+                static_cast<MINIDUMP_TYPE>(MiniDumpWithFullMemory | MiniDumpWithHandleData | MiniDumpWithThreadInfo |
+                                           MiniDumpWithUnloadedModules | MiniDumpWithFullMemoryInfo);
 
-            const BOOL ok = MiniDumpWriteDump(GetCurrentProcess(), GetCurrentProcessId(),
-                                              file, type, ep ? &mei : nullptr, nullptr, nullptr);
+            const BOOL ok = MiniDumpWriteDump(GetCurrentProcess(), GetCurrentProcessId(), file, type,
+                                              ep ? &mei : nullptr, nullptr, nullptr);
             CloseHandle(file);
 
             if (ok)
@@ -274,8 +284,7 @@ namespace sampsharp::crash
             void* addr = ep->ExceptionRecord->ExceptionAddress;
 
             log("================ SampSharp CRASH ================");
-            log("[crash] code=0x%08lX (%s)  addr=%p  thread=%lu  pid=%lu",
-                code, codeName(code), addr,
+            log("[crash] code=0x%08lX (%s)  addr=%p  thread=%lu  pid=%lu", code, codeName(code), addr,
                 GetCurrentThreadId(), GetCurrentProcessId());
 
             if (code == EXCEPTION_ACCESS_VIOLATION && ep->ExceptionRecord->NumberParameters >= 2)
@@ -308,7 +317,7 @@ namespace sampsharp::crash
         }
 
         LPTOP_LEVEL_EXCEPTION_FILTER g_previous_filter = nullptr;
-    }
+    } // namespace
 
     void install(ICore* core)
     {
@@ -326,13 +335,15 @@ namespace sampsharp::crash
         if (core)
             core->logLn(LogLevel::Message, "[SampSharp] crash handler installed");
     }
-}
+} // namespace sampsharp::crash
 
 #else // !_WIN32
 
 namespace sampsharp::crash
 {
-    void install(ICore*) {}
-}
+    void install(ICore*)
+    {
+    }
+} // namespace sampsharp::crash
 
 #endif

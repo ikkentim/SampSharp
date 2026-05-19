@@ -259,8 +259,8 @@ public abstract class BaseGangZone : IdProvider
     /// <summary>
     /// Performs an implicit conversion from <see cref="BaseGangZone" /> to <see cref="IGangZone" />.
     /// </summary>
-    public static implicit operator IGangZone(BaseGangZone gangZone)
+    public static implicit operator IGangZone(BaseGangZone? gangZone)
     {
-        return gangZone._gangZone;
+        return gangZone?._gangZone ?? default;
     }
 }

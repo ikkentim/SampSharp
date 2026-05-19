@@ -21,6 +21,8 @@ public static class EcsBuilderUseMiddlewareExtensions
     /// <returns>A reference to this instance after the operation has completed.</returns>
     public static IEcsBuilder UseMiddleware(this IEcsBuilder builder, string name, Func<EventDelegate, EventDelegate> middleware)
     {
+        ArgumentNullException.ThrowIfNull(builder);
+
         builder.Services.GetRequiredService<IEventDispatcher>().UseMiddleware(name, middleware);
         return builder;
     }
@@ -34,6 +36,8 @@ public static class EcsBuilderUseMiddlewareExtensions
     /// <returns>A reference to this instance after the operation has completed.</returns>
     public static IEcsBuilder UseMiddleware(this IEcsBuilder builder, string name, Func<EventContext, Func<object?>, object?> middleware)
     {
+        ArgumentNullException.ThrowIfNull(builder);
+
         return builder.UseMiddleware(name, next =>
         {
             return context =>
@@ -59,6 +63,8 @@ public static class EcsBuilderUseMiddlewareExtensions
     /// <returns>A reference to this instance after the operation has completed.</returns>
     public static IEcsBuilder UseMiddleware<TMiddleware>(this IEcsBuilder builder, string name, params object[] args)
     {
+        ArgumentNullException.ThrowIfNull(builder);
+
         return builder.UseMiddleware(name, typeof(TMiddleware), args);
     }
 
@@ -73,6 +79,8 @@ public static class EcsBuilderUseMiddlewareExtensions
     /// <returns>A reference to this instance after the operation has completed.</returns>
     public static IEcsBuilder UseMiddleware(this IEcsBuilder builder, string name, Type middleware, params object[] args)
     {
+        ArgumentNullException.ThrowIfNull(builder);
+
         var applicationServices = builder.Services;
         return builder.UseMiddleware(name, next =>
         {

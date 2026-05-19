@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <Description>dotnet new templates for SampSharp open.mp gamemodes.</Description>
+        <PackageType>Template</PackageType>
+        <IncludeBuildOutput>false</IncludeBuildOutput>
+        <IncludeContentInPack>true</IncludeContentInPack>
+        <ContentTargetFolders>content</ContentTargetFolders>
+        <NoDefaultExcludes>true</NoDefaultExcludes>
+        <NoPackageAnalysis>true</NoPackageAnalysis>
+        <IncludeSymbols>false</IncludeSymbols>
+        <IncludeSource>false</IncludeSource>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Remove="content\**\*.cs" />
+        <Content Include="content\**\*" Exclude="content\**\bin\**;content\**\obj\**" />
+    </ItemGroup>
+
+</Project>

@@ -2,7 +2,7 @@
 
 namespace SampSharp.Entities.SAMP;
 
-internal class GangZoneSystem : DisposableSystem, IGangZoneEventHandler
+internal sealed class GangZoneSystem : DisposableSystem, IGangZoneEventHandler
 {
     private readonly IOmpEntityProvider _entityProvider;
     private readonly IEventDispatcher _eventDispatcher;

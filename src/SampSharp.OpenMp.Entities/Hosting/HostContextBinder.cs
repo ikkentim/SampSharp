@@ -5,7 +5,7 @@ namespace SampSharp.Entities;
 /// <summary>
 /// Binds the lifecycle of the ECS host to the lifecycle of the startup context, ensuring that the ECS host is properly initialized and cleaned up along with the application.
 /// </summary>
-internal class HostContextBinder(IStartupContext context, EcsHostBuilder hostBuilder) : IDisposable
+internal sealed class HostContextBinder(IStartupContext context, EcsHostBuilder hostBuilder) : IDisposable
 {
     private EcsHost? _host;
 

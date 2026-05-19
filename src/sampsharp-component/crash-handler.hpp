@@ -9,4 +9,4 @@ namespace sampsharp::crash
     // exception code/address, module, stack trace, and writes a minidump next
     // to the executable. No-op on other platforms.
     void install(ICore* core);
-}
+} // namespace sampsharp::crash

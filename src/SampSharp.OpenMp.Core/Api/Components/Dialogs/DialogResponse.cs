@@ -8,10 +8,10 @@ public enum DialogResponse
     /// <summary>
     /// The right button was clicked.
     /// </summary>
-    DialogResponse_Right = 0,
+    Right = 0,
 
     /// <summary>
     /// The left button was clicked.
     /// </summary>
-    DialogResponse_Left
+    Left
 }

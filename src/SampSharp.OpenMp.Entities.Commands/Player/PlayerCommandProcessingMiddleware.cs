@@ -1,13 +1,8 @@
 namespace SampSharp.Entities.SAMP.Commands;
 
-internal class PlayerCommandProcessingMiddleware
+internal class PlayerCommandProcessingMiddleware(EventDelegate next)
 {
-    private readonly EventDelegate _next;
-
-    public PlayerCommandProcessingMiddleware(EventDelegate next)
-    {
-        _next = next;
-    }
+    private readonly EventDelegate _next = next;
 
     /// <summary>Invokes the middleware.</summary>
     public object? Invoke(EventContext context, IPlayerCommandService commandService)

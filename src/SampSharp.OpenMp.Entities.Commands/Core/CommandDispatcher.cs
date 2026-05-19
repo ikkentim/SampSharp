@@ -1,3 +1,5 @@
+using Microsoft.Extensions.DependencyInjection;
+
 namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>
@@ -31,14 +33,14 @@ internal class CommandDispatcher
         var beforeLookup = input;
 
         // Advance 'input' past the consumed command path words
-        var overloads = registry.GetCommandGroupByPath(ref input);
+        var overloads = registry.FindCommands(ref input);
         if (overloads == null)
         {
             return DispatchResult.CreateNotFound();
         }
 
         // The used command name is the portion consumed during lookup (trim trailing whitespace)
-        var usedCommandName = beforeLookup.Take(beforeLookup.Length - input.Length).ToString().TrimEnd();
+        var usedCommandName = beforeLookup.Take(beforeLookup.Length - input.Length).TrimEnd().ToString();
 
         // Remaining args start after any leading whitespace that follows the command name
         var remainingArgs = input.TrimStart();
@@ -48,20 +50,14 @@ internal class CommandDispatcher
 
         // Check permission if a permission checker is provided
         if (bestMatch.overload is not null &&
-            permissionChecker is not null &&
-            prefixArgs is [EntityId entityId, ..])
+            prefixArgs is [EntityId entityId, ..] &&
+            !PermissionCheck(services, prefixArgs, permissionChecker, bestMatch.overload, bestMatch.parsedArguments, entityId))
         {
-            var entityManager = services.GetService(typeof(IEntityManager)) as IEntityManager
-                ?? throw new InvalidOperationException($"{nameof(IEntityManager)} is not registered in the service provider but is required for permission checking.");
-            var playerComponent = entityManager.GetComponent<Player>(entityId);
-            if (playerComponent != null && !permissionChecker.HasPermission(playerComponent, bestMatch.overload))
-            {
-                var permDenied = DispatchResult.CreatePermissionDenied();
-                permDenied.CommandOverload = bestMatch.overload;
-                permDenied.AllOverloads = overloads;
-                permDenied.UsedCommandName = usedCommandName;
-                return permDenied;
-            }
+            var result = DispatchResult.CreatePermissionDenied();
+            result.CommandOverload = bestMatch.overload;
+            result.AllOverloads = overloads;
+            result.UsedCommandName = usedCommandName;
+            return result;
         }
 
         if (bestMatch.matched)
@@ -82,6 +78,21 @@ internal class CommandDispatcher
             result.UsedCommandName = usedCommandName;
             return result;
         }
+    }
+
+    private static bool PermissionCheck(IServiceProvider services, object[] prefixArgs, IPermissionChecker? permissionChecker, CommandDefinition overload,
+        object?[]? parsedArguments, EntityId entityId)
+    {
+        var entityManager = services.GetRequiredService<IEntityManager>();
+        if (!overload.CompiledComponentMatcher(prefixArgs, parsedArguments ?? [], entityManager))
+        {
+            return false;
+        }
+
+        var playerComponent = entityManager.GetComponent<Player>(entityId);
+        return permissionChecker is null ||
+               playerComponent == null ||
+               permissionChecker.HasPermission(playerComponent, overload);
     }
 
     /// <summary>
@@ -147,7 +158,7 @@ internal class CommandDispatcher
                     parsedValues.Add(param.DefaultValue);
                 }
             }
-            catch (Exception)
+            catch
             {
                 // Parser threw exception - treat as parse failure
                 if (param.IsRequired)

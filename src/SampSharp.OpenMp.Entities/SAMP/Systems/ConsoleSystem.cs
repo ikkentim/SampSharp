@@ -3,7 +3,7 @@ using SampSharp.OpenMp.Core.RobinHood;
 
 namespace SampSharp.Entities.SAMP;
 
-internal class ConsoleSystem : DisposableSystem, IConsoleEventHandler
+internal sealed class ConsoleSystem : DisposableSystem, IConsoleEventHandler
 {
     private readonly IOmpEntityProvider _entityProvider;
     private readonly IEventDispatcher _eventDispatcher;
@@ -23,7 +23,12 @@ internal class ConsoleSystem : DisposableSystem, IConsoleEventHandler
         var isCustom = sender.Sender == OpenMp.Core.Api.ConsoleCommandSender.Custom;
         var isConsole = sender.Sender == OpenMp.Core.Api.ConsoleCommandSender.Console;
 
-        return _eventDispatcher.InvokeAs("OnConsoleText", false, command, parameters, new ConsoleCommandSender(player, isConsole, isCustom));
+        Action<string>? handleConsoleMessage = null;
+        if (sender.Handler.HasValue)
+        {
+            handleConsoleMessage = sender.Handler.Value.HandleConsoleMessage;
+        }
+        return _eventDispatcher.InvokeAs("OnConsoleText", false, command, parameters, new ConsoleCommandSender(player, isConsole, isCustom, handleConsoleMessage));
     }
 
     public void OnRconLoginAttempt(IPlayer player, string password, bool success)

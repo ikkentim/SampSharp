@@ -3,14 +3,9 @@
 namespace TestMode.OpenMp.Core;
 
 [Extension(0x57a6f80937089f8b)]
-public class Nickname : Extension
+public class Nickname(string name) : Extension
 {
-    public Nickname(string name)
-    {
-        Name = name;
-    }
-
-    public string Name { get; }
+    public string Name { get; } = name;
 
     public override string ToString()
     {

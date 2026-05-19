@@ -194,8 +194,8 @@ public class TextLabel : WorldEntity
     /// <summary>
     /// Performs an implicit conversion from <see cref="TextLabel" /> to <see cref="ITextLabel" />.
     /// </summary>
-    public static implicit operator ITextLabel(TextLabel textLabel)
+    public static implicit operator ITextLabel(TextLabel? textLabel)
     {
-        return textLabel._textLabel;
+        return textLabel?._textLabel ?? default;
     }
 }

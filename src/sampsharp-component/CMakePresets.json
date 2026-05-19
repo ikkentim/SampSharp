@@ -1,0 +1,25 @@
+{
+  "version": 6,
+  "configurePresets": [
+    {
+      "name": "clang",
+      "displayName": "Clang CL",
+      "description": "Build using Clang CL toolset",
+      "generator": "Visual Studio 18 2026",
+      "toolset": "ClangCL",
+      "binaryDir": "${sourceDir}/../../build/cmake/component",
+      "cacheVariables": {
+        "CMAKE_POLICY_VERSION_MINIMUM": "3.5",
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "clang",
+      "configurePreset": "clang",
+      "configuration": "RelWithDebInfo",
+      "jobs": 0
+    }
+  ]
+}

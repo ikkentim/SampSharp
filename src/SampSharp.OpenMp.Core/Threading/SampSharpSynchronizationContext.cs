@@ -3,7 +3,7 @@ using Microsoft.Extensions.ObjectPool;
 
 namespace SampSharp.OpenMp.Core;
 
-internal class SampSharpSynchronizationContext : SynchronizationContext
+internal sealed class SampSharpSynchronizationContext : SynchronizationContext
 {
     private readonly ObjectPool<SendOrPostCallbackItem> _pool = new DefaultObjectPool<SendOrPostCallbackItem>(new SendOrPostCallbackItemPooledObjectPolicy());
     private readonly ConcurrentQueue<SendOrPostCallbackItem> _queue = new();

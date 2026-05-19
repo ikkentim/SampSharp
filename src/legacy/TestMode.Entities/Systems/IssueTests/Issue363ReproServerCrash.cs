@@ -31,7 +31,7 @@ public class Issue363ReproServerCrash : ISystem
     public void OnGameModeInit(INativeProxy<TestNatives> m)
     {
         Console.WriteLine("About to call a remote func!");
-        // TODO: This can crash; need to investigate.
+        // NOTE: This scenario can crash.
         m.Instance.CallRemoteFunction("TestCallback", "dd", 1, 2);
     }
 

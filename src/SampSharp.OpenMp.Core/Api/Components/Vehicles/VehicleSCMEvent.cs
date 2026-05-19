@@ -8,20 +8,20 @@ public enum VehicleSCMEvent : uint
     /// <summary>
     /// Event for setting a paint job on a vehicle.
     /// </summary>
-    VehicleSCMEvent_SetPaintjob = 1,
+    SetPaintjob = 1,
 
     /// <summary>
     /// Event for adding a component to a vehicle.
     /// </summary>
-    VehicleSCMEvent_AddComponent,
+    AddComponent,
 
     /// <summary>
     /// Event for setting the color of a vehicle.
     /// </summary>
-    VehicleSCMEvent_SetColour,
+    SetColour,
 
     /// <summary>
     /// Event for entering or exiting a mod shop.
     /// </summary>
-    VehicleSCMEvent_EnterExitModShop
+    EnterExitModShop
 }

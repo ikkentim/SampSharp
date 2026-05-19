@@ -1,17 +1,11 @@
 ﻿namespace SampSharp.Entities;
 
-internal class EventContextImpl : EventContext
+internal sealed class EventContextImpl(string name, IServiceProvider eventServices) : EventContext
 {
     private object[]? _arguments;
 
-    public EventContextImpl(string name, IServiceProvider eventServices)
-    {
-        Name = name;
-        EventServices = eventServices;
-    }
-
-    public override string Name { get; }
-    public override IServiceProvider EventServices { get; }
+    public override string Name { get; } = name;
+    public override IServiceProvider EventServices { get; } = eventServices;
     public override object[] Arguments => _arguments!;
 
     public void SetArguments(ReadOnlySpan<object> arguments)

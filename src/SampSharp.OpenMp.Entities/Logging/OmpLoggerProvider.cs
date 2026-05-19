@@ -7,7 +7,7 @@ using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace SampSharp.Entities.Logging;
 
-internal class OmpLoggerProvider(ILogger innerLogger, LogLevel minLogLevel) : ILoggerProvider
+internal sealed class OmpLoggerProvider(ILogger innerLogger, LogLevel minLogLevel) : ILoggerProvider
 {
     private readonly ConcurrentDictionary<string, Microsoft.Extensions.Logging.ILogger> _loggers = [];
     private readonly ObjectPool<StringBuilder> _stringBuilders = new DefaultObjectPool<StringBuilder>(new StringBuilderPooledObjectPolicy());

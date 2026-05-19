@@ -78,6 +78,7 @@ jobs:
         run: |
           mkdir -p SampSharp-${{ env.VERSION }}/components
           cp component-windows/SampSharp.dll SampSharp-${{ env.VERSION }}/components/
+          cp component-windows/SampSharp.pdb SampSharp-${{ env.VERSION }}/components/
           cp component-linux/SampSharp.so SampSharp-${{ env.VERSION }}/components/SampSharp.so
           zip -r SampSharp-${{ env.VERSION }}.zip SampSharp-${{ env.VERSION }}/
 
@@ -86,18 +87,16 @@ jobs:
         with:
           name: SampSharp ${{ env.VERSION }}
           draft: true
-          prerelease: ${{ contains(env.VERSION, 'alpha') || contains(env.VERSION, 'beta') }}
+          prerelease: ${{ contains(env.VERSION, 'prerelease') || contains(env.VERSION, 'rc') }}
           files: SampSharp-${{ env.VERSION }}.zip
 
       - name: Pack NuGet packages
-        run: ./build.sh component-libraries publish
-        env:
-          CiVersion: ${{ env.VERSION }}
+        run: ./build.sh libraries publish --version="${{ env.VERSION }}"
 
       - name: Publish to NuGet
         run: |
-          for nupkg in build/artifacts/packages/*.nupkg; do
-            dotnet nuget push "$nupkg" \
+          for pkg in build/artifacts/packages/*.{nupkg,snupkg}; do
+            dotnet nuget push "$pkg" \
               --source https://api.nuget.org/v3/index.json \
               --api-key ${{ secrets.NUGET_API_KEY }} \
               --skip-duplicate

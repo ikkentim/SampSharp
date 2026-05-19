@@ -74,7 +74,7 @@ internal sealed class EcsHostBuilder : Extension, IEcsHostBuilder
 
     private IServiceProvider BuildServiceProvider(IStartupContext context)
     {
-        var environment = new SampSharpEnvironment(context.Configurator.GetType().Assembly, context.Core, context.ComponentList);
+        var environment = new SampSharpEnvironment(context.Configurator.GetType().Assembly, context.Core, context.ComponentList, new SafeComponentHandleProvider(context));
 
         var services = new ServiceCollection();
 

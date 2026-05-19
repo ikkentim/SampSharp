@@ -1,8 +1,8 @@
 <Project>
     <PropertyGroup>
-        <IsTestProject>$(MSBuildProjectName.Contains('.UnitTests'))</IsTestProject>
-        <IsTestMode>$(MSBuildProjectName.Contains('TestMode.'))</IsTestMode>
-        <IsDeliverable Condition="'$(IsTestMode)' != 'True' and '$(IsTestProject)' != 'True' and '$(MSBuildProjectExtension)' == '.csproj'">True</IsDeliverable>
+        <_NormalizedProjectDir>$(MSBuildProjectDirectory.Replace('\', '/'))</_NormalizedProjectDir>
+        <_NormalizedRepoDir>$(MSBuildThisFileDirectory.Replace('\', '/'))</_NormalizedRepoDir>
+        <IsDeliverable Condition="'$(MSBuildProjectExtension)' == '.csproj' and $(_NormalizedProjectDir.StartsWith('$(_NormalizedRepoDir)src/'))">True</IsDeliverable>
     </PropertyGroup>
 
     <!-- Building -->
@@ -12,13 +12,20 @@
         <PackageOutputPath>$(MSBuildThisFileDirectory)build/artifacts/packages</PackageOutputPath>
     </PropertyGroup>
 
-    <!-- Packaging -->
     <PropertyGroup>
-        <Company>Tim Potze</Company>
-        <Authors>Tim Potze</Authors>
-        <Copyright>Copyright (c) Tim Potze 2014-$([System.DateTime]::UtcNow.ToString(yyyy))</Copyright>
-        <NeutralLanguage>en-GB</NeutralLanguage>
+	    <TargetFramework>net10.0</TargetFramework>
+	    <ImplicitUsings>enable</ImplicitUsings>
+	    <Nullable>enable</Nullable>
+	    <LangVersion>latest</LangVersion>
     </PropertyGroup>
+
+	<!-- Packaging -->
+	<PropertyGroup>
+		<Company>Tim Potze</Company>
+		<Authors>Tim Potze</Authors>
+		<Copyright>Copyright (c) Tim Potze 2014-$([System.DateTime]::UtcNow.ToString(yyyy))</Copyright>
+		<NeutralLanguage>en-GB</NeutralLanguage>
+	</PropertyGroup>
 
     <PropertyGroup Condition="'$(IsDeliverable)' == 'True'">
         <PackageProjectUrl>https://github.com/ikkentim/SampSharp</PackageProjectUrl>
@@ -36,10 +43,14 @@
         <None Include="README.md" Pack="true" PackagePath="\" />
     </ItemGroup>
 
+    <PropertyGroup Condition="'$(IsDeliverable)' != 'True'">
+	    <IsPackable>false</IsPackable>
+    </PropertyGroup>
+	
     <!-- Versioning -->
     <PropertyGroup Label="Versioning">
-        <VersionPrefix>0.0.0</VersionPrefix>
-        <VersionSuffix>local</VersionSuffix>
+        <VersionPrefix>1.0.0</VersionPrefix>
+        <VersionSuffix>dev</VersionSuffix>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(CiVersion)' != ''" Label="Versioning CI">
@@ -55,7 +66,7 @@
         <AnalysisLevel>latest</AnalysisLevel>
 
         <!-- What -->
-        <AnalysisMode>Minimum</AnalysisMode><!-- TODO: switch to AllEnabledByDefault -->
+        <AnalysisMode>Recommended</AnalysisMode>
         <EnforceCodeStyleInBuild>false</EnforceCodeStyleInBuild>
 
         <!-- Severity -->
@@ -65,7 +76,6 @@
         <!-- When -->
         <RunAnalyzersDuringBuild>true</RunAnalyzersDuringBuild>
         <RunAnalyzersDuringLiveAnalysis>true</RunAnalyzersDuringLiveAnalysis>
-        
     </PropertyGroup>
 
     <!-- Analyzer helpers -->
@@ -77,15 +87,8 @@
     <PropertyGroup Condition="'$(IsDeliverable)' == 'True'">
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    </PropertyGroup>
-
-    <PropertyGroup>
         <EmbedUntrackedSources>true</EmbedUntrackedSources>
     </PropertyGroup>
-
-    <ItemGroup Condition="'$(IsDeliverable)' == 'True'">
-        <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" />
-    </ItemGroup>
 
     <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
         <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>

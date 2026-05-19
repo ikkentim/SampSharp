@@ -12,6 +12,7 @@
     <Project Path="src/SampSharp.OpenMp.Entities.Commands/SampSharp.OpenMp.Entities.Commands.csproj" />
     <Project Path="src/SampSharp.OpenMp.Entities/SampSharp.OpenMp.Entities.csproj" />
     <Project Path="src/SampSharp.Sdk/SampSharp.Sdk.csproj" />
+    <Project Path="src/SampSharp.Templates/SampSharp.Templates.csproj" />
   </Folder>
   <Folder Name="/src/CodeAnalysis/">
     <Project Path="src/SampSharp.Analyzer/SampSharp.Analyzer.csproj" />
@@ -19,9 +20,12 @@
     <Project Path="src/SampSharp.SourceGenerator/SampSharp.SourceGenerator.csproj" />
   </Folder>
   <Folder Name="/test/">
-    <Project Path="test/SampSharp.OpenMp.Entities.Commands.UnitTests/SampSharp.OpenMp.Entities.Commands.UnitTests.csproj" />
+    <Project Path="test/SampSharp.OpenMp.Entities.Commands.Tests/SampSharp.OpenMp.Entities.Commands.Tests.csproj" />
+    <Project Path="test/SampSharp.OpenMp.Core.Tests/SampSharp.OpenMp.Core.Tests.csproj" />
+    <Project Path="test/SampSharp.OpenMp.Entities.Tests/SampSharp.OpenMp.Entities.Tests.csproj" />
+    <Project Path="test/SampSharp.SourceGenerator.Tests/SampSharp.SourceGenerator.Tests.csproj" />
     <Project Path="test/TestMode.OpenMp.Core/TestMode.OpenMp.Core.csproj" />
     <Project Path="test/TestMode.OpenMp.Entities/TestMode.OpenMp.Entities.csproj" />
-    <Project Path="test/TestMode.UnitTests/TestMode.UnitTests.csproj" />
+    <Project Path="test/TestMode.Entities.ApiTests/TestMode.Entities.ApiTests.csproj" />
   </Folder>
 </Solution>

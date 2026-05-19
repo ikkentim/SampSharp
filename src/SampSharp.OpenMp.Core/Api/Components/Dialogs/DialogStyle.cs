@@ -8,30 +8,30 @@ public enum DialogStyle
     /// <summary>
     /// Message box dialog with two buttons.
     /// </summary>
-    DialogStyle_MSGBOX = 0,
+    MSGBOX = 0,
 
     /// <summary>
     /// Input dialog with a text input field.
     /// </summary>
-    DialogStyle_INPUT,
+    INPUT,
 
     /// <summary>
     /// List dialog with selectable items.
     /// </summary>
-    DialogStyle_LIST,
+    LIST,
 
     /// <summary>
     /// Password input dialog (text is masked).
     /// </summary>
-    DialogStyle_PASSWORD,
+    PASSWORD,
 
     /// <summary>
     /// Tabular list dialog with columns.
     /// </summary>
-    DialogStyle_TABLIST,
+    TABLIST,
 
     /// <summary>
     /// Tabular list dialog with headers.
     /// </summary>
-    DialogStyle_TABLIST_HEADERS
+    TABLIST_HEADERS
 }

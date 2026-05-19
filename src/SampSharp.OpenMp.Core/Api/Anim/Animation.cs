@@ -1992,10 +1992,12 @@ public static class Animation
     /// Returns a value indicating whether the specified animation <paramref name="library" /> is valid.
     /// </summary>
     /// <param name="library">The name of the animation library.</param>
-    /// <param name="v1_0">Whether to consider GTA:SA v1.0 animation libraries as valid.</param>
+    /// <param name="v1Compat">Whether to consider GTA:SA v1.0 animation libraries as valid.</param>
     /// <returns><see langword="true" /> if the specified animation library is valid; <see langword="false" /> otherwise.</returns>
-    public static bool IsLibraryValid(string library, bool v1_0 = true)
+    public static bool IsLibraryValid(string library, bool v1Compat = true)
     {
+        ArgumentNullException.ThrowIfNull(library);
+
         library = library.ToUpperInvariant();
 
         if (_animLibs.Contains(library))
@@ -2003,7 +2005,7 @@ public static class Animation
             return true;
         }
 
-        if (v1_0)
+        if (v1Compat)
         {
             // Check three more libraries, removed in version 1.1
             return library == "BLOWJOBZ" || library == "SEX" || library == "SNM";

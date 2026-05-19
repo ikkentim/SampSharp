@@ -90,8 +90,8 @@ public class Class : IdProvider
     /// <summary>
     /// Performs an implicit conversion from <see cref="Class" /> to <see cref="IClass" />.
     /// </summary>
-    public static implicit operator IClass(Class playerClass)
+    public static implicit operator IClass(Class? playerClass)
     {
-        return playerClass._class;
+        return playerClass?._class ?? default;
     }
 }

@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net10.0</TargetFramework>
         <Description>SampSharp package for development of open.mp gamemodes and libraries.</Description>
         <IncludeBuildOutput>false</IncludeBuildOutput>
         <NoPackageAnalysis>true</NoPackageAnalysis>
@@ -16,6 +15,10 @@
         <ProjectReference Include="..\SampSharp.OpenMp.Entities\SampSharp.OpenMp.Entities.csproj" />
         <ProjectReference Include="..\SampSharp.OpenMp.Entities.Commands\SampSharp.OpenMp.Entities.Commands.csproj" />
         <ProjectReference Include="..\SampSharp.SourceGenerator\SampSharp.SourceGenerator.csproj" PrivateAssets="None" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="build\SampSharp.Sdk.props" Pack="true" PackagePath="build\" />
     </ItemGroup>
 
 </Project>

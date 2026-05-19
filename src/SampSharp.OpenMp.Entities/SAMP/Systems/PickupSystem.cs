@@ -2,7 +2,7 @@
 
 namespace SampSharp.Entities.SAMP;
 
-internal class PickupSystem : DisposableSystem, IPickupEventHandler
+internal sealed class PickupSystem : DisposableSystem, IPickupEventHandler
 {
     private readonly IOmpEntityProvider _entityProvider;
     private readonly IEventDispatcher _eventDispatcher;

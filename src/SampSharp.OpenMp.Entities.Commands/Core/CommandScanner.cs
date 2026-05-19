@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq.Expressions;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
 using SampSharp.Entities.Utilities;
@@ -10,18 +11,13 @@ namespace SampSharp.Entities.SAMP.Commands;
 /// Scans ISystem types for command methods marked with [PlayerCommand] or [ConsoleCommand].
 /// Builds CommandDefinition objects and registers them in a registry.
 /// </summary>
-internal class CommandScanner
+internal partial class CommandScanner(ISystemRegistry systemRegistry, IUnhandledExceptionHandler unhandledExceptionHandler, ILogger logger)
 {
-    private readonly ISystemRegistry _systemRegistry;
-    private readonly IUnhandledExceptionHandler _unhandledExceptionHandler;
-    private readonly ILogger _logger;
-
-    public CommandScanner(ISystemRegistry systemRegistry, IUnhandledExceptionHandler unhandledExceptionHandler, ILogger logger)
-    {
-        _systemRegistry = systemRegistry;
-        _unhandledExceptionHandler = unhandledExceptionHandler;
-        _logger = logger;
-    }
+    private static readonly MethodInfo _getComponentInfo = typeof(IEntityManager).GetMethod(nameof(IEntityManager.GetComponent),
+        BindingFlags.Public | BindingFlags.Instance, null, [typeof(EntityId)], null)!;
+    private readonly ISystemRegistry _systemRegistry = systemRegistry;
+    private readonly IUnhandledExceptionHandler _unhandledExceptionHandler = unhandledExceptionHandler;
+    private readonly ILogger _logger = logger;
 
     public void ScanPlayerCommands(CommandRegistry registry, ICommandParameterParserFactory parserFactory)
     {
@@ -110,12 +106,6 @@ internal class CommandScanner
         return allParts.Count > 0 ? new CommandGroup(allParts) : null;
     }
 
-    private void LogRejectedCommand(string commandKind, Type systemType, MethodInfo method, string reason)
-    {
-        _logger.LogWarning("Rejected {commandKind} command {systemType}.{method}: {reason}",
-            commandKind, systemType.FullName ?? systemType.Name, method.Name, reason);
-    }
-
     private bool TryBuildOverload(string commandName, CommandGroup? commandGroup, MethodInfo method, Type systemType, ICommandParameterParserFactory parserFactory,
         int prefixParameters, CommandAlias[] aliases, CommandTag[] tags, [NotNullWhen(true)] out CommandDefinition? overload, [NotNullWhen(false)] out string? rejectionReason)
     {
@@ -142,17 +132,17 @@ internal class CommandScanner
             return false;
         }
 
-        // Compile the method invoker at discovery time
-        var invoker = CompileCommandInvoker(method, parameters, prefixParameters, parsedParams!);
+        var parameterSources = BuildMethodParameterSources(parameters, prefixParameters, parsedParams!);
+        var invoker = CompileCommandInvoker(method, parameterSources);
+        var componentMatcher = CompileComponentMatcher(parameterSources, prefixParameters);
 
-        overload = new CommandDefinition(commandName, commandGroup, method, parameters, systemType, parsedParams!, invoker, prefixParameters, aliases, tags);
+        overload = new CommandDefinition(commandName, commandGroup, method, parameters, systemType, parsedParams!, invoker, prefixParameters, aliases, tags, componentMatcher);
 
         return true;
     }
 
-    private CommandInvoker CompileCommandInvoker(MethodInfo method, ParameterInfo[] parameters, int prefixParameterCount, CommandParameterInfo[] parsedParameters)
+    private static MethodParameterSource[] BuildMethodParameterSources(ParameterInfo[] parameters, int prefixParameterCount, CommandParameterInfo[] parsedParameters)
     {
-        // Build MethodParameterSource array
         var sources = new MethodParameterSource[parameters.Length];
         var parsedParamsByIndex = parsedParameters.ToDictionary(p => p.ParameterIndex);
 
@@ -188,10 +178,53 @@ internal class CommandScanner
             sources[i] = source;
         }
 
-        // Compile using expression trees
+        return sources;
+    }
+
+    private CommandInvoker CompileCommandInvoker(MethodInfo method, MethodParameterSource[] sources)
+    {
         var methodInvoker = MethodInvokerFactory.Compile(method, sources, MethodResult.False);
 
         return ToCommandInvoker(methodInvoker, method);
+    }
+
+    private static CommandComponentMatcher CompileComponentMatcher(MethodParameterSource[] sources, int prefixParameterCount)
+    {
+        var componentSources = sources.Where(s => s.IsComponent && s.ParameterIndex >= 0).ToArray();
+        if (componentSources.Length == 0)
+        {
+            return (_, _, _) => true;
+        }
+
+        var prefixArgs = Expression.Parameter(typeof(object[]), "prefixArgs");
+        var parsedArgs = Expression.Parameter(typeof(object[]), "parsedArgs");
+        var entityManager = Expression.Parameter(typeof(IEntityManager), "entityManager");
+        var entityEmpty = Expression.Constant(EntityId.Empty, typeof(EntityId));
+
+        Expression? body = null;
+        foreach (var source in componentSources)
+        {
+            var sourceArgs = source.ParameterIndex < prefixParameterCount ? prefixArgs : parsedArgs;
+            var sourceIndex = source.ParameterIndex < prefixParameterCount
+                ? source.ParameterIndex
+                : source.ParameterIndex - prefixParameterCount;
+            var entityValue = Expression.ArrayIndex(sourceArgs, Expression.Constant(sourceIndex));
+
+            var entity = Expression.Convert(entityValue, typeof(EntityId));
+            var componentType = source.Info.ParameterType;
+            var component = Expression.Condition(
+                Expression.Equal(entity, entityEmpty),
+                Expression.Constant(null, componentType),
+                Expression.Call(entityManager, _getComponentInfo.MakeGenericMethod(componentType), entity));
+
+            var check = Expression.OrElse(
+                Expression.Equal(entity, entityEmpty),
+                Expression.NotEqual(component, Expression.Constant(null, componentType)));
+
+            body = body == null ? check : Expression.AndAlso(body, check);
+        }
+
+        return Expression.Lambda<CommandComponentMatcher>(body!, prefixArgs, parsedArgs, entityManager).Compile();
     }
 
     private CommandInvoker ToCommandInvoker(MethodInvoker methodInvoker, MethodInfo method)
@@ -264,27 +297,27 @@ internal class CommandScanner
     {
         if (task.IsCompleted)
         {
-            // Get result to observe any exceptions
-            task.GetAwaiter().GetResult();
+            HandleTaskException(task);
         }
         else
         {
-            // Fire-and-forget: exceptions will be handled by unhandled exception handler
-            task.ContinueWith(t =>
+            task.ContinueWith(HandleTaskException);
+        }
+    }
+
+    private void HandleTaskException(Task task)
+    {
+        if (task is { IsFaulted: true, Exception: not null })
+        {
+            // Exception from async task - would typically be logged
+            if (task.Exception.InnerExceptions.Count == 1)
             {
-                if (t is { IsFaulted: true, Exception: not null })
-                {
-                    // Exception from async task - would typically be logged
-                    if (t.Exception.InnerExceptions.Count == 1)
-                    {
-                        _unhandledExceptionHandler.Handle("async-command", t.Exception.InnerExceptions[0]);
-                    }
-                    else
-                    {
-                        _unhandledExceptionHandler.Handle("async-command", t.Exception);
-                    }
-                }
-            });
+                _unhandledExceptionHandler.Handle("async-command", task.Exception.InnerExceptions[0]);
+            }
+            else
+            {
+                _unhandledExceptionHandler.Handle("async-command", task.Exception);
+            }
         }
     }
 
@@ -360,4 +393,12 @@ internal class CommandScanner
 
         return name;
     }
+
+    private void LogRejectedCommand(string commandKind, Type systemType, MethodInfo method, string reason)
+    {
+        LogRejectedCommand(commandKind, systemType.FullName ?? systemType.Name, method.Name, reason);
+    }
+
+    [LoggerMessage(LogLevel.Warning, "Rejected {CommandKind} command {SystemType}.{Method}: {Reason}")]
+    private partial void LogRejectedCommand(string commandKind, string systemType, string method, string reason);
 }

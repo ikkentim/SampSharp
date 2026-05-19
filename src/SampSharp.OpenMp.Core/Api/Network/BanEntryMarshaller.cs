@@ -19,6 +19,8 @@ public static unsafe class BanEntryMarshaller
 
         public static BlittableStructRef<Native> ConvertToUnmanaged(BanEntry managed, Span<byte> callerAllocatedBuffer)
         {
+            ArgumentNullException.ThrowIfNull(managed);
+
             var native = ToNative(managed);
 
             

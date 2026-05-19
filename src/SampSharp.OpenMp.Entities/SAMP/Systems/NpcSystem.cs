@@ -5,7 +5,7 @@ using INPCEventHandler = SampSharp.OpenMp.Core.Api.INPCEventHandler;
 
 namespace SampSharp.Entities.SAMP;
 
-internal class NpcSystem : DisposableSystem, INPCEventHandler
+internal sealed class NpcSystem : DisposableSystem, INPCEventHandler
 {
     private readonly IOmpEntityProvider _entityProvider;
     private readonly IEventDispatcher _eventDispatcher;

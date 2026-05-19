@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Globalization;
+using System.Net;
 using System.Numerics;
 using JetBrains.Annotations;
 using SampSharp.OpenMp.Core.Api;
@@ -300,12 +301,12 @@ public class Player : WorldEntity
     /// <summary>
     /// Gets the <see cref="IPAddress" /> of this player.
     /// </summary>
-    public virtual IPAddress IpAddress => _player.GetNetworkData().Value.networkID.address.ToAddress();
+    public virtual IPAddress IpAddress => _player.GetNetworkData().Value.PeerNetworkID.Address.ToAddress();
 
     /// <summary>
     /// Gets the end point (<see cref="IPAddress" /> and port) of this player.
     /// </summary>
-    public virtual IPEndPoint EndPoint => _player.GetNetworkData().Value.networkID.ToEndpoint();
+    public virtual IPEndPoint EndPoint => _player.GetNetworkData().Value.PeerNetworkID.ToEndpoint();
 
     /// <summary>
     /// Gets the ping of this player.
@@ -466,11 +467,11 @@ public class Player : WorldEntity
         get
         {
             var surf = _player.GetSurfingData();
-            return surf.type switch
+            return surf.Type switch
             {
-                PlayerSurfingData.Type.Vehicle => _entityProvider.GetVehicle(surf.ID),
-                PlayerSurfingData.Type.Object => _entityProvider.GetObject(surf.ID),
-                PlayerSurfingData.Type.PlayerObject => _entityProvider.GetPlayerObject(this, surf.ID),
+                PlayerSurfingData.SurfType.Vehicle => _entityProvider.GetVehicle(surf.ID),
+                PlayerSurfingData.SurfType.Object => _entityProvider.GetObject(surf.ID),
+                PlayerSurfingData.SurfType.PlayerObject => _entityProvider.GetPlayerObject(this, surf.ID),
                 _ => null
             };
         }
@@ -526,7 +527,7 @@ public class Player : WorldEntity
     {
         get
         {
-            var stats = _player.GetNetworkData().Value.network.GetStatistics();
+            var stats = _player.GetNetworkData().Value.Network.GetStatistics();
             return TimeSpan.FromMilliseconds(stats.ConnectionElapsedTime);
         }
     }
@@ -538,7 +539,7 @@ public class Player : WorldEntity
     {
         get
         {
-            var stats = _player.GetNetworkData().Value.network.GetStatistics();
+            var stats = _player.GetNetworkData().Value.Network.GetStatistics();
             return (int)stats.MessagesReceived;
         }
     }
@@ -550,7 +551,7 @@ public class Player : WorldEntity
     {
         get
         {
-            var stats = _player.GetNetworkData().Value.network.GetStatistics();
+            var stats = _player.GetNetworkData().Value.Network.GetStatistics();
             return (int)stats.MessagesReceivedPerSecond;
         }
     }
@@ -562,7 +563,7 @@ public class Player : WorldEntity
     {
         get
         {
-            var stats = _player.GetNetworkData().Value.network.GetStatistics();
+            var stats = _player.GetNetworkData().Value.Network.GetStatistics();
             return (int)stats.MessagesSent;
         }
     }
@@ -574,7 +575,7 @@ public class Player : WorldEntity
     {
         get
         {
-            var stats = _player.GetNetworkData().Value.network.GetStatistics();
+            var stats = _player.GetNetworkData().Value.Network.GetStatistics();
             return (int)stats.BytesReceived;
         }
     }
@@ -586,7 +587,7 @@ public class Player : WorldEntity
     {
         get
         {
-            var stats = _player.GetNetworkData().Value.network.GetStatistics();
+            var stats = _player.GetNetworkData().Value.Network.GetStatistics();
             return (int)stats.TotalBytesSent;
         }
     }
@@ -598,7 +599,7 @@ public class Player : WorldEntity
     {
         get
         {
-            var stats = _player.GetNetworkData().Value.network.GetStatistics();
+            var stats = _player.GetNetworkData().Value.Network.GetStatistics();
             return (ConnectionStatus)stats.ConnectMode;
         }
     }
@@ -821,7 +822,7 @@ public class Player : WorldEntity
     /// <returns>A <see cref="NetworkStats" /> object containing the player's network statistics.</returns>
     public NetworkStats GetNetworkStats()
     {
-        return new NetworkStats(_player.GetNetworkData().Value.network.GetStatistics());
+        return new NetworkStats(_player.GetNetworkData().Value.Network.GetStatistics());
     }
 
     /// <summary>(Re)Spawns a player.</summary>
@@ -936,6 +937,9 @@ public class Player : WorldEntity
     /// <param name="ammo">The ammunition in the slot, passed by reference.</param>
     public virtual void GetWeaponData(int slot, out Weapon weapon, out int ammo)
     {
+        ArgumentOutOfRangeException.ThrowIfNegative(slot, nameof(slot));
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(slot, 12, nameof(slot));
+
         var data = _player.GetWeaponSlot(slot);
         weapon = (Weapon)data.Id;
         ammo = data.Ammo;
@@ -982,6 +986,11 @@ public class Player : WorldEntity
     /// <param name="minutes">The <paramref name="minutes" /> to set (0-59).</param>
     public virtual void SetTime(int hour, int minutes)
     {
+        ArgumentOutOfRangeException.ThrowIfNegative(hour, nameof(hour));
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(hour, 23, nameof(hour));
+        ArgumentOutOfRangeException.ThrowIfNegative(minutes, nameof(minutes));
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(minutes, 59, nameof(minutes));
+
         _player.SetTime(TimeSpan.FromHours(hour), TimeSpan.FromMinutes(minutes));
     }
 
@@ -1660,7 +1669,7 @@ public class Player : WorldEntity
     [StringFormatMethod("messageFormat")]
     public virtual void SendClientMessage(Color color, string messageFormat, params object[] args)
     {
-        SendClientMessage(color, string.Format(messageFormat, args));
+        SendClientMessage(color, string.Format(CultureInfo.InvariantCulture, messageFormat, args));
     }
 
     /// <summary>
@@ -1686,7 +1695,7 @@ public class Player : WorldEntity
     [StringFormatMethod("messageFormat")]
     public virtual void SendClientMessage(string messageFormat, params object[] args)
     {
-        SendClientMessage(Color.White, string.Format(messageFormat, args));
+        SendClientMessage(Color.White, string.Format(CultureInfo.InvariantCulture, messageFormat, args));
     }
 
     /// <summary>
@@ -1873,6 +1882,9 @@ public class Player : WorldEntity
     /// <param name="style">The <see cref="MapIconType" /> style.</param>
     public virtual void SetMapIcon(int iconId, Vector3 position, MapIcon type, Color color, MapIconType style)
     {
+        ArgumentOutOfRangeException.ThrowIfNegative(iconId, nameof(iconId));
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(iconId, 99, nameof(iconId));
+
         _player.SetMapIcon(iconId, position, (int)type, color, (MapIconStyle)style);
     }
 
@@ -2009,8 +2021,8 @@ public class Player : WorldEntity
     /// <summary>
     /// Performs an implicit conversion from <see cref="Player" /> to <see cref="IPlayer" />.
     /// </summary>
-    public static implicit operator IPlayer(Player player)
+    public static implicit operator IPlayer(Player? player)
     {
-        return player._player;
+        return player?._player ?? default;
     }
 }

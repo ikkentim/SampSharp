@@ -22,7 +22,10 @@ public static class SafeEventHandlerSampSharpEnvironmentExtensions
             where TComponent : unmanaged, IComponent.IManagedInterface
             where TEventHandler : class, IEventHandler<TEventHandler>
         {
-            var component = environment.Components.QueryComponent<TComponent>();
+            ArgumentNullException.ThrowIfNull(dispatcherProvider);
+            ArgumentNullException.ThrowIfNull(handler);
+
+            var component = environment.SafeComponentHandleProvider.Get<TComponent>();
 
             if (!component.HasValue)
             {
@@ -41,7 +44,7 @@ public static class SafeEventHandlerSampSharpEnvironmentExtensions
                 return null;
             }
 
-            return new SafeEventHandlerRegistration<TComponent, TEventHandler>(environment, handler, dispatcherProvider);
+            return new SafeEventHandlerRegistration<TComponent, TEventHandler>(component, handler, dispatcherProvider);
         }
 
         /// <summary>
@@ -58,7 +61,7 @@ public static class SafeEventHandlerSampSharpEnvironmentExtensions
             where TComponent : unmanaged, IComponent.IManagedInterface
             where TEventHandler : class, IEventHandler<TEventHandler>
         {
-            var registration = TryAddEventHandler(environment, dispatcherProvider, handler, priority);
+            var registration = environment.TryAddEventHandler(dispatcherProvider, handler, priority);
             if (registration is null)
             {
                 throw new InvalidOperationException("Failed to add event handler.");
@@ -78,6 +81,9 @@ public static class SafeEventHandlerSampSharpEnvironmentExtensions
         public IDisposable? TryAddEventHandler<TEventHandler>(Func<ICore, IEventDispatcher<TEventHandler>> dispatcherProvider, TEventHandler handler, EventPriority priority = EventPriority.Default)
             where TEventHandler : class, IEventHandler<TEventHandler>
         {
+            ArgumentNullException.ThrowIfNull(dispatcherProvider);
+            ArgumentNullException.ThrowIfNull(handler);
+
             if (!environment.Core.HasValue)
             {
                 return null;

@@ -144,7 +144,9 @@ public class PlayerObject : WorldEntity
     {
         ArgumentNullException.ThrowIfNull(text);
         ArgumentNullException.ThrowIfNull(fontface);
-        
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(text.Length, 2048, nameof(text));
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(fontSize, 255, nameof(fontSize));
+
         _playerObject.SetMaterialText((uint)materialIndex, text, (OpenMp.Core.Api.ObjectMaterialSize)materialSize, fontface, fontSize, bold, foreColor, backColor,
             (OpenMp.Core.Api.ObjectMaterialTextAlign)textAlignment);
     }
@@ -241,8 +243,8 @@ public class PlayerObject : WorldEntity
     /// <summary>
     /// Performs an implicit conversion from <see cref="PlayerObject" /> to <see cref="IPlayerObject" />.
     /// </summary>
-    public static implicit operator IPlayerObject(PlayerObject playerObject)
+    public static implicit operator IPlayerObject(PlayerObject? playerObject)
     {
-        return playerObject._playerObject;
+        return playerObject?._playerObject ?? default;
     }
 }

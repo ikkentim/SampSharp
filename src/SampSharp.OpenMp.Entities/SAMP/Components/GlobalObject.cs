@@ -156,7 +156,9 @@ public class GlobalObject : WorldEntity
     {
         ArgumentNullException.ThrowIfNull(text);
         ArgumentNullException.ThrowIfNull(fontface);
-        
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(text.Length, 2048, nameof(text));
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(fontSize, 255, nameof(fontSize));
+
         _object.SetMaterialText((uint)materialIndex, text, (OpenMp.Core.Api.ObjectMaterialSize)materialSize, fontface, fontSize, bold, foreColor, backColor, (OpenMp.Core.Api.ObjectMaterialTextAlign)textAlignment);
     }
 
@@ -253,8 +255,8 @@ public class GlobalObject : WorldEntity
     /// <summary>
     /// Performs an implicit conversion from <see cref="GlobalObject" /> to <see cref="IObject" />.
     /// </summary>
-    public static implicit operator IObject(GlobalObject @object)
+    public static implicit operator IObject(GlobalObject? @object)
     {
-        return @object._object;
+        return @object?._object ?? default;
     }
 }
