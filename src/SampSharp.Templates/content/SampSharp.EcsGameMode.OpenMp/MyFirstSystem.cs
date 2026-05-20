@@ -1,7 +1,3 @@
-using SampSharp.Entities;
-using SampSharp.Entities.SAMP;
-using SampSharp.Entities.SAMP.Commands;
-
 namespace Company.GameMode;
 
 public class MyFirstSystem : ISystem
