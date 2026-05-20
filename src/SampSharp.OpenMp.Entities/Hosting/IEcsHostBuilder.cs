@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using OmpLogLevel = SampSharp.OpenMp.Core.Api.LogLevel;
 
 namespace SampSharp.Entities;
 
@@ -46,6 +47,14 @@ public interface IEcsHostBuilder
     IEcsHostBuilder ConfigureLogging(Action<ILoggingBuilder> configure);
 
     /// <summary>
+    /// Configures an override for the default mapping between the framework's log levels and the open.mp log levels. This allows you to control how log messages are categorized when they are sent to open.mp.
+    /// </summary>
+    /// <param name="logLevel">The log level from Microsoft.Extensions.Logging.LogLevel.</param>
+    /// <param name="ompLogLevel">The corresponding log level in open.mp.</param>
+    /// <returns>The updated host builder.</returns>
+    IEcsHostBuilder ConfigureOmpLoggerMapping(LogLevel logLevel, OmpLogLevel ompLogLevel);
+
+    /// <summary>
     /// Configures the application configuration, allowing for adding configuration sources, setting up options, etc.
     /// </summary>
     /// <param name="configure">A delegate that configures the configuration builder.</param>
@@ -57,7 +66,7 @@ public interface IEcsHostBuilder
     /// </summary>
     /// <param name="handler">The handler for unhandled exceptions during the execution of the application.</param>
     /// <returns>The updated host builder.</returns>
-    IEcsHostBuilder ConfigureUnhandledExceptionhandler(UnhandledExceptionHandler handler);
+    IEcsHostBuilder ConfigureUnhandledExceptionHandler(UnhandledExceptionHandler handler);
 
     /// <summary>
     /// Configures the service provider factory used by the application.

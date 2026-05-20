@@ -1,9 +1,11 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Configuration;
 using SampSharp.Entities.Logging;
 using SampSharp.Entities.SAMP;
 using SampSharp.OpenMp.Core;
+using OmpLogLevel = SampSharp.OpenMp.Core.Api.LogLevel;
 
 namespace SampSharp.Entities;
 
@@ -14,7 +16,7 @@ internal sealed class EcsHostBuilder : Extension, IEcsHostBuilder
     private readonly List<Action<ILoggingBuilder>> _loggerConfigurations = [];
     private readonly List<Action<IServiceCollection, IConfiguration, SampSharpEnvironment>> _serviceConfigurations = [];
     private readonly List<Action<IConfigurationBuilder>> _appConfigConfigurations = [];
-
+    private readonly Dictionary<LogLevel, OmpLogLevel> _logLevelMapping = [];
     private Func<IServiceCollection, IServiceProvider>? _serviceProviderFactory;
     private bool _systemsLoadingDisabled;
     private UnhandledExceptionHandler? _unhandledExceptionHandler;
@@ -52,6 +54,12 @@ internal sealed class EcsHostBuilder : Extension, IEcsHostBuilder
         return this;
     }
 
+    public IEcsHostBuilder ConfigureOmpLoggerMapping(LogLevel logLevel, OmpLogLevel ompLogLevel)
+    {
+        _logLevelMapping[logLevel] = ompLogLevel;
+        return this;
+    }
+
     public IEcsHostBuilder ConfigureAppConfiguration(Action<IConfigurationBuilder> configure)
     {
         ArgumentNullException.ThrowIfNull(configure);
@@ -59,7 +67,7 @@ internal sealed class EcsHostBuilder : Extension, IEcsHostBuilder
         return this;
     }
 
-    public IEcsHostBuilder ConfigureUnhandledExceptionhandler(UnhandledExceptionHandler handler)
+    public IEcsHostBuilder ConfigureUnhandledExceptionHandler(UnhandledExceptionHandler handler)
     {
         ArgumentNullException.ThrowIfNull(handler);
         _unhandledExceptionHandler = handler;
@@ -96,7 +104,7 @@ internal sealed class EcsHostBuilder : Extension, IEcsHostBuilder
 
         var services = new ServiceCollection();
 
-        ConfigureDefaultServices(services);
+        ConfigureDefaultServices(services, configuration);
 
         services.AddSingleton(environment);
         services.AddSingleton(configuration);
@@ -107,12 +115,13 @@ internal sealed class EcsHostBuilder : Extension, IEcsHostBuilder
         return factory(services);
     }
 
-    private void ConfigureDefaultServices(IServiceCollection services)
+    private void ConfigureDefaultServices(IServiceCollection services, IConfiguration configuration)
     {
         services
             .AddLogging(builder =>
             {
-                builder.AddOpenMp();
+                builder.AddOpenMp(_logLevelMapping);
+                builder.AddConfiguration(configuration.GetSection("Logging"));
                 ConfigureLogger(builder);
             })
             .AddSingleton<IUnhandledExceptionHandler, UnhandledExceptionHandlerImpl>()
