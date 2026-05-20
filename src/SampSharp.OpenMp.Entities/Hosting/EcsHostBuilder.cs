@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using SampSharp.Entities.Logging;
 using SampSharp.Entities.SAMP;
 using SampSharp.OpenMp.Core;
 
