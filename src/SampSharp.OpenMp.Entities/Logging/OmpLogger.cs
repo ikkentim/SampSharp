@@ -1,16 +1,14 @@
 ﻿using System.Globalization;
-using System.Resources;
 using System.Text;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.ObjectPool;
 using SampSharp.OpenMp.Core;
 using ILogger = SampSharp.OpenMp.Core.Api.ILogger;
-using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 using OmpLogLevel = SampSharp.OpenMp.Core.Api.LogLevel;
 
 namespace SampSharp.Entities.Logging;
 
-internal sealed class OmpLogger(ILogger inner, Dictionary<LogLevel, OmpLogLevel> logLevelMapping, LogLevel minLogLevel, string name, ObjectPool<StringBuilder> objectPool)
+internal sealed class OmpLogger(ILogger inner, OmpLoggerOptions options, string name, ObjectPool<StringBuilder> objectPool)
     : Microsoft.Extensions.Logging.ILogger
 {
     private readonly Dictionary<OmpLogLevel, LoggerTextWriter> _writers = new()
@@ -20,6 +18,8 @@ internal sealed class OmpLogger(ILogger inner, Dictionary<LogLevel, OmpLogLevel>
         [OmpLogLevel.Warning] = new LoggerTextWriter(inner, OmpLogLevel.Warning),
         [OmpLogLevel.Error] = new LoggerTextWriter(inner, OmpLogLevel.Error)
     };
+
+    public OmpLoggerOptions Options { get; set; } = options;
 
     public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception,
         Func<TState, Exception?, string> formatter)
@@ -61,7 +61,7 @@ internal sealed class OmpLogger(ILogger inner, Dictionary<LogLevel, OmpLogLevel>
 
     public bool IsEnabled(LogLevel logLevel)
     {
-        return logLevel >= minLogLevel;
+        return logLevel != LogLevel.None;
     }
 
     public IDisposable? BeginScope<TState>(TState state) where TState : notnull
@@ -71,16 +71,24 @@ internal sealed class OmpLogger(ILogger inner, Dictionary<LogLevel, OmpLogLevel>
 
     private OmpLogLevel Convert(LogLevel level)
     {
-        if (logLevelMapping.TryGetValue(level, out var result))
+        switch (level)
         {
-            return result;
-        }
+            case LogLevel.Trace:
+                return Options.TraceLevel;
 
-        return level switch
-        {
-            LogLevel.Warning => OmpLogLevel.Warning,
-            LogLevel.Error or LogLevel.Critical => OmpLogLevel.Error,
-            _ => OmpLogLevel.Message
-        };
+            case LogLevel.Debug:
+                return Options.DebugLevel;
+            case LogLevel.Information:
+                return Options.InformationLevel;
+            case LogLevel.Warning:
+                return Options.WarningLevel;
+            case LogLevel.Error:
+                return Options.ErrorLevel;
+            case LogLevel.Critical:
+                return Options.CriticalLevel;
+            case LogLevel.None:
+            default:
+                return OmpLogLevel.Message;
+        }
     }
 }

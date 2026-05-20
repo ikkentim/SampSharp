@@ -1,11 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Configuration;
 using SampSharp.Entities.Logging;
 using SampSharp.Entities.SAMP;
 using SampSharp.OpenMp.Core;
-using OmpLogLevel = SampSharp.OpenMp.Core.Api.LogLevel;
 
 namespace SampSharp.Entities;
 
@@ -16,7 +14,6 @@ internal sealed class EcsHostBuilder : Extension, IEcsHostBuilder
     private readonly List<Action<ILoggingBuilder>> _loggerConfigurations = [];
     private readonly List<Action<IServiceCollection, IConfiguration, SampSharpEnvironment>> _serviceConfigurations = [];
     private readonly List<Action<IConfigurationBuilder>> _appConfigConfigurations = [];
-    private readonly Dictionary<LogLevel, OmpLogLevel> _logLevelMapping = [];
     private Func<IServiceCollection, IServiceProvider>? _serviceProviderFactory;
     private bool _systemsLoadingDisabled;
     private UnhandledExceptionHandler? _unhandledExceptionHandler;
@@ -51,12 +48,6 @@ internal sealed class EcsHostBuilder : Extension, IEcsHostBuilder
     {
         ArgumentNullException.ThrowIfNull(configure);
         _loggerConfigurations.Add(configure);
-        return this;
-    }
-
-    public IEcsHostBuilder ConfigureOmpLoggerMapping(LogLevel logLevel, OmpLogLevel ompLogLevel)
-    {
-        _logLevelMapping[logLevel] = ompLogLevel;
         return this;
     }
 
@@ -120,7 +111,7 @@ internal sealed class EcsHostBuilder : Extension, IEcsHostBuilder
         services
             .AddLogging(builder =>
             {
-                builder.AddOpenMp(_logLevelMapping);
+                builder.AddOpenMp();
                 builder.AddConfiguration(configuration.GetSection("Logging"));
                 ConfigureLogger(builder);
             })

@@ -47,14 +47,6 @@ public interface IEcsHostBuilder
     IEcsHostBuilder ConfigureLogging(Action<ILoggingBuilder> configure);
 
     /// <summary>
-    /// Configures an override for the default mapping between the framework's log levels and the open.mp log levels. This allows you to control how log messages are categorized when they are sent to open.mp.
-    /// </summary>
-    /// <param name="logLevel">The log level from Microsoft.Extensions.Logging.LogLevel.</param>
-    /// <param name="ompLogLevel">The corresponding log level in open.mp.</param>
-    /// <returns>The updated host builder.</returns>
-    IEcsHostBuilder ConfigureOmpLoggerMapping(LogLevel logLevel, OmpLogLevel ompLogLevel);
-
-    /// <summary>
     /// Configures the application configuration, allowing for adding configuration sources, setting up options, etc.
     /// </summary>
     /// <param name="configure">A delegate that configures the configuration builder.</param>
