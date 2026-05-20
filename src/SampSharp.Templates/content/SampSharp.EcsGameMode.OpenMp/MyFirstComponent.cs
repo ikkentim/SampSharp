@@ -1,5 +1,3 @@
-using SampSharp.Entities;
-
 namespace Company.GameMode;
 
 public class MyFirstComponent : Component

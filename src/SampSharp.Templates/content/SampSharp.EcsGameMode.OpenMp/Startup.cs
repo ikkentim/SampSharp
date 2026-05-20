@@ -1,6 +1,5 @@
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using SampSharp.Entities;
-using SampSharp.Entities.SAMP.Commands;
 using SampSharp.OpenMp.Core;
 
 namespace Company.GameMode;
@@ -12,7 +11,7 @@ public class Startup : IEcsStartup
         context.UseEntities().UseCommands();
     }
 
-    public void ConfigureServices(IServiceCollection services)
+    public void ConfigureServices(IServiceCollection services, IConfiguration configuration)
     {
     }
 
