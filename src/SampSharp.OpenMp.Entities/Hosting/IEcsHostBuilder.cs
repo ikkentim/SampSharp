@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using OmpLogLevel = SampSharp.OpenMp.Core.Api.LogLevel;
 
 namespace SampSharp.Entities;
 
@@ -57,7 +58,7 @@ public interface IEcsHostBuilder
     /// </summary>
     /// <param name="handler">The handler for unhandled exceptions during the execution of the application.</param>
     /// <returns>The updated host builder.</returns>
-    IEcsHostBuilder ConfigureUnhandledExceptionhandler(UnhandledExceptionHandler handler);
+    IEcsHostBuilder ConfigureUnhandledExceptionHandler(UnhandledExceptionHandler handler);
 
     /// <summary>
     /// Configures the service provider factory used by the application.

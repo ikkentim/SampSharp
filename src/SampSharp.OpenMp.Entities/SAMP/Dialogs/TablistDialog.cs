@@ -101,7 +101,7 @@ public class TablistDialog : IDialog<TablistDialogResponse>, IEnumerable<Tablist
     /// <param name="columnHeader1">The first column header.</param>
     /// <param name="columnHeader2">The second column header.</param>
     /// <param name="columnHeader3">The third column header.</param>
-    /// <param name="columnHeader4">The third column header.</param>
+    /// <param name="columnHeader4">The fourth column header.</param>
     public TablistDialog(string caption, string button1, string button2, string columnHeader1, string columnHeader2, string columnHeader3, string columnHeader4)
         : this(caption, button1, button2, [columnHeader1, columnHeader2, columnHeader3, columnHeader4])
     {

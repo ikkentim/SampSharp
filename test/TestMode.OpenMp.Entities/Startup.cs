@@ -12,8 +12,7 @@ public class Startup : IEcsStartup
     public void Initialize(IStartupContext context)
     {
         context.UseEntities()
-            .UseCommands()
-            .ConfigureLogging(logging => logging.SetMinimumLevel(LogLevel.Debug));
+            .UseCommands();
     }
 
     public void ConfigureServices(IServiceCollection services, IConfiguration configuration)
@@ -24,5 +23,7 @@ public class Startup : IEcsStartup
 
     public void Configure(IEcsBuilder builder)
     {
+        builder.Services.GetRequiredService<ILogger<Startup>>()
+            .LogDebug("This is a debug log message!");
     }
 }
