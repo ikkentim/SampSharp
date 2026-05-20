@@ -1,11 +1,11 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using System.Collections.Concurrent;
+using System.Text;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.ObjectPool;
 using Microsoft.Extensions.Options;
-using System.Collections.Concurrent;
-using System.Text;
 using ILogger = SampSharp.OpenMp.Core.Api.ILogger;
 
-namespace SampSharp.Entities.Logging;
+namespace SampSharp.Entities;
 
 /// <summary>
 /// Provides an implementation of <see cref="ILoggerProvider"/> that creates loggers which write to the open.mp logging infrastructure.

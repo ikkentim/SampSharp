@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Configuration;
 using Microsoft.Extensions.Options;
 
-namespace SampSharp.Entities.Logging;
+namespace SampSharp.Entities;
 
 /// <summary>
 /// Provides extension methods for adding an open.mp logger to an <see cref="ILoggingBuilder" />.

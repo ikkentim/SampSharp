@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging.Configuration;
 using Microsoft.Extensions.Options;
 
-namespace SampSharp.Entities.Logging;
+namespace SampSharp.Entities;
 
 internal sealed class OmpLoggerConfigureOptions : IConfigureOptions<OmpLoggerOptions>
 {

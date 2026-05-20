@@ -6,7 +6,7 @@ using SampSharp.OpenMp.Core;
 using ILogger = SampSharp.OpenMp.Core.Api.ILogger;
 using OmpLogLevel = SampSharp.OpenMp.Core.Api.LogLevel;
 
-namespace SampSharp.Entities.Logging;
+namespace SampSharp.Entities;
 
 internal sealed class OmpLogger(ILogger inner, OmpLoggerOptions options, string name, ObjectPool<StringBuilder> objectPool)
     : Microsoft.Extensions.Logging.ILogger

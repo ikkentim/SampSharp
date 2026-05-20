@@ -1,6 +1,6 @@
 ﻿using SampSharp.OpenMp.Core.Api;
 
-namespace SampSharp.Entities.Logging;
+namespace SampSharp.Entities;
 
 /// <summary>
 /// Provides options for <see cref="OmpLoggerProvider"/>.
