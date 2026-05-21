@@ -27,6 +27,9 @@ public sealed class OmpLoggerProvider : ILoggerProvider
     /// <param name="environment">The SampSharp environment.</param>
     public OmpLoggerProvider(IOptionsMonitor<OmpLoggerOptions> options, SampSharpEnvironment environment)
     {
+        ArgumentNullException.ThrowIfNull(options);
+        ArgumentNullException.ThrowIfNull(environment);
+
         _options = options;
         _environment = environment;
 

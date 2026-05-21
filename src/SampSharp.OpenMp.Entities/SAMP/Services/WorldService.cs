@@ -117,7 +117,7 @@ internal sealed class WorldService(SampSharpEnvironment environment, IEntityMana
         native.SetLegacyPlayer(owner);
 
         var entityId = EntityId.NewEntityId();
-        var component = entityManager.AddComponent<PlayerGangZone>(entityId, parent, entityProvider, GangZones, native);
+        var component = entityManager.AddComponent<PlayerGangZone>(entityId, parent, entityProvider, GangZones, native, owner);
 
         var extension = new ComponentExtension(component);
         native.AddExtension(extension);
@@ -151,7 +151,7 @@ internal sealed class WorldService(SampSharpEnvironment environment, IEntityMana
         native.SetLegacyPlayer(owner);
 
         var entityId = EntityId.NewEntityId();
-        var component = entityManager.AddComponent<PlayerPickup>(entityId, parent, Pickups, native);
+        var component = entityManager.AddComponent<PlayerPickup>(entityId, parent, Pickups, native, owner);
 
         var extension = new ComponentExtension(component);
         native.AddExtension(extension);

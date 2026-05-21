@@ -9,16 +9,47 @@ namespace SampSharp.Entities.SAMP;
 /// </summary>
 /// <remarks>
 /// open.mp does not have a dedicated per-player pickup creation API; under the hood this is
-/// a regular pickup with <c>SetLegacyPlayer</c> set to the owner. Per-player visibility is
-/// controlled through <see cref="BasePickup.SetHiddenForPlayer" /> /
-/// <see cref="BasePickup.IsHiddenForPlayer" />.
+/// a regular pickup with <c>SetLegacyPlayer</c> set to the owner.
 /// </remarks>
 public class PlayerPickup : BasePickup
 {
+    private readonly IPickup _pickup;
+    private readonly Player _player;
+
     /// <summary>
     /// Initializes a new instance of the <see cref="PlayerPickup" /> class.
     /// </summary>
-    protected PlayerPickup(IPickupsComponent pickups, IPickup pickup) : base(pickups, pickup)
+    protected PlayerPickup(IPickupsComponent pickups, IPickup pickup, Player player) : base(pickups, pickup)
     {
+        _pickup = pickup;
+        _player = player;
+    }
+
+    /// <summary>Checks whether this pickup is streamed in for the player.</summary>
+    /// <returns><see langword="true" /> if streamed in; otherwise <see langword="false" />.</returns>
+    public virtual bool IsStreamedIn()
+    {
+        return _pickup.IsStreamedInForPlayer(_player);
+    }
+
+    /// <summary>Streams this pickup in for the player.</summary>
+    public virtual void StreamIn()
+    {
+        _pickup.StreamInForPlayer(_player);
+    }
+
+    /// <summary>Streams this pickup out for the player.</summary>
+    public virtual void StreamOut()
+    {
+        _pickup.StreamOutForPlayer(_player);
+    }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether the pickup is hidden for the player.
+    /// </summary>
+    public virtual bool IsHidden
+    {
+        get => _pickup.IsPickupHiddenForPlayer(_player);
+        set => _pickup.SetPickupHiddenForPlayer(_player, value);
     }
 }

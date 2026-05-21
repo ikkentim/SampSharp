@@ -227,8 +227,9 @@ internal sealed class OmpEntityProvider(SampSharpEnvironment environment, IEntit
         var ext = pickup.TryGetExtension<ComponentExtension>();
         if (ext == null)
         {
-            BasePickup component = pickup.GetLegacyPlayer().HasValue
-                ? entityManager.AddComponent<PlayerPickup>(EntityId.NewEntityId(), Pickups, pickup)
+            var legacyPlayer = pickup.GetLegacyPlayer();
+            BasePickup component = legacyPlayer.HasValue
+                ? entityManager.AddComponent<PlayerPickup>(EntityId.NewEntityId(), Pickups, pickup, GetComponent(legacyPlayer)!)
                 : entityManager.AddComponent<Pickup>(EntityId.NewEntityId(), Pickups, pickup);
             ext = new ComponentExtension(component);
             pickup.AddExtension(ext);

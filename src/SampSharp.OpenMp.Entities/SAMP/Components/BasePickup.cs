@@ -59,49 +59,6 @@ public abstract class BasePickup : WorldEntity
         _pickup.SetPositionNoUpdate(position);
     }
 
-    /// <summary>Checks whether this pickup is streamed in for the specified <paramref name="player" />.</summary>
-    /// <param name="player">The player.</param>
-    /// <returns><see langword="true" /> if streamed in; otherwise <see langword="false" />.</returns>
-    public virtual bool IsStreamedInForPlayer(Player player)
-    {
-        ArgumentNullException.ThrowIfNull(player);
-        return _pickup.IsStreamedInForPlayer(player);
-    }
-
-    /// <summary>Streams this pickup in for the specified <paramref name="player" />.</summary>
-    /// <param name="player">The player.</param>
-    public virtual void StreamInForPlayer(Player player)
-    {
-        ArgumentNullException.ThrowIfNull(player);
-        _pickup.StreamInForPlayer(player);
-    }
-
-    /// <summary>Streams this pickup out for the specified <paramref name="player" />.</summary>
-    /// <param name="player">The player.</param>
-    public virtual void StreamOutForPlayer(Player player)
-    {
-        ArgumentNullException.ThrowIfNull(player);
-        _pickup.StreamOutForPlayer(player);
-    }
-
-    /// <summary>Hides or shows this pickup for the specified <paramref name="player" />.</summary>
-    /// <param name="player">The player.</param>
-    /// <param name="hidden"><see langword="true" /> to hide; <see langword="false" /> to show.</param>
-    public virtual void SetHiddenForPlayer(Player player, bool hidden)
-    {
-        ArgumentNullException.ThrowIfNull(player);
-        _pickup.SetPickupHiddenForPlayer(player, hidden);
-    }
-
-    /// <summary>Checks whether this pickup is hidden for the specified <paramref name="player" />.</summary>
-    /// <param name="player">The player.</param>
-    /// <returns><see langword="true" /> if hidden; otherwise <see langword="false" />.</returns>
-    public virtual bool IsHiddenForPlayer(Player player)
-    {
-        ArgumentNullException.ThrowIfNull(player);
-        return _pickup.IsPickupHiddenForPlayer(player);
-    }
-
     /// <inheritdoc />
     protected override void OnDestroyComponent()
     {
