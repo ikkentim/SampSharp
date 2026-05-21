@@ -93,8 +93,7 @@ public interface IWorldService
 
     /// <summary>
     /// Creates a gang zone logically scoped to a single player. The gang zone is created in the global pool and
-    /// bound to the specified <paramref name="owner" /> via <c>SetLegacyPlayer</c>. Use
-    /// <see cref="BaseGangZone.Show(Player)" /> / <see cref="BaseGangZone.Hide(Player)" /> to control per-player visibility.
+    /// bound to the specified <paramref name="owner" /> via <c>SetLegacyPlayer</c>. Use <see cref="PlayerGangZone.Show()" /> to control visibility.
     /// </summary>
     /// <param name="owner">The player that owns this gang zone.</param>
     /// <param name="min">The minimum position.</param>
@@ -105,7 +104,7 @@ public interface IWorldService
 
     /// <summary>
     /// Enables or disables enter/leave checking for the specified <paramref name="zone" />. When enabled,
-    /// <see cref="BaseGangZone.IsPlayerInside(Player)" /> returns the live containment state and the gang-zone
+    /// <see cref="GangZone.IsPlayerInside(Player)" /> /  <see cref="PlayerGangZone.IsPlayerInside()" /> returns the live containment state and the gang-zone
     /// enter/leave events fire.
     /// </summary>
     /// <param name="zone">The gang zone to configure.</param>
@@ -125,8 +124,7 @@ public interface IWorldService
 
     /// <summary>
     /// Creates a pickup logically scoped to a single player. The pickup is created in the global pool and bound
-    /// to the specified <paramref name="owner" /> via <c>SetLegacyPlayer</c>. Per-player visibility (hiding from
-    /// other players) is the caller's responsibility through <see cref="BasePickup.SetHiddenForPlayer" />.
+    /// to the specified <paramref name="owner" /> via <c>SetLegacyPlayer</c>.
     /// </summary>
     /// <param name="owner">The player that owns this pickup.</param>
     /// <param name="model">The model of the pickup.</param>

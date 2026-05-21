@@ -22,6 +22,20 @@ public class MyFirstSystem : ISystem
         }
     }
 
+    [PlayerCommand("pickup")]
+    public void PickupCmd(Player player, IWorldService worldService)
+    {
+        worldService.CreatePlayerPickup(player, 19522, PickupType.ScriptedActionsOnlyEveryFewSeconds, player.Position, parent: player);
+    }
+
+    [PlayerCommand("gangzone")]
+    public void GangZoneCmd(Player player, IWorldService worldService)
+    {
+        var gz = worldService.CreatePlayerGangZone(player, new Vector2(-50, -50), new Vector2(50, 50), player);
+        gz.Color = Color.Blue;
+        gz.Show();
+    }
+
     [Event]
     public void OnGameModeInit(IWorldService world, IEntityManager entityManager, ILogger<MyFirstSystem> logger)
     {
