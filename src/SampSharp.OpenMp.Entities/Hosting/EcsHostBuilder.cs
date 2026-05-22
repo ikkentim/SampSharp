@@ -88,9 +88,8 @@ internal sealed class EcsHostBuilder : Extension, IEcsHostBuilder
 
     private IServiceProvider BuildServiceProvider(IStartupContext context)
     {
-        var environment = new SampSharpEnvironment(context.Configurator.GetType().Assembly, context.Core, context.ComponentList, new SafeComponentHandleProvider(context));
-
-        var configuration = CreateConfiguration(environment);
+        var environment = EnvironmentFactory.Create(context);
+        var configuration = ConfigurationFactory.Create(environment, ConfigureAppConfiguration);
 
         var services = new ServiceCollection();
 
@@ -100,6 +99,12 @@ internal sealed class EcsHostBuilder : Extension, IEcsHostBuilder
         services.AddSingleton(configuration);
 
         ConfigureServices(services, configuration, environment);
+
+        if (!_systemsLoadingDisabled)
+        {
+            services.AddSystemsInAssembly(environment.EntryAssembly);
+            _systemsLoadingDisabled = true;
+        }
 
         var factory = _serviceProviderFactory ?? DefaultServiceProviderFactory;
         return factory(services);
@@ -126,29 +131,7 @@ internal sealed class EcsHostBuilder : Extension, IEcsHostBuilder
             .AddSingleton<ITimerService>(s => s.GetRequiredService<TimerSystem>())
             .AddSystem<TimerSystem>()
             .AddSystem<TickingSystem>()
-            .AddSamp()
-            ;
-    }
-
-    private IConfiguration CreateConfiguration(SampSharpEnvironment environment)
-    {
-        var basePath = Path.GetDirectoryName(environment.EntryAssembly.Location) ?? ".";
-        var environmentName = environment.Core.GetConfig().GetString("environment") ?? Environment.GetEnvironmentVariable("environment");
-
-        var builder = new ConfigurationBuilder()
-            .SetBasePath(basePath)
-            .Add(new OpenMpConfigProvider(environment))
-            .AddEnvironmentVariables()
-            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-
-        if (!string.IsNullOrEmpty(environmentName))
-        {
-            builder.AddJsonFile($"appsettings.{environmentName}.json", optional: true, reloadOnChange: true);
-        }
-
-        ConfigureAppConfiguration(builder);
-
-        return builder.Build();
+            .AddSamp();
     }
 
     private static IServiceProvider DefaultServiceProviderFactory(IServiceCollection services)
@@ -194,12 +177,7 @@ internal sealed class EcsHostBuilder : Extension, IEcsHostBuilder
             configuration(services, config, environment);
         }
 
-        if (!_systemsLoadingDisabled)
-        {
-            services.AddSystemsInAssembly(environment.EntryAssembly);
-            _systemsLoadingDisabled = true;
-        }
-
         _serviceConfigurations.Clear();
     }
+
 }
