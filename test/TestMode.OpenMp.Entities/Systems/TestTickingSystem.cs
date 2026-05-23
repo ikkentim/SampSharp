@@ -3,7 +3,7 @@ using SampSharp.Entities;
 
 namespace TestMode.OpenMp.Entities.Systems;
 
-public class TestTicker : ITickingSystem
+public class TestTickingSystem : ITickingSystem
 {
     public void Tick()
     {
@@ -11,7 +11,7 @@ public class TestTicker : ITickingSystem
     }
 
     [Event]
-    public void OnInitialized(ILogger<TestTicker> logger)
+    public void OnInitialized(ILogger<TestTickingSystem> logger)
     {
         logger.LogInformation("On initialized");
     }
