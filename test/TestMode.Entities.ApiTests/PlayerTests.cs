@@ -773,4 +773,385 @@ public class PlayerTests : TestBase
     {
         Should.Throw<ArgumentOutOfRangeException>(() => Player.SetTime(0, 60));
     }
+
+    [Fact]
+    public void Angle_should_roundtrip()
+    {
+        Player.Angle = 45.0f;
+        Player.Angle.ShouldBe(45.0f, tolerance: 1.0f);
+    }
+
+    [Fact]
+    public void Ip_should_succeed()
+    {
+        _ = Player.Ip;
+    }
+
+    [Fact]
+    public void IsAdmin_should_be_false_for_npc()
+    {
+        Player.IsAdmin.ShouldBeFalse();
+    }
+
+    [Fact]
+    public void IsAlive_should_be_true()
+    {
+        Player.IsAlive.ShouldBeTrue();
+    }
+
+    [Fact]
+    public void IsSelectingTextDraw_should_be_false()
+    {
+        Player.IsSelectingTextDraw.ShouldBeFalse();
+    }
+
+    [Fact]
+    public void ConnectedTime_should_be_positive()
+    {
+        Player.ConnectedTime.ShouldBeGreaterThan(TimeSpan.Zero);
+    }
+
+    [Fact]
+    public void ConnectionStatus_should_succeed()
+    {
+        _ = Player.ConnectionStatus;
+    }
+
+    [Fact]
+    public void IsUsingOfficialClient_should_succeed()
+    {
+        _ = Player.IsUsingOfficialClient;
+    }
+
+    [Fact]
+    public void IsUsingOmp_should_succeed()
+    {
+        _ = Player.IsUsingOmp;
+    }
+
+    [Fact]
+    public void ClientVersionName_should_succeed()
+    {
+        _ = Player.ClientVersionName;
+    }
+
+    [Fact]
+    public void IsGhostModeEnabled_should_roundtrip()
+    {
+        Player.IsGhostModeEnabled = true;
+        Player.IsGhostModeEnabled.ShouldBeTrue();
+        Player.IsGhostModeEnabled = false;
+        Player.IsGhostModeEnabled.ShouldBeFalse();
+    }
+
+    [Fact]
+    public void AreWeaponsAllowed_should_roundtrip()
+    {
+        Player.AreWeaponsAllowed = false;
+        Player.AreWeaponsAllowed.ShouldBeFalse();
+        Player.AreWeaponsAllowed = true;
+        Player.AreWeaponsAllowed.ShouldBeTrue();
+    }
+
+    [Fact]
+    public void IsTeleportAllowed_should_roundtrip()
+    {
+        Player.IsTeleportAllowed = true;
+        Player.IsTeleportAllowed.ShouldBeTrue();
+        Player.IsTeleportAllowed = false;
+        Player.IsTeleportAllowed.ShouldBeFalse();
+    }
+
+    [Fact]
+    public void WorldBounds_get_should_succeed()
+    {
+        _ = Player.WorldBounds;
+    }
+
+    [Fact]
+    public void HasWidescreen_should_roundtrip()
+    {
+        Player.HasWidescreen = true;
+        Player.HasWidescreen.ShouldBeTrue();
+        Player.HasWidescreen = false;
+        Player.HasWidescreen.ShouldBeFalse();
+    }
+
+    [Fact]
+    public void Weather_should_roundtrip()
+    {
+        Player.Weather = 5;
+        Player.Weather.ShouldBe(5);
+    }
+
+    [Fact]
+    public void StreamedForPlayers_should_not_be_null()
+    {
+        Player.StreamedForPlayers.ShouldNotBeNull();
+    }
+
+    [Fact]
+    public void DefaultObjectsRemoved_should_succeed()
+    {
+        _ = Player.DefaultObjectsRemoved;
+    }
+
+    [Fact]
+    public void IsBeingKicked_should_be_false()
+    {
+        Player.IsBeingKicked.ShouldBeFalse();
+    }
+
+    [Fact]
+    public void VehicleSeat_should_succeed()
+    {
+        _ = Player.VehicleSeat;
+    }
+
+    [Fact]
+    public void AnimationIndex_should_succeed()
+    {
+        _ = Player.AnimationIndex;
+    }
+
+    [Fact]
+    public void InAnyVehicle_should_be_false()
+    {
+        Player.InAnyVehicle.ShouldBeFalse();
+    }
+
+    [Fact]
+    public void InCheckpoint_should_be_false()
+    {
+        Player.InCheckpoint.ShouldBeFalse();
+    }
+
+    [Fact]
+    public void InRaceCheckpoint_should_be_false()
+    {
+        Player.InRaceCheckpoint.ShouldBeFalse();
+    }
+
+    [Fact]
+    public void Vehicle_should_be_null()
+    {
+        Player.Vehicle.ShouldBeNull();
+    }
+
+    [Fact]
+    public void Menu_should_be_null()
+    {
+        Player.Menu.ShouldBeNull();
+    }
+
+    [Fact]
+    public void Gravity_should_roundtrip()
+    {
+        Player.Gravity = 0.012f;
+        Player.Gravity.ShouldBe(0.012f, tolerance: 0.001f);
+    }
+
+    [Fact]
+    public void SurfingEntity_should_be_null()
+    {
+        Player.SurfingEntity.ShouldBeNull();
+    }
+
+    [Fact]
+    public void IsInRangeOfPoint_should_return_true_when_close()
+    {
+        Player.Position = new Vector3(10, 10, 5);
+        Player.IsInRangeOfPoint(100.0f, new Vector3(10, 10, 5)).ShouldBeTrue();
+    }
+
+    [Fact]
+    public void IsInRangeOfPoint_should_return_false_when_far()
+    {
+        Player.Position = new Vector3(0, 0, 0);
+        Player.IsInRangeOfPoint(1.0f, new Vector3(9999, 9999, 0)).ShouldBeFalse();
+    }
+
+    [Fact]
+    public void GetDistanceFromPoint_should_return_correct_distance()
+    {
+        Player.Position = new Vector3(10, 10, 0);
+        Player.GetDistanceFromPoint(new Vector3(20, 10, 0)).ShouldBe(10.0f, tolerance: 0.1f);
+    }
+
+    [Fact]
+    public void IsInVehicle_should_return_false_when_not_in_vehicle()
+    {
+        var vehicle = Services.GetRequiredService<IWorldService>().CreateVehicle(VehicleModelType.BMX, new Vector3(1, 2, 3), 0, 0, 0);
+
+        try
+        {
+            Player.IsInVehicle(vehicle).ShouldBeFalse();
+        }
+        finally
+        {
+            vehicle.Destroy();
+        }
+    }
+
+    [Fact]
+    public void RemoveWeapon_should_succeed()
+    {
+        Player.GiveWeapon(Weapon.Colt45, 50);
+        Player.RemoveWeapon(Weapon.Colt45);
+    }
+
+    [Fact]
+    public void SendClientMessage_string_only_should_succeed()
+    {
+        Player.SendClientMessage("Hello world");
+    }
+
+    [Fact]
+    public void SetChatBubble_should_succeed()
+    {
+        Player.SetChatBubble("Hello!", Color.White, 20.0f, TimeSpan.FromSeconds(5));
+    }
+
+    [Fact]
+    public void SetCheckpoint_should_succeed()
+    {
+        Player.SetCheckpoint(new Vector3(10, 20, 5), 5.0f);
+    }
+
+    [Fact]
+    public void DisableCheckpoint_should_succeed()
+    {
+        Player.SetCheckpoint(new Vector3(10, 20, 5), 5.0f);
+        Player.DisableCheckpoint();
+    }
+
+    [Fact]
+    public void SetRaceCheckpoint_should_succeed()
+    {
+        Player.SetRaceCheckpoint(CheckpointType.Normal, new Vector3(10, 20, 5), new Vector3(20, 30, 5), 5.0f);
+    }
+
+    [Fact]
+    public void DisableRaceCheckpoint_should_succeed()
+    {
+        Player.SetRaceCheckpoint(CheckpointType.Normal, new Vector3(10, 20, 5), new Vector3(20, 30, 5), 5.0f);
+        Player.DisableRaceCheckpoint();
+    }
+
+    [Fact]
+    public void SelectTextDraw_should_succeed()
+    {
+        Player.SelectTextDraw(Color.White);
+    }
+
+    [Fact]
+    public void CancelSelectTextDraw_should_succeed()
+    {
+        Player.SelectTextDraw(Color.White);
+        Player.CancelSelectTextDraw();
+    }
+
+    [Fact]
+    public void GetLastShot_should_succeed()
+    {
+        Player.GetLastShot(out _, out _);
+    }
+
+    [Fact]
+    public void SetAttachedObject_should_return_true()
+    {
+        var result = Player.SetAttachedObject(0, 400, Bone.Spine, Vector3.Zero, Vector3.Zero, Vector3.One, Color.White, Color.White);
+        result.ShouldBeTrue();
+    }
+
+    [Fact]
+    public void IsAttachedObjectSlotUsed_should_be_true_after_set()
+    {
+        Player.SetAttachedObject(0, 400, Bone.Spine, Vector3.Zero, Vector3.Zero, Vector3.One, Color.White, Color.White);
+        Player.IsAttachedObjectSlotUsed(0).ShouldBeTrue();
+    }
+
+    [Fact]
+    public void RemoveAttachedObject_should_succeed()
+    {
+        Player.SetAttachedObject(0, 400, Bone.Spine, Vector3.Zero, Vector3.Zero, Vector3.One, Color.White, Color.White);
+        Player.RemoveAttachedObject(0).ShouldBeTrue();
+        Player.IsAttachedObjectSlotUsed(0).ShouldBeFalse();
+    }
+
+    [Fact]
+    public void ClearTasks_should_succeed()
+    {
+        Player.ClearTasks(PlayerAnimationSyncType.NoSync);
+    }
+
+    [Fact]
+    public void SetWorldTime_should_succeed()
+    {
+        Player.SetWorldTime(TimeSpan.FromHours(12));
+    }
+
+    [Fact]
+    public void HideGameText_should_succeed()
+    {
+        Player.HideGameText(0);
+    }
+
+    [Fact]
+    public void HasGameText_should_return_false_when_not_shown()
+    {
+        Player.HideGameText(0);
+        Player.HasGameText(0).ShouldBeFalse();
+    }
+
+    [Fact]
+    public void SetSpawnInfo_and_GetSpawnInfo_should_roundtrip()
+    {
+        var spawnData = new PlayerSpawnData { Skin = 7, Location = new Vector3(100, 200, 10), Angle = 90.0f, Team = 3 };
+        Player.SetSpawnInfo(spawnData);
+
+        var result = Player.GetSpawnInfo();
+        result.Skin.ShouldBe(7);
+        result.Team.ShouldBe(3);
+    }
+
+    [Fact]
+    public void Edit_GlobalObject_and_CancelEdit_should_succeed()
+    {
+        var obj = Services.GetRequiredService<IWorldService>().CreateObject(400, Vector3.Zero, Vector3.Zero);
+
+        try
+        {
+            Player.Edit(obj);
+            Player.CancelEdit();
+        }
+        finally
+        {
+            obj.Destroy();
+        }
+    }
+
+    [Fact]
+    public void StreamInForPlayer_should_succeed()
+    {
+        Player.StreamInForPlayer(Player);
+    }
+
+    [Fact]
+    public void StreamOutForPlayer_should_succeed()
+    {
+        Player.StreamOutForPlayer(Player);
+    }
+
+    [Fact]
+    public void SetConsoleAccessibility_should_succeed()
+    {
+        Player.SetConsoleAccessibility(false);
+    }
+
+    [Fact]
+    public void Select_object_mode_should_succeed()
+    {
+        Player.Select();
+    }
 }

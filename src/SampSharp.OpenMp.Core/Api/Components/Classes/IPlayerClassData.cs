@@ -13,7 +13,7 @@ public readonly partial struct IPlayerClassData
     /// Gets the player's current class information.
     /// </summary>
     /// <returns>A reference to the player's class data.</returns>
-    public partial ref PlayerClass GetClass();
+    public partial BlittableStructRef<PlayerClass> GetClass();
 
     /// <summary>
     /// Sets the spawn information for the player's class.

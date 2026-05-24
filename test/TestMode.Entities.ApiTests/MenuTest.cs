@@ -89,4 +89,42 @@ public class MenuTest : TestBase
         ((IMenu)_menu).IsRowEnabled(0).ShouldBeFalse();
         ((IMenu)_menu).IsRowEnabled(1).ShouldBeTrue();
     }
+
+    [Fact]
+    public void IsEnabled_should_be_true_initially()
+    {
+        _menu.IsEnabled.ShouldBeTrue();
+    }
+
+    [Fact]
+    public void Col0RowCount_should_reflect_added_items()
+    {
+        _menu.AddItem("first", "a");
+        _menu.AddItem("second", "b");
+        _menu.Col0RowCount.ShouldBe(2);
+    }
+
+    [Fact]
+    public void Col1RowCount_should_reflect_added_items()
+    {
+        _menu.AddItem("x", "one");
+        _menu.AddItem("y", "two");
+        _menu.Col1RowCount.ShouldBe(2);
+    }
+
+    [Fact]
+    public void GetCell_should_return_correct_text()
+    {
+        _menu.AddItem("left text", "right text");
+        _menu.GetCell(0, 0).ShouldBe("left text");
+        _menu.GetCell(0, 1).ShouldBe("right text");
+    }
+
+    [Fact]
+    public void IsRowEnabled_via_menu_property_should_work()
+    {
+        _menu.AddItem("a", "b");
+        _menu.DisableRow(0);
+        _menu.IsRowEnabled(0).ShouldBeFalse();
+    }
 }

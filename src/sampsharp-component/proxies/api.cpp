@@ -676,7 +676,7 @@ PROXY(IVehicle, void, setParamsForPlayer, IPlayer&, VehicleParams&);
 PROXY_PTR(IVehicle, VehicleParams, getParams);
 PROXY(IVehicle, bool, isDead);
 PROXY(IVehicle, void, respawn);
-PROXY(IVehicle, Seconds, getRespawnDelay);
+PROXY_PTR(IVehicle, Seconds, getRespawnDelay);
 PROXY(IVehicle, void, setRespawnDelay, Seconds);
 PROXY(IVehicle, bool, isRespawning);
 PROXY(IVehicle, void, setInterior, int);

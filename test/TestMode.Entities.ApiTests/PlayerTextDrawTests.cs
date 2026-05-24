@@ -157,4 +157,31 @@ public class PlayerTextDrawTests : TestBase
         _textDraw.Selectable = true;
         _textDraw.Selectable.ShouldBeTrue();
     }
+
+    [Fact]
+    public void PreviewRotation_should_roundtrip()
+    {
+        _textDraw.PreviewRotation = new Vector3(10, 20, 30);
+        _textDraw.PreviewRotation.ShouldBe(new Vector3(10, 20, 30));
+    }
+
+    [Fact]
+    public void PreviewZoom_should_reflect_set_value()
+    {
+        _textDraw.SetPreviewRotation(Vector3.Zero, 1.5f);
+        _textDraw.PreviewZoom.ShouldBe(1.5f);
+    }
+
+    [Fact]
+    public void SetPreviewRotation_with_zoom_should_succeed()
+    {
+        _textDraw.SetPreviewRotation(Vector3.One, 2.0f);
+    }
+
+    [Fact]
+    public void Restream_should_succeed()
+    {
+        _textDraw.Show();
+        _textDraw.Restream();
+    }
 }

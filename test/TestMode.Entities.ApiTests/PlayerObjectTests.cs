@@ -140,4 +140,81 @@ public class PlayerObjectTests : TestBase
         _object.Stop();
         _object.IsMoving.ShouldBeFalse();
     }
+
+    [Fact]
+    public void HasCameraCollision_should_roundtrip()
+    {
+        _object.HasCameraCollision = false;
+        _object.HasCameraCollision.ShouldBeFalse();
+        _object.HasCameraCollision = true;
+        _object.HasCameraCollision.ShouldBeTrue();
+    }
+
+    [Fact]
+    public void AttachedPlayer_should_be_null_initially()
+    {
+        _object.AttachedPlayer.ShouldBeNull();
+    }
+
+    [Fact]
+    public void AttachedVehicle_should_be_null_initially()
+    {
+        _object.AttachedVehicle.ShouldBeNull();
+    }
+
+    [Fact]
+    public void AttachedPlayer_should_be_set_after_attach()
+    {
+        _object.AttachTo(Player, Vector3.Zero, Vector3.Zero);
+        _object.AttachedPlayer.ShouldBe(Player);
+    }
+
+    [Fact]
+    public void AttachedVehicle_should_be_set_after_attach()
+    {
+        var vehicle = _worldService.CreateVehicle(VehicleModelType.Landstalker, new Vector3(0, 0, 0), 0, 0, 0);
+
+        try
+        {
+            _object.AttachTo(vehicle, Vector3.Zero, Vector3.Zero);
+            _object.AttachedVehicle.ShouldBe(vehicle);
+        }
+        finally
+        {
+            vehicle.Destroy();
+        }
+    }
+
+    [Fact]
+    public void GetMovingData_should_succeed()
+    {
+        _ = _object.GetMovingData();
+    }
+
+    [Fact]
+    public void ResetAttachment_should_succeed()
+    {
+        _object.AttachTo(Player, Vector3.Zero, Vector3.Zero);
+        _object.ResetAttachment();
+        _object.AttachedPlayer.ShouldBeNull();
+    }
+
+    [Fact]
+    public void Move_without_rotation_should_succeed()
+    {
+        _object.Position = new Vector3(100, 0, 0);
+        var time = _object.Move(new Vector3(200, 0, 0), 10);
+        _object.Stop();
+
+        time.ShouldBeGreaterThan(TimeSpan.Zero);
+    }
+
+    [Fact]
+    public void GetMaterialData_should_return_data_after_set()
+    {
+        _object.SetMaterial(0, 123, "none", "none", Color.White);
+        var data = _object.GetMaterialData(0);
+        data.ShouldNotBeNull();
+        data!.Model.ShouldBe(123);
+    }
 }

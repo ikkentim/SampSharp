@@ -259,8 +259,13 @@ public readonly partial struct IVehicle
     /// Gets the respawn delay of the vehicle.
     /// </summary>
     /// <returns>The respawn delay of the vehicle.</returns>
-    [return: MarshalUsing(typeof(SecondsMarshaller))]
-    public partial TimeSpan GetRespawnDelay();
+    public TimeSpan GetRespawnDelay()
+    {
+        GetRespawnDelay(out var result);
+        return SecondsMarshaller.NativeToManaged.ConvertToManaged(result);
+    }
+
+    private partial void GetRespawnDelay(out Seconds result);
 
     /// <summary>
     /// Sets the respawn delay of the vehicle.
