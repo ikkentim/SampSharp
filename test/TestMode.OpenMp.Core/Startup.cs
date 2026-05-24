@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using System.Runtime.InteropServices;
 using SampSharp.OpenMp.Core;
 using SampSharp.OpenMp.Core.Api;
 using SampSharp.OpenMp.Core.RobinHood;
@@ -182,5 +183,10 @@ public class Startup : IStartup,
         {
             Console.WriteLine($"TD: {td.GetID()}, prev mdl: {td.GetPreviewModel()}");
         }
+
+        // default color test
+        Console.WriteLine($"sizeof(Colour) = {Marshal.SizeOf<Colour>()}");
+        var color = context.Core.GetPlayers().GetDefaultColour(15);
+        Console.WriteLine(color);
     }
 }

@@ -19,6 +19,7 @@
 #include <Server/Components/Vehicles/vehicles.hpp>
 
 #include "../proxy-api.hpp"
+#include <iostream>
 
 #ifdef __clang__
 #pragma clang diagnostic push
@@ -1032,7 +1033,7 @@ PROXY(IPlayerPool, void, broadcastRPC, int, Span<uint8_t>, int, const IPlayer*, 
 PROXY(IPlayerPool, bool, isNameValid, StringView);
 PROXY(IPlayerPool, void, allowNickNameCharacter, char, bool);
 PROXY(IPlayerPool, bool, isNickNameCharacterAllowed, char);
-PROXY(IPlayerPool, Colour, getDefaultColour, int);
+PROXY_PTR(IPlayerPool, Colour, getDefaultColour, int);
 PROXY_CAST_NAMED(IPlayerPool, IPlayerPool, IReadOnlyPool<IPlayer>, IReadOnlyPool);
 
 PROXY_EVENT_DISPATCHER(IPlayerPool, PlayerSpawnEventHandler, getPlayerSpawnDispatcher);
