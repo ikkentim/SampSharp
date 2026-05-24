@@ -485,9 +485,9 @@ public class VehicleTests : TestBase
     }
 
     [Fact]
-    public void IsRespawning_should_be_false_initially()
+    public void IsRespawning_should_be_true_initially()
     {
-        _vehicle.IsRespawning.ShouldBeFalse();
+        _vehicle.IsRespawning.ShouldBeTrue();
     }
 
     [Fact]

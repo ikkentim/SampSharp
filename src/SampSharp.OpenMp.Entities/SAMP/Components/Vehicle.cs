@@ -761,6 +761,12 @@ public class Vehicle : WorldEntity
     /// <inheritdoc />
     public override string ToString()
     {
+        if (IsDestroying)
+        {
+            // TODO: do this check for other components as well
+            return "(Destroyed)";
+        }
+
         return $"(Id: {Id}, Model: {Model})";
     }
 
