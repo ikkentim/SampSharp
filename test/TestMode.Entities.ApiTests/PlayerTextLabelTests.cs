@@ -57,4 +57,72 @@ public class PlayerTextLabelTests : TestBase
             vehicle.DestroyEntity();
         }
     }
+
+    [Fact]
+    public void AttachedPlayer_should_be_null_initially()
+    {
+        _textLabel.AttachedPlayer.ShouldBeNull();
+    }
+
+    [Fact]
+    public void AttachedVehicle_should_be_null_initially()
+    {
+        _textLabel.AttachedVehicle.ShouldBeNull();
+    }
+
+    [Fact]
+    public void AttachedPlayer_should_be_set_after_attach()
+    {
+        _textLabel.Attach(Player);
+        _textLabel.AttachedPlayer.ShouldBe(Player);
+    }
+
+    [Fact]
+    public void AttachedVehicle_should_be_set_after_attach()
+    {
+        var vehicle = Services.GetRequiredService<IWorldService>().CreateVehicle(VehicleModelType.Alpha, Vector3.Zero, 0, 0, 0);
+
+        try
+        {
+            _textLabel.Attach(vehicle);
+            _textLabel.AttachedVehicle.ShouldBe(vehicle);
+        }
+        finally
+        {
+            vehicle.DestroyEntity();
+        }
+    }
+
+    [Fact]
+    public void DetachFromPlayer_should_succeed()
+    {
+        _textLabel.Attach(Player);
+        _textLabel.DetachFromPlayer(new Vector3(10, 20, 30));
+        _textLabel.AttachedPlayer.ShouldBeNull();
+    }
+
+    [Fact]
+    public void DetachFromVehicle_should_succeed()
+    {
+        var vehicle = Services.GetRequiredService<IWorldService>().CreateVehicle(VehicleModelType.Alpha, Vector3.Zero, 0, 0, 0);
+
+        try
+        {
+            _textLabel.Attach(vehicle);
+            _textLabel.DetachFromVehicle(new Vector3(10, 20, 30));
+            _textLabel.AttachedVehicle.ShouldBeNull();
+        }
+        finally
+        {
+            vehicle.DestroyEntity();
+        }
+    }
+
+    [Fact]
+    public void SetColorAndText_should_update_text_and_color()
+    {
+        _textLabel.SetColorAndText(Color.Blue, "updated text");
+        _textLabel.Text.ShouldBe("updated text");
+        _textLabel.Color.ShouldBe(Color.Blue);
+    }
 }

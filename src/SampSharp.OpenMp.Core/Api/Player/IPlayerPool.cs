@@ -201,12 +201,11 @@ public readonly partial struct IPlayerPool
     /// <returns>The default colour.</returns>
     public Colour GetDefaultColour(int pid)
     {
-        GetDefaultColourImpl(pid, out var result);
+        GetDefaultColour(pid, out var result);
         return result;
     }
 
-    [OpenMpApiFunction("getDefaultColour")]
-    private partial void GetDefaultColourImpl(int pid, out Colour result);
+    private partial void GetDefaultColour(int pid, out Colour result);
 
     /// <summary>
     /// Converts this instance to a read-only player pool.
