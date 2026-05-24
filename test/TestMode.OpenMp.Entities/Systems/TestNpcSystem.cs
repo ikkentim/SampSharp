@@ -6,8 +6,14 @@ using SampSharp.Entities.SAMP.Commands;
 namespace TestMode.OpenMp.Entities.Systems;
 
 [CommandGroup("npc")]
-public class NpcTestSystem : ISystem
+public class TestNpcSystem : ISystem
 {
+    [PlayerCommand("help")]
+    public void Help(Player player, HelpService help)
+    {
+        help.Send(player, new CommandGroup("npc"));
+    }
+
     [PlayerCommand("spawn")]
     public void SpawnCommand(Player player, string name, IWorldService worldService)
     {
@@ -16,27 +22,6 @@ public class NpcTestSystem : ISystem
         npc.Position = player.Position;
         npc.Rotation = player.Rotation;
         npc.Spawn();
-    }
-
-    [PlayerCommand("help")]
-    public void Help(Player player, IPlayerCommandService commandService, ICommandTextFormatter commandTextFormatter)
-    {
-        var cmds = commandService.Registry.GetCommandsInGroup(new CommandGroup("npc"));
-
-        player.SendClientMessage("NPC commands:");
-        foreach (var cmd in cmds)
-        {
-            var text = commandTextFormatter.FormatCommandUsage(cmd.Name, cmd.Group.ToString(), cmd.ParsedParameters);
-            player.SendClientMessage(text);
-        }
-
-        cmds = commandService.Registry.GetCommandsInGroup(new CommandGroup("npc", "path"));
-        player.SendClientMessage("NPC path commands:");
-        foreach (var cmd in cmds)
-        {
-            var text = commandTextFormatter.FormatCommandUsage(cmd.Name, cmd.Group.ToString(), cmd.ParsedParameters);
-            player.SendClientMessage(text);
-        }
     }
 
     [CommandGroup("path")]

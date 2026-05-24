@@ -40,7 +40,16 @@ internal class CommandRegistry(StringComparison stringComparison) : ICommandRegi
 
     IEnumerable<CommandGroup> ICommandRegistry.GetGroups()
     {
+        // TODO: add group list to registry to optimize GetGroups calls.
         return _allCommands.Where(c => c.Group.HasValue).Select(c => c.Group!.Value).Distinct();
+    }
+
+    IEnumerable<CommandGroup> ICommandRegistry.GetGroups(CommandGroup group)
+    {
+        return _allCommands.Where(c => c.Group.HasValue)
+            .Select(c => c.Group!.Value)
+            .Distinct()
+            .Where(x => x.Depth > group.Depth && group.Parts.SequenceEqual(x.Parts.Take(group.Depth)));
     }
 
     internal void Clear()

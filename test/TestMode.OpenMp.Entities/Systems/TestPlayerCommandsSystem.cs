@@ -6,16 +6,14 @@ using TestMode.OpenMp.Entities.Components;
 
 namespace TestMode.OpenMp.Entities.Systems;
 
-/// <summary>
-/// Demonstrates the new Commands system with simple player and console commands.
-/// </summary>
-public class SampleCommandsSystem(IEntityManager entityManager) : ISystem
+public class TestPlayerCommandsSystem : ISystem
 {
-    private readonly IEntityManager _entityManager = entityManager;
+    [PlayerCommand(Name = "help")]
+    public void HelpCommand(Player player, IPlayerCommandService commands, ICommandTextFormatter commandTextFormatter, HelpService help)
+    {
+        help.Send(player);
+    }
 
-    /// <summary>
-    /// Player command: /kill or /k - kills the player
-    /// </summary>
     [PlayerCommand(Name = "kill")]
     [Alias("k")]
     public void KillPlayer(Player player)
@@ -24,9 +22,6 @@ public class SampleCommandsSystem(IEntityManager entityManager) : ISystem
         player.SendClientMessage("You have been killed!");
     }
 
-    /// <summary>
-    /// Player command: /spawn - spawns a vehicle at the player
-    /// </summary>
     [PlayerCommand(Name = "spawn")]
     public void SpawnPlayer(Player player, VehicleModelType model, IWorldService worldService)
     {
@@ -37,9 +32,6 @@ public class SampleCommandsSystem(IEntityManager entityManager) : ISystem
         player.PutInVehicle(vehicle);
     }
 
-    /// <summary>
-    /// Player command: /admin slap [player] - damages a player (requires admin permission)
-    /// </summary>
     [PlayerCommand(Name = "slap")]
     [CommandGroup("admin")]
     [RequiresPermission("admin")]
@@ -50,9 +42,6 @@ public class SampleCommandsSystem(IEntityManager entityManager) : ISystem
         target.SendClientMessage($"{player.Name} slapped you for {damage} damage!");
     }
 
-    /// <summary>
-    /// Player command: /money - displays or sets player money
-    /// </summary>
     [PlayerCommand(Name = "money")]
     [Alias("$", "cash")]
     public void MoneyCommand(Player player, int? amount = null)
@@ -68,74 +57,6 @@ public class SampleCommandsSystem(IEntityManager entityManager) : ISystem
         }
     }
 
-    /// <summary>
-    /// Console command: list_players - lists all active players
-    /// </summary>
-    [ConsoleCommand(Name = "list_players")]
-    public void ConsoleListPlayers()
-    {
-        var players = _entityManager.GetComponents<Player>();
-        Console.WriteLine($"Active players: {players.Count()}");
-
-        foreach (var player in players.Where(p => p.IsComponentAlive))
-        {
-            Console.WriteLine($"  [{player.Entity}] {player.Name} (Health: {player.Health:F0}, Armor: {player.Armour:F0})");
-        }
-    }
-
-    /// <summary>
-    /// Console command: server_info - displays server information
-    /// </summary>
-    [ConsoleCommand(Name = "server_info")]
-    public void ConsoleServerInfo()
-    {
-        var playerCount = _entityManager.GetComponents<Player>().Count(p => p.IsComponentAlive);
-        Console.WriteLine("=== Server Info ===");
-        Console.WriteLine($"Active Players: {playerCount}");
-        Console.WriteLine($"Current Time: {DateTime.UtcNow:yyyy-MM-dd HH:mm:ss}");
-        Console.WriteLine("===================");
-    }
-
-    /// <summary>
-    /// Player command: /help - shows available player commands (uses command enumeration API)
-    /// </summary>
-    [PlayerCommand(Name = "help")]
-    public void HelpCommand(Player player, IPlayerCommandService commands)
-    {
-        player.SendClientMessage("--- Available Commands ---");
-
-        var playerCommands = commands.Registry.GetAll()
-            .OrderBy(c => c.Name)
-            .ToList();
-
-        if (playerCommands.Count == 0)
-        {
-            player.SendClientMessage("No commands available.");
-            return;
-        }
-
-        foreach (var cmd in playerCommands)
-        {
-            var aliases = cmd.Aliases.Count > 0 ? $" ({string.Join(", ", cmd.Aliases.Select(a => $"/{a.Name}"))})" : "";
-            player.SendClientMessage($"/{cmd.Name}{aliases}");
-        }
-    }
-
-    /// <summary>
-    /// Console command: time - displays current server time (demonstrates DI - IServerService injected)
-    /// </summary>
-    [ConsoleCommand(Name = "time")]
-    public void ConsoleTime(IServerService server)
-    {
-        Console.WriteLine($"Server tick count: {server.TickCount}ms");
-        Console.WriteLine($"Server tick rate: {server.TickRate}");
-        Console.WriteLine($"Max players: {server.MaxPlayers}");
-        Console.WriteLine($"Player pool size: {server.PlayerPoolSize}");
-    }
-
-    /// <summary>
-    /// Player command: /ping - shows player ping (demonstrates DI parameter - IEntityManager injected)
-    /// </summary>
     [PlayerCommand(Name = "ping")]
     public void PingCommand(Player player)
     {
@@ -146,13 +67,6 @@ public class SampleCommandsSystem(IEntityManager entityManager) : ISystem
     public void AnnounceCommand(Player player, IWorldService server)
     {
         server.SendClientMessage("Hello everyone!");
-    }
-
-    [ConsoleCommand(Name = "add_numbers")]
-    [Alias("add")]
-    public void AddCommand(int a, int b)
-    {
-        Console.WriteLine($"{a} + {b} = {a + b}");
     }
 
     [PlayerCommand(Name = "add_numbers")]
