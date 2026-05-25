@@ -41,7 +41,10 @@ public class ServerServiceTests : TestBase
     [Fact]
     public void ConnectNpc_should_succeed()
     {
-        Sut.ConnectNpc("TestNpc", "npc_script");
+        // xunit sets current dir to the assembly directory. reset to server directory, allowing NPC to connect.
+        Directory.SetCurrentDirectory(Services.GetRequiredService<TestContext>().ServerDirectory);
+
+        Sut.ConnectNpc("TestNpc", "npcidle");
     }
 
     [Fact]

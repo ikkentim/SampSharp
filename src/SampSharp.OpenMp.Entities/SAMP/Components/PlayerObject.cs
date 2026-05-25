@@ -9,7 +9,6 @@ namespace SampSharp.Entities.SAMP;
 public class PlayerObject : WorldEntity
 {
     private readonly IOmpEntityProvider _entityProvider;
-    private readonly IPlayerObject _playerObject;
     private readonly IPlayerObjectData _playerObjects;
 
     /// <summary>
@@ -19,36 +18,40 @@ public class PlayerObject : WorldEntity
     {
         _entityProvider = entityProvider;
         _playerObjects = playerObjects;
-        _playerObject = playerObject;
+        Resource = playerObject;
     }
 
-    /// <summary>
-    /// Gets a value indicating whether the open.mp entity counterpart has been destroyed.
-    /// </summary>
-    protected bool IsOmpEntityDestroyed => _playerObject.TryGetExtension<ComponentExtension>()?.IsOmpEntityDestroyed ?? true;
+    private IPlayerObject Resource
+    {
+        get
+        {
+            ObjectDisposedException.ThrowIf(!IsComponentAlive, typeof(PlayerObject));
+            return field;
+        }
+    }
 
     /// <summary>
     /// Gets a value indicating whether this player object is moving.
     /// </summary>
-    public virtual bool IsMoving => _playerObject.IsMoving();
+    public virtual bool IsMoving => Resource.IsMoving();
 
     /// <summary>
     /// Gets the model ID of this player object.
     /// </summary>
-    public virtual int ModelId => _playerObject.GetModel();
+    public virtual int ModelId => Resource.GetModel();
 
     /// <summary>
     /// Gets the draw distance of this player object.
     /// </summary>
-    public virtual float DrawDistance => _playerObject.GetDrawDistance();
+    public virtual float DrawDistance => Resource.GetDrawDistance();
 
     /// <summary>
     /// Gets or sets a value indicating whether this player object collides with the player's camera.
     /// </summary>
     public virtual bool HasCameraCollision
     {
-        get => _playerObject.GetCameraCollision();
-        set => _playerObject.SetCameraCollision(value);
+        get => Resource.GetCameraCollision();
+        set => Resource.SetCameraCollision(value);
     }
 
     /// <summary>
@@ -58,7 +61,7 @@ public class PlayerObject : WorldEntity
     {
         get
         {
-            var data = _playerObject.GetAttachmentData();
+            var data = Resource.GetAttachmentData();
             return data.Type == AttachmentType.Player ? _entityProvider.GetPlayer(data.Id) : null;
         }
     }
@@ -70,7 +73,7 @@ public class PlayerObject : WorldEntity
     {
         get
         {
-            var data = _playerObject.GetAttachmentData();
+            var data = Resource.GetAttachmentData();
             return data.Type == AttachmentType.Vehicle ? _entityProvider.GetVehicle(data.Id) : null;
         }
     }
@@ -87,7 +90,7 @@ public class PlayerObject : WorldEntity
         var time = (position - Position).Length() / speed;
 
         var moveDat = new ObjectMoveData(position, rotation, speed);
-        _playerObject.Move(ref moveDat);
+        Resource.Move(ref moveDat);
 
         return TimeSpan.FromSeconds(time);
     }
@@ -108,7 +111,7 @@ public class PlayerObject : WorldEntity
     /// </summary>
     public virtual void Stop()
     {
-        _playerObject.Stop();
+        Resource.Stop();
     }
 
     /// <summary>
@@ -124,7 +127,7 @@ public class PlayerObject : WorldEntity
         ArgumentNullException.ThrowIfNull(txdName);
         ArgumentNullException.ThrowIfNull(textureName);
         
-        _playerObject.SetMaterial((uint)materialIndex, modelId, txdName, textureName, materialColor);
+        Resource.SetMaterial((uint)materialIndex, modelId, txdName, textureName, materialColor);
     }
 
     /// <summary>
@@ -147,7 +150,7 @@ public class PlayerObject : WorldEntity
         ArgumentOutOfRangeException.ThrowIfGreaterThan(text.Length, 2048, nameof(text));
         ArgumentOutOfRangeException.ThrowIfGreaterThan(fontSize, 255, nameof(fontSize));
 
-        _playerObject.SetMaterialText((uint)materialIndex, text, (OpenMp.Core.Api.ObjectMaterialSize)materialSize, fontface, fontSize, bold, foreColor, backColor,
+        Resource.SetMaterialText((uint)materialIndex, text, (OpenMp.Core.Api.ObjectMaterialSize)materialSize, fontface, fontSize, bold, foreColor, backColor,
             (OpenMp.Core.Api.ObjectMaterialTextAlign)textAlignment);
     }
 
@@ -156,7 +159,7 @@ public class PlayerObject : WorldEntity
     /// </summary>
     public virtual void DisableCameraCollisions()
     {
-        _playerObject.SetCameraCollision(false);
+        Resource.SetCameraCollision(false);
     }
 
     /// <summary>
@@ -165,7 +168,7 @@ public class PlayerObject : WorldEntity
     /// <returns>The <see cref="ObjectMoveData" /> describing the current move target.</returns>
     public virtual ObjectMoveData GetMovingData()
     {
-        return _playerObject.GetMovingData();
+        return Resource.GetMovingData();
     }
 
     /// <summary>
@@ -173,7 +176,7 @@ public class PlayerObject : WorldEntity
     /// </summary>
     public virtual void ResetAttachment()
     {
-        _playerObject.ResetAttachment();
+        Resource.ResetAttachment();
     }
 
     /// <summary>
@@ -183,7 +186,7 @@ public class PlayerObject : WorldEntity
     /// <returns>The material data, or <see langword="null" /> if no material has been set in that slot.</returns>
     public virtual ObjectMaterialData? GetMaterialData(int materialIndex)
     {
-        return _playerObject.GetMaterialData((uint)materialIndex, out var data) ? data : null;
+        return Resource.GetMaterialData((uint)materialIndex, out var data) ? data : null;
     }
 
     /// <summary>
@@ -196,7 +199,7 @@ public class PlayerObject : WorldEntity
     {
         ArgumentNullException.ThrowIfNull(target);
         
-        _playerObject.AttachToPlayer(target, offset, rotation);
+        Resource.AttachToPlayer(target, offset, rotation);
     }
 
     /// <summary>
@@ -209,7 +212,7 @@ public class PlayerObject : WorldEntity
     {
         ArgumentNullException.ThrowIfNull(target);
         
-        _playerObject.AttachToVehicle(target, offset, rotation);
+        Resource.AttachToVehicle(target, offset, rotation);
     }
 
     /// <summary>
@@ -222,13 +225,13 @@ public class PlayerObject : WorldEntity
     {
         ArgumentNullException.ThrowIfNull(target);
         
-        _playerObject.AttachToObject(target, offset, rotation);
+        Resource.AttachToObject(target, offset, rotation);
     }
 
     /// <inheritdoc />
     protected override void OnDestroyComponent()
     {
-        if (!IsOmpEntityDestroyed)
+        if (!Resource.GetExtension<ComponentExtension>().IsOmpEntityDestroyed)
         {
             _playerObjects.Release(Id);
         }
@@ -237,6 +240,10 @@ public class PlayerObject : WorldEntity
     /// <inheritdoc />
     public override string ToString()
     {
+        if (!IsComponentAlive)
+        {
+            return "(Destroyed)";
+        }
         return $"(Id: {Id}, Model: {ModelId})";
     }
 
@@ -245,6 +252,6 @@ public class PlayerObject : WorldEntity
     /// </summary>
     public static implicit operator IPlayerObject(PlayerObject? playerObject)
     {
-        return playerObject?._playerObject ?? default;
+        return playerObject?.Resource ?? default;
     }
 }

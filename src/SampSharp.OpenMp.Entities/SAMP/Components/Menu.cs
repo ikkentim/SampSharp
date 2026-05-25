@@ -8,7 +8,6 @@ namespace SampSharp.Entities.SAMP;
 /// </summary>
 public class Menu : IdProvider
 {
-    private readonly IMenu _menu;
     private readonly IMenusComponent _menus;
 
     /// <summary>
@@ -17,14 +16,18 @@ public class Menu : IdProvider
     protected Menu(IMenusComponent menus, IMenu menu, string title) : base((IIDProvider)menu)
     {
         _menus = menus;
-        _menu = menu;
+        Resource = menu;
         Title = title; // no getter available in IMenu
     }
 
-    /// <summary>
-    /// Gets a value indicating whether the open.mp entity counterpart has been destroyed.
-    /// </summary>
-    protected bool IsOmpEntityDestroyed => _menu.TryGetExtension<ComponentExtension>()?.IsOmpEntityDestroyed ?? true;
+    private IMenu Resource
+    {
+        get
+        {
+            ObjectDisposedException.ThrowIf(!IsComponentAlive, typeof(Menu));
+            return field;
+        }
+    }
 
     /// <summary>
     /// Gets the title of this menu.
@@ -34,30 +37,30 @@ public class Menu : IdProvider
     /// <summary>
     /// Gets the number of columns in this menu.
     /// </summary>
-    public virtual int Columns => _menu.GetColumnCount();
+    public virtual int Columns => Resource.GetColumnCount();
 
     /// <summary>
     /// Gets the position of this menu.
     /// </summary>
-    public virtual Vector2 Position => _menu.GetPosition();
+    public virtual Vector2 Position => Resource.GetPosition();
 
     /// <summary>
     /// Gets the width of the left column in this menu.
     /// </summary>
-    public virtual float Col0Width => _menu.GetColumnWidths().X;
+    public virtual float Col0Width => Resource.GetColumnWidths().X;
 
     /// <summary>
     /// Gets the width of the right column in this menu.
     /// </summary>
-    public virtual float Col1Width => _menu.GetColumnWidths().Y;
+    public virtual float Col1Width => Resource.GetColumnWidths().Y;
 
     /// <summary>
     /// Gets or sets the header text of the left column in this menu.
     /// </summary>
     public virtual string Col0Header
     {
-        get => _menu.GetColumnHeader(0) ?? string.Empty;
-        set => _menu.SetColumnHeader(value, 0);
+        get => Resource.GetColumnHeader(0) ?? string.Empty;
+        set => Resource.SetColumnHeader(value, 0);
     }
 
     /// <summary>
@@ -65,24 +68,24 @@ public class Menu : IdProvider
     /// </summary>
     public virtual string Col1Header
     {
-        get => _menu.GetColumnHeader(1) ?? string.Empty;
-        set => _menu.SetColumnHeader(value, 1);
+        get => Resource.GetColumnHeader(1) ?? string.Empty;
+        set => Resource.SetColumnHeader(value, 1);
     }
 
     /// <summary>
     /// Gets a value indicating whether this menu accepts input.
     /// </summary>
-    public virtual bool IsEnabled => _menu.IsEnabled();
+    public virtual bool IsEnabled => Resource.IsEnabled();
 
     /// <summary>
     /// Gets the number of rows in the left column of this menu.
     /// </summary>
-    public virtual int Col0RowCount => _menu.GetRowCount(0);
+    public virtual int Col0RowCount => Resource.GetRowCount(0);
 
     /// <summary>
     /// Gets the number of rows in the right column of this menu.
     /// </summary>
-    public virtual int Col1RowCount => _menu.GetRowCount(1);
+    public virtual int Col1RowCount => Resource.GetRowCount(1);
 
     /// <summary>
     /// Adds an item to this menu.
@@ -102,11 +105,11 @@ public class Menu : IdProvider
             throw new ArgumentNullException(nameof(col1Text), "The text for the right column may not be null because this menu has 2 columns.");
         }
 
-        var result = _menu.AddCell(col0Text, 0);
+        var result = Resource.AddCell(col0Text, 0);
 
         if (Columns == 2)
         {
-            _menu.AddCell(col1Text!, 1);
+            Resource.AddCell(col1Text!, 1);
         }
 
         return result;
@@ -120,7 +123,7 @@ public class Menu : IdProvider
     {
         ArgumentNullException.ThrowIfNull(player);
         
-        _menu.ShowForPlayer(player);
+        Resource.ShowForPlayer(player);
     }
 
     /// <summary>
@@ -131,7 +134,7 @@ public class Menu : IdProvider
     {
         ArgumentNullException.ThrowIfNull(player);
         
-        _menu.HideForPlayer(player);
+        Resource.HideForPlayer(player);
     }
 
     /// <summary>
@@ -139,7 +142,7 @@ public class Menu : IdProvider
     /// </summary>
     public virtual void Disable()
     {
-        _menu.Disable();
+        Resource.Disable();
     }
 
     /// <summary>
@@ -148,7 +151,7 @@ public class Menu : IdProvider
     /// <param name="row">The index of the row to disable.</param>
     public virtual void DisableRow(int row)
     {
-        _menu.DisableRow((byte)row);
+        Resource.DisableRow((byte)row);
     }
 
     /// <summary>
@@ -158,7 +161,7 @@ public class Menu : IdProvider
     /// <returns><see langword="true" /> if enabled; otherwise <see langword="false" />.</returns>
     public virtual bool IsRowEnabled(int row)
     {
-        return _menu.IsRowEnabled((byte)row);
+        return Resource.IsRowEnabled((byte)row);
     }
 
     /// <summary>
@@ -169,13 +172,13 @@ public class Menu : IdProvider
     /// <returns>The cell text, or <see langword="null" /> if no cell exists at the given coordinates.</returns>
     public virtual string? GetCell(int row, int column)
     {
-        return _menu.GetCell((byte)column, (byte)row);
+        return Resource.GetCell((byte)column, (byte)row);
     }
 
     /// <inheritdoc />
     protected override void OnDestroyComponent()
     {
-        if (!IsOmpEntityDestroyed)
+        if (!Resource.GetExtension<ComponentExtension>().IsOmpEntityDestroyed)
         {
             _menus.AsPool().Release(Id);
         }
@@ -184,6 +187,10 @@ public class Menu : IdProvider
     /// <inheritdoc />
     public override string ToString()
     {
+        if (!IsComponentAlive)
+        {
+            return "(Destroyed)";
+        }
         return $"(Id: {Id}, Title: {Title})";
     }
 
@@ -192,6 +199,6 @@ public class Menu : IdProvider
     /// </summary>
     public static implicit operator IMenu(Menu? menu)
     {
-        return menu?._menu ?? default;
+        return menu?.Resource ?? default;
     }
 }

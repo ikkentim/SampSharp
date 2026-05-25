@@ -9,7 +9,6 @@ namespace SampSharp.Entities.SAMP;
 public class TextLabel : WorldEntity
 {
     private readonly IOmpEntityProvider _entityProvider;
-    private readonly ITextLabel _textLabel;
     private readonly ITextLabelsComponent _textLabels;
 
     /// <summary>
@@ -19,13 +18,17 @@ public class TextLabel : WorldEntity
     {
         _entityProvider = entityProvider;
         _textLabels = textLabels;
-        _textLabel = textLabel;
+        Resource = textLabel;
     }
 
-    /// <summary>
-    /// Gets a value indicating whether the open.mp entity counterpart has been destroyed.
-    /// </summary>
-    protected bool IsOmpEntityDestroyed => _textLabel.TryGetExtension<ComponentExtension>()?.IsOmpEntityDestroyed ?? true;
+    private ITextLabel Resource
+    {
+        get
+        {
+            ObjectDisposedException.ThrowIf(!IsComponentAlive, typeof(TextLabel));
+            return field;
+        }
+    }
 
     /// <summary>
     /// Gets or sets the <see cref="Color" /> of this text label.
@@ -34,10 +37,10 @@ public class TextLabel : WorldEntity
     {
         get
         {
-            _textLabel.GetColour(out var colour);
+            Resource.GetColour(out var colour);
             return colour;
         }
-        set => _textLabel.SetColour(value);
+        set => Resource.SetColour(value);
     }
 
     /// <summary>
@@ -45,19 +48,19 @@ public class TextLabel : WorldEntity
     /// </summary>
     public virtual string Text
     {
-        get => _textLabel.GetText();
-        set => _textLabel.SetText(value);
+        get => Resource.GetText();
+        set => Resource.SetText(value);
     }
 
     /// <summary>
     /// Gets the draw distance of this text label.
     /// </summary>
-    public virtual float DrawDistance => _textLabel.GetDrawDistance();
+    public virtual float DrawDistance => Resource.GetDrawDistance();
 
     /// <summary>
     /// Gets a value indicating whether line-of-sight testing is enabled for this text label.
     /// </summary>
-    public virtual bool TestLos => _textLabel.GetTestLOS();
+    public virtual bool TestLos => Resource.GetTestLOS();
 
     /// <summary>
     /// Gets the entity this text label is attached to, if any.
@@ -66,7 +69,7 @@ public class TextLabel : WorldEntity
     {
         get
         {
-            var attachmentData = _textLabel.GetAttachmentData();
+            var attachmentData = Resource.GetAttachmentData();
 
             if (attachmentData.PlayerId != OpenMpConstants.INVALID_PLAYER_ID)
             {
@@ -85,12 +88,12 @@ public class TextLabel : WorldEntity
     /// <summary>
     /// Gets the <see cref="Player" /> this text label is attached to, or <see langword="null" /> if it is not attached to a player.
     /// </summary>
-    public virtual Player? AttachedPlayer => _entityProvider.GetPlayer(_textLabel.GetAttachmentData().PlayerId);
+    public virtual Player? AttachedPlayer => _entityProvider.GetPlayer(Resource.GetAttachmentData().PlayerId);
 
     /// <summary>
     /// Gets the <see cref="Vehicle" /> this text label is attached to, or <see langword="null" /> if it is not attached to a vehicle.
     /// </summary>
-    public virtual Vehicle? AttachedVehicle => _entityProvider.GetVehicle(_textLabel.GetAttachmentData().VehicleId);
+    public virtual Vehicle? AttachedVehicle => _entityProvider.GetVehicle(Resource.GetAttachmentData().VehicleId);
 
     /// <summary>
     /// Attaches this text label to the specified <paramref name="player" />.
@@ -101,7 +104,7 @@ public class TextLabel : WorldEntity
     {
         ArgumentNullException.ThrowIfNull(player);
         
-        _textLabel.AttachToPlayer(player, offset);
+        Resource.AttachToPlayer(player, offset);
     }
 
     /// <summary>
@@ -113,7 +116,7 @@ public class TextLabel : WorldEntity
     {
         ArgumentNullException.ThrowIfNull(vehicle);
         
-        _textLabel.AttachToVehicle(vehicle, offset);
+        Resource.AttachToVehicle(vehicle, offset);
     }
 
     /// <summary>
@@ -122,7 +125,7 @@ public class TextLabel : WorldEntity
     /// <param name="position">The new world position.</param>
     public virtual void DetachFromPlayer(Vector3 position)
     {
-        _textLabel.DetachFromPlayer(position);
+        Resource.DetachFromPlayer(position);
     }
 
     /// <summary>
@@ -131,7 +134,7 @@ public class TextLabel : WorldEntity
     /// <param name="position">The new world position.</param>
     public virtual void DetachFromVehicle(Vector3 position)
     {
-        _textLabel.DetachFromVehicle(position);
+        Resource.DetachFromVehicle(position);
     }
 
     /// <summary>
@@ -142,7 +145,7 @@ public class TextLabel : WorldEntity
     public virtual void SetColorAndText(Color color, string text)
     {
         ArgumentNullException.ThrowIfNull(text);
-        _textLabel.SetColourAndText(color, text);
+        Resource.SetColourAndText(color, text);
     }
 
     /// <summary>
@@ -153,7 +156,7 @@ public class TextLabel : WorldEntity
     public virtual bool IsStreamedInForPlayer(Player player)
     {
         ArgumentNullException.ThrowIfNull(player);
-        return _textLabel.IsStreamedInForPlayer(player);
+        return Resource.IsStreamedInForPlayer(player);
     }
 
     /// <summary>
@@ -163,7 +166,7 @@ public class TextLabel : WorldEntity
     public virtual void StreamInForPlayer(Player player)
     {
         ArgumentNullException.ThrowIfNull(player);
-        _textLabel.StreamInForPlayer(player);
+        Resource.StreamInForPlayer(player);
     }
 
     /// <summary>
@@ -173,13 +176,13 @@ public class TextLabel : WorldEntity
     public virtual void StreamOutForPlayer(Player player)
     {
         ArgumentNullException.ThrowIfNull(player);
-        _textLabel.StreamOutForPlayer(player);
+        Resource.StreamOutForPlayer(player);
     }
 
     /// <inheritdoc />
     protected override void OnDestroyComponent()
     {
-        if (!IsOmpEntityDestroyed)
+        if (!Resource.GetExtension<ComponentExtension>().IsOmpEntityDestroyed)
         {
             _textLabels.AsPool().Release(Id);
         }
@@ -188,6 +191,10 @@ public class TextLabel : WorldEntity
     /// <inheritdoc />
     public override string ToString()
     {
+        if (!IsComponentAlive)
+        {
+            return "(Destroyed)";
+        }
         return $"(Id: {Id}, Text: {Text})";
     }
 
@@ -196,6 +203,6 @@ public class TextLabel : WorldEntity
     /// </summary>
     public static implicit operator ITextLabel(TextLabel? textLabel)
     {
-        return textLabel?._textLabel ?? default;
+        return textLabel?.Resource ?? default;
     }
 }

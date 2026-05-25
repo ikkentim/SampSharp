@@ -13,7 +13,6 @@ namespace SampSharp.Entities.SAMP;
 /// </remarks>
 public class PlayerPickup : BasePickup
 {
-    private readonly IPickup _pickup;
     private readonly Player _player;
 
     /// <summary>
@@ -21,26 +20,36 @@ public class PlayerPickup : BasePickup
     /// </summary>
     protected PlayerPickup(IPickupsComponent pickups, IPickup pickup, Player player) : base(pickups, pickup)
     {
-        _pickup = pickup;
+        Resource = pickup;
         _player = player;
     }
+
+    private IPickup Resource
+    {
+        get
+        {
+            ObjectDisposedException.ThrowIf(!IsComponentAlive, typeof(PlayerPickup));
+            return field;
+        }
+    }
+
 
     /// <summary>Checks whether this pickup is streamed in for the player.</summary>
     /// <returns><see langword="true" /> if streamed in; otherwise <see langword="false" />.</returns>
     public virtual bool IsStreamedIn()
     {
-        return _pickup.IsStreamedInForPlayer(_player);
+        return Resource.IsStreamedInForPlayer(_player);
     }
 
     /// <summary>Streams this pickup in for the player.</summary>
     public virtual void StreamIn()
     {
-        _pickup.StreamInForPlayer(_player);
+        Resource.StreamInForPlayer(_player);
     }
 
     /// <summary>Streams this pickup out for the player.</summary>
     public virtual void StreamOut()
     {
-        _pickup.StreamOutForPlayer(_player);
+        Resource.StreamOutForPlayer(_player);
     }
 }

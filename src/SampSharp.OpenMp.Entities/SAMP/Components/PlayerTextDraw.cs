@@ -8,7 +8,6 @@ namespace SampSharp.Entities.SAMP;
 /// </summary>
 public class PlayerTextDraw : IdProvider
 {
-    private readonly IPlayerTextDraw _playerTextDraw;
     private readonly IPlayerTextDrawData _playerTextDraws;
 
     /// <summary>
@@ -17,21 +16,25 @@ public class PlayerTextDraw : IdProvider
     protected PlayerTextDraw(IPlayerTextDrawData playerTextDraws, IPlayerTextDraw playerTextDraw) : base((IIDProvider)playerTextDraw)
     {
         _playerTextDraws = playerTextDraws;
-        _playerTextDraw = playerTextDraw;
+        Resource = playerTextDraw;
     }
 
-    /// <summary>
-    /// Gets a value indicating whether the open.mp entity counterpart has been destroyed.
-    /// </summary>
-    protected bool IsOmpEntityDestroyed => _playerTextDraw.TryGetExtension<ComponentExtension>()?.IsOmpEntityDestroyed ?? true;
+    private IPlayerTextDraw Resource
+    {
+        get
+        {
+            ObjectDisposedException.ThrowIf(!IsComponentAlive, typeof(PlayerTextDraw));
+            return field;
+        }
+    }
 
     /// <summary>
     /// Gets or sets the size of the letters in this text draw.
     /// </summary>
     public virtual Vector2 LetterSize
     {
-        get => _playerTextDraw.GetLetterSize();
-        set => _playerTextDraw.SetLetterSize(value);
+        get => Resource.GetLetterSize();
+        set => Resource.SetLetterSize(value);
     }
 
     /// <summary>
@@ -39,8 +42,8 @@ public class PlayerTextDraw : IdProvider
     /// </summary>
     public virtual Vector2 TextSize
     {
-        get => _playerTextDraw.GetTextSize();
-        set => _playerTextDraw.SetTextSize(value);
+        get => Resource.GetTextSize();
+        set => Resource.SetTextSize(value);
     }
 
     /// <summary>
@@ -48,8 +51,8 @@ public class PlayerTextDraw : IdProvider
     /// </summary>
     public virtual TextDrawAlignment Alignment
     {
-        get => (TextDrawAlignment)_playerTextDraw.GetAlignment();
-        set => _playerTextDraw.SetAlignment((TextDrawAlignmentTypes)value);
+        get => (TextDrawAlignment)Resource.GetAlignment();
+        set => Resource.SetAlignment((TextDrawAlignmentTypes)value);
     }
 
     /// <summary>
@@ -57,8 +60,8 @@ public class PlayerTextDraw : IdProvider
     /// </summary>
     public virtual Color ForeColor
     {
-        get => _playerTextDraw.GetLetterColour();
-        set => _playerTextDraw.SetColour(value);
+        get => Resource.GetLetterColour();
+        set => Resource.SetColour(value);
     }
 
     /// <summary>
@@ -66,8 +69,8 @@ public class PlayerTextDraw : IdProvider
     /// </summary>
     public virtual bool UseBox
     {
-        get => _playerTextDraw.HasBox();
-        set => _playerTextDraw.UseBox(value);
+        get => Resource.HasBox();
+        set => Resource.UseBox(value);
     }
 
     /// <summary>
@@ -77,10 +80,10 @@ public class PlayerTextDraw : IdProvider
     {
         get
         {
-            _playerTextDraw.GetBoxColour(out var colour);
+            Resource.GetBoxColour(out var colour);
             return colour;
         }
-        set => _playerTextDraw.SetBoxColour(value);
+        set => Resource.SetBoxColour(value);
     }
 
     /// <summary>
@@ -88,8 +91,8 @@ public class PlayerTextDraw : IdProvider
     /// </summary>
     public virtual int Shadow
     {
-        get => _playerTextDraw.GetShadow();
-        set => _playerTextDraw.SetShadow(value);
+        get => Resource.GetShadow();
+        set => Resource.SetShadow(value);
     }
 
     /// <summary>
@@ -97,8 +100,8 @@ public class PlayerTextDraw : IdProvider
     /// </summary>
     public virtual int Outline
     {
-        get => _playerTextDraw.GetOutline();
-        set => _playerTextDraw.SetOutline(value);
+        get => Resource.GetOutline();
+        set => Resource.SetOutline(value);
     }
 
     /// <summary>
@@ -106,8 +109,8 @@ public class PlayerTextDraw : IdProvider
     /// </summary>
     public virtual Color BackColor
     {
-        get => _playerTextDraw.GetBackgroundColour();
-        set => _playerTextDraw.SetBackgroundColour(value);
+        get => Resource.GetBackgroundColour();
+        set => Resource.SetBackgroundColour(value);
     }
 
     /// <summary>
@@ -115,8 +118,8 @@ public class PlayerTextDraw : IdProvider
     /// </summary>
     public virtual TextDrawFont Font
     {
-        get => (TextDrawFont)_playerTextDraw.GetStyle();
-        set => _playerTextDraw.SetStyle((TextDrawStyle)value);
+        get => (TextDrawFont)Resource.GetStyle();
+        set => Resource.SetStyle((TextDrawStyle)value);
     }
 
     /// <summary>
@@ -124,8 +127,8 @@ public class PlayerTextDraw : IdProvider
     /// </summary>
     public virtual bool Proportional
     {
-        get => _playerTextDraw.IsProportional();
-        set => _playerTextDraw.SetProportional(value);
+        get => Resource.IsProportional();
+        set => Resource.SetProportional(value);
     }
 
     /// <summary>
@@ -133,8 +136,8 @@ public class PlayerTextDraw : IdProvider
     /// </summary>
     public virtual bool Selectable
     {
-        get => _playerTextDraw.IsSelectable();
-        set => _playerTextDraw.SetSelectable(value);
+        get => Resource.IsSelectable();
+        set => Resource.SetSelectable(value);
     }
 
     /// <summary>
@@ -142,8 +145,8 @@ public class PlayerTextDraw : IdProvider
     /// </summary>
     public virtual string Text
     {
-        get => _playerTextDraw.GetText();
-        set => _playerTextDraw.SetText(string.IsNullOrEmpty(value) ? "_" : value);
+        get => Resource.GetText();
+        set => Resource.SetText(string.IsNullOrEmpty(value) ? "_" : value);
     }
 
     /// <summary>
@@ -151,8 +154,8 @@ public class PlayerTextDraw : IdProvider
     /// </summary>
     public virtual int PreviewModel
     {
-        get => _playerTextDraw.GetPreviewModel();
-        set => _playerTextDraw.SetPreviewModel(value);
+        get => Resource.GetPreviewModel();
+        set => Resource.SetPreviewModel(value);
     }
 
     /// <summary>
@@ -160,8 +163,8 @@ public class PlayerTextDraw : IdProvider
     /// </summary>
     public virtual Vector2 Position
     {
-        get => _playerTextDraw.GetPosition();
-        set => _playerTextDraw.SetPosition(value);
+        get => Resource.GetPosition();
+        set => Resource.SetPosition(value);
     }
 
     /// <summary>
@@ -169,21 +172,21 @@ public class PlayerTextDraw : IdProvider
     /// </summary>
     public virtual Vector3 PreviewRotation
     {
-        get => _playerTextDraw.GetPreviewRotation();
-        set => _playerTextDraw.SetPreviewRotation(value);
+        get => Resource.GetPreviewRotation();
+        set => Resource.SetPreviewRotation(value);
     }
 
     /// <summary>
     /// Gets the preview model zoom of this text draw.
     /// </summary>
-    public virtual float PreviewZoom => _playerTextDraw.GetPreviewZoom();
+    public virtual float PreviewZoom => Resource.GetPreviewZoom();
 
     /// <summary>
     /// Forces this text draw to be re-sent to the player.
     /// </summary>
     public virtual void Restream()
     {
-        _playerTextDraw.Restream();
+        Resource.Restream();
     }
 
     /// <summary>
@@ -193,8 +196,8 @@ public class PlayerTextDraw : IdProvider
     /// <param name="zoom">The zoom level of the preview model.</param>
     public virtual void SetPreviewRotation(Vector3 rotation, float zoom = 1.0f)
     {
-        _playerTextDraw.SetPreviewRotation(rotation);
-        _playerTextDraw.SetPreviewZoom(zoom);
+        Resource.SetPreviewRotation(rotation);
+        Resource.SetPreviewZoom(zoom);
     }
 
     /// <summary>
@@ -204,7 +207,7 @@ public class PlayerTextDraw : IdProvider
     /// <param name="color2">The secondary color of the preview vehicle.</param>
     public virtual void SetPreviewVehicleColor(int color1, int color2)
     {
-        _playerTextDraw.SetPreviewVehicleColour(color1, color2);
+        Resource.SetPreviewVehicleColour(color1, color2);
     }
 
     /// <summary>
@@ -212,7 +215,7 @@ public class PlayerTextDraw : IdProvider
     /// </summary>
     public virtual void Show()
     {
-        _playerTextDraw.Show();
+        Resource.Show();
     }
 
     /// <summary>
@@ -220,13 +223,13 @@ public class PlayerTextDraw : IdProvider
     /// </summary>
     public virtual void Hide()
     {
-        _playerTextDraw.Hide();
+        Resource.Hide();
     }
 
     /// <inheritdoc />
     protected override void OnDestroyComponent()
     {
-        if (!IsOmpEntityDestroyed)
+        if (!Resource.GetExtension<ComponentExtension>().IsOmpEntityDestroyed)
         {
             _playerTextDraws.AsPool().Release(Id);
         }
@@ -235,6 +238,10 @@ public class PlayerTextDraw : IdProvider
     /// <inheritdoc />
     public override string ToString()
     {
+        if (!IsComponentAlive)
+        {
+            return "(Destroyed)";
+        }
         return $"(Id: {Id}, Text: {Text})";
     }
 
@@ -243,6 +250,6 @@ public class PlayerTextDraw : IdProvider
     /// </summary>
     public static implicit operator IPlayerTextDraw(PlayerTextDraw? playerTextDraw)
     {
-        return playerTextDraw?._playerTextDraw ?? default;
+        return playerTextDraw?.Resource ?? default;
     }
 }

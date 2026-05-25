@@ -9,7 +9,6 @@ namespace SampSharp.Entities.SAMP;
 public class PlayerTextLabel : WorldEntity
 {
     private readonly IOmpEntityProvider _entityProvider;
-    private readonly IPlayerTextLabel _playerTextLabel;
     private readonly IPlayerTextLabelData _playerTextLabels;
 
     /// <summary>
@@ -19,13 +18,17 @@ public class PlayerTextLabel : WorldEntity
     {
         _entityProvider = entityProvider;
         _playerTextLabels = playerTextLabels;
-        _playerTextLabel = playerTextLabel;
+        Resource = playerTextLabel;
     }
 
-    /// <summary>
-    /// Gets a value indicating whether the open.mp entity counterpart has been destroyed.
-    /// </summary>
-    protected bool IsOmpEntityDestroyed => _playerTextLabel.TryGetExtension<ComponentExtension>()?.IsOmpEntityDestroyed ?? true;
+    private IPlayerTextLabel Resource
+    {
+        get
+        {
+            ObjectDisposedException.ThrowIf(!IsComponentAlive, typeof(PlayerTextLabel));
+            return field;
+        }
+    }
 
     /// <summary>
     /// Gets the <see cref="Color" /> of this player text label.
@@ -34,7 +37,7 @@ public class PlayerTextLabel : WorldEntity
     {
         get
         {
-            _playerTextLabel.GetColour(out var colour);
+            Resource.GetColour(out var colour);
             return colour;
         }
     }
@@ -42,17 +45,17 @@ public class PlayerTextLabel : WorldEntity
     /// <summary>
     /// Gets the text displayed in this player text label.
     /// </summary>
-    public virtual string Text => _playerTextLabel.GetText();
+    public virtual string Text => Resource.GetText();
 
     /// <summary>
     /// Gets the draw distance of this player text label.
     /// </summary>
-    public virtual float DrawDistance => _playerTextLabel.GetDrawDistance();
+    public virtual float DrawDistance => Resource.GetDrawDistance();
 
     /// <summary>
     /// Gets a value indicating whether line-of-sight testing is enabled for this player text label.
     /// </summary>
-    public virtual bool TestLos => _playerTextLabel.GetTestLOS();
+    public virtual bool TestLos => Resource.GetTestLOS();
 
     /// <summary>
     /// Gets the entity this player text label is attached to, if any.
@@ -61,7 +64,7 @@ public class PlayerTextLabel : WorldEntity
     {
         get
         {
-            var attachmentData = _playerTextLabel.GetAttachmentData();
+            var attachmentData = Resource.GetAttachmentData();
 
             if (attachmentData.PlayerId != OpenMpConstants.INVALID_PLAYER_ID)
             {
@@ -80,12 +83,12 @@ public class PlayerTextLabel : WorldEntity
     /// <summary>
     /// Gets the <see cref="Player" /> this text label is attached to, or <see langword="null" /> if it is not attached to a player.
     /// </summary>
-    public virtual Player? AttachedPlayer => _entityProvider.GetPlayer(_playerTextLabel.GetAttachmentData().PlayerId);
+    public virtual Player? AttachedPlayer => _entityProvider.GetPlayer(Resource.GetAttachmentData().PlayerId);
 
     /// <summary>
     /// Gets the <see cref="Vehicle" /> this text label is attached to, or <see langword="null" /> if it is not attached to a vehicle.
     /// </summary>
-    public virtual Vehicle? AttachedVehicle => _entityProvider.GetVehicle(_playerTextLabel.GetAttachmentData().VehicleId);
+    public virtual Vehicle? AttachedVehicle => _entityProvider.GetVehicle(Resource.GetAttachmentData().VehicleId);
 
     /// <summary>
     /// Attaches this player text label to the specified <paramref name="player" />.
@@ -96,7 +99,7 @@ public class PlayerTextLabel : WorldEntity
     {
         ArgumentNullException.ThrowIfNull(player);
         
-        _playerTextLabel.AttachToPlayer(player, offset);
+        Resource.AttachToPlayer(player, offset);
     }
 
     /// <summary>
@@ -108,7 +111,7 @@ public class PlayerTextLabel : WorldEntity
     {
         ArgumentNullException.ThrowIfNull(vehicle);
         
-        _playerTextLabel.AttachToVehicle(vehicle, offset);
+        Resource.AttachToVehicle(vehicle, offset);
     }
 
     /// <summary>
@@ -117,7 +120,7 @@ public class PlayerTextLabel : WorldEntity
     /// <param name="position">The new world position.</param>
     public virtual void DetachFromPlayer(Vector3 position)
     {
-        _playerTextLabel.DetachFromPlayer(position);
+        Resource.DetachFromPlayer(position);
     }
 
     /// <summary>
@@ -126,7 +129,7 @@ public class PlayerTextLabel : WorldEntity
     /// <param name="position">The new world position.</param>
     public virtual void DetachFromVehicle(Vector3 position)
     {
-        _playerTextLabel.DetachFromVehicle(position);
+        Resource.DetachFromVehicle(position);
     }
 
     /// <summary>
@@ -137,13 +140,13 @@ public class PlayerTextLabel : WorldEntity
     public virtual void SetColorAndText(Color color, string text)
     {
         ArgumentNullException.ThrowIfNull(text);
-        _playerTextLabel.SetColourAndText(color, text);
+        Resource.SetColourAndText(color, text);
     }
 
     /// <inheritdoc />
     protected override void OnDestroyComponent()
     {
-        if (!IsOmpEntityDestroyed)
+        if (!Resource.GetExtension<ComponentExtension>().IsOmpEntityDestroyed)
         {
             _playerTextLabels.Release(Id);
         }
@@ -152,6 +155,10 @@ public class PlayerTextLabel : WorldEntity
     /// <inheritdoc />
     public override string ToString()
     {
+        if (!IsComponentAlive)
+        {
+            return "(Destroyed)";
+        }
         return $"(Id: {Id}, Text: {Text})";
     }
 
@@ -160,6 +167,6 @@ public class PlayerTextLabel : WorldEntity
     /// </summary>
     public static implicit operator IPlayerTextLabel(PlayerTextLabel? playerTextLabel)
     {
-        return playerTextLabel?._playerTextLabel ?? default;
+        return playerTextLabel?.Resource ?? default;
     }
 }

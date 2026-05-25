@@ -22,7 +22,6 @@ public class Npc : IdProvider
 {
     private const int DefaultPositionCheckUpdateDelayMs = 500;
 
-    private readonly INPC _npc;
     private readonly INPCComponent _npcs;
 
     /// <summary>
@@ -31,26 +30,30 @@ public class Npc : IdProvider
     protected Npc(INPCComponent npcs, INPC npc) : base((IIDProvider)npc)
     {
         _npcs = npcs;
-        _npc = npc;
+        Resource = npc;
     }
 
-    /// <summary>
-    /// Gets a value indicating whether the open.mp entity counterpart has been destroyed.
-    /// </summary>
-    protected bool IsOmpEntityDestroyed => _npc.TryGetExtension<ComponentExtension>()?.IsOmpEntityDestroyed ?? true;
+    private INPC Resource
+    {
+        get
+        {
+            ObjectDisposedException.ThrowIf(!IsComponentAlive, typeof(Npc));
+            return field;
+        }
+    }
 
     /// <summary>
     /// Gets the underlying <see cref="IPlayer" /> handle that this NPC drives.
     /// </summary>
-    public virtual IPlayer Player => _npc.GetPlayer();
+    public virtual IPlayer Player => Resource.GetPlayer();
 
     /// <summary>
     /// Gets or sets the NPC's position in the world as a <see cref="Vector3" />. Use <see cref="SetPosition" /> for the immediate-update overload.
     /// </summary>
     public virtual Vector3 Position
     {
-        get => _npc.GetPosition();
-        set => _npc.SetPosition(value, false);
+        get => Resource.GetPosition();
+        set => Resource.SetPosition(value, false);
     }
 
     /// <summary>
@@ -58,8 +61,8 @@ public class Npc : IdProvider
     /// </summary>
     public virtual Quaternion Rotation
     {
-        get => _npc.GetRotation();
-        set => _npc.SetRotation(value, false);
+        get => Resource.GetRotation();
+        set => Resource.SetRotation(value, false);
     }
 
     /// <summary>
@@ -67,8 +70,8 @@ public class Npc : IdProvider
     /// </summary>
     public virtual int VirtualWorld
     {
-        get => _npc.GetVirtualWorld();
-        set => _npc.SetVirtualWorld(value);
+        get => Resource.GetVirtualWorld();
+        set => Resource.SetVirtualWorld(value);
     }
 
     /// <summary>
@@ -76,7 +79,7 @@ public class Npc : IdProvider
     /// </summary>
     public virtual int Skin
     {
-        set => _npc.SetSkin(value);
+        set => Resource.SetSkin(value);
     }
 
     /// <summary>
@@ -84,8 +87,8 @@ public class Npc : IdProvider
     /// </summary>
     public virtual byte Weapon
     {
-        get => _npc.GetWeapon();
-        set => _npc.SetWeapon(value);
+        get => Resource.GetWeapon();
+        set => Resource.SetWeapon(value);
     }
 
     /// <summary>
@@ -93,8 +96,8 @@ public class Npc : IdProvider
     /// </summary>
     public virtual int Ammo
     {
-        get => _npc.GetAmmo();
-        set => _npc.SetAmmo(value);
+        get => Resource.GetAmmo();
+        set => Resource.SetAmmo(value);
     }
 
     /// <summary>
@@ -102,8 +105,8 @@ public class Npc : IdProvider
     /// </summary>
     public virtual float Health
     {
-        get => _npc.GetHealth();
-        set => _npc.SetHealth(value);
+        get => Resource.GetHealth();
+        set => Resource.SetHealth(value);
     }
 
     /// <summary>
@@ -111,8 +114,8 @@ public class Npc : IdProvider
     /// </summary>
     public virtual float Armour
     {
-        get => _npc.GetArmour();
-        set => _npc.SetArmour(value);
+        get => Resource.GetArmour();
+        set => Resource.SetArmour(value);
     }
 
     /// <summary>
@@ -120,8 +123,8 @@ public class Npc : IdProvider
     /// </summary>
     public virtual bool IsInvulnerable
     {
-        get => _npc.IsInvulnerable();
-        set => _npc.SetInvulnerable(value);
+        get => Resource.IsInvulnerable();
+        set => Resource.SetInvulnerable(value);
     }
 
     /// <summary>
@@ -129,32 +132,32 @@ public class Npc : IdProvider
     /// </summary>
     public virtual int Interior
     {
-        get => (int)_npc.GetInterior();
-        set => _npc.SetInterior((uint)value);
+        get => (int)Resource.GetInterior();
+        set => Resource.SetInterior((uint)value);
     }
 
     /// <summary>
     /// Gets a value indicating whether this NPC has been killed and not yet respawned.
     /// </summary>
-    public virtual bool IsDead => _npc.IsDead();
+    public virtual bool IsDead => Resource.IsDead();
 
     /// <summary>
     /// Gets a value indicating whether this NPC is currently executing any movement command.
     /// </summary>
-    public virtual bool IsMoving => _npc.IsMoving();
+    public virtual bool IsMoving => Resource.IsMoving();
 
     /// <summary>
     /// Gets the velocity of this NPC as a <see cref="Vector3" />.
     /// </summary>
-    public virtual Vector3 Velocity => _npc.GetVelocity();
+    public virtual Vector3 Velocity => Resource.GetVelocity();
 
     /// <summary>
     /// Gets or sets the NPC's current weapon state.
     /// </summary>
     public virtual PlayerWeaponState WeaponState
     {
-        get => _npc.GetWeaponState();
-        set => _npc.SetWeaponState(value);
+        get => Resource.GetWeaponState();
+        set => Resource.SetWeaponState(value);
     }
 
     /// <summary>
@@ -162,8 +165,8 @@ public class Npc : IdProvider
     /// </summary>
     public virtual int AmmoInClip
     {
-        get => _npc.GetAmmoInClip();
-        set => _npc.SetAmmoInClip(value);
+        get => Resource.GetAmmoInClip();
+        set => Resource.SetAmmoInClip(value);
     }
 
     /// <summary>
@@ -171,8 +174,8 @@ public class Npc : IdProvider
     /// </summary>
     public virtual PlayerFightingStyle FightingStyle
     {
-        get => _npc.GetFightingStyle();
-        set => _npc.SetFightingStyle(value);
+        get => Resource.GetFightingStyle();
+        set => Resource.SetFightingStyle(value);
     }
 
     /// <summary>
@@ -180,87 +183,87 @@ public class Npc : IdProvider
     /// </summary>
     public virtual PlayerSpecialAction SpecialAction
     {
-        get => _npc.GetSpecialAction();
-        set => _npc.SetSpecialAction(value);
+        get => Resource.GetSpecialAction();
+        set => Resource.SetSpecialAction(value);
     }
 
     /// <summary>
     /// Gets a value indicating whether this NPC is currently shooting.
     /// </summary>
-    public virtual bool IsShooting => _npc.IsShooting();
+    public virtual bool IsShooting => Resource.IsShooting();
 
     /// <summary>
     /// Gets a value indicating whether this NPC is currently aiming.
     /// </summary>
-    public virtual bool IsAiming => _npc.IsAiming();
+    public virtual bool IsAiming => Resource.IsAiming();
 
     /// <summary>
     /// Gets a value indicating whether this NPC is currently performing a melee attack.
     /// </summary>
-    public virtual bool IsMeleeAttacking => _npc.IsMeleeAttacking();
+    public virtual bool IsMeleeAttacking => Resource.IsMeleeAttacking();
 
     /// <summary>
     /// Gets a value indicating whether weapon reloading is enabled for this NPC.
     /// </summary>
-    public virtual bool IsReloadEnabled => _npc.IsReloadEnabled();
+    public virtual bool IsReloadEnabled => Resource.IsReloadEnabled();
 
     /// <summary>
     /// Gets a value indicating whether this NPC is currently reloading.
     /// </summary>
-    public virtual bool IsReloading => _npc.IsReloading();
+    public virtual bool IsReloading => Resource.IsReloading();
 
     /// <summary>
     /// Gets a value indicating whether infinite ammo is enabled for this NPC.
     /// </summary>
-    public virtual bool IsInfiniteAmmoEnabled => _npc.IsInfiniteAmmoEnabled();
+    public virtual bool IsInfiniteAmmoEnabled => Resource.IsInfiniteAmmoEnabled();
 
     /// <summary>
     /// Gets a value indicating whether this NPC is currently moving along a path.
     /// </summary>
-    public virtual bool IsMovingByPath => _npc.IsMovingByPath();
+    public virtual bool IsMovingByPath => Resource.IsMovingByPath();
 
     /// <summary>
     /// Gets a value indicating whether path-based movement is currently paused.
     /// </summary>
-    public virtual bool IsPathPaused => _npc.IsPathPaused();
+    public virtual bool IsPathPaused => Resource.IsPathPaused();
 
     /// <summary>
     /// Gets the ID of the path this NPC is currently following, or -1 if none.
     /// </summary>
-    public virtual int CurrentPathId => _npc.GetCurrentPathId();
+    public virtual int CurrentPathId => Resource.GetCurrentPathId();
 
     /// <summary>
     /// Gets the index of the current waypoint within the active path.
     /// </summary>
-    public virtual int CurrentPathPointIndex => _npc.GetCurrentPathPointIndex();
+    public virtual int CurrentPathPointIndex => Resource.GetCurrentPathPointIndex();
 
     /// <summary>
     /// Gets the vehicle this NPC is currently in, or a handle with no value if not in a vehicle.
     /// </summary>
-    public virtual IVehicle Vehicle => _npc.GetVehicle();
+    public virtual IVehicle Vehicle => Resource.GetVehicle();
 
     /// <summary>
     /// Gets the seat index this NPC occupies in the current vehicle.
     /// </summary>
-    public virtual int VehicleSeat => _npc.GetVehicleSeat();
+    public virtual int VehicleSeat => Resource.GetVehicleSeat();
 
     /// <summary>
     /// Gets the vehicle the NPC is in the process of entering, or a handle with no value if not entering one.
     /// </summary>
-    public virtual IVehicle EnteringVehicle => _npc.GetEnteringVehicle();
+    public virtual IVehicle EnteringVehicle => Resource.GetEnteringVehicle();
 
     /// <summary>
     /// Gets the seat index the NPC is targeting while entering a vehicle.
     /// </summary>
-    public virtual int EnteringVehicleSeat => _npc.GetEnteringVehicleSeat();
+    public virtual int EnteringVehicleSeat => Resource.GetEnteringVehicleSeat();
 
     /// <summary>
     /// Gets or sets a value indicating whether the siren on this NPC's vehicle is active.
     /// </summary>
     public virtual bool IsVehicleSirenUsed
     {
-        get => _npc.IsVehicleSirenUsed();
-        set => _npc.UseVehicleSiren(value);
+        get => Resource.IsVehicleSirenUsed();
+        set => Resource.UseVehicleSiren(value);
     }
 
     /// <summary>
@@ -268,8 +271,8 @@ public class Npc : IdProvider
     /// </summary>
     public virtual float VehicleHealth
     {
-        get => _npc.GetVehicleHealth();
-        set => _npc.SetVehicleHealth(value);
+        get => Resource.GetVehicleHealth();
+        set => Resource.SetVehicleHealth(value);
     }
 
     /// <summary>
@@ -277,8 +280,8 @@ public class Npc : IdProvider
     /// </summary>
     public virtual int VehicleHydraThrusters
     {
-        get => _npc.GetVehicleHydraThrusters();
-        set => _npc.SetVehicleHydraThrusters(value);
+        get => Resource.GetVehicleHydraThrusters();
+        set => Resource.SetVehicleHydraThrusters(value);
     }
 
     /// <summary>
@@ -286,8 +289,8 @@ public class Npc : IdProvider
     /// </summary>
     public virtual int VehicleGearState
     {
-        get => _npc.GetVehicleGearState();
-        set => _npc.SetVehicleGearState(value);
+        get => Resource.GetVehicleGearState();
+        set => Resource.SetVehicleGearState(value);
     }
 
     /// <summary>
@@ -295,52 +298,52 @@ public class Npc : IdProvider
     /// </summary>
     public virtual float VehicleTrainSpeed
     {
-        get => _npc.GetVehicleTrainSpeed();
-        set => _npc.SetVehicleTrainSpeed(value);
+        get => Resource.GetVehicleTrainSpeed();
+        set => Resource.SetVehicleTrainSpeed(value);
     }
 
     /// <summary>
     /// Gets a value indicating whether this NPC is currently playing a recording.
     /// </summary>
-    public virtual bool IsPlayingPlayback => _npc.IsPlayingPlayback();
+    public virtual bool IsPlayingPlayback => Resource.IsPlayingPlayback();
 
     /// <summary>
     /// Gets a value indicating whether playback is currently paused.
     /// </summary>
-    public virtual bool IsPlaybackPaused => _npc.IsPlaybackPaused();
+    public virtual bool IsPlaybackPaused => Resource.IsPlaybackPaused();
 
     /// <summary>
     /// Gets a value indicating whether this NPC is currently following a node path.
     /// </summary>
-    public virtual bool IsPlayingNode => _npc.IsPlayingNode();
+    public virtual bool IsPlayingNode => Resource.IsPlayingNode();
 
     /// <summary>
     /// Gets a value indicating whether node-based movement is currently paused.
     /// </summary>
-    public virtual bool IsPlayingNodePaused => _npc.IsPlayingNodePaused();
+    public virtual bool IsPlayingNodePaused => Resource.IsPlayingNodePaused();
 
     /// <summary>
     /// Gets the world position this NPC is currently moving to.
     /// </summary>
-    public virtual Vector3 PositionMovingTo => _npc.GetPositionMovingTo();
+    public virtual Vector3 PositionMovingTo => Resource.GetPositionMovingTo();
 
     /// <summary>
     /// Gets the player this NPC is currently aiming at, or a handle with no value if not aiming at any player.
     /// </summary>
-    public virtual IPlayer PlayerAimingAt => _npc.GetPlayerAimingAt();
+    public virtual IPlayer PlayerAimingAt => Resource.GetPlayerAimingAt();
 
     /// <summary>
     /// Gets the player this NPC is currently moving towards, or a handle with no value if not following a player.
     /// </summary>
-    public virtual IPlayer PlayerMovingTo => _npc.GetPlayerMovingTo();
+    public virtual IPlayer PlayerMovingTo => Resource.GetPlayerMovingTo();
 
     /// <summary>
     /// Gets or sets the surfing data for this NPC.
     /// </summary>
     public virtual PlayerSurfingData SurfingData
     {
-        get => _npc.GetSurfingData();
-        set => _npc.SetSurfingData(value);
+        get => Resource.GetSurfingData();
+        set => Resource.SetSurfingData(value);
     }
 
     /// <summary>
@@ -350,7 +353,7 @@ public class Npc : IdProvider
     /// <param name="immediateUpdate">A value indicating whether to broadcast a sync to streamed-in players immediately instead of waiting for the next tick.</param>
     public virtual void SetPosition(Vector3 position, bool immediateUpdate)
     {
-        _npc.SetPosition(position, immediateUpdate);
+        Resource.SetPosition(position, immediateUpdate);
     }
 
     /// <summary>
@@ -360,7 +363,7 @@ public class Npc : IdProvider
     /// <param name="immediateUpdate">A value indicating whether to broadcast a sync to streamed-in players immediately instead of waiting for the next tick.</param>
     public virtual void SetRotation(Quaternion rotation, bool immediateUpdate)
     {
-        _npc.SetRotation(rotation, immediateUpdate);
+        Resource.SetRotation(rotation, immediateUpdate);
     }
 
     /// <summary>
@@ -368,7 +371,7 @@ public class Npc : IdProvider
     /// </summary>
     public virtual void Spawn()
     {
-        _npc.Spawn();
+        Resource.Spawn();
     }
 
     /// <summary>
@@ -376,7 +379,7 @@ public class Npc : IdProvider
     /// </summary>
     public virtual void Respawn()
     {
-        _npc.Respawn();
+        Resource.Respawn();
     }
 
     /// <summary>
@@ -389,7 +392,7 @@ public class Npc : IdProvider
     /// <returns><see langword="true" /> if the movement command was successful; <see langword="false" /> otherwise.</returns>
     public virtual bool MoveTo(Vector3 position, NPCMoveType moveType, float moveSpeed = -1f, float stopRange = 1.0f)
     {
-        return _npc.Move(position, moveType, moveSpeed, stopRange);
+        return Resource.Move(position, moveType, moveSpeed, stopRange);
     }
 
     /// <summary>
@@ -406,7 +409,7 @@ public class Npc : IdProvider
         TimeSpan posCheckUpdateDelay = default, bool autoRestart = false)
     {
         ArgumentNullException.ThrowIfNull(player);
-        return _npc.MoveToPlayer(player, moveType, moveSpeed, stopRange,
+        return Resource.MoveToPlayer(player, moveType, moveSpeed, stopRange,
             posCheckUpdateDelay == default ? new Milliseconds(DefaultPositionCheckUpdateDelayMs) : (Milliseconds)posCheckUpdateDelay,
             autoRestart);
     }
@@ -416,7 +419,7 @@ public class Npc : IdProvider
     /// </summary>
     public virtual void StopMoving()
     {
-        _npc.StopMove();
+        Resource.StopMove();
     }
 
     /// <summary>
@@ -435,7 +438,7 @@ public class Npc : IdProvider
     {
         ArgumentNullException.ThrowIfNull(library);
         ArgumentNullException.ThrowIfNull(name);
-        _npc.ApplyAnimation(new AnimationData(fDelta, loop, lockX, lockY, freeze,
+        Resource.ApplyAnimation(new AnimationData(fDelta, loop, lockX, lockY, freeze,
             (uint)time.TotalMilliseconds, library, name));
     }
 
@@ -444,7 +447,7 @@ public class Npc : IdProvider
     /// </summary>
     public virtual void ClearAnimations()
     {
-        _npc.ClearAnimations();
+        Resource.ClearAnimations();
     }
 
     /// <summary>
@@ -452,7 +455,7 @@ public class Npc : IdProvider
     /// </summary>
     public virtual void ResetAnimation()
     {
-        _npc.ResetAnimation();
+        Resource.ResetAnimation();
     }
 
     /// <summary>
@@ -460,7 +463,7 @@ public class Npc : IdProvider
     /// </summary>
     public virtual void SetAnimation(int animationId, float delta, bool loop, bool lockX, bool lockY, bool freeze, int time)
     {
-        _npc.SetAnimation(animationId, delta, loop, lockX, lockY, freeze, time);
+        Resource.SetAnimation(animationId, delta, loop, lockX, lockY, freeze, time);
     }
 
     /// <summary>
@@ -468,7 +471,7 @@ public class Npc : IdProvider
     /// </summary>
     public virtual void GetAnimation(out int animationId, out float delta, out bool loop, out bool lockX, out bool lockY, out bool freeze, out int time)
     {
-        _npc.GetAnimation(out animationId, out delta, out loop, out lockX, out lockY, out freeze, out time);
+        Resource.GetAnimation(out animationId, out delta, out loop, out lockX, out lockY, out freeze, out time);
     }
 
     /// <summary>
@@ -478,7 +481,7 @@ public class Npc : IdProvider
     /// <param name="update">A value indicating whether to update immediately.</param>
     public virtual void SetVelocity(Vector3 velocity, bool update = false)
     {
-        _npc.SetVelocity(velocity, update);
+        Resource.SetVelocity(velocity, update);
     }
 
     /// <summary>
@@ -488,7 +491,7 @@ public class Npc : IdProvider
     /// <returns><see langword="true" /> if this NPC is streamed in for the player; <see langword="false" /> otherwise.</returns>
     public virtual bool IsStreamedIn(Player player)
     {
-        return player != null && _npc.IsStreamedInForPlayer(player);
+        return player != null && Resource.IsStreamedInForPlayer(player);
     }
 
     /// <summary>
@@ -496,7 +499,7 @@ public class Npc : IdProvider
     /// </summary>
     public virtual void SetWeaponSkillLevel(PlayerWeaponSkill weaponSkill, int level)
     {
-        _npc.SetWeaponSkillLevel(weaponSkill, level);
+        Resource.SetWeaponSkillLevel(weaponSkill, level);
     }
 
     /// <summary>
@@ -504,7 +507,7 @@ public class Npc : IdProvider
     /// </summary>
     public virtual int GetWeaponSkillLevel(PlayerWeaponSkill weaponSkill)
     {
-        return _npc.GetWeaponSkillLevel(weaponSkill);
+        return Resource.GetWeaponSkillLevel(weaponSkill);
     }
 
     /// <summary>
@@ -512,7 +515,7 @@ public class Npc : IdProvider
     /// </summary>
     public virtual void SetKeys(ushort upAndDown, ushort leftAndRight, ushort keys)
     {
-        _npc.SetKeys(upAndDown, leftAndRight, keys);
+        Resource.SetKeys(upAndDown, leftAndRight, keys);
     }
 
     /// <summary>
@@ -520,7 +523,7 @@ public class Npc : IdProvider
     /// </summary>
     public virtual void GetKeys(out ushort upAndDown, out ushort leftAndRight, out ushort keys)
     {
-        _npc.GetKeys(out upAndDown, out leftAndRight, out keys);
+        Resource.GetKeys(out upAndDown, out leftAndRight, out keys);
     }
 
     /// <summary>
@@ -530,7 +533,7 @@ public class Npc : IdProvider
     /// <param name="secondaryMeleeAttack">If <see langword="true" />, performs the secondary melee attack.</param>
     public virtual void MeleeAttack(int time, bool secondaryMeleeAttack = false)
     {
-        _npc.MeleeAttack(time, secondaryMeleeAttack);
+        Resource.MeleeAttack(time, secondaryMeleeAttack);
     }
 
     /// <summary>
@@ -538,7 +541,7 @@ public class Npc : IdProvider
     /// </summary>
     public virtual void StopMeleeAttack()
     {
-        _npc.StopMeleeAttack();
+        Resource.StopMeleeAttack();
     }
 
     /// <summary>
@@ -546,7 +549,7 @@ public class Npc : IdProvider
     /// </summary>
     public virtual void EnableReloading(bool toggle)
     {
-        _npc.EnableReloading(toggle);
+        Resource.EnableReloading(toggle);
     }
 
     /// <summary>
@@ -554,7 +557,7 @@ public class Npc : IdProvider
     /// </summary>
     public virtual void EnableInfiniteAmmo(bool enable)
     {
-        _npc.EnableInfiniteAmmo(enable);
+        Resource.EnableInfiniteAmmo(enable);
     }
 
     /// <summary>
@@ -562,7 +565,7 @@ public class Npc : IdProvider
     /// </summary>
     public virtual void Shoot(int hitId, PlayerBulletHitType hitType, byte weapon, Vector3 endPoint, Vector3 offset, bool isHit, EntityCheckType betweenCheckFlags)
     {
-        _npc.Shoot(hitId, hitType, weapon, endPoint, offset, isHit, betweenCheckFlags);
+        Resource.Shoot(hitId, hitType, weapon, endPoint, offset, isHit, betweenCheckFlags);
     }
 
     /// <summary>
@@ -570,7 +573,7 @@ public class Npc : IdProvider
     /// </summary>
     public virtual void AimAt(Vector3 point, bool shoot, int shootDelay, bool setAngle, Vector3 offsetFrom, EntityCheckType betweenCheckFlags)
     {
-        _npc.AimAt(point, shoot, shootDelay, setAngle, offsetFrom, betweenCheckFlags);
+        Resource.AimAt(point, shoot, shootDelay, setAngle, offsetFrom, betweenCheckFlags);
     }
 
     /// <summary>
@@ -579,7 +582,7 @@ public class Npc : IdProvider
     public virtual void AimAtPlayer(Player player, bool shoot, int shootDelay, bool setAngle, Vector3 offset, Vector3 offsetFrom, EntityCheckType betweenCheckFlags)
     {
         ArgumentNullException.ThrowIfNull(player);
-        _npc.AimAtPlayer(player, shoot, shootDelay, setAngle, offset, offsetFrom, betweenCheckFlags);
+        Resource.AimAtPlayer(player, shoot, shootDelay, setAngle, offset, offsetFrom, betweenCheckFlags);
     }
 
     /// <summary>
@@ -587,7 +590,7 @@ public class Npc : IdProvider
     /// </summary>
     public virtual void StopAim()
     {
-        _npc.StopAim();
+        Resource.StopAim();
     }
 
     /// <summary>
@@ -595,7 +598,7 @@ public class Npc : IdProvider
     /// </summary>
     public virtual bool IsAimingAtPlayer(Player player)
     {
-        return player != null && _npc.IsAimingAtPlayer(player);
+        return player != null && Resource.IsAimingAtPlayer(player);
     }
 
     /// <summary>
@@ -603,7 +606,7 @@ public class Npc : IdProvider
     /// </summary>
     public virtual void SetWeaponAccuracy(byte weapon, float accuracy)
     {
-        _npc.SetWeaponAccuracy(weapon, accuracy);
+        Resource.SetWeaponAccuracy(weapon, accuracy);
     }
 
     /// <summary>
@@ -611,7 +614,7 @@ public class Npc : IdProvider
     /// </summary>
     public virtual float GetWeaponAccuracy(byte weapon)
     {
-        return _npc.GetWeaponAccuracy(weapon);
+        return Resource.GetWeaponAccuracy(weapon);
     }
 
     /// <summary>
@@ -619,7 +622,7 @@ public class Npc : IdProvider
     /// </summary>
     public virtual void SetWeaponReloadTime(byte weapon, int time)
     {
-        _npc.SetWeaponReloadTime(weapon, time);
+        Resource.SetWeaponReloadTime(weapon, time);
     }
 
     /// <summary>
@@ -627,7 +630,7 @@ public class Npc : IdProvider
     /// </summary>
     public virtual int GetWeaponReloadTime(byte weapon)
     {
-        return _npc.GetWeaponReloadTime(weapon);
+        return Resource.GetWeaponReloadTime(weapon);
     }
 
     /// <summary>
@@ -635,7 +638,7 @@ public class Npc : IdProvider
     /// </summary>
     public virtual int GetWeaponActualReloadTime(byte weapon)
     {
-        return _npc.GetWeaponActualReloadTime(weapon);
+        return Resource.GetWeaponActualReloadTime(weapon);
     }
 
     /// <summary>
@@ -643,7 +646,7 @@ public class Npc : IdProvider
     /// </summary>
     public virtual void SetWeaponShootTime(byte weapon, int time)
     {
-        _npc.SetWeaponShootTime(weapon, time);
+        Resource.SetWeaponShootTime(weapon, time);
     }
 
     /// <summary>
@@ -651,7 +654,7 @@ public class Npc : IdProvider
     /// </summary>
     public virtual int GetWeaponShootTime(byte weapon)
     {
-        return _npc.GetWeaponShootTime(weapon);
+        return Resource.GetWeaponShootTime(weapon);
     }
 
     /// <summary>
@@ -659,7 +662,7 @@ public class Npc : IdProvider
     /// </summary>
     public virtual void SetWeaponClipSize(byte weapon, int size)
     {
-        _npc.SetWeaponClipSize(weapon, size);
+        Resource.SetWeaponClipSize(weapon, size);
     }
 
     /// <summary>
@@ -667,7 +670,7 @@ public class Npc : IdProvider
     /// </summary>
     public virtual int GetWeaponClipSize(byte weapon)
     {
-        return _npc.GetWeaponClipSize(weapon);
+        return Resource.GetWeaponClipSize(weapon);
     }
 
     /// <summary>
@@ -675,7 +678,7 @@ public class Npc : IdProvider
     /// </summary>
     public virtual int GetWeaponActualClipSize(byte weapon)
     {
-        return _npc.GetWeaponActualClipSize(weapon);
+        return Resource.GetWeaponActualClipSize(weapon);
     }
 
     /// <summary>
@@ -683,7 +686,7 @@ public class Npc : IdProvider
     /// </summary>
     public virtual void EnterVehicle(IVehicle vehicle, byte seatId, NPCMoveType moveType)
     {
-        _npc.EnterVehicle(vehicle, seatId, moveType);
+        Resource.EnterVehicle(vehicle, seatId, moveType);
     }
 
     /// <summary>
@@ -691,7 +694,7 @@ public class Npc : IdProvider
     /// </summary>
     public virtual void ExitVehicle()
     {
-        _npc.ExitVehicle();
+        Resource.ExitVehicle();
     }
 
     /// <summary>
@@ -699,7 +702,7 @@ public class Npc : IdProvider
     /// </summary>
     public virtual bool PutInVehicle(IVehicle vehicle, byte seat)
     {
-        return _npc.PutInVehicle(vehicle, seat);
+        return Resource.PutInVehicle(vehicle, seat);
     }
 
     /// <summary>
@@ -707,7 +710,7 @@ public class Npc : IdProvider
     /// </summary>
     public virtual bool RemoveFromVehicle()
     {
-        return _npc.RemoveFromVehicle();
+        return Resource.RemoveFromVehicle();
     }
 
     /// <summary>
@@ -715,7 +718,7 @@ public class Npc : IdProvider
     /// </summary>
     public virtual bool MoveByPath(int pathId, NPCMoveType moveType = NPCMoveType.Auto, float moveSpeed = -1f, bool reverse = false)
     {
-        return _npc.MoveByPath(pathId, moveType, moveSpeed, reverse);
+        return Resource.MoveByPath(pathId, moveType, moveSpeed, reverse);
     }
 
     /// <summary>
@@ -723,7 +726,7 @@ public class Npc : IdProvider
     /// </summary>
     public virtual void PausePath()
     {
-        _npc.PausePath();
+        Resource.PausePath();
     }
 
     /// <summary>
@@ -731,7 +734,7 @@ public class Npc : IdProvider
     /// </summary>
     public virtual void ResumePath()
     {
-        _npc.ResumePath();
+        Resource.ResumePath();
     }
 
     /// <summary>
@@ -739,7 +742,7 @@ public class Npc : IdProvider
     /// </summary>
     public virtual void StopPath()
     {
-        _npc.StopPath();
+        Resource.StopPath();
     }
 
     /// <summary>
@@ -752,7 +755,7 @@ public class Npc : IdProvider
     public virtual bool StartPlayback(string recordName, bool autoUnload = true, Vector3 point = default, Quaternion rotation = default)
     {
         ArgumentNullException.ThrowIfNull(recordName);
-        return _npc.StartPlaybackByName(recordName, autoUnload, point, rotation);
+        return Resource.StartPlaybackByName(recordName, autoUnload, point, rotation);
     }
 
     /// <summary>
@@ -764,7 +767,7 @@ public class Npc : IdProvider
     /// <param name="rotation">The starting rotation for playback.</param>
     public virtual bool StartPlayback(int recordId, bool autoUnload = true, Vector3 point = default, Quaternion rotation = default)
     {
-        return _npc.StartPlaybackById(recordId, autoUnload, point, rotation);
+        return Resource.StartPlaybackById(recordId, autoUnload, point, rotation);
     }
 
     /// <summary>
@@ -772,7 +775,7 @@ public class Npc : IdProvider
     /// </summary>
     public virtual void StopPlayback()
     {
-        _npc.StopPlayback();
+        Resource.StopPlayback();
     }
 
     /// <summary>
@@ -780,7 +783,7 @@ public class Npc : IdProvider
     /// </summary>
     public virtual void PausePlayback(bool paused = true)
     {
-        _npc.PausePlayback(paused);
+        Resource.PausePlayback(paused);
     }
 
     /// <summary>
@@ -788,7 +791,7 @@ public class Npc : IdProvider
     /// </summary>
     public virtual bool PlayNode(int nodeId, NPCMoveType moveType = NPCMoveType.Auto, float moveSpeed = -1f, float radius = 0f, bool setAngle = true)
     {
-        return _npc.PlayNode(nodeId, moveType, moveSpeed, radius, setAngle);
+        return Resource.PlayNode(nodeId, moveType, moveSpeed, radius, setAngle);
     }
 
     /// <summary>
@@ -796,7 +799,7 @@ public class Npc : IdProvider
     /// </summary>
     public virtual void StopPlayingNode()
     {
-        _npc.StopPlayingNode();
+        Resource.StopPlayingNode();
     }
 
     /// <summary>
@@ -804,7 +807,7 @@ public class Npc : IdProvider
     /// </summary>
     public virtual void PausePlayingNode()
     {
-        _npc.PausePlayingNode();
+        Resource.PausePlayingNode();
     }
 
     /// <summary>
@@ -812,7 +815,7 @@ public class Npc : IdProvider
     /// </summary>
     public virtual void ResumePlayingNode()
     {
-        _npc.ResumePlayingNode();
+        Resource.ResumePlayingNode();
     }
 
     /// <summary>
@@ -820,7 +823,7 @@ public class Npc : IdProvider
     /// </summary>
     public virtual ushort ChangeNode(int nodeId, ushort targetPointId)
     {
-        return _npc.ChangeNode(nodeId, targetPointId);
+        return Resource.ChangeNode(nodeId, targetPointId);
     }
 
     /// <summary>
@@ -828,7 +831,7 @@ public class Npc : IdProvider
     /// </summary>
     public virtual bool UpdateNodePoint(ushort pointId)
     {
-        return _npc.UpdateNodePoint(pointId);
+        return Resource.UpdateNodePoint(pointId);
     }
 
     /// <summary>
@@ -836,7 +839,7 @@ public class Npc : IdProvider
     /// </summary>
     public virtual void ResetSurfingData()
     {
-        _npc.ResetSurfingData();
+        Resource.ResetSurfingData();
     }
 
     /// <summary>
@@ -844,7 +847,7 @@ public class Npc : IdProvider
     /// </summary>
     public virtual bool IsMovingToPlayer(Player player)
     {
-        return player != null && _npc.IsMovingToPlayer(player);
+        return player != null && Resource.IsMovingToPlayer(player);
     }
 
     /// <summary>
@@ -854,21 +857,25 @@ public class Npc : IdProvider
     /// <param name="weapon">The weapon used to kill the NPC.</param>
     public virtual void Kill(Player? killer, byte weapon)
     {
-        _npc.Kill(killer != null ? (IPlayer)killer : default, weapon);
+        Resource.Kill(killer != null ? (IPlayer)killer : default, weapon);
     }
 
     /// <inheritdoc />
     protected override void OnDestroyComponent()
     {
-        if (!IsOmpEntityDestroyed && _npcs.HasValue)
+        if (!Resource.GetExtension<ComponentExtension>().IsOmpEntityDestroyed)
         {
-            _npcs.Destroy(_npc);
+            _npcs.Destroy(Resource);
         }
     }
 
     /// <inheritdoc />
     public override string ToString()
     {
+        if (!IsComponentAlive)
+        {
+            return "(Destroyed)";
+        }
         return $"(Id: {Id})";
     }
 
@@ -877,6 +884,6 @@ public class Npc : IdProvider
     /// </summary>
     public static implicit operator INPC(Npc? npc)
     {
-        return npc?._npc ?? default;
+        return npc?.Resource ?? default;
     }
 }

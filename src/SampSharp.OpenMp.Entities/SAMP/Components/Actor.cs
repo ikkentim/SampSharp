@@ -8,7 +8,6 @@ namespace SampSharp.Entities.SAMP;
 /// </summary>
 public class Actor : WorldEntity
 {
-    private readonly IActor _actor;
     private readonly IActorsComponent _actors;
 
     /// <summary>
@@ -17,20 +16,24 @@ public class Actor : WorldEntity
     protected Actor(IActorsComponent actors, IActor actor) : base((IEntity)actor)
     {
         _actors = actors;
-        _actor = actor;
+        Resource = actor;
     }
 
-    /// <summary>
-    /// Gets a value indicating whether the open.mp entity counterpart has been destroyed.
-    /// </summary>
-    protected bool IsOmpEntityDestroyed => _actor.TryGetExtension<ComponentExtension>()?.IsOmpEntityDestroyed ?? true;
+    private IActor Resource
+    {
+        get
+        {
+            ObjectDisposedException.ThrowIf(!IsComponentAlive, typeof(Actor));
+            return field;
+        }
+    }
 
     /// <summary>
     /// Gets or sets the facing angle of this actor.
     /// </summary>
     public virtual float Angle
     {
-        get => float.RadiansToDegrees(MathHelper.GetZAngleFromRotationMatrix(Matrix4x4.CreateFromQuaternion(_actor.GetRotation())));
+        get => float.RadiansToDegrees(MathHelper.GetZAngleFromRotationMatrix(Matrix4x4.CreateFromQuaternion(Resource.GetRotation())));
         set => Rotation = Quaternion.CreateFromAxisAngle(GtaVector.Up, float.DegreesToRadians(value));
     }
 
@@ -39,8 +42,8 @@ public class Actor : WorldEntity
     /// </summary>
     public virtual int Skin
     {
-        get => _actor.GetSkin();
-        set => _actor.SetSkin(value);
+        get => Resource.GetSkin();
+        set => Resource.SetSkin(value);
     }
 
     /// <summary>
@@ -48,8 +51,8 @@ public class Actor : WorldEntity
     /// </summary>
     public virtual float Health
     {
-        get => _actor.GetHealth();
-        set => _actor.SetHealth(value);
+        get => Resource.GetHealth();
+        set => Resource.SetHealth(value);
     }
 
     /// <summary>
@@ -57,8 +60,8 @@ public class Actor : WorldEntity
     /// </summary>
     public virtual bool IsInvulnerable
     {
-        get => _actor.IsInvulnerable();
-        set => _actor.SetInvulnerable(value);
+        get => Resource.IsInvulnerable();
+        set => Resource.SetInvulnerable(value);
     }
 
     /// <summary>
@@ -70,7 +73,7 @@ public class Actor : WorldEntity
     {
         ArgumentNullException.ThrowIfNull(player);
         
-        return _actor.IsStreamedInForPlayer(player);
+        return Resource.IsStreamedInForPlayer(player);
     }
 
     /// <summary>
@@ -89,7 +92,7 @@ public class Actor : WorldEntity
     {
         ArgumentNullException.ThrowIfNull(library);
         ArgumentNullException.ThrowIfNull(name);
-        _actor.ApplyAnimation(new AnimationData(fDelta, loop, lockX, lockY, freeze, (uint)time.TotalMilliseconds, library, name));
+        Resource.ApplyAnimation(new AnimationData(fDelta, loop, lockX, lockY, freeze, (uint)time.TotalMilliseconds, library, name));
     }
 
     /// <inheritdoc cref="ApplyAnimation(string, string, float, bool, bool, bool, bool, TimeSpan)" />
@@ -102,22 +105,26 @@ public class Actor : WorldEntity
     /// </summary>
     public virtual void ClearAnimations()
     {
-        _actor.ClearAnimations();
+        Resource.ClearAnimations();
     }
 
     /// <inheritdoc />
     protected override void OnDestroyComponent()
     {
-        if (!IsOmpEntityDestroyed)
+        if (!Resource.GetExtension<ComponentExtension>().IsOmpEntityDestroyed)
         {
-            _actors.AsPool().Release(Id);
+            _actors.AsPool().Release(Resource.GetID());
         }
     }
 
     /// <inheritdoc />
     public override string ToString()
     {
-        return $"(Id: {Id})";
+        if (!IsComponentAlive)
+        {
+            return "(Destroyed)";
+        }
+        return $"(Id: {Id}, Health: {Health}, Position: {Position})";
     }
 
     /// <summary>
@@ -125,6 +132,6 @@ public class Actor : WorldEntity
     /// </summary>
     public static implicit operator IActor(Actor? actor)
     {
-        return actor?._actor ?? default;
+        return actor?.Resource ?? default;
     }
 }

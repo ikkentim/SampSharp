@@ -10,7 +10,6 @@ namespace SampSharp.Entities.SAMP;
 public abstract class BaseGangZone : IdProvider
 {
     private readonly IOmpEntityProvider _entityProvider;
-    private readonly IGangZone _gangZone;
     private readonly IGangZonesComponent _gangZones;
 
     /// <summary>
@@ -19,24 +18,28 @@ public abstract class BaseGangZone : IdProvider
     protected BaseGangZone(IOmpEntityProvider entityProvider, IGangZonesComponent gangZones, IGangZone gangZone) : base((IIDProvider)gangZone)
     {
         _entityProvider = entityProvider;
-        _gangZone = gangZone;
+        Resource = gangZone;
         _gangZones = gangZones;
     }
 
-    /// <summary>
-    /// Gets a value indicating whether the open.mp entity counterpart has been destroyed.
-    /// </summary>
-    protected bool IsOmpEntityDestroyed => _gangZone.TryGetExtension<ComponentExtension>()?.IsOmpEntityDestroyed ?? true;
+    private IGangZone Resource
+    {
+        get
+        {
+            ObjectDisposedException.ThrowIf(!IsComponentAlive, typeof(BaseGangZone));
+            return field;
+        }
+    }
 
     /// <summary>
     /// Gets the minimum position of this gang zone as a <see cref="Vector2" />.
     /// </summary>
-    public virtual Vector2 Min => _gangZone.GetPosition().Min;
+    public virtual Vector2 Min => Resource.GetPosition().Min;
 
     /// <summary>
     /// Gets the maximum position of this gang zone as a <see cref="Vector2" />.
     /// </summary>
-    public virtual Vector2 Max => _gangZone.GetPosition().Max;
+    public virtual Vector2 Max => Resource.GetPosition().Max;
 
     /// <summary>
     /// Gets the minimum x coordinate of this gang zone.
@@ -69,7 +72,7 @@ public abstract class BaseGangZone : IdProvider
     /// <returns>A lazy sequence of <see cref="Player" /> components.</returns>
     public virtual IEnumerable<Player> GetShownFor()
     {
-        foreach (var raw in _gangZone.GetShownFor())
+        foreach (var raw in Resource.GetShownFor())
         {
             var component = _entityProvider.GetComponent(raw);
             if (component != null)
@@ -87,13 +90,13 @@ public abstract class BaseGangZone : IdProvider
     public virtual void SetPosition(Vector2 min, Vector2 max)
     {
         var pos = new GangZonePos(min, max);
-        _gangZone.SetPosition(ref pos);
+        Resource.SetPosition(ref pos);
     }
 
     /// <inheritdoc />
     protected override void OnDestroyComponent()
     {
-        if (!IsOmpEntityDestroyed)
+        if (!Resource.GetExtension<ComponentExtension>().IsOmpEntityDestroyed)
         {
             _gangZones.AsPool().Release(Id);
         }
@@ -102,7 +105,11 @@ public abstract class BaseGangZone : IdProvider
     /// <inheritdoc />
     public override string ToString()
     {
-        return $"(Id: {Id}, Color: {Color})";
+        if (!IsComponentAlive)
+        {
+            return "(Destroyed)";
+        }
+        return $"(Id: {Id}, Color: {Color}, Min: {Min}, Max: {Max})";
     }
 
     /// <summary>
@@ -110,6 +117,6 @@ public abstract class BaseGangZone : IdProvider
     /// </summary>
     public static implicit operator IGangZone(BaseGangZone? gangZone)
     {
-        return gangZone?._gangZone ?? default;
+        return gangZone?.Resource ?? default;
     }
 }

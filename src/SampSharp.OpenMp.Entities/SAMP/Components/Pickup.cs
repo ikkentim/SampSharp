@@ -8,14 +8,21 @@ namespace SampSharp.Entities.SAMP;
 /// </summary>
 public class Pickup : BasePickup
 {
-    private readonly IPickup _pickup;
-
     /// <summary>
     /// Initializes a new instance of the <see cref="Pickup" /> class.
     /// </summary>
     protected Pickup(IPickupsComponent pickups, IPickup pickup) : base(pickups, pickup)
     {
-        _pickup = pickup;
+        Resource = pickup;
+    }
+
+    private IPickup Resource
+    {
+        get
+        {
+            ObjectDisposedException.ThrowIf(!IsComponentAlive, typeof(Pickup));
+            return field;
+        }
     }
 
     /// <summary>Checks whether this pickup is streamed in for the specified <paramref name="player" />.</summary>
@@ -24,7 +31,7 @@ public class Pickup : BasePickup
     public virtual bool IsStreamedInForPlayer(Player player)
     {
         ArgumentNullException.ThrowIfNull(player);
-        return _pickup.IsStreamedInForPlayer(player);
+        return Resource.IsStreamedInForPlayer(player);
     }
 
     /// <summary>Streams this pickup in for the specified <paramref name="player" />.</summary>
@@ -32,7 +39,7 @@ public class Pickup : BasePickup
     public virtual void StreamInForPlayer(Player player)
     {
         ArgumentNullException.ThrowIfNull(player);
-        _pickup.StreamInForPlayer(player);
+        Resource.StreamInForPlayer(player);
     }
 
     /// <summary>Streams this pickup out for the specified <paramref name="player" />.</summary>
@@ -40,7 +47,7 @@ public class Pickup : BasePickup
     public virtual void StreamOutForPlayer(Player player)
     {
         ArgumentNullException.ThrowIfNull(player);
-        _pickup.StreamOutForPlayer(player);
+        Resource.StreamOutForPlayer(player);
     }
 
     /// <summary>Hides or shows this pickup for the specified <paramref name="player" />.</summary>
@@ -49,7 +56,7 @@ public class Pickup : BasePickup
     public virtual void SetHiddenForPlayer(Player player, bool hidden)
     {
         ArgumentNullException.ThrowIfNull(player);
-        _pickup.SetPickupHiddenForPlayer(player, hidden);
+        Resource.SetPickupHiddenForPlayer(player, hidden);
     }
 
     /// <summary>Checks whether this pickup is hidden for the specified <paramref name="player" />.</summary>
@@ -58,6 +65,6 @@ public class Pickup : BasePickup
     public virtual bool IsHiddenForPlayer(Player player)
     {
         ArgumentNullException.ThrowIfNull(player);
-        return _pickup.IsPickupHiddenForPlayer(player);
+        return Resource.IsPickupHiddenForPlayer(player);
     }
 }

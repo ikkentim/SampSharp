@@ -8,7 +8,6 @@ namespace SampSharp.Entities.SAMP;
 /// </summary>
 public class Class : IdProvider
 {
-    private readonly IClass _class;
     private readonly IClassesComponent _classes;
 
     /// <summary>
@@ -17,13 +16,17 @@ public class Class : IdProvider
     protected Class(IClassesComponent classes, IClass playerClass) : base((IIDProvider)playerClass)
     {
         _classes = classes;
-        _class = playerClass;
+        Resource = playerClass;
     }
 
-    /// <summary>
-    /// Gets a value indicating whether the open.mp entity counterpart has been destroyed.
-    /// </summary>
-    protected bool IsOmpEntityDestroyed => _class.TryGetExtension<ComponentExtension>()?.IsOmpEntityDestroyed ?? true;
+    private IClass Resource
+    {
+        get
+        {
+            ObjectDisposedException.ThrowIf(!IsComponentAlive, typeof(Class));
+            return field;
+        }
+    }
 
     /// <summary>
     /// Gets or sets the team ID for this player class.
@@ -59,7 +62,7 @@ public class Class : IdProvider
         ArgumentNullException.ThrowIfNull(data);
 
         var omp = data.ToOmpData();
-        _class.SetClass(ref omp);
+        Resource.SetClass(ref omp);
     }
 
     /// <summary>
@@ -68,22 +71,26 @@ public class Class : IdProvider
     /// <returns>A <see cref="PlayerSpawnData"/> instance containing the player's spawn information.</returns>
     public virtual PlayerSpawnData GetSpawnData()
     {
-        ref var dat = ref _class.GetClass();
+        ref var dat = ref Resource.GetClass();
         return PlayerSpawnData.FromOmpData(ref dat);
     }
 
     /// <inheritdoc />
     protected override void OnDestroyComponent()
     {
-        if (!IsOmpEntityDestroyed)
+        if (!Resource.GetExtension<ComponentExtension>().IsOmpEntityDestroyed)
         {
-            _classes.AsPool().Release(Id);
+            _classes.AsPool().Release(Resource.GetID());
         }
     }
 
     /// <inheritdoc />
     public override string ToString()
     {
+        if (!IsComponentAlive)
+        {
+            return "(Destroyed)";
+        }
         return $"(Id: {Id})";
     }
 
@@ -92,6 +99,6 @@ public class Class : IdProvider
     /// </summary>
     public static implicit operator IClass(Class? playerClass)
     {
-        return playerClass?._class ?? default;
+        return playerClass?.Resource ?? default;
     }
 }

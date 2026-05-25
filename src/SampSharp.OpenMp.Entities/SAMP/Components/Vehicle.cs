@@ -9,7 +9,6 @@ namespace SampSharp.Entities.SAMP;
 public class Vehicle : WorldEntity
 {
     private readonly IOmpEntityProvider _entityProvider;
-    private readonly IVehicle _vehicle;
     private readonly IVehiclesComponent _vehicles;
 
     /// <summary>
@@ -19,49 +18,53 @@ public class Vehicle : WorldEntity
     {
         _entityProvider = entityProvider;
         _vehicles = vehicles;
-        _vehicle = vehicle;
+        Resource = vehicle;
     }
 
-    /// <summary>
-    /// Gets a value indicating whether the open.mp entity counterpart has been destroyed.
-    /// </summary>
-    protected bool IsOmpEntityDestroyed => _vehicle.TryGetExtension<ComponentExtension>()?.IsOmpEntityDestroyed ?? true;
+    private IVehicle Resource
+    {
+        get
+        {
+            ObjectDisposedException.ThrowIf(!IsComponentAlive, typeof(Vehicle));
+            return field;
+        }
+    }
 
     /// <summary>
     /// Gets or sets the Z angle of this vehicle.
     /// </summary>
     public virtual float Angle
     {
-        get => _vehicle.GetZAngle();
-        set => _vehicle.SetZAngle(value);
+        get => Resource.GetZAngle();
+        set => Resource.SetZAngle(value);
     }
 
     /// <summary>
     /// Gets the model ID of this vehicle.
     /// </summary>
-    public virtual VehicleModelType Model => (VehicleModelType)_vehicle
+    public virtual VehicleModelType Model => (VehicleModelType)Resource
         .GetModel();
 
     /// <summary>
     /// Gets a value indicating whether this vehicle has a trailer attached.
     /// </summary>
-    public virtual bool HasTrailer => _vehicle.GetTrailer() != null;
+    public virtual bool HasTrailer => Resource.GetTrailer() != null;
 
     /// <summary>
     /// Gets or sets the <see cref="Vehicle" /> trailer attached to this vehicle.
     /// </summary>
     public virtual Vehicle? Trailer
     {
-        get => _vehicle.GetTrailer().TryGetExtension<ComponentExtension>()?.Component as Vehicle;
+        get => Resource.GetTrailer().TryGetExtension<ComponentExtension>()?.Component as Vehicle;
         set
         {
             if (value)
             {
-                _vehicle.AttachTrailer(value!);
+                Resource.AttachTrailer(value!);
             }
             else
             {
-                _vehicle.DetachTrailer();
+                Resource.DetachTrailer();
             }
         }
     }
@@ -71,8 +74,8 @@ public class Vehicle : WorldEntity
     /// </summary>
     public virtual Vector3 Velocity
     {
-        get => _vehicle.GetVelocity();
-        set => _vehicle.SetVelocity(value);
+        get => Resource.GetVelocity();
+        set => Resource.SetVelocity(value);
     }
 
     /// <summary>
@@ -82,13 +85,13 @@ public class Vehicle : WorldEntity
     {
         get
         {
-            var parameters = _vehicle.GetParams();
+            var parameters = Resource.GetParams();
             return VehicleParameters.FromParams(ref parameters);
         }
         set
         {
             var p = value.ToParams();
-            _vehicle.SetParams(ref p);
+            Resource.SetParams(ref p);
         }
     }
 
@@ -99,7 +102,7 @@ public class Vehicle : WorldEntity
     {
         get
         {
-            var parameters = _vehicle.GetParams();
+            var parameters = Resource.GetParams();
             return (VehicleParameterValue)parameters.engine == VehicleParameterValue.On;
         }
         set =>
@@ -116,7 +119,7 @@ public class Vehicle : WorldEntity
     {
         get
         {
-            var parameters = _vehicle.GetParams();
+            var parameters = Resource.GetParams();
             return (VehicleParameterValue)parameters.lights == VehicleParameterValue.On;
         }
         set =>
@@ -133,7 +136,7 @@ public class Vehicle : WorldEntity
     {
         get
         {
-            var parameters = _vehicle.GetParams();
+            var parameters = Resource.GetParams();
             return (VehicleParameterValue)parameters.alarm == VehicleParameterValue.On;
         }
         set =>
@@ -150,7 +153,7 @@ public class Vehicle : WorldEntity
     {
         get
         {
-            var parameters = _vehicle.GetParams();
+            var parameters = Resource.GetParams();
             return (VehicleParameterValue)parameters.doors == VehicleParameterValue.On;
         }
         set =>
@@ -167,7 +170,7 @@ public class Vehicle : WorldEntity
     {
         get
         {
-            var parameters = _vehicle.GetParams();
+            var parameters = Resource.GetParams();
             return (VehicleParameterValue)parameters.bonnet == VehicleParameterValue.On;
         }
         set =>
@@ -184,7 +187,7 @@ public class Vehicle : WorldEntity
     {
         get
         {
-            var parameters = _vehicle.GetParams();
+            var parameters = Resource.GetParams();
             return (VehicleParameterValue)parameters.boot == VehicleParameterValue.On;
         }
         set =>
@@ -201,7 +204,7 @@ public class Vehicle : WorldEntity
     {
         get
         {
-            var parameters = _vehicle.GetParams();
+            var parameters = Resource.GetParams();
             return (VehicleParameterValue)parameters.objective == VehicleParameterValue.On;
         }
         set =>
@@ -218,7 +221,7 @@ public class Vehicle : WorldEntity
     {
         get
         {
-            var parameters = _vehicle.GetParams();
+            var parameters = Resource.GetParams();
             return (VehicleParameterValue)parameters.doorDriver == VehicleParameterValue.On;
         }
         set =>
@@ -235,7 +238,7 @@ public class Vehicle : WorldEntity
     {
         get
         {
-            var parameters = _vehicle.GetParams();
+            var parameters = Resource.GetParams();
             return (VehicleParameterValue)parameters.doorPassenger == VehicleParameterValue.On;
         }
         set =>
@@ -252,7 +255,7 @@ public class Vehicle : WorldEntity
     {
         get
         {
-            var parameters = _vehicle.GetParams();
+            var parameters = Resource.GetParams();
             return (VehicleParameterValue)parameters.doorBackLeft == VehicleParameterValue.On;
         }
         set =>
@@ -269,7 +272,7 @@ public class Vehicle : WorldEntity
     {
         get
         {
-            var parameters = _vehicle.GetParams();
+            var parameters = Resource.GetParams();
             return (VehicleParameterValue)parameters.doorBackRight == VehicleParameterValue.On;
         }
         set =>
@@ -286,7 +289,7 @@ public class Vehicle : WorldEntity
     {
         get
         {
-            var parameters = _vehicle.GetParams();
+            var parameters = Resource.GetParams();
             return (VehicleParameterValue)parameters.windowDriver == VehicleParameterValue.On;
         }
         set =>
@@ -303,7 +306,7 @@ public class Vehicle : WorldEntity
     {
         get
         {
-            var parameters = _vehicle.GetParams();
+            var parameters = Resource.GetParams();
             return (VehicleParameterValue)parameters.windowPassenger == VehicleParameterValue.On;
         }
         set =>
@@ -320,7 +323,7 @@ public class Vehicle : WorldEntity
     {
         get
         {
-            var parameters = _vehicle.GetParams();
+            var parameters = Resource.GetParams();
             return (VehicleParameterValue)parameters.windowBackLeft == VehicleParameterValue.On;
         }
         set =>
@@ -337,7 +340,7 @@ public class Vehicle : WorldEntity
     {
         get
         {
-            var parameters = _vehicle.GetParams();
+            var parameters = Resource.GetParams();
             return (VehicleParameterValue)parameters.windowBackRight == VehicleParameterValue.On;
         }
         set =>
@@ -350,15 +353,15 @@ public class Vehicle : WorldEntity
     /// <summary>
     /// Gets a value indicating whether the siren of this vehicle is on.
     /// </summary>
-    public virtual bool IsSirenOn => _vehicle.GetSirenState() == 1;
+    public virtual bool IsSirenOn => Resource.GetSirenState() == 1;
 
     /// <summary>
     /// Gets or sets the health of this vehicle.
     /// </summary>
     public virtual float Health
     {
-        get => _vehicle.GetHealth();
-        set => _vehicle.SetHealth(value);
+        get => Resource.GetHealth();
+        set => Resource.SetHealth(value);
     }
 
     /// <summary>
@@ -383,8 +386,8 @@ public class Vehicle : WorldEntity
     /// <remarks>Use 3 to remove the paintjob.</remarks>
     public virtual int Paintjob
     {
-        get => _vehicle.GetPaintJob();
-        set => _vehicle.SetPaintJob(value);
+        get => Resource.GetPaintJob();
+        set => Resource.SetPaintJob(value);
     }
 
     /// <summary>
@@ -392,8 +395,8 @@ public class Vehicle : WorldEntity
     /// </summary>
     public virtual int Interior
     {
-        get => _vehicle.GetInterior();
-        set => _vehicle.SetInterior(value);
+        get => Resource.GetInterior();
+        set => Resource.SetInterior(value);
     }
 
     /// <summary>
@@ -403,7 +406,7 @@ public class Vehicle : WorldEntity
     {
         get
         {
-            var raw = _vehicle.GetSpawnData();
+            var raw = Resource.GetSpawnData();
             return new VehicleSpawnInfo(
                 ModelId: raw.modelID,
                 Position: raw.position,
@@ -425,7 +428,7 @@ public class Vehicle : WorldEntity
                 colour2: value.SecondaryColor,
                 siren: value.HasSiren,
                 interior: value.Interior);
-            _vehicle.SetSpawnData(ref raw);
+            Resource.SetSpawnData(ref raw);
         }
     }
 
@@ -435,88 +438,88 @@ public class Vehicle : WorldEntity
     /// </summary>
     public virtual (int Primary, int Secondary) Colors
     {
-        get => _vehicle.GetColour();
-        set => _vehicle.SetColour(value.Primary, value.Secondary);
+        get => Resource.GetColour();
+        set => Resource.SetColour(value.Primary, value.Secondary);
     }
 
     /// <summary>
     /// Gets the current numberplate text of this vehicle.
     /// </summary>
-    public virtual string NumberPlate => _vehicle.GetPlate();
+    public virtual string NumberPlate => Resource.GetPlate();
 
     /// <summary>
     /// Gets a value indicating whether this vehicle is dead (destroyed).
     /// </summary>
-    public virtual bool IsDead => _vehicle.IsDead();
+    public virtual bool IsDead => Resource.IsDead();
 
     /// <summary>
     /// Gets a value indicating whether this vehicle is currently in the process of respawning.
     /// </summary>
-    public virtual bool IsRespawning => _vehicle.IsRespawning();
+    public virtual bool IsRespawning => Resource.IsRespawning();
 
     /// <summary>
     /// Gets or sets the respawn delay for this vehicle.
     /// </summary>
     public virtual TimeSpan RespawnDelay
     {
-        get => _vehicle.GetRespawnDelay();
-        set => _vehicle.SetRespawnDelay(value);
+        get => Resource.GetRespawnDelay();
+        set => Resource.SetRespawnDelay(value);
     }
 
     /// <summary>
     /// Gets a value indicating whether this vehicle has ever been occupied.
     /// </summary>
-    public virtual bool HasBeenOccupied => _vehicle.HasBeenOccupied();
+    public virtual bool HasBeenOccupied => Resource.HasBeenOccupied();
 
     /// <summary>
     /// Gets a value indicating whether this vehicle is currently occupied.
     /// </summary>
-    public virtual bool IsOccupied => _vehicle.IsOccupied();
+    public virtual bool IsOccupied => Resource.IsOccupied();
 
     /// <summary>
     /// Gets the timestamp at which this vehicle was last occupied.
     /// </summary>
-    public virtual DateTimeOffset LastOccupiedTime => _vehicle.GetLastOccupiedTime();
+    public virtual DateTimeOffset LastOccupiedTime => Resource.GetLastOccupiedTime();
 
     /// <summary>
     /// Gets the timestamp at which this vehicle was last spawned.
     /// </summary>
-    public virtual DateTimeOffset LastSpawnTime => _vehicle.GetLastSpawnTime();
+    public virtual DateTimeOffset LastSpawnTime => Resource.GetLastSpawnTime();
 
     /// <summary>
     /// Gets the player pool ID of the last driver of this vehicle.
     /// </summary>
-    public virtual int LastDriverPoolID => _vehicle.GetLastDriverPoolID();
+    public virtual int LastDriverPoolID => Resource.GetLastDriverPoolID();
 
     /// <summary>
     /// Gets a value indicating whether this vehicle is a trailer (i.e. is being towed by another vehicle).
     /// </summary>
-    public virtual bool IsTrailer => _vehicle.IsTrailer();
+    public virtual bool IsTrailer => Resource.IsTrailer();
 
     /// <summary>
     /// Gets the cab (towing vehicle) currently towing this vehicle, or <see langword="null" /> if there is none.
     /// </summary>
-    public virtual Vehicle? Cab => _entityProvider.GetComponent(_vehicle.GetCab());
+    public virtual Vehicle? Cab => _entityProvider.GetComponent(Resource.GetCab());
 
     /// <summary>
     /// Gets the current driver of this vehicle, or <see langword="null" /> if there is none.
     /// </summary>
-    public virtual Player? Driver => _entityProvider.GetComponent(_vehicle.GetDriver());
+    public virtual Player? Driver => _entityProvider.GetComponent(Resource.GetDriver());
 
     /// <summary>
     /// Gets the current Hydra (jet) thrust angle of this vehicle.
     /// </summary>
-    public virtual uint HydraThrustAngle => _vehicle.GetHydraThrustAngle();
+    public virtual uint HydraThrustAngle => Resource.GetHydraThrustAngle();
 
     /// <summary>
     /// Gets the current train speed of this vehicle.
     /// </summary>
-    public virtual float TrainSpeed => _vehicle.GetTrainSpeed();
+    public virtual float TrainSpeed => Resource.GetTrainSpeed();
 
     /// <summary>
     /// Gets the current state of this vehicle's landing gear.
     /// </summary>
-    public virtual byte LandingGearState => _vehicle.GetLandingGearState();
+    public virtual byte LandingGearState => Resource.GetLandingGearState();
 
     /// <summary>
     /// Calculates the distance between this vehicle and the specified <paramref name="point" />.
@@ -537,7 +540,7 @@ public class Vehicle : WorldEntity
     public virtual bool IsStreamedIn(Player player)
     {
         ArgumentNullException.ThrowIfNull(player);
-        return _vehicle.IsStreamedInForPlayer(player);
+        return Resource.IsStreamedInForPlayer(player);
     }
 
     /// <summary>
@@ -549,7 +552,7 @@ public class Vehicle : WorldEntity
     {
         ArgumentNullException.ThrowIfNull(player);
         var p = parameters.ToParams();
-        _vehicle.SetParamsForPlayer(player, ref p);
+        Resource.SetParamsForPlayer(player, ref p);
     }
 
     /// <summary>
@@ -557,7 +560,7 @@ public class Vehicle : WorldEntity
     /// </summary>
     public virtual void Respawn()
     {
-        _vehicle.Respawn();
+        Resource.Respawn();
     }
 
     /// <summary>
@@ -567,7 +570,7 @@ public class Vehicle : WorldEntity
     [Obsolete("Use the Interior property instead.")]
     public virtual void LinkToInterior(int interiorId)
     {
-        _vehicle.SetInterior(interiorId);
+        Resource.SetInterior(interiorId);
     }
 
     /// <summary>
@@ -576,7 +579,7 @@ public class Vehicle : WorldEntity
     /// <param name="componentId">The ID of the component to add.</param>
     public virtual void AddComponent(int componentId)
     {
-        _vehicle.AddComponent(componentId);
+        Resource.AddComponent(componentId);
     }
 
     /// <summary>
@@ -585,7 +588,7 @@ public class Vehicle : WorldEntity
     /// <param name="componentId">The ID of the component to remove.</param>
     public virtual void RemoveComponent(int componentId)
     {
-        _vehicle.RemoveComponent(componentId);
+        Resource.RemoveComponent(componentId);
     }
 
     /// <summary>
@@ -615,7 +618,7 @@ public class Vehicle : WorldEntity
     /// <param name="numberplate">The license plate text to display. Color embedding is supported.</param>
     public virtual void SetNumberPlate(string numberplate)
     {
-        _vehicle.SetPlate(numberplate);
+        Resource.SetPlate(numberplate);
     }
 
     /// <summary>
@@ -625,7 +628,7 @@ public class Vehicle : WorldEntity
     /// <returns>The ID of the component installed in the specified <paramref name="slot" />.</returns>
     public virtual int GetComponentInSlot(CarModType slot)
     {
-        return _vehicle.GetComponentInSlot((int)slot);
+        return Resource.GetComponentInSlot((int)slot);
     }
 
     /// <summary>
@@ -633,7 +636,7 @@ public class Vehicle : WorldEntity
     /// </summary>
     public virtual void Repair()
     {
-        _vehicle.Repair();
+        Resource.Repair();
     }
 
     /// <summary>
@@ -642,7 +645,7 @@ public class Vehicle : WorldEntity
     /// <param name="velocity">The angular velocity to set.</param>
     public virtual void SetAngularVelocity(Vector3 velocity)
     {
-        _vehicle.SetAngularVelocity(velocity);
+        Resource.SetAngularVelocity(velocity);
     }
 
     /// <summary>
@@ -654,7 +657,7 @@ public class Vehicle : WorldEntity
     /// <param name="tires">The tire damage status.</param>
     public virtual void GetDamageStatus(out int panels, out int doors, out int lights, out int tires)
     {
-        _vehicle.GetDamageStatus(out panels, out doors, out lights, out tires);
+        Resource.GetDamageStatus(out panels, out doors, out lights, out tires);
     }
 
     /// <summary>
@@ -667,7 +670,7 @@ public class Vehicle : WorldEntity
     /// <param name="updater">The player updating the vehicle damage, or <see langword="null" /> to update for all players.</param>
     public virtual void UpdateDamageStatus(int panels, int doors, int lights, int tires, Player? updater = null)
     {
-        _vehicle.SetDamageStatus(panels, doors, (byte)lights, (byte)tires, updater ?? default(IPlayer));
+        Resource.SetDamageStatus(panels, doors, (byte)lights, (byte)tires, updater ?? default(IPlayer));
     }
 
     /// <summary>
@@ -676,7 +679,7 @@ public class Vehicle : WorldEntity
     /// <returns>A lazy sequence of <see cref="Player" /> components.</returns>
     public virtual IEnumerable<Player> GetPassengers()
     {
-        foreach (var raw in _vehicle.GetPassengers())
+        foreach (var raw in Resource.GetPassengers())
         {
             var component = _entityProvider.GetComponent(raw);
             if (component != null)
@@ -692,7 +695,7 @@ public class Vehicle : WorldEntity
     /// <returns>A lazy sequence of <see cref="Player" /> components.</returns>
     public virtual IEnumerable<Player> StreamedForPlayers()
     {
-        foreach (var raw in _vehicle.StreamedForPlayers())
+        foreach (var raw in Resource.StreamedForPlayers())
         {
             var component = _entityProvider.GetComponent(raw);
             if (component != null)
@@ -708,7 +711,7 @@ public class Vehicle : WorldEntity
     /// <param name="enable"><see langword="true" /> to turn the siren on; <see langword="false" /> to turn it off.</param>
     public virtual void SetSiren(bool enable)
     {
-        _vehicle.SetSiren(enable);
+        Resource.SetSiren(enable);
     }
 
     /// <summary>
@@ -719,7 +722,7 @@ public class Vehicle : WorldEntity
     public virtual void AddCarriage(Vehicle carriage, int pos)
     {
         ArgumentNullException.ThrowIfNull(carriage);
-        _vehicle.AddCarriage(carriage, pos);
+        Resource.AddCarriage(carriage, pos);
     }
 
     /// <summary>
@@ -729,7 +732,7 @@ public class Vehicle : WorldEntity
     /// <param name="velocity">The new carriage velocity.</param>
     public virtual void UpdateCarriage(Vector3 position, Vector3 velocity)
     {
-        _vehicle.UpdateCarriage(position, velocity);
+        Resource.UpdateCarriage(position, velocity);
     }
 
     /// <summary>
@@ -738,7 +741,7 @@ public class Vehicle : WorldEntity
     /// <returns>A sequence of <see cref="Vehicle" /> components representing the carriages.</returns>
     public virtual IEnumerable<Vehicle> GetCarriages()
     {
-        var array = _vehicle.GetCarriages();
+        var array = Resource.GetCarriages();
         foreach (var raw in array.Values)
         {
             var component = _entityProvider.GetComponent(raw);
@@ -752,7 +755,7 @@ public class Vehicle : WorldEntity
     /// <inheritdoc />
     protected override void OnDestroyComponent()
     {
-        if (!IsOmpEntityDestroyed)
+        if (!Resource.GetExtension<ComponentExtension>().IsOmpEntityDestroyed)
         {
             _vehicles.AsPool().Release(Id);
         }
@@ -763,7 +766,6 @@ public class Vehicle : WorldEntity
     {
         if (IsDestroying)
         {
-            // TODO: do this check for other components as well
             return "(Destroyed)";
         }
 
@@ -775,6 +777,6 @@ public class Vehicle : WorldEntity
     /// </summary>
     public static implicit operator IVehicle(Vehicle? vehicle)
     {
-        return vehicle?._vehicle ?? default;
+        return vehicle?.Resource ?? default;
     }
 }
