@@ -13,7 +13,6 @@ public class Player : WorldEntity
 {
     private static readonly PlayerState[] _deadStates = [PlayerState.None, PlayerState.Spectating, PlayerState.Wasted];
     private readonly IOmpEntityProvider _entityProvider;
-    private readonly IPlayer _rawPlayer;
 
     /// <summary>
     /// Constructs an instance of <see cref="Player" />, should be used internally.
@@ -21,26 +20,15 @@ public class Player : WorldEntity
     protected Player(IOmpEntityProvider entityProvider, IPlayer player) : base((IEntity)player)
     {
         _entityProvider = entityProvider;
-        _rawPlayer = player;
+        Resource = player;
     }
 
-    /// <summary>
-    /// Safe accessor for the underlying <see cref="IPlayer" /> handle. Throws
-    /// <see cref="ObjectDisposedException" /> if the component has been destroyed,
-    /// which means open.mp already fired <see cref="ComponentExtension.Cleanup" />
-    /// and the native pointer is (or is about to be) freed. Without this guard,
-    /// P/Invokes against a stale handle AV the process (0xC0000005) when gamemode
-    /// code holds onto a <see cref="Player" /> reference across disconnect (e.g. via
-    /// an async continuation).
-    /// </summary>
-    private IPlayer _player
+    private IPlayer Resource
     {
         get
         {
-            if (!IsComponentAlive)
-                throw new ObjectDisposedException(nameof(Player),
-                    "Player has disconnected; native IPlayer handle is no longer valid.");
-            return _rawPlayer;
+            ObjectDisposedException.ThrowIf(!IsComponentAlive, typeof(Player));
+            return field;
         }
     }
 
@@ -48,7 +36,7 @@ public class Player : WorldEntity
     {
         get
         {
-            var data = _player.QueryExtension<IPlayerCheckpointData>();
+            var data = Resource.QueryExtension<IPlayerCheckpointData>();
             if (data == null)
             {
                 throw new InvalidOperationException("Missing checkpoint data");
@@ -62,7 +50,7 @@ public class Player : WorldEntity
     {
         get
         {
-            var data = _player.QueryExtension<IPlayerVehicleData>();
+            var data = Resource.QueryExtension<IPlayerVehicleData>();
             if (data == null)
             {
                 throw new InvalidOperationException("Missing vehicle data");
@@ -75,7 +63,7 @@ public class Player : WorldEntity
     {
         get
         {
-            var data = _player.QueryExtension<IPlayerObjectData>();
+            var data = Resource.QueryExtension<IPlayerObjectData>();
 
             if (data == null)
             {
@@ -89,7 +77,7 @@ public class Player : WorldEntity
     {
         get
         {
-            var data = _player.QueryExtension<IPlayerMenuData>();
+            var data = Resource.QueryExtension<IPlayerMenuData>();
 
             if (data == null)
             {
@@ -103,7 +91,7 @@ public class Player : WorldEntity
     {
         get
         {
-            var data = _player.QueryExtension<IPlayerConsoleData>();
+            var data = Resource.QueryExtension<IPlayerConsoleData>();
 
             if (data == null)
             {
@@ -117,7 +105,7 @@ public class Player : WorldEntity
     {
         get
         {
-            var data = _player.QueryExtension<IPlayerTextDrawData>();
+            var data = Resource.QueryExtension<IPlayerTextDrawData>();
             if (data == null)
             {
                 throw new InvalidOperationException("Missing text draw data");
@@ -130,7 +118,7 @@ public class Player : WorldEntity
     {
         get
         {
-            var data = _player.QueryExtension<IPlayerClassData>();
+            var data = Resource.QueryExtension<IPlayerClassData>();
             if (data == null)
             {
                 throw new InvalidOperationException("Missing class data");
@@ -143,7 +131,7 @@ public class Player : WorldEntity
     {
         get
         {
-            var data = _player.QueryExtension<IPlayerRecordingData>();
+            var data = Resource.QueryExtension<IPlayerRecordingData>();
             if (data == null)
             {
                 throw new InvalidOperationException("Missing recording data");
@@ -153,16 +141,11 @@ public class Player : WorldEntity
     }
 
     /// <summary>
-    /// Gets a value indicating whether the open.mp entity counterpart has been destroyed.
-    /// </summary>
-    protected bool IsOmpEntityDestroyed => _player.TryGetExtension<ComponentExtension>()?.IsOmpEntityDestroyed ?? true;
-
-    /// <summary>
     /// Gets or sets the name of this player.
     /// </summary>
     public virtual string Name
     {
-        get => _player.GetName();
+        get => Resource.GetName();
         [Obsolete("Use SetName(string) instead")]
         set => SetName(value);
     }
@@ -181,8 +164,8 @@ public class Player : WorldEntity
     /// </summary>
     public virtual int Interior
     {
-        get => (int)_player.GetInterior();
-        set => _player.SetInterior((uint)value);
+        get => (int)Resource.GetInterior();
+        set => Resource.SetInterior((uint)value);
     }
 
     /// <summary>
@@ -190,8 +173,8 @@ public class Player : WorldEntity
     /// </summary>
     public virtual float Health
     {
-        get => _player.GetHealth();
-        set => _player.SetHealth(value);
+        get => Resource.GetHealth();
+        set => Resource.SetHealth(value);
     }
 
     /// <summary>
@@ -199,24 +182,24 @@ public class Player : WorldEntity
     /// </summary>
     public virtual float Armour
     {
-        get => _player.GetArmour();
-        set => _player.SetArmour(value);
+        get => Resource.GetArmour();
+        set => Resource.SetArmour(value);
     }
 
     /// <summary>
     /// Gets the ammunition of the <see cref="Weapon" /> this player is currently holding.
     /// </summary>
-    public virtual int WeaponAmmo => _player.GetArmedWeaponAmmo();
+    public virtual int WeaponAmmo => Resource.GetArmedWeaponAmmo();
 
     /// <summary>
     /// Gets the <see cref="WeaponState" /> of the <see cref="Weapon" /> this player is currently holding.
     /// </summary>
-    public virtual WeaponState WeaponState => (WeaponState)_player.GetAimData().weaponState;
+    public virtual WeaponState WeaponState => (WeaponState)Resource.GetAimData().weaponState;
 
     /// <summary>
     /// Gets the <see cref="Weapon" /> this player is currently holding.
     /// </summary>
-    public virtual Weapon Weapon => (Weapon)_player.GetArmedWeapon();
+    public virtual Weapon Weapon => (Weapon)Resource.GetArmedWeapon();
 
     /// <summary>
     /// Gets the <see cref="Player" /> this player is aiming at.
@@ -225,7 +208,7 @@ public class Player : WorldEntity
     {
         get
         {
-            var player = _player.GetTargetPlayer();
+            var player = Resource.GetTargetPlayer();
             if (!player.HasValue)
             {
                 return null;
@@ -239,8 +222,8 @@ public class Player : WorldEntity
     /// </summary>
     public virtual int Team
     {
-        get => _player.GetTeam();
-        set => _player.SetTeam(value);
+        get => Resource.GetTeam();
+        set => Resource.SetTeam(value);
     }
 
     /// <summary>
@@ -248,8 +231,8 @@ public class Player : WorldEntity
     /// </summary>
     public virtual int Score
     {
-        get => _player.GetScore();
-        set => _player.SetScore(value);
+        get => Resource.GetScore();
+        set => Resource.SetScore(value);
     }
 
     /// <summary>
@@ -257,8 +240,8 @@ public class Player : WorldEntity
     /// </summary>
     public virtual int DrunkLevel
     {
-        get => _player.GetDrunkLevel();
-        set => _player.SetDrunkLevel(value);
+        get => Resource.GetDrunkLevel();
+        set => Resource.SetDrunkLevel(value);
     }
 
     /// <summary>
@@ -266,8 +249,8 @@ public class Player : WorldEntity
     /// </summary>
     public virtual Color Color
     {
-        get => _player.GetColour();
-        set => _player.SetColour(value);
+        get => Resource.GetColour();
+        set => Resource.SetColour(value);
     }
 
     /// <summary>
@@ -275,8 +258,8 @@ public class Player : WorldEntity
     /// </summary>
     public virtual int Skin
     {
-        get => _player.GetSkin();
-        set => _player.SetSkin(value);
+        get => Resource.GetSkin();
+        set => Resource.SetSkin(value);
     }
 
     /// <summary>
@@ -284,14 +267,14 @@ public class Player : WorldEntity
     /// </summary>
     public virtual int Money
     {
-        get => _player.GetMoney();
-        set => _player.SetMoney(value);
+        get => Resource.GetMoney();
+        set => Resource.SetMoney(value);
     }
 
     /// <summary>
     /// Gets the <see cref="PlayerState" /> of this player.
     /// </summary>
-    public virtual PlayerState State => (PlayerState)_player.GetState();
+    public virtual PlayerState State => (PlayerState)Resource.GetState();
 
     /// <summary>
     /// Gets the IP of this player as a string.
@@ -301,25 +284,25 @@ public class Player : WorldEntity
     /// <summary>
     /// Gets the <see cref="IPAddress" /> of this player.
     /// </summary>
-    public virtual IPAddress IpAddress => _player.GetNetworkData().Value.PeerNetworkID.Address.ToAddress();
+    public virtual IPAddress IpAddress => Resource.GetNetworkData().Value.PeerNetworkID.Address.ToAddress();
 
     /// <summary>
     /// Gets the end point (<see cref="IPAddress" /> and port) of this player.
     /// </summary>
-    public virtual IPEndPoint EndPoint => _player.GetNetworkData().Value.PeerNetworkID.ToEndpoint();
+    public virtual IPEndPoint EndPoint => Resource.GetNetworkData().Value.PeerNetworkID.ToEndpoint();
 
     /// <summary>
     /// Gets the ping of this player.
     /// </summary>
-    public virtual int Ping => (int)_player.GetPing();
+    public virtual int Ping => (int)Resource.GetPing();
 
     /// <summary>
     /// Gets or sets the wanted level of this player.
     /// </summary>
     public virtual int WantedLevel
     {
-        get => (int)_player.GetWantedLevel();
-        set => _player.SetWantedLevel((uint)value);
+        get => (int)Resource.GetWantedLevel();
+        set => Resource.SetWantedLevel((uint)value);
     }
 
     /// <summary>
@@ -327,8 +310,8 @@ public class Player : WorldEntity
     /// </summary>
     public virtual FightStyle FightStyle
     {
-        get => (FightStyle)_player.GetFightingStyle();
-        set => _player.SetFightingStyle((PlayerFightingStyle)value);
+        get => (FightStyle)Resource.GetFightingStyle();
+        set => Resource.SetFightingStyle((PlayerFightingStyle)value);
     }
 
     /// <summary>
@@ -336,8 +319,8 @@ public class Player : WorldEntity
     /// </summary>
     public virtual Vector3 Velocity
     {
-        get => _player.GetVelocity();
-        set => _player.SetVelocity(value);
+        get => Resource.GetVelocity();
+        set => Resource.SetVelocity(value);
     }
 
     /// <summary>
@@ -362,15 +345,15 @@ public class Player : WorldEntity
     /// <summary>
     /// Gets the animation index of the animation this player is currently playing.
     /// </summary>
-    public virtual int AnimationIndex => _player.GetAnimationData().ID;
+    public virtual int AnimationIndex => Resource.GetAnimationData().ID;
 
     /// <summary>
     /// Gets or sets the <see cref="SpecialAction" /> of this player.
     /// </summary>
     public virtual SpecialAction SpecialAction
     {
-        get => (SpecialAction)_player.GetAction();
-        set => _player.SetAction((PlayerSpecialAction)value);
+        get => (SpecialAction)Resource.GetAction();
+        set => Resource.SetAction((PlayerSpecialAction)value);
     }
 
     /// <summary>
@@ -389,31 +372,31 @@ public class Player : WorldEntity
     {
         get
         {
-            var camPos = _player.GetAimData().camPos;
-            return camPos != Vector3.Zero ? camPos : _player.GetCameraPosition();
+            var camPos = Resource.GetAimData().camPos;
+            return camPos != Vector3.Zero ? camPos : Resource.GetCameraPosition();
         }
-        set => _player.SetCameraPosition(value);
+        set => Resource.SetCameraPosition(value);
     }
 
     /// <summary>
     /// Gets the front <see cref="Vector3" /> of this player's camera.
     /// </summary>
-    public virtual Vector3 CameraFrontVector => _player.GetAimData().camFrontVector;
+    public virtual Vector3 CameraFrontVector => Resource.GetAimData().camFrontVector;
 
     /// <summary>
     /// Gets the <see cref="CameraMode" /> of this player's camera.
     /// </summary>
-    public virtual CameraMode CameraMode => (CameraMode)_player.GetAimData().camMode;
+    public virtual CameraMode CameraMode => (CameraMode)Resource.GetAimData().camMode;
 
     /// <summary>
     /// Gets the <see cref="Actor" /> this player is aiming at.
     /// </summary>
-    public virtual Actor? TargetActor => _entityProvider.GetComponent(_player.GetTargetActor());
+    public virtual Actor? TargetActor => _entityProvider.GetComponent(Resource.GetTargetActor());
 
     /// <summary>
     /// Gets the <see cref="GlobalObject" /> the camera of this player is pointing at.
     /// </summary>
-    public virtual GlobalObject? CameraTargetGlobalObject => _entityProvider.GetComponent(_player.GetCameraTargetObject());
+    public virtual GlobalObject? CameraTargetGlobalObject => _entityProvider.GetComponent(Resource.GetCameraTargetObject());
 
     /// <summary>
     /// Gets the <see cref="PlayerObject" /> the camera of this player is pointing at.
@@ -423,17 +406,17 @@ public class Player : WorldEntity
     /// <summary>
     /// Gets the <see cref="Vehicle" /> the camera of this player is pointing at.
     /// </summary>
-    public virtual Vehicle? CameraTargetVehicle => _entityProvider.GetComponent(_player.GetCameraTargetVehicle());
+    public virtual Vehicle? CameraTargetVehicle => _entityProvider.GetComponent(Resource.GetCameraTargetVehicle());
 
     /// <summary>
     /// Gets the <see cref="Player" /> the camera of this player is pointing at.
     /// </summary>
-    public virtual Player? CameraTargetPlayer => _entityProvider.GetComponent(_player.GetCameraTargetPlayer());
+    public virtual Player? CameraTargetPlayer => _entityProvider.GetComponent(Resource.GetCameraTargetPlayer());
 
     /// <summary>
     /// Gets the <see cref="Actor" /> the camera of this player is pointing at.
     /// </summary>
-    public virtual Actor? CameraTargetActor => _entityProvider.GetComponent(_player.GetCameraTargetActor());
+    public virtual Actor? CameraTargetActor => _entityProvider.GetComponent(Resource.GetCameraTargetActor());
 
     /// <summary>
     /// Gets the entity (<see cref="Player" />, <see cref="PlayerObject" />, object, <see cref="Vehicle" /> or <see cref="Actor" />) the camera of this player is pointing at.
@@ -466,7 +449,7 @@ public class Player : WorldEntity
     {
         get
         {
-            var surf = _player.GetSurfingData();
+            var surf = Resource.GetSurfingData();
             return surf.Type switch
             {
                 PlayerSurfingData.SurfType.Vehicle => _entityProvider.GetVehicle(surf.ID),
@@ -498,7 +481,7 @@ public class Player : WorldEntity
     /// <summary>
     /// Gets a value indicating whether this player is a bot (NPC).
     /// </summary>
-    public virtual bool IsNpc => _player.IsBot();
+    public virtual bool IsNpc => Resource.IsBot();
 
     /// <summary>
     /// Gets a value indicating whether this player is logged into RCON.
@@ -513,7 +496,7 @@ public class Player : WorldEntity
     /// <summary>
     /// Gets this player's global computer identifier string.
     /// </summary>
-    public virtual string Gpci => _player.GetSerial();
+    public virtual string Gpci => Resource.GetSerial();
 
     /// <summary>
     /// Gets a value indicating whether this player is selecting a text draw.
@@ -527,7 +510,7 @@ public class Player : WorldEntity
     {
         get
         {
-            var stats = _player.GetNetworkData().Value.Network.GetStatistics();
+            var stats = Resource.GetNetworkData().Value.Network.GetStatistics();
             return TimeSpan.FromMilliseconds(stats.ConnectionElapsedTime);
         }
     }
@@ -539,7 +522,7 @@ public class Player : WorldEntity
     {
         get
         {
-            var stats = _player.GetNetworkData().Value.Network.GetStatistics();
+            var stats = Resource.GetNetworkData().Value.Network.GetStatistics();
             return (int)stats.MessagesReceived;
         }
     }
@@ -551,7 +534,7 @@ public class Player : WorldEntity
     {
         get
         {
-            var stats = _player.GetNetworkData().Value.Network.GetStatistics();
+            var stats = Resource.GetNetworkData().Value.Network.GetStatistics();
             return (int)stats.MessagesReceivedPerSecond;
         }
     }
@@ -563,7 +546,7 @@ public class Player : WorldEntity
     {
         get
         {
-            var stats = _player.GetNetworkData().Value.Network.GetStatistics();
+            var stats = Resource.GetNetworkData().Value.Network.GetStatistics();
             return (int)stats.MessagesSent;
         }
     }
@@ -575,7 +558,7 @@ public class Player : WorldEntity
     {
         get
         {
-            var stats = _player.GetNetworkData().Value.Network.GetStatistics();
+            var stats = Resource.GetNetworkData().Value.Network.GetStatistics();
             return (int)stats.BytesReceived;
         }
     }
@@ -587,7 +570,7 @@ public class Player : WorldEntity
     {
         get
         {
-            var stats = _player.GetNetworkData().Value.Network.GetStatistics();
+            var stats = Resource.GetNetworkData().Value.Network.GetStatistics();
             return (int)stats.TotalBytesSent;
         }
     }
@@ -599,7 +582,7 @@ public class Player : WorldEntity
     {
         get
         {
-            var stats = _player.GetNetworkData().Value.Network.GetStatistics();
+            var stats = Resource.GetNetworkData().Value.Network.GetStatistics();
             return (ConnectionStatus)stats.ConnectMode;
         }
     }
@@ -607,26 +590,26 @@ public class Player : WorldEntity
     /// <summary>
     /// Gets the aspect ratio of this player's camera.
     /// </summary>
-    public virtual float AspectCameraRatio => _player.GetAimData().aspectRatio;
+    public virtual float AspectCameraRatio => Resource.GetAimData().aspectRatio;
 
     /// <summary>
     /// Gets the game camera zoom level for this player.
     /// </summary>
-    public virtual float CameraZoom => _player.GetAimData().camZoom;
+    public virtual float CameraZoom => Resource.GetAimData().camZoom;
 
     /// <summary>
     /// Gets or sets this player's gravity.
     /// </summary>
     public virtual float Gravity
     {
-        get => _player.GetGravity();
-        set => _player.SetGravity(value);
+        get => Resource.GetGravity();
+        set => Resource.SetGravity(value);
     }
 
     /// <summary>
     /// Gets a value indicating whether this player is using the official Rockstar/SA-MP client (as opposed to open.mp, mobile/PSP, or an unofficial fork).
     /// </summary>
-    public virtual bool IsUsingOfficialClient => _player.IsUsingOfficialClient();
+    public virtual bool IsUsingOfficialClient => Resource.IsUsingOfficialClient();
 
     /// <summary>
     /// Gets a value indicating whether this player is using the open.mp client.
@@ -636,12 +619,12 @@ public class Player : WorldEntity
     /// <summary>
     /// Gets this player's <see cref="SampSharp.OpenMp.Core.Api.ClientVersion" />.
     /// </summary>
-    public virtual ClientVersion ClientVersion => _player.GetClientVersion();
+    public virtual ClientVersion ClientVersion => Resource.GetClientVersion();
 
     /// <summary>
     /// Gets this player's client version name.
     /// </summary>
-    public virtual string ClientVersionName => _player.GetClientVersionName();
+    public virtual string ClientVersionName => Resource.GetClientVersionName();
 
     /// <summary>
     /// Gets or sets a value indicating whether ghost mode is enabled for this player.
@@ -649,8 +632,8 @@ public class Player : WorldEntity
     /// <remarks>When enabled, other players will pass through this player as if they were not there.</remarks>
     public virtual bool IsGhostModeEnabled
     {
-        get => _player.IsGhostModeEnabled();
-        set => _player.ToggleGhostMode(value);
+        get => Resource.IsGhostModeEnabled();
+        set => Resource.ToggleGhostMode(value);
     }
 
     /// <summary>
@@ -658,8 +641,8 @@ public class Player : WorldEntity
     /// </summary>
     public virtual bool AreWeaponsAllowed
     {
-        get => _player.AreWeaponsAllowed();
-        set => _player.AllowWeapons(value);
+        get => Resource.AreWeaponsAllowed();
+        set => Resource.AllowWeapons(value);
     }
 
     /// <summary>
@@ -667,8 +650,8 @@ public class Player : WorldEntity
     /// </summary>
     public virtual bool IsTeleportAllowed
     {
-        get => _player.IsTeleportAllowed();
-        set => _player.AllowTeleport(value);
+        get => Resource.IsTeleportAllowed();
+        set => Resource.AllowTeleport(value);
     }
 
     /// <summary>
@@ -676,8 +659,8 @@ public class Player : WorldEntity
     /// </summary>
     public virtual Vector4 WorldBounds
     {
-        get => _player.GetWorldBounds();
-        set => _player.SetWorldBounds(value);
+        get => Resource.GetWorldBounds();
+        set => Resource.SetWorldBounds(value);
     }
 
     /// <summary>
@@ -685,8 +668,8 @@ public class Player : WorldEntity
     /// </summary>
     public virtual bool HasWidescreen
     {
-        get => _player.HasWidescreen();
-        set => _player.UseWidescreen(value);
+        get => Resource.HasWidescreen();
+        set => Resource.UseWidescreen(value);
     }
 
     /// <summary>
@@ -694,8 +677,8 @@ public class Player : WorldEntity
     /// </summary>
     public virtual int Weather
     {
-        get => _player.GetWeather();
-        set => _player.SetWeather(value);
+        get => Resource.GetWeather();
+        set => Resource.SetWeather(value);
     }
 
     /// <summary>
@@ -705,7 +688,7 @@ public class Player : WorldEntity
     {
         get
         {
-            foreach (var raw in _player.StreamedForPlayers())
+            foreach (var raw in Resource.StreamedForPlayers())
             {
                 var component = _entityProvider.GetComponent(raw);
                 if (component != null)
@@ -719,15 +702,15 @@ public class Player : WorldEntity
     /// <summary>
     /// Gets the number of default world objects that have been removed for this player.
     /// </summary>
-    public virtual int DefaultObjectsRemoved => _player.GetDefaultObjectsRemoved();
+    public virtual int DefaultObjectsRemoved => Resource.GetDefaultObjectsRemoved();
 
     /// <summary>
     /// Gets a value indicating whether this player is in the process of being kicked.
     /// </summary>
-    public virtual bool IsBeingKicked => _player.GetKickStatus();
+    public virtual bool IsBeingKicked => Resource.GetKickStatus();
 
     private IPlayerCustomModelsData? CustomModelsData =>
-        _player.TryQueryExtension<IPlayerCustomModelsData>(out var data) ? data : null;
+        Resource.TryQueryExtension<IPlayerCustomModelsData>(out var data) ? data : null;
 
     /// <summary>
     /// Gets or sets the active custom skin model ID for this player, or <see langword="null" /> if no custom skin is set.
@@ -758,7 +741,7 @@ public class Player : WorldEntity
     {
         ArgumentNullException.ThrowIfNull(name);
 
-        var result = _player.SetName(name);
+        var result = Resource.SetName(name);
         switch (result)
         {
             case EPlayerNameStatus.Invalid:
@@ -822,13 +805,13 @@ public class Player : WorldEntity
     /// <returns>A <see cref="NetworkStats" /> object containing the player's network statistics.</returns>
     public NetworkStats GetNetworkStats()
     {
-        return new NetworkStats(_player.GetNetworkData().Value.Network.GetStatistics());
+        return new NetworkStats(Resource.GetNetworkData().Value.Network.GetStatistics());
     }
 
     /// <summary>(Re)Spawns a player.</summary>
     public virtual void Spawn()
     {
-        _player.Spawn();
+        Resource.Spawn();
     }
 
     /// <summary>
@@ -836,7 +819,7 @@ public class Player : WorldEntity
     /// </summary>
     public virtual void PutCameraBehindPlayer()
     {
-        _player.SetCameraBehind();
+        Resource.SetCameraBehind();
     }
 
     /// <summary>
@@ -845,7 +828,7 @@ public class Player : WorldEntity
     /// <param name="position">The position to move this player to as a <see cref="Vector3" />.</param>
     public virtual void SetPositionFindZ(Vector3 position)
     {
-        _player.SetPositionFindZ(position);
+        Resource.SetPositionFindZ(position);
     }
 
     /// <summary>
@@ -879,7 +862,7 @@ public class Player : WorldEntity
     public virtual bool IsPlayerStreamedIn(Player player)
     {
         ArgumentNullException.ThrowIfNull(player);
-        return _player.IsStreamedInForPlayer(player);
+        return Resource.IsStreamedInForPlayer(player);
     }
 
     /// <summary>
@@ -889,7 +872,7 @@ public class Player : WorldEntity
     /// <param name="ammo">The amount of ammunition to set.</param>
     public virtual void SetAmmo(Weapon weapon, int ammo)
     {
-        _player.SetWeaponAmmo(new WeaponSlotData((byte)weapon, ammo));
+        Resource.SetWeaponAmmo(new WeaponSlotData((byte)weapon, ammo));
     }
 
     /// <summary>
@@ -899,7 +882,7 @@ public class Player : WorldEntity
     /// <param name="ammo">The amount of ammunition to give with the weapon.</param>
     public virtual void GiveWeapon(Weapon weapon, int ammo)
     {
-        _player.GiveWeapon(new WeaponSlotData((byte)weapon, ammo));
+        Resource.GiveWeapon(new WeaponSlotData((byte)weapon, ammo));
     }
 
 
@@ -908,7 +891,7 @@ public class Player : WorldEntity
     /// </summary>
     public virtual void ResetWeapons()
     {
-        _player.ResetWeapons();
+        Resource.ResetWeapons();
     }
 
     /// <summary>
@@ -917,7 +900,7 @@ public class Player : WorldEntity
     /// <param name="weapon">The weapon to remove.</param>
     public virtual void RemoveWeapon(Weapon weapon)
     {
-        _player.RemoveWeapon((byte)weapon);
+        Resource.RemoveWeapon((byte)weapon);
     }
 
     /// <summary>
@@ -926,7 +909,7 @@ public class Player : WorldEntity
     /// <param name="weapon">The weapon that the player should be armed with.</param>
     public virtual void SetArmedWeapon(Weapon weapon)
     {
-        _player.SetArmedWeapon((int)weapon);
+        Resource.SetArmedWeapon((int)weapon);
     }
 
     /// <summary>
@@ -940,7 +923,7 @@ public class Player : WorldEntity
         ArgumentOutOfRangeException.ThrowIfNegative(slot, nameof(slot));
         ArgumentOutOfRangeException.ThrowIfGreaterThan(slot, 12, nameof(slot));
 
-        var data = _player.GetWeaponSlot(slot);
+        var data = Resource.GetWeaponSlot(slot);
         weapon = (Weapon)data.Id;
         ammo = data.Ammo;
     }
@@ -951,7 +934,7 @@ public class Player : WorldEntity
     /// <param name="money">The amount of money to give. Use a negative value to take money.</param>
     public virtual void GiveMoney(int money)
     {
-        _player.GiveMoney(money);
+        Resource.GiveMoney(money);
     }
 
     /// <summary>
@@ -959,7 +942,7 @@ public class Player : WorldEntity
     /// </summary>
     public virtual void ResetMoney()
     {
-        _player.ResetMoney();
+        Resource.ResetMoney();
     }
 
     /// <summary>
@@ -973,7 +956,7 @@ public class Player : WorldEntity
     /// <param name="leftRight">The left/right direction value, passed by reference.</param>
     public virtual void GetKeys(out Keys keys, out int upDown, out int leftRight)
     {
-        var data = _player.GetKeyData();
+        var data = Resource.GetKeyData();
         keys = (Keys)data.keys;
         upDown = data.upDown;
         leftRight = data.leftRight;
@@ -991,7 +974,7 @@ public class Player : WorldEntity
         ArgumentOutOfRangeException.ThrowIfNegative(minutes, nameof(minutes));
         ArgumentOutOfRangeException.ThrowIfGreaterThan(minutes, 59, nameof(minutes));
 
-        _player.SetTime(TimeSpan.FromHours(hour), TimeSpan.FromMinutes(minutes));
+        Resource.SetTime(TimeSpan.FromHours(hour), TimeSpan.FromMinutes(minutes));
     }
 
     /// <summary>
@@ -1002,7 +985,7 @@ public class Player : WorldEntity
     /// <param name="minutes">The current <paramref name="minutes" />, passed by reference.</param>
     public virtual void GetTime(out int hour, out int minutes)
     {
-        (hour, minutes) = _player.GetTime();
+        (hour, minutes) = Resource.GetTime();
     }
 
     /// <summary>
@@ -1012,7 +995,7 @@ public class Player : WorldEntity
     /// <param name="toggle"><see langword="true" /> to show the clock; <see langword="false" /> to hide it.</param>
     public virtual void ToggleClock(bool toggle)
     {
-        _player.UseClock(toggle);
+        Resource.UseClock(toggle);
     }
 
     /// <summary>
@@ -1031,7 +1014,7 @@ public class Player : WorldEntity
     /// <remarks>The player will not return to class selection until they re-spawn. This can be achieved with <see cref="ToggleSpectating" /></remarks>
     public virtual void ForceClassSelection()
     {
-        _player.ForceClassSelection();
+        Resource.ForceClassSelection();
     }
 
     /// <summary>
@@ -1060,7 +1043,7 @@ public class Player : WorldEntity
     public virtual bool PlayCrimeReport(Player suspect, int crime)
     {
         ArgumentNullException.ThrowIfNull(suspect);
-        return _player.PlayerCrimeReport(suspect, crime);
+        return Resource.PlayerCrimeReport(suspect, crime);
     }
 
     /// <summary>
@@ -1072,7 +1055,7 @@ public class Player : WorldEntity
     public virtual void PlayAudioStream(string url, Vector3 position, float distance)
     {
         ArgumentNullException.ThrowIfNull(url);
-        _player.PlayAudio(url, true, position, distance);
+        Resource.PlayAudio(url, true, position, distance);
     }
 
     /// <summary>
@@ -1082,7 +1065,7 @@ public class Player : WorldEntity
     public virtual void PlayAudioStream(string url)
     {
         ArgumentNullException.ThrowIfNull(url);
-        _player.PlayAudio(url);
+        Resource.PlayAudio(url);
     }
 
     /// <summary>
@@ -1091,7 +1074,7 @@ public class Player : WorldEntity
     /// <param name="disable">If <see langword="true" />, <see cref="Vehicle" /> collisions are disabled; if <see langword="false" />, they are enabled.</param>
     public virtual void DisableRemoteVehicleCollisions(bool disable)
     {
-        _player.SetRemoteVehicleCollisions(!disable);
+        Resource.SetRemoteVehicleCollisions(!disable);
     }
 
     /// <summary>
@@ -1100,7 +1083,7 @@ public class Player : WorldEntity
     /// <param name="enable">If <see langword="true" />, the functionality is enabled; if <see langword="false" />, it is disabled.</param>
     public virtual void EnablePlayerCameraTarget(bool enable)
     {
-        _player.UseCameraTargeting(enable);
+        Resource.UseCameraTargeting(enable);
     }
 
     /// <summary>
@@ -1108,7 +1091,7 @@ public class Player : WorldEntity
     /// </summary>
     public virtual void StopAudioStream()
     {
-        _player.StopAudio();
+        Resource.StopAudio();
     }
 
     /// <summary>
@@ -1118,7 +1101,7 @@ public class Player : WorldEntity
     public virtual void SetShopName(string shopName)
     {
         ArgumentNullException.ThrowIfNull(shopName);
-        _player.SetShopName(shopName);
+        Resource.SetShopName(shopName);
     }
 
     /// <summary>
@@ -1129,7 +1112,7 @@ public class Player : WorldEntity
     /// <param name="level">The skill level (0-999). Values outside this range will be clamped.</param>
     public virtual void SetSkillLevel(WeaponSkill skill, int level)
     {
-        _player.SetSkillLevel((PlayerWeaponSkill)skill, level);
+        Resource.SetSkillLevel((PlayerWeaponSkill)skill, level);
     }
 
     /// <summary>
@@ -1232,7 +1215,7 @@ public class Player : WorldEntity
         ArgumentNullException.ThrowIfNull(text);
 
         Colour clr = color;
-        _player.SetChatBubble(text, ref clr, drawDistance, expireTime);
+        Resource.SetChatBubble(text, ref clr, drawDistance, expireTime);
     }
 
     /// <summary>
@@ -1244,7 +1227,7 @@ public class Player : WorldEntity
     {
         ArgumentNullException.ThrowIfNull(vehicle);
 
-        ((IVehicle)vehicle).PutPlayer(_player, seatId);
+        ((IVehicle)vehicle).PutPlayer(Resource, seatId);
     }
 
     /// <summary>
@@ -1268,7 +1251,7 @@ public class Player : WorldEntity
     /// </remarks>
     public virtual void RemoveFromVehicle(bool force = false)
     {
-        _player.RemoveFromVehicle(force);
+        Resource.RemoveFromVehicle(force);
     }
 
     /// <summary>
@@ -1277,7 +1260,7 @@ public class Player : WorldEntity
     /// <param name="toggle"><see langword="true" /> to unfreeze the player; <see langword="false" /> to freeze them.</param>
     public virtual void ToggleControllable(bool toggle)
     {
-        _player.SetControllable(toggle);
+        Resource.SetControllable(toggle);
     }
 
     /// <summary>
@@ -1287,7 +1270,7 @@ public class Player : WorldEntity
     /// <param name="point">Point for the sound to play at as a <see cref="Vector3" />.</param>
     public virtual void PlaySound(int soundId, Vector3 point)
     {
-        _player.PlaySound(soundId, point);
+        Resource.PlaySound(soundId, point);
     }
 
     /// <summary>
@@ -1296,7 +1279,7 @@ public class Player : WorldEntity
     /// <param name="soundId">The sound to play.</param>
     public virtual void PlaySound(int soundId)
     {
-        _player.PlaySound(soundId, new Vector3());
+        Resource.PlaySound(soundId, new Vector3());
     }
 
     /// <summary>
@@ -1324,7 +1307,7 @@ public class Player : WorldEntity
 
         var anim = new AnimationData(fDelta, loop, lockX, lockY, freeze, (uint)time.TotalMilliseconds, animationLibrary, animationName);
 
-        _player.ApplyAnimation(anim, (OpenMp.Core.Api.PlayerAnimationSyncType)syncType);
+        Resource.ApplyAnimation(anim, (OpenMp.Core.Api.PlayerAnimationSyncType)syncType);
     }
 
     /// <inheritdoc cref="ApplyAnimation(string, string, float, bool, bool, bool, bool, TimeSpan, PlayerAnimationSyncType)" />
@@ -1364,7 +1347,7 @@ public class Player : WorldEntity
     /// </param>
     public virtual void ClearAnimations(PlayerAnimationSyncType syncType = PlayerAnimationSyncType.NoSync)
     {
-        _player.ClearAnimations((OpenMp.Core.Api.PlayerAnimationSyncType)syncType);
+        Resource.ClearAnimations((OpenMp.Core.Api.PlayerAnimationSyncType)syncType);
     }
 
     /// <summary>
@@ -1375,7 +1358,7 @@ public class Player : WorldEntity
     /// <returns><see langword="true" /> on success; otherwise, <see langword="false" />.</returns>
     public virtual bool GetAnimationName(out string? animationLibrary, out string? animationName)
     {
-        var anim = _player.GetAnimationData();
+        var anim = Resource.GetAnimationData();
         var id = anim.ID;
         (animationLibrary, animationName) = Animation.GetAnimation(id);
         return true;
@@ -1454,7 +1437,7 @@ public class Player : WorldEntity
     public virtual void SetPlayerMarker(Player player, Color color)
     {
         ArgumentNullException.ThrowIfNull(player);
-        _player.SetOtherColour(player, color);
+        Resource.SetOtherColour(player, color);
     }
 
     /// <summary>
@@ -1468,7 +1451,7 @@ public class Player : WorldEntity
     public virtual void ShowNameTagForPlayer(Player player, bool show)
     {
         ArgumentNullException.ThrowIfNull(player);
-        _player.ToggleOtherNameTag(player, show);
+        Resource.ToggleOtherNameTag(player, show);
     }
 
     /// <summary>
@@ -1478,7 +1461,7 @@ public class Player : WorldEntity
     /// <param name="cut">The <see cref="CameraCut" /> transition style.</param>
     public virtual void SetCameraLookAt(Vector3 point, CameraCut cut)
     {
-        _player.SetCameraLookAt(point, (int)cut);
+        Resource.SetCameraLookAt(point, (int)cut);
     }
 
     /// <summary>
@@ -1499,7 +1482,7 @@ public class Player : WorldEntity
     /// <param name="cut">The <see cref="CameraCut" /> transition style. Set to <see cref="CameraCut.Move" /> for smooth movement.</param>
     public virtual void InterpolateCameraPosition(Vector3 from, Vector3 to, TimeSpan time, CameraCut cut)
     {
-        _player.InterpolateCameraPosition(from, to, (int)time.TotalMilliseconds, (PlayerCameraCutType)cut);
+        Resource.InterpolateCameraPosition(from, to, (int)time.TotalMilliseconds, (PlayerCameraCutType)cut);
     }
 
     /// <inheritdoc cref="InterpolateCameraPosition(Vector3, Vector3, TimeSpan, CameraCut)" />
@@ -1516,7 +1499,7 @@ public class Player : WorldEntity
     /// <param name="cut">The <see cref="CameraCut" /> transition style. Set to <see cref="CameraCut.Move" /> for smooth interpolation.</param>
     public virtual void InterpolateCameraLookAt(Vector3 from, Vector3 to, TimeSpan time, CameraCut cut)
     {
-        _player.InterpolateCameraLookAt(from, to, (int)time.TotalMilliseconds, (PlayerCameraCutType)cut);
+        Resource.InterpolateCameraLookAt(from, to, (int)time.TotalMilliseconds, (PlayerCameraCutType)cut);
     }
 
     /// <inheritdoc cref="InterpolateCameraLookAt(Vector3, Vector3, TimeSpan, CameraCut)" />
@@ -1540,7 +1523,7 @@ public class Player : WorldEntity
     /// <param name="enable"><see langword="true" /> to enable stunt bonuses; <see langword="false" /> to disable them.</param>
     public virtual void EnableStuntBonus(bool enable)
     {
-        _player.UseStuntBonuses(enable);
+        Resource.UseStuntBonuses(enable);
     }
 
     /// <summary>
@@ -1550,7 +1533,7 @@ public class Player : WorldEntity
     /// <param name="toggle"><see langword="true" /> to enable spectating; <see langword="false" /> to disable.</param>
     public virtual void ToggleSpectating(bool toggle)
     {
-        _player.SetSpectating(toggle);
+        Resource.SetSpectating(toggle);
     }
 
     /// <summary>
@@ -1562,7 +1545,7 @@ public class Player : WorldEntity
     public virtual void SpectatePlayer(Player targetPlayer, SpectateMode mode)
     {
         ArgumentNullException.ThrowIfNull(targetPlayer);
-        _player.SpectatePlayer(targetPlayer, (PlayerSpectateMode)mode);
+        Resource.SpectatePlayer(targetPlayer, (PlayerSpectateMode)mode);
     }
 
     /// <summary>
@@ -1585,7 +1568,7 @@ public class Player : WorldEntity
     public virtual void SpectateVehicle(Vehicle targetVehicle, SpectateMode mode)
     {
         ArgumentNullException.ThrowIfNull(targetVehicle);
-        _player.SpectateVehicle(targetVehicle, (PlayerSpectateMode)mode);
+        Resource.SpectateVehicle(targetVehicle, (PlayerSpectateMode)mode);
     }
 
     /// <summary>
@@ -1627,7 +1610,7 @@ public class Player : WorldEntity
     /// <param name="hitPosition">The bullet hit position as a <see cref="Vector3" />, passed by reference.</param>
     public virtual void GetLastShot(out Vector3 origin, out Vector3 hitPosition)
     {
-        var data = _player.GetBulletData();
+        var data = Resource.GetBulletData();
 
         origin = data.origin;
         hitPosition = data.hitPos;
@@ -1648,12 +1631,12 @@ public class Player : WorldEntity
         Colour clr = color;
         if (message.Length > 144)
         {
-            _player.SendClientMessage(ref clr, message[..144]);
+            Resource.SendClientMessage(ref clr, message[..144]);
             SendClientMessage(color, message[144..]);
         }
         else
         {
-            _player.SendClientMessage(ref clr, message);
+            Resource.SendClientMessage(ref clr, message);
         }
     }
 
@@ -1703,7 +1686,7 @@ public class Player : WorldEntity
     /// </summary>
     public virtual void Kick()
     {
-        _player.Kick();
+        Resource.Kick();
     }
 
     /// <summary>
@@ -1721,7 +1704,7 @@ public class Player : WorldEntity
     public virtual void Ban(string reason)
     {
         ArgumentNullException.ThrowIfNull(reason);
-        _player.Ban(reason);
+        Resource.Ban(reason);
     }
 
     /// <summary>
@@ -1736,7 +1719,7 @@ public class Player : WorldEntity
     {
         ArgumentNullException.ThrowIfNull(sender);
         ArgumentNullException.ThrowIfNull(message);
-        _player.SendChatMessage(sender, message);
+        Resource.SendChatMessage(sender, message);
     }
 
     /// <summary>
@@ -1760,7 +1743,7 @@ public class Player : WorldEntity
     public virtual void GameText(string text, TimeSpan time, GameTextStyle style)
     {
         ArgumentNullException.ThrowIfNull(text);
-        _player.SendGameText(text, time, (int)style);
+        Resource.SendGameText(text, time, (int)style);
     }
 
     /// <summary>
@@ -1774,7 +1757,7 @@ public class Player : WorldEntity
     /// <param name="radius">The explosion radius.</param>
     public virtual void CreateExplosion(Vector3 position, ExplosionType type, float radius)
     {
-        _player.CreateExplosion(position, (int)type, radius);
+        Resource.CreateExplosion(position, (int)type, radius);
     }
 
     /// <summary>
@@ -1787,7 +1770,7 @@ public class Player : WorldEntity
     {
         ArgumentNullException.ThrowIfNull(killer);
         ArgumentNullException.ThrowIfNull(player);
-        _player.SendDeathMessage(player, killer, (int)weapon);
+        Resource.SendDeathMessage(player, killer, (int)weapon);
     }
 
     /// <summary>
@@ -1797,7 +1780,7 @@ public class Player : WorldEntity
     public virtual void AttachCameraToObject(GlobalObject @object)
     {
         ArgumentNullException.ThrowIfNull(@object);
-        _player.AttachCameraToObject(@object);
+        Resource.AttachCameraToObject(@object);
     }
 
     /// <summary>
@@ -1807,7 +1790,7 @@ public class Player : WorldEntity
     public virtual void AttachCameraToObject(PlayerObject @object)
     {
         ArgumentNullException.ThrowIfNull(@object);
-        _player.AttachCameraToObject(@object);
+        Resource.AttachCameraToObject(@object);
     }
 
     /// <summary>
@@ -1855,7 +1838,7 @@ public class Player : WorldEntity
     [Obsolete("Deprecated. Use 'RemoveDefaultObjects' instead.")]
     public virtual void RemoveBuilding(int modelId, Vector3 position, float radius)
     {
-        _player.RemoveDefaultObjects((uint)modelId, position, radius);
+        Resource.RemoveDefaultObjects((uint)modelId, position, radius);
     }
 
     /// <summary>
@@ -1866,7 +1849,7 @@ public class Player : WorldEntity
     /// <param name="radius">The removal radius.</param>
     public virtual void RemoveDefaultObjects(int modelId, Vector3 position, float radius)
     {
-        _player.RemoveDefaultObjects((uint)modelId, position, radius);
+        Resource.RemoveDefaultObjects((uint)modelId, position, radius);
     }
 
     /// <summary>
@@ -1885,7 +1868,7 @@ public class Player : WorldEntity
         ArgumentOutOfRangeException.ThrowIfNegative(iconId, nameof(iconId));
         ArgumentOutOfRangeException.ThrowIfGreaterThan(iconId, 99, nameof(iconId));
 
-        _player.SetMapIcon(iconId, position, (int)type, color, (MapIconStyle)style);
+        Resource.SetMapIcon(iconId, position, (int)type, color, (MapIconStyle)style);
     }
 
     /// <summary>
@@ -1894,7 +1877,7 @@ public class Player : WorldEntity
     /// <param name="iconId">The icon ID to remove.</param>
     public virtual void RemoveMapIcon(int iconId)
     {
-        _player.UnsetMapIcon(iconId);
+        Resource.UnsetMapIcon(iconId);
     }
 
     /// <summary>
@@ -1903,7 +1886,7 @@ public class Player : WorldEntity
     /// <param name="style">The style/slot of the game text to hide.</param>
     public virtual void HideGameText(int style)
     {
-        _player.HideGameText(style);
+        Resource.HideGameText(style);
     }
 
     /// <summary>
@@ -1913,7 +1896,7 @@ public class Player : WorldEntity
     /// <returns><see langword="true" /> if game text is displayed; otherwise <see langword="false" />.</returns>
     public virtual bool HasGameText(int style)
     {
-        return _player.HasGameText(style);
+        return Resource.HasGameText(style);
     }
 
     /// <summary>
@@ -1926,7 +1909,7 @@ public class Player : WorldEntity
     /// <returns><see langword="true" /> if game text is currently shown; otherwise <see langword="false" />.</returns>
     public virtual bool GetGameText(int style, out string? message, out TimeSpan time, out TimeSpan remaining)
     {
-        return _player.GetGameText(style, out message, out time, out remaining);
+        return Resource.GetGameText(style, out message, out time, out remaining);
     }
 
     /// <summary>
@@ -1941,7 +1924,7 @@ public class Player : WorldEntity
     /// </param>
     public virtual void ClearTasks(PlayerAnimationSyncType syncType)
     {
-        _player.ClearTasks((OpenMp.Core.Api.PlayerAnimationSyncType)syncType);
+        Resource.ClearTasks((OpenMp.Core.Api.PlayerAnimationSyncType)syncType);
     }
 
     /// <summary>
@@ -1950,7 +1933,7 @@ public class Player : WorldEntity
     /// <param name="time">The world time to set; only the whole-hour portion is applied.</param>
     public virtual void SetWorldTime(TimeSpan time)
     {
-        _player.SetWorldTime(time);
+        Resource.SetWorldTime(time);
     }
 
     /// <summary>
@@ -1960,7 +1943,7 @@ public class Player : WorldEntity
     public virtual void SendCommand(string message)
     {
         ArgumentNullException.ThrowIfNull(message);
-        _player.SendCommand(message);
+        Resource.SendCommand(message);
     }
 
     /// <summary>
@@ -1970,7 +1953,7 @@ public class Player : WorldEntity
     public virtual void StreamInForPlayer(Player target)
     {
         ArgumentNullException.ThrowIfNull(target);
-        _player.StreamInForPlayer(target);
+        Resource.StreamInForPlayer(target);
     }
 
     /// <summary>
@@ -1980,7 +1963,7 @@ public class Player : WorldEntity
     public virtual void StreamOutForPlayer(Player target)
     {
         ArgumentNullException.ThrowIfNull(target);
-        _player.StreamOutForPlayer(target);
+        Resource.StreamOutForPlayer(target);
     }
 
     /// <summary>
@@ -2006,7 +1989,7 @@ public class Player : WorldEntity
     /// <inheritdoc />
     protected override void OnDestroyComponent()
     {
-        if (!IsOmpEntityDestroyed)
+        if (!Resource.GetExtension<ComponentExtension>().IsOmpEntityDestroyed)
         {
             Kick();
         }
@@ -2015,6 +1998,10 @@ public class Player : WorldEntity
     /// <inheritdoc />
     public override string ToString()
     {
+        if (!IsComponentAlive)
+        {
+            return "(Destroyed)";
+        }
         return $"(Id: {Id}, Name: {Name})";
     }
 
@@ -2023,6 +2010,6 @@ public class Player : WorldEntity
     /// </summary>
     public static implicit operator IPlayer(Player? player)
     {
-        return player?._player ?? default;
+        return player?.Resource ?? default;
     }
 }

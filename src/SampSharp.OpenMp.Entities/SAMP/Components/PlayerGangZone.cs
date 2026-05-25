@@ -13,7 +13,6 @@ namespace SampSharp.Entities.SAMP;
 /// </remarks>
 public class PlayerGangZone : BaseGangZone
 {
-    private readonly IGangZone _gangZone;
     private readonly Player _player;
 
     /// <summary>
@@ -22,8 +21,17 @@ public class PlayerGangZone : BaseGangZone
     protected PlayerGangZone(IOmpEntityProvider entityProvider, IGangZonesComponent gangZones, IGangZone gangZone, Player player)
         : base(entityProvider, gangZones, gangZone)
     {
-        _gangZone = gangZone;
+        Resource = gangZone;
         _player = player;
+    }
+
+    private IGangZone Resource
+    {
+        get
+        {
+            ObjectDisposedException.ThrowIf(!IsComponentAlive, typeof(PlayerGangZone));
+            return field;
+        }
     }
 
     /// <summary>
@@ -32,7 +40,7 @@ public class PlayerGangZone : BaseGangZone
     public virtual void Show()
     {
         Colour clr = Color;
-        _gangZone.ShowForPlayer(_player, ref clr);
+        Resource.ShowForPlayer(_player, ref clr);
     }
 
 
@@ -41,7 +49,7 @@ public class PlayerGangZone : BaseGangZone
     /// </summary>
     public virtual void Hide()
     {
-        _gangZone.HideForPlayer(_player);
+        Resource.HideForPlayer(_player);
     }
 
     /// <summary>
@@ -51,7 +59,7 @@ public class PlayerGangZone : BaseGangZone
     public virtual void Flash(Color color)
     {
         Colour clr = color;
-        _gangZone.FlashForPlayer(_player, ref clr);
+        Resource.FlashForPlayer(_player, ref clr);
     }
 
     /// <summary>
@@ -59,7 +67,7 @@ public class PlayerGangZone : BaseGangZone
     /// </summary>
     public virtual void StopFlash()
     {
-        _gangZone.StopFlashForPlayer(_player);
+        Resource.StopFlashForPlayer(_player);
     }
 
     /// <summary>
@@ -68,7 +76,7 @@ public class PlayerGangZone : BaseGangZone
     /// <returns><see langword="true" /> if shown; otherwise <see langword="false" />.</returns>
     public virtual bool IsShown()
     {
-        return _gangZone.IsShownForPlayer(_player);
+        return Resource.IsShownForPlayer(_player);
     }
 
     /// <summary>
@@ -77,7 +85,7 @@ public class PlayerGangZone : BaseGangZone
     /// <returns><see langword="true" /> if flashing; otherwise <see langword="false" />.</returns>
     public virtual bool IsFlashing()
     {
-        return _gangZone.IsFlashingForPlayer(_player);
+        return Resource.IsFlashingForPlayer(_player);
     }
 
     /// <summary>
@@ -86,7 +94,7 @@ public class PlayerGangZone : BaseGangZone
     /// <returns>The flashing color.</returns>
     public virtual Color GetFlashingColor()
     {
-        return _gangZone.GetFlashingColourForPlayer(_player);
+        return Resource.GetFlashingColourForPlayer(_player);
     }
 
     /// <summary>
@@ -99,7 +107,7 @@ public class PlayerGangZone : BaseGangZone
     /// <returns><see langword="true" /> if the player is inside; otherwise <see langword="false" />.</returns>
     public virtual bool IsPlayerInside()
     {
-        return _gangZone.IsPlayerInside(_player);
+        return Resource.IsPlayerInside(_player);
     }
 
 }

@@ -8,15 +8,22 @@ namespace SampSharp.Entities.SAMP;
 /// </summary>
 public abstract class WorldEntity : IdProvider
 {
-    private readonly IEntity _entity;
-
     /// <summary>
     /// Initializes a new instance of the <see cref="WorldEntity" /> class.
     /// </summary>
     /// <param name="entity">The open.mp entity this component represents.</param>
     protected WorldEntity(IEntity entity) : base((IIDProvider)entity)
     {
-        _entity = entity;
+        Resource = entity;
+    }
+
+    private IEntity Resource
+    {
+        get
+        {
+            ObjectDisposedException.ThrowIf(!IsComponentAlive, typeof(WorldEntity));
+            return field;
+        }
     }
 
     /// <summary>
@@ -24,8 +31,8 @@ public abstract class WorldEntity : IdProvider
     /// </summary>
     public virtual Vector3 Position
     {
-        get => _entity.GetPosition();
-        set => _entity.SetPosition(value);
+        get => Resource.GetPosition();
+        set => Resource.SetPosition(value);
     }
 
     /// <summary>
@@ -33,8 +40,8 @@ public abstract class WorldEntity : IdProvider
     /// </summary>
     public virtual Quaternion Rotation
     {
-        get => _entity.GetRotation();
-        set => _entity.SetRotation(value);
+        get => Resource.GetRotation();
+        set => Resource.SetRotation(value);
     }
 
     /// <summary>
@@ -52,7 +59,7 @@ public abstract class WorldEntity : IdProvider
     /// </summary>
     public virtual int VirtualWorld
     {
-        get => _entity.GetVirtualWorld();
-        set => _entity.SetVirtualWorld(value);
+        get => Resource.GetVirtualWorld();
+        set => Resource.SetVirtualWorld(value);
     }
 }

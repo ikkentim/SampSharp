@@ -23,6 +23,7 @@ public class XunitSystem : ISystem
     {
         serverService.AddPlayerClass(1, new Vector3(0, 0, 10), 0);
 
+        
         serverService.ConnectNpc("tester", "npcidle");
     }
 

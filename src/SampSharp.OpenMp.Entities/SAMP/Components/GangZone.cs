@@ -9,15 +9,22 @@ namespace SampSharp.Entities.SAMP;
 /// </summary>
 public class GangZone : BaseGangZone
 {
-    private readonly IGangZone _gangZone;
-
     /// <summary>
     /// Initializes a new instance of the <see cref="GangZone" /> class.
     /// </summary>
     protected GangZone(IOmpEntityProvider entityProvider, IGangZonesComponent gangZones, IGangZone gangZone)
         : base(entityProvider, gangZones, gangZone)
     {
-        _gangZone = gangZone;
+        Resource = gangZone;
+    }
+
+    private IGangZone Resource
+    {
+        get
+        {
+            ObjectDisposedException.ThrowIf(!IsComponentAlive, typeof(GangZone));
+            return field;
+        }
     }
 
     /// <summary>
@@ -41,7 +48,7 @@ public class GangZone : BaseGangZone
         ArgumentNullException.ThrowIfNull(player);
 
         Colour clr = color;
-        _gangZone.ShowForPlayer(player, ref clr);
+        Resource.ShowForPlayer(player, ref clr);
     }
 
     /// <summary>
@@ -53,7 +60,7 @@ public class GangZone : BaseGangZone
         ArgumentNullException.ThrowIfNull(player);
 
         Colour clr = Color;
-        _gangZone.ShowForPlayer(player, ref clr);
+        Resource.ShowForPlayer(player, ref clr);
     }
 
     /// <summary>
@@ -75,7 +82,7 @@ public class GangZone : BaseGangZone
     {
         ArgumentNullException.ThrowIfNull(player);
 
-        _gangZone.HideForPlayer(player);
+        Resource.HideForPlayer(player);
     }
 
     /// <summary>
@@ -100,7 +107,7 @@ public class GangZone : BaseGangZone
         ArgumentNullException.ThrowIfNull(player);
 
         Colour clr = color;
-        _gangZone.FlashForPlayer(player, ref clr);
+        Resource.FlashForPlayer(player, ref clr);
     }
 
     /// <summary>
@@ -121,7 +128,7 @@ public class GangZone : BaseGangZone
     public virtual void StopFlash(Player player)
     {
         ArgumentNullException.ThrowIfNull(player);
-        _gangZone.StopFlashForPlayer(player);
+        Resource.StopFlashForPlayer(player);
     }
 
     /// <summary>
@@ -132,7 +139,7 @@ public class GangZone : BaseGangZone
     public virtual bool IsShownForPlayer(Player player)
     {
         ArgumentNullException.ThrowIfNull(player);
-        return _gangZone.IsShownForPlayer(player);
+        return Resource.IsShownForPlayer(player);
     }
 
     /// <summary>
@@ -143,7 +150,7 @@ public class GangZone : BaseGangZone
     public virtual bool IsFlashingForPlayer(Player player)
     {
         ArgumentNullException.ThrowIfNull(player);
-        return _gangZone.IsFlashingForPlayer(player);
+        return Resource.IsFlashingForPlayer(player);
     }
 
     /// <summary>
@@ -154,7 +161,7 @@ public class GangZone : BaseGangZone
     public virtual Color GetColorForPlayer(Player player)
     {
         ArgumentNullException.ThrowIfNull(player);
-        return _gangZone.GetColourForPlayer(player);
+        return Resource.GetColourForPlayer(player);
     }
 
     /// <summary>
@@ -165,7 +172,7 @@ public class GangZone : BaseGangZone
     public virtual Color GetFlashingColorForPlayer(Player player)
     {
         ArgumentNullException.ThrowIfNull(player);
-        return _gangZone.GetFlashingColourForPlayer(player);
+        return Resource.GetFlashingColourForPlayer(player);
     }
 
     /// <summary>
@@ -180,6 +187,6 @@ public class GangZone : BaseGangZone
     public virtual bool IsPlayerInside(Player player)
     {
         ArgumentNullException.ThrowIfNull(player);
-        return _gangZone.IsPlayerInside(player);
+        return Resource.IsPlayerInside(player);
     }
 }
