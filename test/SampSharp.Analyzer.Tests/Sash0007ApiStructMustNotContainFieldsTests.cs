@@ -8,7 +8,7 @@ namespace SampSharp.Analyzer.Tests;
 public class Sash0007ApiStructMustNotContainFieldsTests
 {
     [Fact]
-    public async Task Reports_when_api_struct_contains_field()
+    public async Task Sash0007_should_report_when_api_struct_contains_field()
     {
         const string source = """
             using SampSharp.OpenMp.Core;
@@ -27,7 +27,7 @@ public class Sash0007ApiStructMustNotContainFieldsTests
     }
 
     [Fact]
-    public async Task Reports_when_api_struct_contains_auto_property()
+    public async Task Sash0007_should_report_when_api_struct_contains_auto_property()
     {
         const string source = """
             using SampSharp.OpenMp.Core;
@@ -46,7 +46,7 @@ public class Sash0007ApiStructMustNotContainFieldsTests
     }
 
     [Fact]
-    public async Task Does_not_report_for_expression_bodied_property()
+    public async Task Sash0007_should_not_report_for_expression_bodied_property()
     {
         const string source = """
             using SampSharp.OpenMp.Core;
@@ -65,7 +65,7 @@ public class Sash0007ApiStructMustNotContainFieldsTests
     }
 
     [Fact]
-    public async Task Does_not_report_for_methods_only()
+    public async Task Sash0007_should_not_report_for_methods_only()
     {
         const string source = """
             using SampSharp.OpenMp.Core;
@@ -84,7 +84,7 @@ public class Sash0007ApiStructMustNotContainFieldsTests
     }
 
     [Fact]
-    public async Task Does_not_report_for_non_api_struct_with_field()
+    public async Task Sash0007_should_not_report_for_non_api_struct_with_field()
     {
         const string source = """
             public readonly partial struct Plain

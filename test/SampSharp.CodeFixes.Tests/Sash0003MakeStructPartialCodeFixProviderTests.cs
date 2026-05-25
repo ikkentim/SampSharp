@@ -8,14 +8,14 @@ namespace SampSharp.CodeFixes.Tests;
 public class Sash0003MakeStructPartialCodeFixProviderTests
 {
     [Fact]
-    public void Fixable_id_matches_Sash0003()
+    public void FixableDiagnosticIds_should_contain_only_Sash0003()
     {
         var provider = new Sash0003MakeStructPartialCodeFixProvider();
         provider.FixableDiagnosticIds.ShouldBe(new[] { AnalyzerIds.Sash0003ApiStructMustBeReadonlyPartial.Id });
     }
 
     [Fact]
-    public async Task Adds_partial_when_missing()
+    public async Task Fix_should_add_partial_when_missing()
     {
         const string source = """
             using SampSharp.OpenMp.Core;
@@ -34,7 +34,7 @@ public class Sash0003MakeStructPartialCodeFixProviderTests
     }
 
     [Fact]
-    public async Task Adds_readonly_when_missing()
+    public async Task Fix_should_add_readonly_when_missing()
     {
         const string source = """
             using SampSharp.OpenMp.Core;
@@ -53,7 +53,7 @@ public class Sash0003MakeStructPartialCodeFixProviderTests
     }
 
     [Fact]
-    public async Task Adds_both_when_both_missing()
+    public async Task Fix_should_add_both_when_both_missing()
     {
         const string source = """
             using SampSharp.OpenMp.Core;
@@ -72,7 +72,7 @@ public class Sash0003MakeStructPartialCodeFixProviderTests
     }
 
     [Fact]
-    public void Provides_batch_fix_all_provider()
+    public void GetFixAllProvider_should_return_non_null_batch_fixer()
     {
         new Sash0003MakeStructPartialCodeFixProvider().GetFixAllProvider().ShouldNotBeNull();
     }

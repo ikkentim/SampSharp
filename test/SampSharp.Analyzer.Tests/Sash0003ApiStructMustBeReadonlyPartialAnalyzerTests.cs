@@ -8,7 +8,7 @@ namespace SampSharp.Analyzer.Tests;
 public class Sash0003ApiStructMustBeReadonlyPartialAnalyzerTests
 {
     [Fact]
-    public async Task Reports_when_api_struct_missing_partial()
+    public async Task Sash0003_should_report_when_api_struct_missing_partial()
     {
         const string source = """
             using SampSharp.OpenMp.Core;
@@ -24,7 +24,7 @@ public class Sash0003ApiStructMustBeReadonlyPartialAnalyzerTests
     }
 
     [Fact]
-    public async Task Reports_when_api_struct_missing_readonly()
+    public async Task Sash0003_should_report_when_api_struct_missing_readonly()
     {
         const string source = """
             using SampSharp.OpenMp.Core;
@@ -40,7 +40,7 @@ public class Sash0003ApiStructMustBeReadonlyPartialAnalyzerTests
     }
 
     [Fact]
-    public async Task Reports_when_api_struct_missing_both()
+    public async Task Sash0003_should_report_when_api_struct_missing_both()
     {
         const string source = """
             using SampSharp.OpenMp.Core;
@@ -56,7 +56,7 @@ public class Sash0003ApiStructMustBeReadonlyPartialAnalyzerTests
     }
 
     [Fact]
-    public async Task Does_not_report_when_api_struct_is_readonly_partial()
+    public async Task Sash0003_should_not_report_when_api_struct_is_readonly_partial()
     {
         const string source = """
             using SampSharp.OpenMp.Core;
@@ -72,7 +72,7 @@ public class Sash0003ApiStructMustBeReadonlyPartialAnalyzerTests
     }
 
     [Fact]
-    public async Task Does_not_report_for_non_api_struct()
+    public async Task Sash0003_should_not_report_for_non_api_struct()
     {
         const string source = """
             public struct Plain { }

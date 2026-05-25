@@ -8,7 +8,7 @@ namespace SampSharp.Analyzer.Tests;
 public class Sash0005ApiStructRequiresAllowUnsafeBlocksTests
 {
     [Fact]
-    public async Task Reports_when_AllowUnsafe_is_false()
+    public async Task Sash0005_should_report_when_AllowUnsafe_is_false()
     {
         const string source = """
             using SampSharp.OpenMp.Core;
@@ -24,7 +24,7 @@ public class Sash0005ApiStructRequiresAllowUnsafeBlocksTests
     }
 
     [Fact]
-    public async Task Does_not_report_when_AllowUnsafe_is_true()
+    public async Task Sash0005_should_not_report_when_AllowUnsafe_is_true()
     {
         const string source = """
             using SampSharp.OpenMp.Core;
@@ -40,7 +40,7 @@ public class Sash0005ApiStructRequiresAllowUnsafeBlocksTests
     }
 
     [Fact]
-    public async Task Does_not_report_for_attributes_other_than_OpenMpApi()
+    public async Task Sash0005_should_not_report_for_attributes_other_than_OpenMpApi()
     {
         const string source = """
             using System;

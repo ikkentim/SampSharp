@@ -17,14 +17,14 @@ public class TimerServiceExtensionsTests
     private static MethodInfo TickMethod => typeof(TestTarget).GetMethod(nameof(TestTarget.Tick))!;
 
     [Fact]
-    public void Start_null_timerService_throws()
+    public void Start_should_throw_when_timerService_is_null()
     {
         Should.Throw<ArgumentNullException>(() =>
             TimerServiceExtensions.Start(null!, new TestTarget(), TickMethod, TimeSpan.FromSeconds(1)));
     }
 
     [Fact]
-    public void Start_null_target_throws()
+    public void Start_should_throw_when_target_is_null()
     {
         var mock = new Mock<ITimerService>();
         Should.Throw<ArgumentNullException>(() =>
@@ -32,7 +32,7 @@ public class TimerServiceExtensionsTests
     }
 
     [Fact]
-    public void Start_null_method_throws()
+    public void Start_should_throw_when_method_is_null()
     {
         var mock = new Mock<ITimerService>();
         Should.Throw<ArgumentNullException>(() =>
@@ -40,7 +40,7 @@ public class TimerServiceExtensionsTests
     }
 
     [Fact]
-    public void Start_invalid_interval_throws()
+    public void Start_should_throw_when_interval_is_zero()
     {
         var mock = new Mock<ITimerService>();
         Should.Throw<ArgumentOutOfRangeException>(() =>
@@ -48,7 +48,7 @@ public class TimerServiceExtensionsTests
     }
 
     [Fact]
-    public void Start_method_not_member_of_target_throws()
+    public void Start_should_throw_when_method_is_not_member_of_target()
     {
         var mock = new Mock<ITimerService>();
         // Foreign target: TestTarget.Tick is not a member of object.
@@ -57,7 +57,7 @@ public class TimerServiceExtensionsTests
     }
 
     [Fact]
-    public void Start_invokes_underlying_timerService_Start()
+    public void Start_should_invoke_underlying_timerService_Start_and_capture_target_method()
     {
         var mock = new Mock<ITimerService>();
         Action<IServiceProvider>? capturedAction = null;

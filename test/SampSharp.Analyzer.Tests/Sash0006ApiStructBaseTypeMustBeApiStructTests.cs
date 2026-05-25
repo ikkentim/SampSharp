@@ -8,7 +8,7 @@ namespace SampSharp.Analyzer.Tests;
 public class Sash0006ApiStructBaseTypeMustBeApiStructTests
 {
     [Fact]
-    public async Task Reports_when_base_type_in_OpenMpApi_argument_is_not_an_api_struct()
+    public async Task Sash0006_should_report_when_base_type_in_OpenMpApi_argument_is_not_an_api_struct()
     {
         const string source = """
             using SampSharp.OpenMp.Core;
@@ -29,7 +29,7 @@ public class Sash0006ApiStructBaseTypeMustBeApiStructTests
     }
 
     [Fact]
-    public async Task Does_not_report_when_base_type_is_an_api_struct()
+    public async Task Sash0006_should_not_report_when_base_type_is_an_api_struct()
     {
         const string source = """
             using SampSharp.OpenMp.Core;
@@ -48,7 +48,7 @@ public class Sash0006ApiStructBaseTypeMustBeApiStructTests
     }
 
     [Fact]
-    public async Task Does_not_report_when_OpenMpApi_has_no_arguments()
+    public async Task Sash0006_should_not_report_when_OpenMpApi_has_no_arguments()
     {
         const string source = """
             using SampSharp.OpenMp.Core;
@@ -64,7 +64,7 @@ public class Sash0006ApiStructBaseTypeMustBeApiStructTests
     }
 
     [Fact]
-    public async Task Does_not_report_for_unrelated_attribute()
+    public async Task Sash0006_should_not_report_for_unrelated_attribute()
     {
         const string source = """
             using System;

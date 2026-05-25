@@ -9,14 +9,14 @@ namespace SampSharp.OpenMp.Entities.Tests;
 public class VehicleParametersTests
 {
     [Fact]
-    public void Default_record_struct_has_unset_values()
+    public void Default_struct_should_have_Off_values_via_zero_init()
     {
         var p = default(VehicleParameters);
         p.Engine.ShouldBe(VehicleParameterValue.Off);
     }
 
     [Fact]
-    public void With_expression_modifies_specified_field()
+    public void With_expression_should_modify_only_specified_fields()
     {
         var original = new VehicleParameters(
             VehicleParameterValue.Off, VehicleParameterValue.Off, VehicleParameterValue.Off, VehicleParameterValue.Off,
@@ -31,7 +31,7 @@ public class VehicleParametersTests
     }
 
     [Fact]
-    public void Record_struct_equality()
+    public void Equals_should_be_true_for_record_struct_with_identical_values()
     {
         var a = new VehicleParameters(
             VehicleParameterValue.On, VehicleParameterValue.Off, VehicleParameterValue.Unset, VehicleParameterValue.Off,
@@ -43,13 +43,13 @@ public class VehicleParametersTests
     }
 
     [Fact]
-    public void Layout_matches_VehicleParams_size()
+    public void Layout_should_match_VehicleParams_size()
     {
         Unsafe.SizeOf<VehicleParameters>().ShouldBe(Unsafe.SizeOf<VehicleParams>());
     }
 
     [Fact]
-    public void Roundtrip_through_VehicleParams_preserves_all_fields()
+    public void Roundtrip_through_VehicleParams_should_preserve_all_fields()
     {
         var native = new VehicleParams(
             engine: 1, lights: 0, alarm: -1, doors: 1,

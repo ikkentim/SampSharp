@@ -10,19 +10,19 @@ namespace SampSharp.OpenMp.Entities.Tests;
 public class EnvironmentsTests
 {
     [Fact]
-    public void Production_constant_value()
+    public void Production_should_equal_string_Production()
     {
         Environments.Production.ShouldBe("Production");
     }
 
     [Fact]
-    public void Development_constant_value()
+    public void Development_should_equal_string_Development()
     {
         Environments.Development.ShouldBe("Development");
     }
 
     [Fact]
-    public void Staging_constant_value()
+    public void Staging_should_equal_string_Staging()
     {
         Environments.Staging.ShouldBe("Staging");
     }
@@ -31,7 +31,7 @@ public class EnvironmentsTests
 public class SampSharpEnvironmentTests
 {
     [Fact]
-    public void Record_stores_constructor_arguments()
+    public void Ctor_should_store_constructor_arguments()
     {
         var asm = typeof(SampSharpEnvironmentTests).Assembly;
         var core = default(ICore);
@@ -46,7 +46,7 @@ public class SampSharpEnvironmentTests
     }
 
     [Fact]
-    public void Records_with_identical_values_are_equal()
+    public void Equals_should_be_true_for_records_with_identical_values()
     {
         var asm = Assembly.GetExecutingAssembly();
         var handles = new Mock<ISafeComponentHandleProvider>().Object;
@@ -56,7 +56,7 @@ public class SampSharpEnvironmentTests
     }
 
     [Fact]
-    public void Records_with_different_environment_name_are_not_equal()
+    public void Equals_should_be_false_for_records_with_different_environment_name()
     {
         var asm = Assembly.GetExecutingAssembly();
         var handles = new Mock<ISafeComponentHandleProvider>().Object;
@@ -66,7 +66,7 @@ public class SampSharpEnvironmentTests
     }
 
     [Fact]
-    public void Record_with_expression_replaces_field()
+    public void With_expression_should_replace_field()
     {
         var asm = Assembly.GetExecutingAssembly();
         var handles = new Mock<ISafeComponentHandleProvider>().Object;

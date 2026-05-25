@@ -8,7 +8,7 @@ namespace SampSharp.Analyzer.Tests;
 public class Sash0001ExtensionAttributeAnalyzerTests
 {
     [Fact]
-    public async Task Reports_when_class_extends_Extension_without_ExtensionAttribute()
+    public async Task Sash0001_should_report_when_class_extends_Extension_without_ExtensionAttribute()
     {
         const string source = """
             using SampSharp.OpenMp.Core;
@@ -24,7 +24,7 @@ public class Sash0001ExtensionAttributeAnalyzerTests
     }
 
     [Fact]
-    public async Task Does_not_report_when_ExtensionAttribute_is_present()
+    public async Task Sash0001_should_not_report_when_ExtensionAttribute_is_present()
     {
         const string source = """
             using SampSharp.OpenMp.Core;
@@ -39,7 +39,7 @@ public class Sash0001ExtensionAttributeAnalyzerTests
     }
 
     [Fact]
-    public async Task Does_not_report_when_class_does_not_extend_Extension()
+    public async Task Sash0001_should_not_report_when_class_does_not_extend_Extension()
     {
         const string source = """
             public class Plain { }
@@ -51,7 +51,7 @@ public class Sash0001ExtensionAttributeAnalyzerTests
     }
 
     [Fact]
-    public async Task Does_not_report_when_extension_attribute_unknown_in_compilation()
+    public async Task Sash0001_should_not_report_for_unrelated_ExtensionAttribute_type()
     {
         // Compilation references Core, so this path is exercised when the symbol isn't found.
         // We simulate by referencing a class that just happens to be named ExtensionAttribute

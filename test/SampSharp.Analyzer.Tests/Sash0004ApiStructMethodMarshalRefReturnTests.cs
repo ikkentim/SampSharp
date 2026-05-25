@@ -8,7 +8,7 @@ namespace SampSharp.Analyzer.Tests;
 public class Sash0004ApiStructMethodMarshalRefReturnTests
 {
     [Fact]
-    public async Task Reports_when_partial_method_uses_ref_return_with_MarshalUsing_attribute()
+    public async Task Sash0004_should_report_when_partial_method_uses_ref_return_with_MarshalUsing()
     {
         const string source = """
             using System.Runtime.InteropServices.Marshalling;
@@ -33,7 +33,7 @@ public class Sash0004ApiStructMethodMarshalRefReturnTests
     }
 
     [Fact]
-    public async Task Reports_when_partial_method_uses_ref_return_with_NativeMarshalling_target()
+    public async Task Sash0004_should_report_when_partial_method_uses_ref_return_with_NativeMarshalling_target()
     {
         const string source = """
             using System.Runtime.InteropServices.Marshalling;
@@ -58,7 +58,7 @@ public class Sash0004ApiStructMethodMarshalRefReturnTests
     }
 
     [Fact]
-    public async Task Does_not_report_for_ref_return_without_marshalling()
+    public async Task Sash0004_should_not_report_for_ref_return_without_marshalling()
     {
         const string source = """
             using SampSharp.OpenMp.Core;
@@ -77,7 +77,7 @@ public class Sash0004ApiStructMethodMarshalRefReturnTests
     }
 
     [Fact]
-    public async Task Does_not_report_for_non_api_struct()
+    public async Task Sash0004_should_not_report_for_non_api_struct()
     {
         const string source = """
             using System.Runtime.InteropServices.Marshalling;

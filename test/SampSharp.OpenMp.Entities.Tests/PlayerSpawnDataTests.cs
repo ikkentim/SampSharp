@@ -9,14 +9,14 @@ namespace SampSharp.OpenMp.Entities.Tests;
 public class PlayerSpawnDataTests
 {
     [Fact]
-    public void Default_ctor_initializes_weapons()
+    public void Default_ctor_should_initialize_Weapons()
     {
         var data = new PlayerSpawnData();
         data.Weapons.ShouldNotBeNull();
     }
 
     [Fact]
-    public void Default_ctor_has_default_team_skin_angle()
+    public void Default_ctor_should_set_default_values_for_Team_Skin_Angle_Location()
     {
         var data = new PlayerSpawnData();
         data.Team.ShouldBe(0);
@@ -26,7 +26,7 @@ public class PlayerSpawnDataTests
     }
 
     [Fact]
-    public void Parameterized_ctor_sets_all_fields()
+    public void Parameterized_ctor_should_set_all_fields()
     {
         var weapons = new PlayerWeaponSlots();
         weapons.Add(new PlayerWeaponSlot(Weapon.Colt45, 50));
@@ -39,7 +39,7 @@ public class PlayerSpawnDataTests
     }
 
     [Fact]
-    public void Properties_are_settable()
+    public void Properties_should_be_settable()
     {
         var data = new PlayerSpawnData
         {
@@ -55,7 +55,7 @@ public class PlayerSpawnDataTests
     }
 
     [Fact]
-    public void ToOmpData_serializes_fields()
+    public void ToOmpData_should_serialize_fields_to_PlayerClass()
     {
         var weapons = new PlayerWeaponSlots();
         weapons.Add(new PlayerWeaponSlot(Weapon.Colt45, 50));
@@ -70,7 +70,7 @@ public class PlayerSpawnDataTests
     }
 
     [Fact]
-    public void FromOmpData_deserializes_fields()
+    public void FromOmpData_should_deserialize_fields_from_PlayerClass()
     {
         var weaponSlotData = new WeaponSlotData[WeaponSlots.MAX_WEAPON_SLOTS];
         weaponSlotData[2] = new WeaponSlotData((byte)Weapon.Colt45, 75);
@@ -85,7 +85,7 @@ public class PlayerSpawnDataTests
     }
 
     [Fact]
-    public void OmpData_roundtrip_preserves_fields()
+    public void ToOmpData_then_FromOmpData_should_preserve_fields()
     {
         var weapons = new PlayerWeaponSlots();
         weapons.Add(new PlayerWeaponSlot(Weapon.Grenade, 3));

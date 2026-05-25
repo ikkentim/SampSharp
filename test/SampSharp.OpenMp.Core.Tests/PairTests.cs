@@ -7,7 +7,7 @@ namespace SampSharp.OpenMp.Core.Tests;
 public class PairTests
 {
     [Fact]
-    public void Implicit_from_tuple_sets_components()
+    public void Implicit_from_tuple_should_set_components()
     {
         Pair<int, int> pair = (10, 20);
         pair.First.ShouldBe(10);
@@ -15,7 +15,7 @@ public class PairTests
     }
 
     [Fact]
-    public void Implicit_to_tuple_returns_components()
+    public void Implicit_to_tuple_should_return_components()
     {
         Pair<int, int> pair = (3, 4);
         (int a, int b) = pair;
@@ -24,7 +24,7 @@ public class PairTests
     }
 
     [Fact]
-    public void Deconstruct_returns_components()
+    public void Deconstruct_should_return_components()
     {
         Pair<int, long> pair = (5, 99L);
         pair.Deconstruct(out var first, out var second);
@@ -33,14 +33,14 @@ public class PairTests
     }
 
     [Fact]
-    public void ToString_formats_as_paren_pair()
+    public void ToString_should_format_as_parenthesized_pair()
     {
         Pair<int, int> pair = (1, 2);
         pair.ToString().ShouldBe("(1, 2)");
     }
 
     [Fact]
-    public void Implicit_tuple_conversion_preserves_mixed_types()
+    public void Implicit_tuple_conversion_should_preserve_mixed_types()
     {
         Pair<byte, long> pair = ((byte)7, 12345L);
         ValueTuple<byte, long> t = pair;

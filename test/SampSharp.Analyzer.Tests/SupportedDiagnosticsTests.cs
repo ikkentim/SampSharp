@@ -22,7 +22,7 @@ public class SupportedDiagnosticsTests
 
     [Theory]
     [MemberData(nameof(Cases))]
-    public void Analyzer_exposes_expected_single_diagnostic(DiagnosticAnalyzer analyzer, string expectedId)
+    public void SupportedDiagnostics_should_expose_exactly_one_descriptor_with_expected_id(DiagnosticAnalyzer analyzer, string expectedId)
     {
         analyzer.SupportedDiagnostics.Length.ShouldBe(1);
         analyzer.SupportedDiagnostics[0].Id.ShouldBe(expectedId);
@@ -32,7 +32,7 @@ public class SupportedDiagnosticsTests
 public class AnalyzerIdsTests
 {
     [Fact]
-    public void All_descriptors_have_correctness_category()
+    public void AnalyzerIds_should_all_use_Correctness_category_and_Error_severity()
     {
         var descriptors = new[]
         {
@@ -56,7 +56,7 @@ public class AnalyzerIdsTests
     }
 
     [Fact]
-    public void Ids_are_unique()
+    public void AnalyzerIds_should_be_unique()
     {
         var ids = new[]
         {

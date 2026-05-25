@@ -8,7 +8,7 @@ namespace SampSharp.Analyzer.Tests;
 public class Sash0008EventHandlerMarshalRefReturnTests
 {
     [Fact]
-    public async Task Reports_for_event_handler_method_with_ref_return_and_MarshalUsing()
+    public async Task Sash0008_should_report_for_event_handler_method_with_ref_return_and_MarshalUsing()
     {
         const string source = """
             using System.Runtime.InteropServices.Marshalling;
@@ -31,7 +31,7 @@ public class Sash0008EventHandlerMarshalRefReturnTests
     }
 
     [Fact]
-    public async Task Reports_for_event_handler_method_with_ref_return_and_NativeMarshalling_target()
+    public async Task Sash0008_should_report_for_event_handler_method_with_ref_return_and_NativeMarshalling_target()
     {
         const string source = """
             using System.Runtime.InteropServices.Marshalling;
@@ -56,7 +56,7 @@ public class Sash0008EventHandlerMarshalRefReturnTests
     }
 
     [Fact]
-    public async Task Does_not_report_for_ref_return_without_marshalling()
+    public async Task Sash0008_should_not_report_for_ref_return_without_marshalling()
     {
         const string source = """
             using SampSharp.OpenMp.Core;
@@ -75,7 +75,7 @@ public class Sash0008EventHandlerMarshalRefReturnTests
     }
 
     [Fact]
-    public async Task Does_not_report_for_non_event_handler_interface()
+    public async Task Sash0008_should_not_report_for_non_event_handler_interface()
     {
         const string source = """
             using System.Runtime.InteropServices.Marshalling;

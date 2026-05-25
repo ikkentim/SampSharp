@@ -8,7 +8,7 @@ namespace SampSharp.OpenMp.Entities.Tests;
 public class OmpLoggerOptionsTests
 {
     [Fact]
-    public void Defaults_match_documented_mapping()
+    public void Defaults_should_match_documented_level_mapping()
     {
         var options = new OmpLoggerOptions();
         options.TraceLevel.ShouldBe(OmpLogLevel.Message);
@@ -20,7 +20,7 @@ public class OmpLoggerOptionsTests
     }
 
     [Fact]
-    public void Properties_are_settable()
+    public void Properties_should_be_settable()
     {
         var options = new OmpLoggerOptions
         {

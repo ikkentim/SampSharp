@@ -8,14 +8,14 @@ namespace SampSharp.CodeFixes.Tests;
 public class Sash0005AllowUnsafeBlocksCodeFixProviderTests
 {
     [Fact]
-    public void Fixable_id_matches_Sash0005()
+    public void FixableDiagnosticIds_should_contain_only_Sash0005()
     {
         var provider = new Sash0005AllowUnsafeBlocksCodeFixProvider();
         provider.FixableDiagnosticIds.ShouldBe(new[] { AnalyzerIds.Sash0005ApiStructRequiresAllowUnsafeBlocks.Id });
     }
 
     [Fact]
-    public async Task Enables_AllowUnsafe_on_project_compilation_options()
+    public async Task Fix_should_enable_AllowUnsafe_on_project_compilation_options()
     {
         const string source = """
             using SampSharp.OpenMp.Core;
@@ -35,7 +35,7 @@ public class Sash0005AllowUnsafeBlocksCodeFixProviderTests
     }
 
     [Fact]
-    public void Provides_batch_fix_all_provider()
+    public void GetFixAllProvider_should_return_non_null_batch_fixer()
     {
         new Sash0005AllowUnsafeBlocksCodeFixProvider().GetFixAllProvider().ShouldNotBeNull();
     }

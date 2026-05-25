@@ -9,7 +9,7 @@ namespace SampSharp.OpenMp.Entities.Tests;
 public class ColorTests
 {
     [Fact]
-    public void Ctor_byte_rgba_sets_components()
+    public void Ctor_byte_rgba_should_set_components()
     {
         var c = new Color((byte)10, (byte)20, (byte)30, (byte)40);
         c.R.ShouldBe((byte)10);
@@ -19,35 +19,35 @@ public class ColorTests
     }
 
     [Fact]
-    public void Ctor_byte_rgb_defaults_alpha_to_255()
+    public void Ctor_byte_rgb_should_default_alpha_to_255()
     {
         var c = new Color((byte)1, (byte)2, (byte)3);
         c.A.ShouldBe((byte)255);
     }
 
     [Fact]
-    public void Ctor_byte_rgb_float_a_scales_to_byte()
+    public void Ctor_byte_rgb_with_float_alpha_should_scale_to_byte()
     {
         var c = new Color((byte)1, (byte)2, (byte)3, 0.5f);
         c.A.ShouldBe((byte)127);
     }
 
     [Fact]
-    public void Ctor_byte_rgb_float_a_clamps_above_one()
+    public void Ctor_byte_rgb_with_float_alpha_should_clamp_above_one()
     {
         var c = new Color((byte)1, (byte)2, (byte)3, 5f);
         c.A.ShouldBe((byte)255);
     }
 
     [Fact]
-    public void Ctor_byte_rgb_float_a_clamps_below_zero()
+    public void Ctor_byte_rgb_with_float_alpha_should_clamp_below_zero()
     {
         var c = new Color((byte)1, (byte)2, (byte)3, -1f);
         c.A.ShouldBe((byte)0);
     }
 
     [Fact]
-    public void Ctor_int_rgba_clamps_high()
+    public void Ctor_int_rgba_should_clamp_above_255()
     {
         var c = new Color(300, 400, 500, 600);
         c.R.ShouldBe((byte)255);
@@ -57,7 +57,7 @@ public class ColorTests
     }
 
     [Fact]
-    public void Ctor_int_rgba_clamps_low()
+    public void Ctor_int_rgba_should_clamp_below_zero()
     {
         var c = new Color(-10, -20, -30, -40);
         c.R.ShouldBe((byte)0);
@@ -67,14 +67,14 @@ public class ColorTests
     }
 
     [Fact]
-    public void Ctor_int_rgb_defaults_alpha_to_255()
+    public void Ctor_int_rgb_should_default_alpha_to_255()
     {
         var c = new Color(10, 20, 30);
         c.A.ShouldBe((byte)255);
     }
 
     [Fact]
-    public void Ctor_float_rgba_scales()
+    public void Ctor_float_rgba_should_scale_to_byte_range()
     {
         var c = new Color(1.0f, 0.5f, 0.0f, 1.0f);
         c.R.ShouldBe((byte)255);
@@ -84,7 +84,7 @@ public class ColorTests
     }
 
     [Fact]
-    public void Ctor_float_rgba_clamps()
+    public void Ctor_float_rgba_should_clamp_out_of_range_values()
     {
         var c = new Color(2.0f, -1.0f, 1.5f, -0.5f);
         c.R.ShouldBe((byte)255);
@@ -94,14 +94,14 @@ public class ColorTests
     }
 
     [Fact]
-    public void Ctor_float_rgb_defaults_alpha_to_one()
+    public void Ctor_float_rgb_should_default_alpha_to_one()
     {
         var c = new Color(0.5f, 0.5f, 0.5f);
         c.A.ShouldBe((byte)255);
     }
 
     [Fact]
-    public void Ctor_int_packed_uses_rgba()
+    public void Ctor_int_packed_should_unpack_as_RGBA()
     {
         // 0xAABBCCDD with RGBA => R=AA G=BB B=CC A=DD
         var c = new Color(unchecked((int)0xAABBCCDD));
@@ -112,7 +112,7 @@ public class ColorTests
     }
 
     [Fact]
-    public void Ctor_uint_packed_uses_rgba()
+    public void Ctor_uint_packed_should_unpack_as_RGBA()
     {
         var c = new Color(0xAABBCCDDu);
         c.R.ShouldBe((byte)0xAA);
@@ -122,21 +122,21 @@ public class ColorTests
     }
 
     [Fact]
-    public void Brightness_computed_correctly()
+    public void Brightness_should_be_computed_correctly()
     {
         var c = new Color((byte)100, (byte)150, (byte)200);
         c.Brightness.ShouldBe(0.212655f * 100 + 0.715158f * 150 + 0.072187f * 200, 0.0001f);
     }
 
     [Fact]
-    public void Brightness_for_white_is_close_to_max()
+    public void Brightness_for_white_should_be_close_to_max()
     {
         var c = Color.White;
         c.Brightness.ShouldBe(0.212655f * 255 + 0.715158f * 255 + 0.072187f * 255, 0.0001f);
     }
 
     [Fact]
-    public void ToInteger_RGBA_packs_correctly()
+    public void ToInteger_RGBA_should_pack_components_correctly()
     {
         var c = new Color((byte)0xAA, (byte)0xBB, (byte)0xCC, (byte)0xDD);
         unchecked
@@ -146,7 +146,7 @@ public class ColorTests
     }
 
     [Fact]
-    public void ToInteger_ARGB_packs_correctly()
+    public void ToInteger_ARGB_should_pack_components_correctly()
     {
         var c = new Color((byte)0xAA, (byte)0xBB, (byte)0xCC, (byte)0xDD);
         unchecked
@@ -156,21 +156,21 @@ public class ColorTests
     }
 
     [Fact]
-    public void ToInteger_RGB_packs_correctly()
+    public void ToInteger_RGB_should_pack_components_correctly()
     {
         var c = new Color((byte)0xAA, (byte)0xBB, (byte)0xCC, (byte)0xDD);
         c.ToInteger(ColorFormat.RGB).ShouldBe(0xAABBCC);
     }
 
     [Fact]
-    public void ToInteger_unknown_format_returns_zero()
+    public void ToInteger_should_return_zero_for_unknown_format()
     {
         var c = new Color((byte)1, (byte)2, (byte)3, (byte)4);
         c.ToInteger((ColorFormat)99).ShouldBe(0);
     }
 
     [Fact]
-    public void FromInteger_RGBA_unpacks_correctly()
+    public void FromInteger_RGBA_should_unpack_correctly()
     {
         var c = Color.FromInteger(0xAABBCCDDu, ColorFormat.RGBA);
         c.R.ShouldBe((byte)0xAA);
@@ -180,7 +180,7 @@ public class ColorTests
     }
 
     [Fact]
-    public void FromInteger_ARGB_unpacks_correctly()
+    public void FromInteger_ARGB_should_unpack_correctly()
     {
         var c = Color.FromInteger(0xDDAABBCCu, ColorFormat.ARGB);
         c.A.ShouldBe((byte)0xDD);
@@ -190,7 +190,7 @@ public class ColorTests
     }
 
     [Fact]
-    public void FromInteger_RGB_unpacks_and_sets_full_alpha()
+    public void FromInteger_RGB_should_unpack_and_set_full_alpha()
     {
         var c = Color.FromInteger(0xAABBCCu, ColorFormat.RGB);
         c.R.ShouldBe((byte)0xAA);
@@ -200,7 +200,7 @@ public class ColorTests
     }
 
     [Fact]
-    public void FromInteger_signed_overload_passes_through()
+    public void FromInteger_signed_overload_should_pass_through_to_unsigned()
     {
         var u = Color.FromInteger(0xAABBCCDDu, ColorFormat.RGBA);
         var s = Color.FromInteger(unchecked((int)0xAABBCCDD), ColorFormat.RGBA);
@@ -208,7 +208,7 @@ public class ColorTests
     }
 
     [Fact]
-    public void ToInteger_then_FromInteger_RGBA_roundtrips()
+    public void ToInteger_then_FromInteger_RGBA_should_roundtrip()
     {
         var c = new Color((byte)17, (byte)33, (byte)49, (byte)65);
         var back = Color.FromInteger(unchecked((uint)c.ToInteger(ColorFormat.RGBA)), ColorFormat.RGBA);
@@ -216,7 +216,7 @@ public class ColorTests
     }
 
     [Fact]
-    public void ToInteger_then_FromInteger_ARGB_roundtrips()
+    public void ToInteger_then_FromInteger_ARGB_should_roundtrip()
     {
         var c = new Color((byte)17, (byte)33, (byte)49, (byte)65);
         var back = Color.FromInteger(unchecked((uint)c.ToInteger(ColorFormat.ARGB)), ColorFormat.ARGB);
@@ -224,7 +224,7 @@ public class ColorTests
     }
 
     [Fact]
-    public void FromString_RGBA_valid_8_hex_chars()
+    public void FromString_RGBA_should_parse_valid_8_hex_chars()
     {
         var c = Color.FromString("AABBCCDD", ColorFormat.RGBA);
         c.R.ShouldBe((byte)0xAA);
@@ -234,7 +234,7 @@ public class ColorTests
     }
 
     [Fact]
-    public void FromString_RGB_valid_6_hex_chars()
+    public void FromString_RGB_should_parse_valid_6_hex_chars()
     {
         var c = Color.FromString("AABBCC", ColorFormat.RGB);
         c.R.ShouldBe((byte)0xAA);
@@ -244,26 +244,26 @@ public class ColorTests
     }
 
     [Fact]
-    public void FromString_with_0x_prefix_accepted()
+    public void FromString_should_accept_0x_prefix()
     {
         var c = Color.FromString("0xAABBCC", ColorFormat.RGB);
         c.R.ShouldBe((byte)0xAA);
     }
 
     [Fact]
-    public void FromString_invalid_input_returns_white()
+    public void FromString_should_return_white_for_invalid_input()
     {
         Color.FromString("not-a-color", ColorFormat.RGB).ShouldBe(Color.White);
     }
 
     [Fact]
-    public void FromString_wrong_length_for_format_returns_white()
+    public void FromString_should_return_white_when_length_does_not_match_format()
     {
         Color.FromString("AABBCC", ColorFormat.RGBA).ShouldBe(Color.White);
     }
 
     [Fact]
-    public void Lerp_at_zero_returns_value1_rgb()
+    public void Lerp_at_zero_should_return_value1_rgb()
     {
         var a = new Color((byte)0, (byte)0, (byte)0, (byte)10);
         var b = new Color((byte)100, (byte)100, (byte)100, (byte)200);
@@ -275,7 +275,7 @@ public class ColorTests
     }
 
     [Fact]
-    public void Lerp_at_one_returns_value2_rgb_keeps_value1_alpha_when_blendAlpha_false()
+    public void Lerp_at_one_should_return_value2_rgb_but_keep_value1_alpha_when_blendAlpha_is_false()
     {
         var a = new Color((byte)0, (byte)0, (byte)0, (byte)10);
         var b = new Color((byte)100, (byte)100, (byte)100, (byte)200);
@@ -287,7 +287,7 @@ public class ColorTests
     }
 
     [Fact]
-    public void Lerp_at_one_with_blendAlpha_returns_value2_alpha()
+    public void Lerp_at_one_with_blendAlpha_should_return_value2_alpha()
     {
         var a = new Color((byte)0, (byte)0, (byte)0, (byte)10);
         var b = new Color((byte)100, (byte)100, (byte)100, (byte)200);
@@ -296,7 +296,7 @@ public class ColorTests
     }
 
     [Fact]
-    public void Lerp_clamps_amount_above_one()
+    public void Lerp_should_clamp_amount_above_one()
     {
         var a = new Color((byte)0, (byte)0, (byte)0);
         var b = new Color((byte)100, (byte)100, (byte)100);
@@ -304,7 +304,7 @@ public class ColorTests
     }
 
     [Fact]
-    public void Lerp_clamps_amount_below_zero()
+    public void Lerp_should_clamp_amount_below_zero()
     {
         var a = new Color((byte)20, (byte)20, (byte)20);
         var b = new Color((byte)100, (byte)100, (byte)100);
@@ -312,7 +312,7 @@ public class ColorTests
     }
 
     [Fact]
-    public void Darken_returns_zero_at_full_amount()
+    public void Darken_at_full_amount_should_return_black_rgb()
     {
         var result = Color.White.Darken(1f);
         result.R.ShouldBe((byte)0);
@@ -321,7 +321,7 @@ public class ColorTests
     }
 
     [Fact]
-    public void Lighten_returns_white_at_full_amount()
+    public void Lighten_at_full_amount_should_return_white_rgb()
     {
         var result = Color.Black.Lighten(1f);
         result.R.ShouldBe((byte)255);
@@ -330,7 +330,7 @@ public class ColorTests
     }
 
     [Fact]
-    public void Grayscale_sets_rgb_to_brightness()
+    public void Grayscale_should_set_rgb_to_brightness()
     {
         var c = new Color((byte)100, (byte)150, (byte)200);
         var gs = c.Grayscale();
@@ -339,7 +339,7 @@ public class ColorTests
     }
 
     [Fact]
-    public void AddGammaCorrection_then_RemoveGammaCorrection_is_close_to_original()
+    public void AddGammaCorrection_then_RemoveGammaCorrection_should_roundtrip_close_to_original()
     {
         var c = new Color((byte)128, (byte)200, (byte)50, (byte)255);
         var roundtrip = c.AddGammaCorrection().RemoveGammaCorrection();
@@ -349,7 +349,7 @@ public class ColorTests
     }
 
     [Fact]
-    public void AddGammaCorrection_white_stays_close_to_white()
+    public void AddGammaCorrection_should_keep_white_close_to_white()
     {
         var c = Color.White.AddGammaCorrection();
         ((int)c.R).ShouldBeGreaterThanOrEqualTo(254);
@@ -358,34 +358,34 @@ public class ColorTests
     }
 
     [Fact]
-    public void RemoveGammaCorrection_black_stays_black()
+    public void RemoveGammaCorrection_should_keep_black_as_black()
     {
         Color.Black.RemoveGammaCorrection().ShouldBe(Color.Black);
     }
 
     [Fact]
-    public void ToString_default_uses_RGB_format()
+    public void ToString_should_use_RGB_format_by_default()
     {
         var c = new Color((byte)0xAA, (byte)0xBB, (byte)0xCC, (byte)0xDD);
         c.ToString().ShouldBe("{AABBCC}");
     }
 
     [Fact]
-    public void ToString_RGBA_format()
+    public void ToString_RGBA_should_format_as_curly_8_hex()
     {
         var c = new Color((byte)0xAA, (byte)0xBB, (byte)0xCC, (byte)0xDD);
         c.ToString(ColorFormat.RGBA).ShouldBe("{AABBCCDD}");
     }
 
     [Fact]
-    public void ToString_ARGB_format()
+    public void ToString_ARGB_should_format_as_curly_8_hex()
     {
         var c = new Color((byte)0xAA, (byte)0xBB, (byte)0xCC, (byte)0xDD);
         c.ToString(ColorFormat.ARGB).ShouldBe("{DDAABBCC}");
     }
 
     [Fact]
-    public void Implicit_int_conversion_uses_RGBA()
+    public void Implicit_to_int_should_use_RGBA_format()
     {
         var c = new Color((byte)0x11, (byte)0x22, (byte)0x33, (byte)0x44);
         int value = c;
@@ -393,7 +393,7 @@ public class ColorTests
     }
 
     [Fact]
-    public void Implicit_int_to_Color_conversion_uses_RGBA()
+    public void Implicit_int_to_Color_should_use_RGBA_format()
     {
         Color c = unchecked((int)0xAABBCCDDu);
         c.R.ShouldBe((byte)0xAA);
@@ -401,7 +401,7 @@ public class ColorTests
     }
 
     [Fact]
-    public void Implicit_uint_to_Color_conversion_uses_RGBA()
+    public void Implicit_uint_to_Color_should_use_RGBA_format()
     {
         Color c = 0xAABBCCDDu;
         c.R.ShouldBe((byte)0xAA);
@@ -409,7 +409,7 @@ public class ColorTests
     }
 
     [Fact]
-    public void Implicit_Colour_to_Color_conversion()
+    public void Implicit_Colour_to_Color_should_copy_components()
     {
         var src = new Colour(10, 20, 30, 40);
         Color c = src;
@@ -420,7 +420,7 @@ public class ColorTests
     }
 
     [Fact]
-    public void Implicit_Color_to_Colour_conversion()
+    public void Implicit_Color_to_Colour_should_copy_components()
     {
         var src = new Color((byte)10, (byte)20, (byte)30, (byte)40);
         Colour c = src;
@@ -431,7 +431,7 @@ public class ColorTests
     }
 
     [Fact]
-    public void EqualityOperator_true_for_same_components()
+    public void EqualityOperator_should_return_true_for_same_components()
     {
         var a = new Color((byte)1, (byte)2, (byte)3, (byte)4);
         var b = new Color((byte)1, (byte)2, (byte)3, (byte)4);
@@ -439,7 +439,7 @@ public class ColorTests
     }
 
     [Fact]
-    public void EqualityOperator_false_for_differing_components()
+    public void EqualityOperator_should_return_false_for_differing_components()
     {
         var a = new Color((byte)1, (byte)2, (byte)3, (byte)4);
         var b = new Color((byte)9, (byte)2, (byte)3, (byte)4);
@@ -447,7 +447,7 @@ public class ColorTests
     }
 
     [Fact]
-    public void InequalityOperator_inverts_equality()
+    public void InequalityOperator_should_invert_equality()
     {
         var a = new Color((byte)1, (byte)2, (byte)3, (byte)4);
         var b = new Color((byte)9, (byte)2, (byte)3, (byte)4);
@@ -455,7 +455,7 @@ public class ColorTests
     }
 
     [Fact]
-    public void MultiplyOperator_scales_components()
+    public void MultiplyOperator_should_scale_components()
     {
         var c = new Color((byte)100, (byte)100, (byte)100, (byte)100) * 0.5f;
         c.R.ShouldBe((byte)50);
@@ -465,21 +465,21 @@ public class ColorTests
     }
 
     [Fact]
-    public void MultiplyOperator_clamps_above_255()
+    public void MultiplyOperator_should_clamp_above_255()
     {
         var c = new Color((byte)200, (byte)200, (byte)200, (byte)200) * 3f;
         c.R.ShouldBe((byte)255);
     }
 
     [Fact]
-    public void MultiplyOperator_clamps_negative()
+    public void MultiplyOperator_should_clamp_negative_to_zero()
     {
         var c = new Color((byte)200, (byte)200, (byte)200, (byte)200) * -1f;
         c.R.ShouldBe((byte)0);
     }
 
     [Fact]
-    public void ExplicitVector3_conversion_normalizes_to_0_to_1()
+    public void Explicit_Vector3_conversion_should_normalize_to_0_to_1_range()
     {
         var v = (Vector3)new Color((byte)255, (byte)128, (byte)0);
         v.X.ShouldBe(1f, 0.001f);
@@ -488,7 +488,7 @@ public class ColorTests
     }
 
     [Fact]
-    public void Equals_object_true_when_color_equivalent()
+    public void Equals_object_should_return_true_when_color_is_equivalent()
     {
         var a = new Color((byte)1, (byte)2, (byte)3, (byte)4);
         object b = new Color((byte)1, (byte)2, (byte)3, (byte)4);
@@ -496,21 +496,21 @@ public class ColorTests
     }
 
     [Fact]
-    public void Equals_object_false_for_non_color()
+    public void Equals_object_should_return_false_for_non_Color()
     {
         var a = new Color((byte)1, (byte)2, (byte)3, (byte)4);
         a.Equals("not a color").ShouldBeFalse();
     }
 
     [Fact]
-    public void Equals_object_false_for_null()
+    public void Equals_object_should_return_false_for_null()
     {
         var a = new Color((byte)1, (byte)2, (byte)3, (byte)4);
         a.Equals(null).ShouldBeFalse();
     }
 
     [Fact]
-    public void GetHashCode_equal_for_equal_colors()
+    public void GetHashCode_should_be_equal_for_equal_colors()
     {
         var a = new Color((byte)1, (byte)2, (byte)3, (byte)4);
         var b = new Color((byte)1, (byte)2, (byte)3, (byte)4);
@@ -518,7 +518,7 @@ public class ColorTests
     }
 
     [Fact]
-    public void GetHashCode_differs_for_different_colors()
+    public void GetHashCode_should_differ_for_different_colors()
     {
         var a = new Color((byte)1, (byte)2, (byte)3, (byte)4);
         var b = new Color((byte)1, (byte)2, (byte)3, (byte)9);
@@ -526,7 +526,7 @@ public class ColorTests
     }
 
     [Fact]
-    public void White_has_max_components()
+    public void White_should_have_max_components()
     {
         Color.White.R.ShouldBe((byte)0xFF);
         Color.White.G.ShouldBe((byte)0xFF);
@@ -535,7 +535,7 @@ public class ColorTests
     }
 
     [Fact]
-    public void Black_has_zero_rgb_full_alpha()
+    public void Black_should_have_zero_rgb_and_full_alpha()
     {
         Color.Black.R.ShouldBe((byte)0);
         Color.Black.G.ShouldBe((byte)0);
@@ -544,7 +544,7 @@ public class ColorTests
     }
 
     [Fact]
-    public void Red_is_pure_red()
+    public void Red_should_be_pure_red()
     {
         Color.Red.R.ShouldBe((byte)0xFF);
         Color.Red.G.ShouldBe((byte)0);
@@ -552,7 +552,7 @@ public class ColorTests
     }
 
     [Fact]
-    public void Green_constant_matches_html_green()
+    public void Green_should_match_HTML_green_0x008000()
     {
         // HTML/CSS "Green" is 0x008000, not 0x00FF00
         Color.Green.R.ShouldBe((byte)0);
@@ -561,7 +561,7 @@ public class ColorTests
     }
 
     [Fact]
-    public void Blue_is_pure_blue()
+    public void Blue_should_be_pure_blue()
     {
         Color.Blue.R.ShouldBe((byte)0);
         Color.Blue.G.ShouldBe((byte)0);
@@ -569,7 +569,7 @@ public class ColorTests
     }
 
     [Fact]
-    public void Transparent_has_zero_alpha()
+    public void Transparent_should_have_zero_alpha()
     {
         Color.Transparent.A.ShouldBe((byte)0);
     }

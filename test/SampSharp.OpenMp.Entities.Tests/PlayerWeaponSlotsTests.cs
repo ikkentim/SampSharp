@@ -9,14 +9,14 @@ namespace SampSharp.OpenMp.Entities.Tests;
 public class PlayerWeaponSlotsTests
 {
     [Fact]
-    public void Default_ctor_creates_empty_slots()
+    public void Default_ctor_should_create_empty_slots()
     {
         var slots = new PlayerWeaponSlots();
         slots.Count().ShouldBe(0);
     }
 
     [Fact]
-    public void Default_ctor_indexer_returns_default_slots()
+    public void Indexer_should_return_default_slots_after_default_ctor()
     {
         var slots = new PlayerWeaponSlots();
         for (var i = 0; i < WeaponSlots.MAX_WEAPON_SLOTS; i++)
@@ -27,27 +27,27 @@ public class PlayerWeaponSlotsTests
     }
 
     [Fact]
-    public void Ctor_with_data_succeeds_when_length_matches()
+    public void Ctor_should_succeed_when_data_length_matches_max_slots()
     {
         var data = new WeaponSlotData[WeaponSlots.MAX_WEAPON_SLOTS];
         Should.NotThrow(() => new PlayerWeaponSlots(data));
     }
 
     [Fact]
-    public void Ctor_with_data_throws_on_wrong_length()
+    public void Ctor_should_throw_when_data_length_does_not_match_max_slots()
     {
         var data = new WeaponSlotData[WeaponSlots.MAX_WEAPON_SLOTS - 1];
         Should.Throw<ArgumentException>(() => new PlayerWeaponSlots(data));
     }
 
     [Fact]
-    public void Ctor_with_null_data_throws()
+    public void Ctor_should_throw_when_data_is_null()
     {
         Should.Throw<ArgumentNullException>(() => new PlayerWeaponSlots(null!));
     }
 
     [Fact]
-    public void Add_places_weapon_in_correct_slot()
+    public void Add_should_place_weapon_in_correct_slot()
     {
         // Colt45 (id 22) -> slot 2
         var slots = new PlayerWeaponSlots();
@@ -57,7 +57,7 @@ public class PlayerWeaponSlotsTests
     }
 
     [Fact]
-    public void Add_throws_for_weapon_with_no_valid_slot()
+    public void Add_should_throw_for_weapon_with_no_valid_slot()
     {
         var slots = new PlayerWeaponSlots();
         // Connect (id 200) is beyond the WeaponInfo table -> slot -1
@@ -65,7 +65,7 @@ public class PlayerWeaponSlotsTests
     }
 
     [Fact]
-    public void Add_replaces_existing_weapon_in_same_slot()
+    public void Add_should_replace_existing_weapon_in_same_slot()
     {
         // Both Colt45 (22) and Silenced (23) share slot 2
         var slots = new PlayerWeaponSlots();
@@ -76,7 +76,7 @@ public class PlayerWeaponSlotsTests
     }
 
     [Fact]
-    public void Reset_clears_specified_slot()
+    public void Reset_should_clear_specified_slot()
     {
         var slots = new PlayerWeaponSlots();
         slots.Add(new PlayerWeaponSlot(Weapon.Colt45, 100));
@@ -86,21 +86,21 @@ public class PlayerWeaponSlotsTests
     }
 
     [Fact]
-    public void Reset_throws_when_slot_negative()
+    public void Reset_should_throw_when_slot_is_negative()
     {
         var slots = new PlayerWeaponSlots();
         Should.Throw<ArgumentOutOfRangeException>(() => slots.Reset((WeaponSlot)(-1)));
     }
 
     [Fact]
-    public void Reset_throws_when_slot_at_max()
+    public void Reset_should_throw_when_slot_is_at_max()
     {
         var slots = new PlayerWeaponSlots();
         Should.Throw<ArgumentOutOfRangeException>(() => slots.Reset((WeaponSlot)WeaponSlots.MAX_WEAPON_SLOTS));
     }
 
     [Fact]
-    public void Remove_by_weapon_returns_true_when_present()
+    public void Remove_by_weapon_should_return_true_when_present()
     {
         var slots = new PlayerWeaponSlots();
         slots.Add(new PlayerWeaponSlot(Weapon.Colt45, 100));
@@ -109,14 +109,14 @@ public class PlayerWeaponSlotsTests
     }
 
     [Fact]
-    public void Remove_by_weapon_returns_false_when_slot_empty()
+    public void Remove_by_weapon_should_return_false_when_slot_empty()
     {
         var slots = new PlayerWeaponSlots();
         slots.Remove(Weapon.Colt45).ShouldBeFalse();
     }
 
     [Fact]
-    public void Remove_by_item_delegates_to_remove_by_weapon()
+    public void Remove_by_item_should_delegate_to_remove_by_weapon()
     {
         var slots = new PlayerWeaponSlots();
         slots.Add(new PlayerWeaponSlot(Weapon.Colt45, 50));
@@ -125,28 +125,28 @@ public class PlayerWeaponSlotsTests
     }
 
     [Fact]
-    public void Remove_throws_for_weapon_with_no_valid_slot()
+    public void Remove_should_throw_for_weapon_with_no_valid_slot()
     {
         var slots = new PlayerWeaponSlots();
         Should.Throw<ArgumentException>(() => slots.Remove(Weapon.Connect));
     }
 
     [Fact]
-    public void Indexer_throws_for_negative()
+    public void Indexer_should_throw_for_negative_index()
     {
         var slots = new PlayerWeaponSlots();
         Should.Throw<ArgumentOutOfRangeException>(() => slots[-1]);
     }
 
     [Fact]
-    public void Indexer_throws_at_max()
+    public void Indexer_should_throw_at_max_index()
     {
         var slots = new PlayerWeaponSlots();
         Should.Throw<ArgumentOutOfRangeException>(() => slots[WeaponSlots.MAX_WEAPON_SLOTS]);
     }
 
     [Fact]
-    public void Enumeration_skips_empty_slots()
+    public void GetEnumerator_should_skip_empty_slots()
     {
         var slots = new PlayerWeaponSlots();
         slots.Add(new PlayerWeaponSlot(Weapon.Colt45, 100));
@@ -158,7 +158,7 @@ public class PlayerWeaponSlotsTests
     }
 
     [Fact]
-    public void Enumeration_via_non_generic_interface_works()
+    public void GetEnumerator_should_work_via_non_generic_IEnumerable()
     {
         var slots = new PlayerWeaponSlots();
         slots.Add(new PlayerWeaponSlot(Weapon.Colt45, 100));
@@ -168,7 +168,7 @@ public class PlayerWeaponSlotsTests
     }
 
     [Fact]
-    public void ToOmpData_wraps_internal_array()
+    public void ToOmpData_should_wrap_internal_array()
     {
         var slots = new PlayerWeaponSlots();
         slots.Add(new PlayerWeaponSlot(Weapon.Colt45, 100));

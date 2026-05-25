@@ -17,7 +17,7 @@ public class OmpLoggerTests
     }
 
     [Fact]
-    public void IsEnabled_returns_false_for_None()
+    public void IsEnabled_should_return_false_for_None()
     {
         CreateLogger().IsEnabled(LogLevel.None).ShouldBeFalse();
     }
@@ -29,19 +29,19 @@ public class OmpLoggerTests
     [InlineData(LogLevel.Warning)]
     [InlineData(LogLevel.Error)]
     [InlineData(LogLevel.Critical)]
-    public void IsEnabled_returns_true_for_all_non_None_levels(LogLevel level)
+    public void IsEnabled_should_return_true_for_all_non_None_levels(LogLevel level)
     {
         CreateLogger().IsEnabled(level).ShouldBeTrue();
     }
 
     [Fact]
-    public void BeginScope_returns_null()
+    public void BeginScope_should_return_null()
     {
         CreateLogger().BeginScope(new { test = 1 }).ShouldBeNull();
     }
 
     [Fact]
-    public void Options_property_is_settable()
+    public void Options_should_be_settable()
     {
         var logger = CreateLogger();
         var newOptions = new OmpLoggerOptions { TraceLevel = OmpLogLevel.Debug };
@@ -50,7 +50,7 @@ public class OmpLoggerTests
     }
 
     [Fact]
-    public void Log_short_circuits_on_None_level()
+    public void Log_should_short_circuit_on_None_level()
     {
         // Verifies Log doesn't reach the native writer call when level is None.
         // If it did, the default ILogger struct (zeroed function pointers) would crash.
