@@ -20,6 +20,8 @@
     <Project Path="src/SampSharp.SourceGenerator/SampSharp.SourceGenerator.csproj" />
   </Folder>
   <Folder Name="/test/">
+    <Project Path="test/SampSharp.Analyzer.Tests/SampSharp.Analyzer.Tests.csproj" />
+    <Project Path="test/SampSharp.CodeFixes.Tests/SampSharp.CodeFixes.Tests.csproj" />
     <Project Path="test/SampSharp.OpenMp.Entities.Commands.Tests/SampSharp.OpenMp.Entities.Commands.Tests.csproj" />
     <Project Path="test/SampSharp.OpenMp.Core.Tests/SampSharp.OpenMp.Core.Tests.csproj" />
     <Project Path="test/SampSharp.OpenMp.Entities.Tests/SampSharp.OpenMp.Entities.Tests.csproj" />
