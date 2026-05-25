@@ -19,6 +19,7 @@
 #include <Server/Components/Vehicles/vehicles.hpp>
 
 #include "../proxy-api.hpp"
+#include <iostream>
 
 #ifdef __clang__
 #pragma clang diagnostic push
@@ -376,18 +377,18 @@ PROXY(INPCComponent, void, destroy, INPC&);
 PROXY(INPCComponent, int, createPath);
 PROXY(INPCComponent, bool, destroyPath, int);
 PROXY(INPCComponent, void, destroyAllPaths);
-PROXY_PTR(INPCComponent, size_t, getPathCount);
+PROXY(INPCComponent, size_t, getPathCount);
 PROXY(INPCComponent, bool, addPointToPath, int, const Vector3&, float);
 PROXY(INPCComponent, bool, removePointFromPath, int, size_t);
 PROXY(INPCComponent, bool, clearPath, int);
-PROXY_PTR(INPCComponent, size_t, getPathPointCount, int);
+PROXY(INPCComponent, size_t, getPathPointCount, int);
 PROXY(INPCComponent, bool, getPathPoint, int, size_t, Vector3&, float&);
 PROXY(INPCComponent, bool, hasPathPointInRange, int, const Vector3&, float);
 PROXY(INPCComponent, bool, isValidPath, int);
 PROXY(INPCComponent, int, loadRecord, StringView);
 PROXY(INPCComponent, bool, unloadRecord, int);
 PROXY(INPCComponent, bool, isValidRecord, int);
-PROXY_PTR(INPCComponent, size_t, getRecordCount);
+PROXY(INPCComponent, size_t, getRecordCount);
 PROXY(INPCComponent, void, unloadAllRecords);
 PROXY(INPCComponent, bool, openNode, int);
 PROXY(INPCComponent, void, closeNode, int);
@@ -675,7 +676,7 @@ PROXY(IVehicle, void, setParamsForPlayer, IPlayer&, VehicleParams&);
 PROXY_PTR(IVehicle, VehicleParams, getParams);
 PROXY(IVehicle, bool, isDead);
 PROXY(IVehicle, void, respawn);
-PROXY(IVehicle, Seconds, getRespawnDelay);
+PROXY_PTR(IVehicle, Seconds, getRespawnDelay);
 PROXY(IVehicle, void, setRespawnDelay, Seconds);
 PROXY(IVehicle, bool, isRespawning);
 PROXY(IVehicle, void, setInterior, int);
@@ -1032,7 +1033,7 @@ PROXY(IPlayerPool, void, broadcastRPC, int, Span<uint8_t>, int, const IPlayer*, 
 PROXY(IPlayerPool, bool, isNameValid, StringView);
 PROXY(IPlayerPool, void, allowNickNameCharacter, char, bool);
 PROXY(IPlayerPool, bool, isNickNameCharacterAllowed, char);
-PROXY(IPlayerPool, Colour, getDefaultColour, int);
+PROXY_PTR(IPlayerPool, Colour, getDefaultColour, int);
 PROXY_CAST_NAMED(IPlayerPool, IPlayerPool, IReadOnlyPool<IPlayer>, IReadOnlyPool);
 
 PROXY_EVENT_DISPATCHER(IPlayerPool, PlayerSpawnEventHandler, getPlayerSpawnDispatcher);

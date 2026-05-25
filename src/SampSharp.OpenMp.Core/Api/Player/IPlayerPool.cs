@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.Marshalling;
 using SampSharp.OpenMp.Core.RobinHood;
 using SampSharp.OpenMp.Core.Std;
@@ -198,7 +199,13 @@ public readonly partial struct IPlayerPool
     /// </summary>
     /// <param name="pid">The player ID.</param>
     /// <returns>The default colour.</returns>
-    public partial Colour GetDefaultColour(int pid);
+    public Colour GetDefaultColour(int pid)
+    {
+        GetDefaultColour(pid, out var result);
+        return result;
+    }
+
+    private partial void GetDefaultColour(int pid, out Colour result);
 
     /// <summary>
     /// Converts this instance to a read-only player pool.

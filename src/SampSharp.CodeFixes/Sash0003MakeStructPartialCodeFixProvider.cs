@@ -65,7 +65,7 @@ public class Sash0003MakeStructPartialCodeFixProvider : CodeFixProvider
         {
             newStructDeclaration = newStructDeclaration
                 .WithModifiers(
-                    structDeclaration.Modifiers.Add(
+                    newStructDeclaration.Modifiers.Add(
                         Token(SyntaxKind.PartialKeyword)));
         }
 
@@ -73,7 +73,7 @@ public class Sash0003MakeStructPartialCodeFixProvider : CodeFixProvider
         {
             newStructDeclaration = newStructDeclaration
                 .WithModifiers(
-                    structDeclaration.Modifiers.Insert(0,
+                    newStructDeclaration.Modifiers.Insert(0,
                         Token(SyntaxKind.ReadOnlyKeyword)));
         }
 

@@ -43,13 +43,4 @@ public class PlayerPickup : BasePickup
     {
         _pickup.StreamOutForPlayer(_player);
     }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether the pickup is hidden for the player.
-    /// </summary>
-    public virtual bool IsHidden
-    {
-        get => _pickup.IsPickupHiddenForPlayer(_player);
-        set => _pickup.SetPickupHiddenForPlayer(_player, value);
-    }
 }

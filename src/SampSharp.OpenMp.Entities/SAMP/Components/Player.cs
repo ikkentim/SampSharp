@@ -812,7 +812,7 @@ public class Player : WorldEntity
     /// <returns>A <see cref="PlayerSpawnData"/> instance containing the player's spawn position, orientation, and related data.</returns>
     public virtual PlayerSpawnData GetSpawnInfo()
     {
-        ref var data = ref ClassData.GetClass();
+        var data = ClassData.GetClass().Value;
         return PlayerSpawnData.FromOmpData(ref data);
     }
 

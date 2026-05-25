@@ -23,6 +23,17 @@ public readonly struct Pair<T1, T2>
     public readonly T2 Second;
 
     /// <summary>
+    /// Initializes a new instance of the <see cref="Pair{T1,T2}" /> struct.
+    /// </summary>
+    /// <param name="first">The first value in the pair.</param>
+    /// <param name="second">The second value in the pair.</param>
+    public Pair(T1 first, T2 second)
+    {
+        First = first;
+        Second = second;
+    }
+
+    /// <summary>
     /// Deconstructs the pair into its two values.
     /// </summary>
     /// <param name="first">The first value from the pair.</param>
@@ -54,6 +65,6 @@ public readonly struct Pair<T1, T2>
     /// <param name="tuple">The tuple to convert.</param>
     public static implicit operator Pair<T1, T2>((T1 first,T2 second) tuple)
     {
-        return (tuple.first, tuple.second);
+        return new Pair<T1, T2>(tuple.first, tuple.second);
     }
 }

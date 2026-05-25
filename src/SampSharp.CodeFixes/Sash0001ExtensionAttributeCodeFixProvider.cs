@@ -84,8 +84,8 @@ public class Sash0001ExtensionAttributeCodeFixProvider : CodeFixProvider
                                                     id)))))))));
 
         var newRoot = root.ReplaceNode(classDeclaration, newClassDeclaration);
-        
-        if (root is CompilationUnitSyntax compilationUnit && compilationUnit.Usings.All(u => u.Name?.ToString() != "SampSharp.OpenMp.Core"))
+
+        if (newRoot is CompilationUnitSyntax compilationUnit && compilationUnit.Usings.All(u => u.Name?.ToString() != "SampSharp.OpenMp.Core"))
         {
             newRoot = compilationUnit.AddUsings(UsingDirective(ParseName("SampSharp.OpenMp.Core")));
         }

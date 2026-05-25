@@ -446,4 +446,97 @@ public class VehicleTests : TestBase
 
         _vehicle.SetParametersForPlayer(Player, parameters);
     }
+
+    [Fact]
+    public void Parameters_should_roundtrip()
+    {
+        var before = _vehicle.Parameters;
+        var updated = before with { Engine = VehicleParameterValue.On, Lights = VehicleParameterValue.Off };
+        _vehicle.Parameters = updated;
+
+        _vehicle.Parameters.Engine.ShouldBe(VehicleParameterValue.On);
+        _vehicle.Parameters.Lights.ShouldBe(VehicleParameterValue.Off);
+    }
+
+    [Fact]
+    public void SpawnData_get_should_succeed()
+    {
+        var data = _vehicle.SpawnData;
+        data.ModelId.ShouldBe((int)VehicleModelType.Landstalker);
+    }
+
+    [Fact]
+    public void NumberPlate_get_should_succeed()
+    {
+        _vehicle.SetNumberPlate("ABC123");
+        _vehicle.NumberPlate.ShouldBe("ABC123");
+    }
+
+    [Fact]
+    public void IsDead_should_be_false_initially()
+    {
+        _vehicle.IsDead.ShouldBeFalse();
+    }
+
+    [Fact]
+    public void IsOccupied_should_be_false_initially()
+    {
+        _vehicle.IsOccupied.ShouldBeFalse();
+    }
+
+    [Fact]
+    public void IsRespawning_should_be_true_initially()
+    {
+        _vehicle.IsRespawning.ShouldBeTrue();
+    }
+
+    [Fact]
+    public void IsTrailer_should_be_false_for_non_trailer()
+    {
+        _vehicle.IsTrailer.ShouldBeFalse();
+    }
+
+    [Fact]
+    public void RespawnDelay_should_roundtrip()
+    {
+        _vehicle.RespawnDelay = TimeSpan.FromSeconds(30);
+        _vehicle.RespawnDelay.ShouldBe(TimeSpan.FromSeconds(30));
+    }
+
+    [Fact]
+    public void Driver_should_be_null_when_unoccupied()
+    {
+        _vehicle.Driver.ShouldBeNull();
+    }
+
+    [Fact]
+    public void Cab_should_be_null_when_not_towed()
+    {
+        _vehicle.Cab.ShouldBeNull();
+    }
+
+    [Fact]
+    public void GetPassengers_should_succeed()
+    {
+        _ = _vehicle.GetPassengers();
+    }
+
+    [Fact]
+    public void StreamedForPlayers_should_succeed()
+    {
+        _ = _vehicle.StreamedForPlayers();
+    }
+
+    [Fact]
+    public void SetSiren_should_succeed()
+    {
+        _vehicle.SetSiren(true);
+        _vehicle.SetSiren(false);
+    }
+
+    [Fact]
+    public void LastDriverPoolID_should_succeed()
+    {
+        _ = _vehicle.LastDriverPoolID;
+    }
 }
