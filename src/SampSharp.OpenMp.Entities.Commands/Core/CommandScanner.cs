@@ -348,10 +348,16 @@ internal partial class CommandScanner(ISystemRegistry systemRegistry, IUnhandled
         {
             var param = parameters[i];
 
-            var paramName = param.Name ?? $"param{i}";
+            var paramAtribute = param.GetCustomAttribute<CommandParameterAttribute>();
+
+            var paramName = paramAtribute?.Name ?? param.Name ?? $"param{i}";
 
             // Try to get a parser for this parameter
-            var parser = parserFactory.CreateParser(parameters, i);
+            var parserInstance = paramAtribute?.ParserType is not null
+                ? Activator.CreateInstance(paramAtribute.ParserType)
+                : null;
+
+            var parser = parserInstance as ICommandParameterParser ?? parserFactory.CreateParser(parameters, i);
 
             if (parser == null)
             {

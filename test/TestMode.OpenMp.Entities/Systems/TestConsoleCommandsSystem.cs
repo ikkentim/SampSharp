@@ -43,4 +43,26 @@ public class TestConsoleCommandsSystem(IEntityManager entityManager) : ISystem
     {
         Console.WriteLine($"{a} + {b} = {a + b}");
     }
+
+    [ConsoleCommand(Name = "double_number")]
+    public void DoubleValueCommand([CommandParameter("value", typeof(DoubleIntParser))] int v)
+    {
+        Console.WriteLine(v);
+    }
+
+    private class DoubleIntParser : ICommandParameterParser
+    {
+        private readonly IntParser _inner = new();
+
+        public bool TryParse(IServiceProvider services, ref StringSpan inputText, out object? result)
+        {
+            if (_inner.TryParse(services, ref inputText, out result) && result is int num)
+            {
+                result = num * 2;
+                return true;
+            }
+
+            return false;
+        }
+    }
 }

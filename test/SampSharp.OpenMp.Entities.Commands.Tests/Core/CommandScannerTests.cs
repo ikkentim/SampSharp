@@ -159,6 +159,12 @@ public class CommandScannerTests
         public void HelpCommand(Player player) { }
     }
 
+    private class CommandWithCustomNameSystem : ISystem
+    {
+        [PlayerCommand]
+        public void MessageCommand(Player player, [CommandParameter("custom")]string text) { }
+    }
+
     private class InvalidReturnTypeSystem : ISystem
     {
         // int is not a valid return type for player commands
@@ -257,6 +263,21 @@ public class CommandScannerTests
 
         // Method is "HelpCommand" -> command name should be "help"
         FindByName(registry, "help").ShouldNotBeNull();
+    }
+
+    [Fact]
+    public void ScanPlayerCommands_ProvidesCustomName()
+    {
+        var registry = CreateCommandRegistry();
+        var scanner = CreateScanner(typeof(CommandWithCustomNameSystem));
+
+        scanner.ScanPlayerCommands(registry, CreateParserFactory());
+
+        FindByName(registry, "message")
+            .ShouldNotBeNull()
+            .ParsedParameters[0]
+            .Name
+            .ShouldBe("custom");
     }
 
     [Fact]
