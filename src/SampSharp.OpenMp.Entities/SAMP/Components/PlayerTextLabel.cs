@@ -14,7 +14,7 @@ public class PlayerTextLabel : WorldEntity
     /// <summary>
     /// Initializes a new instance of the <see cref="PlayerTextLabel" /> class.
     /// </summary>
-    protected PlayerTextLabel(IOmpEntityProvider entityProvider, IPlayerTextLabelData playerTextLabels, IPlayerTextLabel playerTextLabel) : base((IEntity)playerTextLabel)
+    protected PlayerTextLabel(IOmpEntityProvider entityProvider, IPlayerTextLabelData playerTextLabels, IPlayerTextLabel playerTextLabel) : base(playerTextLabel.HasValue ? (IEntity)playerTextLabel : default)
     {
         _entityProvider = entityProvider;
         _playerTextLabels = playerTextLabels;

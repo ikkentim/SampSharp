@@ -13,7 +13,7 @@ public class TextDraw : IdProvider
     /// <summary>
     /// Initializes a new instance of the <see cref="TextDraw" /> class.
     /// </summary>
-    protected TextDraw(ITextDrawsComponent textDraws, ITextDraw textDraw) : base((IIDProvider)textDraw)
+    protected TextDraw(ITextDrawsComponent textDraws, ITextDraw textDraw) : base(textDraw.HasValue ? (IIDProvider)textDraw : default)
     {
         _textDraws = textDraws;
         Resource = textDraw;

@@ -17,7 +17,7 @@ public class Player : WorldEntity
     /// <summary>
     /// Constructs an instance of <see cref="Player" />, should be used internally.
     /// </summary>
-    protected Player(IOmpEntityProvider entityProvider, IPlayer player) : base((IEntity)player)
+    protected Player(IOmpEntityProvider entityProvider, IPlayer player) : base(player.HasValue ? (IEntity)player : default)
     {
         _entityProvider = entityProvider;
         Resource = player;

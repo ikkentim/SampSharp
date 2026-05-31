@@ -13,7 +13,7 @@ public class Menu : IdProvider
     /// <summary>
     /// Initializes a new instance of the <see cref="Menu" /> class.
     /// </summary>
-    protected Menu(IMenusComponent menus, IMenu menu, string title) : base((IIDProvider)menu)
+    protected Menu(IMenusComponent menus, IMenu menu, string title) : base(menu.HasValue ? (IIDProvider)menu : default)
     {
         _menus = menus;
         Resource = menu;

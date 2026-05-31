@@ -14,7 +14,7 @@ public class Vehicle : WorldEntity
     /// <summary>
     /// Initializes a new instance of the <see cref="Vehicle" /> class.
     /// </summary>
-    protected Vehicle(IOmpEntityProvider entityProvider, IVehiclesComponent vehicles, IVehicle vehicle) : base((IEntity)vehicle)
+    protected Vehicle(IOmpEntityProvider entityProvider, IVehiclesComponent vehicles, IVehicle vehicle) : base(vehicle.HasValue ? (IEntity)vehicle : default)
     {
         _entityProvider = entityProvider;
         _vehicles = vehicles;

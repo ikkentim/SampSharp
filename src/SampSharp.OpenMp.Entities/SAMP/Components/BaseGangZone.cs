@@ -15,7 +15,7 @@ public abstract class BaseGangZone : IdProvider
     /// <summary>
     /// Initializes a new instance of the <see cref="BaseGangZone" /> class.
     /// </summary>
-    protected BaseGangZone(IOmpEntityProvider entityProvider, IGangZonesComponent gangZones, IGangZone gangZone) : base((IIDProvider)gangZone)
+    protected BaseGangZone(IOmpEntityProvider entityProvider, IGangZonesComponent gangZones, IGangZone gangZone) : base(gangZone.HasValue ? (IIDProvider)gangZone : default)
     {
         _entityProvider = entityProvider;
         Resource = gangZone;

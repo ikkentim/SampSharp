@@ -14,7 +14,7 @@ public class TextLabel : WorldEntity
     /// <summary>
     /// Initializes a new instance of the <see cref="TextLabel" /> class.
     /// </summary>
-    protected TextLabel(IOmpEntityProvider entityProvider, ITextLabelsComponent textLabels, ITextLabel textLabel) : base((IEntity)textLabel)
+    protected TextLabel(IOmpEntityProvider entityProvider, ITextLabelsComponent textLabels, ITextLabel textLabel) : base(textLabel.HasValue ? (IEntity)textLabel : default)
     {
         _entityProvider = entityProvider;
         _textLabels = textLabels;

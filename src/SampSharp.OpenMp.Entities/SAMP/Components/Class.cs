@@ -13,7 +13,7 @@ public class Class : IdProvider
     /// <summary>
     /// Initializes a new instance of the <see cref="Class" /> class.
     /// </summary>
-    protected Class(IClassesComponent classes, IClass playerClass) : base((IIDProvider)playerClass)
+    protected Class(IClassesComponent classes, IClass playerClass) : base(playerClass.HasValue ? (IIDProvider)playerClass : default)
     {
         _classes = classes;
         Resource = playerClass;

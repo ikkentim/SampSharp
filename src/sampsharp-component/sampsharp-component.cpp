@@ -78,6 +78,10 @@ void SampSharpComponent::onInit(IComponentList* components)
 
     const char* error = nullptr;
 
+    // 1) Load hostfxr: The .NET host framework resolver provides functionality for resolving and loading the correct 
+    // .NET runtime version based on the runtime configuration provided for the gamemode assembly. Hostfxr is part of
+    // the .NET runtime and is loaded from the installation directory of the runtime.
+    // The path to hostfxr is resolved using the thin nethost static library we include in our component.
     if (!managed_host_.initialize(&error))
     {
         core_->logLn(Error,
@@ -86,16 +90,21 @@ void SampSharpComponent::onInit(IComponentList* components)
         return;
     }
 
+    // 2) Load .NET runtime: Load the .NET runtime using hostfxr using the .runtimeconfig.json of the gamemode assembly.
     if (!managed_host_.loadFor(directory, assembly, &error))
     {
         core_->logLn(Error,
-                     "Failed to initialize the .NET runtime for '%s/%s'. Is the '*.runtimeconfig.json' file available? "
-                     "Is the .NET runtime available?",
+                     "Failed to initialize the .NET runtime for '%s/%s'. "
+                     "This may happen when the configured gamemode assembly or directory is incorrect, when the runtime"
+                     " configuration file (.runtimeconfig.json) for the gamemode assembly cannot be found or when the "
+                     "required .NET runtime version ins not installed. ",
                      directory.to_string().c_str(), assembly.to_string().c_str());
-        core_->logLn(Error, "Error message: %s", error);
+        core_->logLn(Error, "Error message returned by the .NET host framework resolver: %s", error);
         return;
     }
 
+    // 3) Load gamemode: Load the gamemode assembly and locate our SampSharp entrypoint. A function pointer to the
+    // managed entry point is retrieved.
     on_init_fn on_init;
     if (!managed_host_.getEntryPoint(full_entry_point, entry_point_method, reinterpret_cast<void**>(&on_init), &error))
     {

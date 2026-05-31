@@ -13,7 +13,7 @@ public class Actor : WorldEntity
     /// <summary>
     /// Initializes a new instance of the <see cref="Actor" /> class.
     /// </summary>
-    protected Actor(IActorsComponent actors, IActor actor) : base((IEntity)actor)
+    protected Actor(IActorsComponent actors, IActor actor) : base(actor.HasValue ? (IEntity)actor : default)
     {
         _actors = actors;
         Resource = actor;

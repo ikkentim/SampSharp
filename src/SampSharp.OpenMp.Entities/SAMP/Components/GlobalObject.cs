@@ -14,7 +14,7 @@ public class GlobalObject : WorldEntity
     /// <summary>
     /// Initializes a new instance of the <see cref="GlobalObject" /> class.
     /// </summary>
-    protected GlobalObject(IOmpEntityProvider entityProvider, IObjectsComponent objects, IObject @object) : base((IEntity)@object)
+    protected GlobalObject(IOmpEntityProvider entityProvider, IObjectsComponent objects, IObject @object) : base(@object.HasValue ? (IEntity)@object : default)
     {
         _entityProvider = entityProvider;
         _objects = objects;
