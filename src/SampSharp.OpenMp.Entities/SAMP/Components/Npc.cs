@@ -27,7 +27,7 @@ public class Npc : IdProvider
     /// <summary>
     /// Initializes a new instance of the <see cref="Npc" /> class.
     /// </summary>
-    protected Npc(INPCComponent npcs, INPC npc) : base((IIDProvider)npc)
+    protected Npc(INPCComponent npcs, INPC npc) : base(npc.HasValue ? (IIDProvider)npc : default)
     {
         _npcs = npcs;
         Resource = npc;

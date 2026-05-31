@@ -12,7 +12,7 @@ public abstract class WorldEntity : IdProvider
     /// Initializes a new instance of the <see cref="WorldEntity" /> class.
     /// </summary>
     /// <param name="entity">The open.mp entity this component represents.</param>
-    protected WorldEntity(IEntity entity) : base((IIDProvider)entity)
+    protected WorldEntity(IEntity entity) : base(entity.HasValue ? (IIDProvider)entity : default)
     {
         Resource = entity;
     }

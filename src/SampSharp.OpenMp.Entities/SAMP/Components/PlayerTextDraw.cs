@@ -13,7 +13,7 @@ public class PlayerTextDraw : IdProvider
     /// <summary>
     /// Initializes a new instance of the <see cref="PlayerTextDraw" /> class.
     /// </summary>
-    protected PlayerTextDraw(IPlayerTextDrawData playerTextDraws, IPlayerTextDraw playerTextDraw) : base((IIDProvider)playerTextDraw)
+    protected PlayerTextDraw(IPlayerTextDrawData playerTextDraws, IPlayerTextDraw playerTextDraw) : base(playerTextDraw.HasValue ? (IIDProvider)playerTextDraw : default)
     {
         _playerTextDraws = playerTextDraws;
         Resource = playerTextDraw;

@@ -14,7 +14,9 @@ public class PlayerObject : WorldEntity
     /// <summary>
     /// Initializes a new instance of the <see cref="PlayerObject" /> class.
     /// </summary>
-    protected PlayerObject(IOmpEntityProvider entityProvider, IPlayerObjectData playerObjects, IPlayerObject playerObject) : base((IEntity)playerObject)
+    protected PlayerObject(IOmpEntityProvider entityProvider, IPlayerObjectData playerObjects, IPlayerObject playerObject) : base(playerObject.HasValue
+        ? (IEntity)playerObject
+        : default)
     {
         _entityProvider = entityProvider;
         _playerObjects = playerObjects;

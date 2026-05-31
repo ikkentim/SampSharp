@@ -14,7 +14,7 @@ public abstract class BasePickup : WorldEntity
     /// <summary>
     /// Initializes a new instance of the <see cref="BasePickup" /> class.
     /// </summary>
-    protected BasePickup(IPickupsComponent pickups, IPickup pickup) : base((IEntity)pickup)
+    protected BasePickup(IPickupsComponent pickups, IPickup pickup) : base(pickup.HasValue ? (IEntity)pickup : default)
     {
         _pickups = pickups;
         Resource = pickup;

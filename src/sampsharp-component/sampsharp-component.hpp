@@ -3,53 +3,7 @@
 #include <sdk.hpp>
 
 #include "managed-host.hpp"
-#include "platform.hpp"
-
-struct SampSharpInfo
-{
-    SampSharpInfo(int api_version, SemanticVersion version) :
-        size(sizeof(SampSharpInfo)),
-        api_version(api_version),
-        version(version)
-    {
-    }
-
-    // sizeof(SampSharpInfo) for backwards compatibility
-    size_t size;
-    // version of SampSharp component <> hosted API. Version mismatch will cause launch failure.
-    int api_version;
-    // version of the SampSharp component
-    SemanticVersion version;
-};
-
-typedef void(API_CALLTYPE* on_cleanup_fn)();
-typedef void(API_CALLTYPE* on_free_component_fn)(IComponent* component);
-
-typedef void(API_CALLTYPE* configure_callback_fn)(void** cb);
-
-struct SampSharpInitParams
-{
-    SampSharpInitParams(ICore* core, IComponentList* componentList, SampSharpInfo* info,
-                        configure_callback_fn setOnCleanup, configure_callback_fn setOnFreeComponent) :
-        size(sizeof(SampSharpInitParams)),
-        info(info),
-        core(core),
-        componentList(componentList),
-        setOnCleanup(setOnCleanup),
-        setOnFreeComponent(setOnFreeComponent)
-    {
-    }
-
-    // sizeof(SampSharpInitParams) for backwards compatibility
-    size_t size;
-    SampSharpInfo* info;
-    ICore* core;
-    IComponentList* componentList;
-    configure_callback_fn setOnCleanup;
-    configure_callback_fn setOnFreeComponent;
-};
-
-typedef void(CORECLR_DELEGATE_CALLTYPE* on_init_fn)(SampSharpInitParams);
+#include "sampsharp-api.hpp"
 
 struct ISampSharpComponent : IComponent
 {
