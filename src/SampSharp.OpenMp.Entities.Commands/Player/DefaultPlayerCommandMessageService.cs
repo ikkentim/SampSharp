@@ -1,3 +1,5 @@
+using Microsoft.Extensions.Options;
+
 namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>
@@ -7,16 +9,20 @@ namespace SampSharp.Entities.SAMP.Commands;
 public class DefaultPlayerCommandMessageService : IPlayerCommandMessageService
 {
     private readonly ICommandTextFormatter _formatter;
+    private readonly PlayerCommandServiceOptions _options;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="DefaultPlayerCommandMessageService"/> class with the specified command text formatter.
     /// </summary>
     /// <param name="formatter">A formatter used to format command text.</param>
-    public DefaultPlayerCommandMessageService(ICommandTextFormatter formatter)
+    /// <param name="options">The command service options.</param>
+    public DefaultPlayerCommandMessageService(ICommandTextFormatter formatter, IOptions<PlayerCommandServiceOptions> options)
     {
         ArgumentNullException.ThrowIfNull(formatter);
+        ArgumentNullException.ThrowIfNull(options);
 
         _formatter = formatter;
+        _options = options.Value;
     }
 
     /// <inheritdoc />
@@ -48,11 +54,11 @@ public class DefaultPlayerCommandMessageService : IPlayerCommandMessageService
             }
 
             var text = _formatter.FormatCommandUsage(commandName, group, overload.ParsedParameters, includeSlash: true);
-            messages.Add($"Usage: {text}");
+            messages.Add($"{_options.UsageMessagePrefix} {text}");
         }
         else
         {
-            messages.Add("Usage:");
+            messages.Add(_options.UsageMessagePrefix);
             foreach (var overload in overloads)
             {
                 // If usedCommandName is provided (e.g., an alias), use it as the complete path without the group
@@ -78,7 +84,7 @@ public class DefaultPlayerCommandMessageService : IPlayerCommandMessageService
 
         foreach (var message in messages)
         {
-            player.SendClientMessage(message);
+            player.SendClientMessage(_options.UsageMessageColor, message);
         }
     }
 
