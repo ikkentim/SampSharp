@@ -20,27 +20,27 @@ internal sealed partial class EcsHost(IServiceProvider serviceProvider, Unhandle
 
         context.UnhandledExceptionHandler = UnhandledExceptionHandler;
 
-        context.Cleanup += ContextOnCleanup;
-
         LoadSystems();
 
         // Fire initial event
         OnGameModeInit();
     }
 
-    private void ContextOnCleanup(object? sender, EventArgs e)
+    protected override void Dispose(bool disposing)
     {
-        _context?.Cleanup -= ContextOnCleanup;
-        _context = null;
-
-        OnGameModeExit();
-
-        if (_serviceProvider is IDisposable disposable)
+        if (disposing)
         {
-            disposable.Dispose();
-        }
+            OnGameModeExit();
 
-        _serviceProvider = null;
+            if (_serviceProvider is IDisposable disposable)
+            {
+                disposable.Dispose();
+            }
+
+            _context?.ResetExceptionHandler();
+            _context = null;
+            _serviceProvider = null;
+        }
     }
 
     private void UnhandledExceptionHandler(string context, Exception exception)

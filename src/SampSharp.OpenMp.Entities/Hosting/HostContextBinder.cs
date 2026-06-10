@@ -12,6 +12,7 @@ internal sealed class HostContextBinder(IStartupContext context, EcsHostBuilder 
     public void Dispose()
     {
         context.Initialized -= OnContextInitialized;
+        context.Ready -= OnContextReady;
         context.Cleanup -= OnContextCleanup;
 
         _host?.Dispose();
@@ -20,6 +21,7 @@ internal sealed class HostContextBinder(IStartupContext context, EcsHostBuilder 
     public void Bind()
     {
         context.Initialized += OnContextInitialized;
+        context.Ready += OnContextReady;
         context.Cleanup += OnContextCleanup;
     }
 
@@ -27,7 +29,11 @@ internal sealed class HostContextBinder(IStartupContext context, EcsHostBuilder 
     {
         _host = hostBuilder.Build(context);
         context.Core.AddExtension(_host);
-        _host.Start(context);
+    }
+
+    private void OnContextReady(object? sender, EventArgs e)
+    {
+        _host?.Start(context);
     }
 
     private void OnContextCleanup(object? sender, EventArgs e)

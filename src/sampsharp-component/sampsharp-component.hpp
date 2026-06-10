@@ -17,6 +17,7 @@ private:
     ManagedHost managed_host_{};
     inline static SampSharpComponent* instance_ = nullptr;
     on_cleanup_fn on_cleanup_ = nullptr;
+    on_ready_fn on_ready_ = nullptr;
     on_free_component_fn on_free_component_ = nullptr;
 
 public:
@@ -39,6 +40,8 @@ public:
     void reset() override;
 
     void setOnCleanup(on_cleanup_fn cb) { on_cleanup_ = cb; }
+
+    void setOnReady(on_ready_fn cb) { on_ready_ = cb; }
 
     void setOnFreeComponent(on_free_component_fn cb) { on_free_component_ = cb; }
 

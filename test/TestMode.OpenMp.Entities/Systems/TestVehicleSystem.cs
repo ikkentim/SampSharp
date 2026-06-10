@@ -1,5 +1,4 @@
 ﻿using System.Numerics;
-using Microsoft.Extensions.Logging;
 using SampSharp.Entities;
 using SampSharp.Entities.SAMP;
 using TestMode.OpenMp.Entities.Components;

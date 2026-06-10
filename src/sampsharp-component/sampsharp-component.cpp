@@ -18,6 +18,11 @@ static void __CDECL __setOnFreeComponent(void** cb)
     SampSharpComponent::getInstance()->setOnFreeComponent((on_free_component_fn)cb);
 }
 
+static void __CDECL __setOnReadyComponent(void** cb)
+{
+    SampSharpComponent::getInstance()->setOnReady((on_ready_fn)cb);
+}
+
 StringView SampSharpComponent::componentName() const
 {
     return "SampSharp";
@@ -115,13 +120,17 @@ void SampSharpComponent::onInit(IComponentList* components)
     }
 
     SampSharpInfo info{VERSION_API, componentVersion()};
-    SampSharpInitParams init{core_, components, &info, __setOnCleanup, __setOnFreeComponent};
+    SampSharpInitParams init{core_, components, &info, __setOnCleanup, __setOnFreeComponent, __setOnReadyComponent};
 
     on_init(init);
 }
 
 void SampSharpComponent::onReady()
 {
+    if (on_ready_)
+    {
+        on_ready_();
+    }
 }
 
 void SampSharpComponent::free()

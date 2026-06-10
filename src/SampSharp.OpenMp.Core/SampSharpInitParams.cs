@@ -41,4 +41,9 @@ public readonly ref struct SampSharpInitParams
     /// Gets a pointer to an unmanaged function that configures a callback to be invoked when a component is being freed.
     /// </summary>
     public readonly unsafe delegate* unmanaged[Cdecl]<nint, void> SetOnFreeComponent;
+
+    /// <summary>
+    /// Gets a pointer to an unmanaged function that configures a ready callback to be invoked.
+    /// </summary>
+    public readonly unsafe delegate* unmanaged[Cdecl]<nint, void> SetOnReady;
 }

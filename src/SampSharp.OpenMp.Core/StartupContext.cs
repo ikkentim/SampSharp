@@ -11,6 +11,7 @@ public sealed class StartupContext : IStartupContext
     // Delegates must be kept in memory to prevent GC
     // ReSharper disable PrivateFieldCanBeConvertedToLocalVariable
     private readonly Action _cleanup;
+    private readonly Action _ready;
     private readonly OnFreeComponentDelegate _freeComponent;
     // ReSharper restore PrivateFieldCanBeConvertedToLocalVariable
 
@@ -21,7 +22,6 @@ public sealed class StartupContext : IStartupContext
     private const int SupportedApiVersion = 1;
 
     private IStartup? _configurator;
-    private ExceptionHandler _unhandledExceptionHandler;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="StartupContext" /> class.
@@ -33,23 +33,21 @@ public sealed class StartupContext : IStartupContext
         Core = init.Core;
         ComponentList = init.ComponentList;
         Info = init.Info;
-        _unhandledExceptionHandler = (context, ex) =>
-        {
-            Core.LogLine(LogLevel.Error, $"Unhandled exception during {context}:");
-            Core.LogLine(LogLevel.Error, ex.ToString());
-        };
-        SampSharpExceptionHandler.SetExceptionHandler(_unhandledExceptionHandler);
+        UnhandledExceptionHandler = FallbackExceptionHandler;
 
         // Keep delegates in memory to prevent GC
         _cleanup = OnCleanup;
+        _ready = OnReady;
         _freeComponent = OnFreeComponent;
 
         var cleanupPtr = Marshal.GetFunctionPointerForDelegate(_cleanup);
+        var readyPtr = Marshal.GetFunctionPointerForDelegate(_ready);
         var freeComponentPtr = Marshal.GetFunctionPointerForDelegate(_freeComponent);
 
         unsafe
         {
             init.SetOnCleanup(cleanupPtr);
+            init.SetOnReady(readyPtr);
             init.SetOnFreeComponent(freeComponentPtr);
         }
     }
@@ -69,16 +67,25 @@ public sealed class StartupContext : IStartupContext
     /// <inheritdoc />
     public ExceptionHandler UnhandledExceptionHandler
     {
-        get => _unhandledExceptionHandler;
+        get;
         set
         {
-            _unhandledExceptionHandler = value;
+            field = value;
             SampSharpExceptionHandler.SetExceptionHandler(value);
         }
     }
 
     /// <inheritdoc />
+    public void ResetExceptionHandler()
+    {
+        UnhandledExceptionHandler = FallbackExceptionHandler;
+    }
+
+    /// <inheritdoc />
     public event EventHandler? Cleanup;
+
+    /// <inheritdoc />
+    public event EventHandler? Ready;
 
     /// <inheritdoc />
     public event EventHandler? Initialized;
@@ -131,9 +138,20 @@ public sealed class StartupContext : IStartupContext
         }
     }
 
+    private void FallbackExceptionHandler(string context, Exception ex)
+    {
+        Core.LogLine(LogLevel.Error, $"Unhandled exception during {context}:");
+        Core.LogLine(LogLevel.Error, ex.ToString());
+    }
+
     private void OnCleanup()
     {
         Cleanup?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void OnReady()
+    {
+        Ready?.Invoke(this, EventArgs.Empty);
     }
 
     private void OnFreeComponent(IComponent component)
