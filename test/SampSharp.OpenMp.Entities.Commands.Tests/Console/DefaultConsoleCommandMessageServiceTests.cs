@@ -1,4 +1,5 @@
 using System.Reflection;
+using Microsoft.Extensions.Options;
 using Moq;
 using SampSharp.Entities;
 using SampSharp.Entities.SAMP.Commands;
@@ -35,7 +36,7 @@ public class DefaultConsoleCommandMessageServiceTests
     [Fact]
     public void Constructor_NullFormatter_ThrowsArgumentNullException()
     {
-        Should.Throw<ArgumentNullException>(() => new DefaultConsoleCommandMessageService(null!));
+        Should.Throw<ArgumentNullException>(() => new DefaultConsoleCommandMessageService(null!, null!));
     }
 
     [Fact]
@@ -44,10 +45,13 @@ public class DefaultConsoleCommandMessageServiceTests
         var messages = new List<string>();
         var context = new ConsoleCommandDispatchContext(null, messages.Add);
         var formatterMock = new Mock<ICommandTextFormatter>();
+        var optionsMock = new Mock<IOptions<ConsoleCommandServiceOptions>>();
         formatterMock.Setup(f => f.FormatCommandUsage(It.IsAny<string>(), It.IsAny<string?>(), It.IsAny<CommandParameterInfo[]>(), It.IsAny<bool>()))
             .Returns("test <amount>");
+        optionsMock.Setup(f => f.Value)
+            .Returns(new ConsoleCommandServiceOptions());
 
-        var service = new DefaultConsoleCommandMessageService(formatterMock.Object);
+        var service = new DefaultConsoleCommandMessageService(formatterMock.Object, optionsMock.Object);
         var overload = CreateDefinition("test");
 
         service.SendUsage(context, new[] { overload });
@@ -62,10 +66,13 @@ public class DefaultConsoleCommandMessageServiceTests
         var messages = new List<string>();
         var context = new ConsoleCommandDispatchContext(null, messages.Add);
         var formatterMock = new Mock<ICommandTextFormatter>();
+        var optionsMock = new Mock<IOptions<ConsoleCommandServiceOptions>>();
         formatterMock.Setup(f => f.FormatCommandUsage(It.IsAny<string>(), It.IsAny<string?>(), It.IsAny<CommandParameterInfo[]>(), It.IsAny<bool>()))
             .Returns("formatted");
+        optionsMock.Setup(f => f.Value)
+            .Returns(new ConsoleCommandServiceOptions());
 
-        var service = new DefaultConsoleCommandMessageService(formatterMock.Object);
+        var service = new DefaultConsoleCommandMessageService(formatterMock.Object, optionsMock.Object);
         var overload1 = CreateDefinition("test");
         var overload2 = CreateDefinition("test");
 
@@ -82,11 +89,14 @@ public class DefaultConsoleCommandMessageServiceTests
         string? capturedName = null;
         var context = new ConsoleCommandDispatchContext(null, _ => { });
         var formatterMock = new Mock<ICommandTextFormatter>();
+        var optionsMock = new Mock<IOptions<ConsoleCommandServiceOptions>>();
         formatterMock.Setup(f => f.FormatCommandUsage(It.IsAny<string>(), It.IsAny<string?>(), It.IsAny<CommandParameterInfo[]>(), It.IsAny<bool>()))
             .Callback((string name, string? group, CommandParameterInfo[] _, bool _) => capturedName = name)
             .Returns("formatted");
+        optionsMock.Setup(f => f.Value)
+            .Returns(new ConsoleCommandServiceOptions());
 
-        var service = new DefaultConsoleCommandMessageService(formatterMock.Object);
+        var service = new DefaultConsoleCommandMessageService(formatterMock.Object, optionsMock.Object);
         var overload = CreateDefinition("message");
 
         service.SendUsage(context, new[] { overload }, usedCommandName: "pm");
@@ -100,11 +110,14 @@ public class DefaultConsoleCommandMessageServiceTests
         bool? capturedIncludeSlash = null;
         var context = new ConsoleCommandDispatchContext(null, _ => { });
         var formatterMock = new Mock<ICommandTextFormatter>();
+        var optionsMock = new Mock<IOptions<ConsoleCommandServiceOptions>>();
         formatterMock.Setup(f => f.FormatCommandUsage(It.IsAny<string>(), It.IsAny<string?>(), It.IsAny<CommandParameterInfo[]>(), It.IsAny<bool>()))
             .Callback((string _, string? _, CommandParameterInfo[] _, bool includeSlash) => capturedIncludeSlash = includeSlash)
             .Returns("formatted");
+        optionsMock.Setup(f => f.Value)
+            .Returns(new ConsoleCommandServiceOptions());
 
-        var service = new DefaultConsoleCommandMessageService(formatterMock.Object);
+        var service = new DefaultConsoleCommandMessageService(formatterMock.Object, optionsMock.Object);
         var overload = CreateDefinition("test");
 
         service.SendUsage(context, new[] { overload });
@@ -117,10 +130,13 @@ public class DefaultConsoleCommandMessageServiceTests
     {
         var context = new ConsoleCommandDispatchContext(null, _ => { });
         var formatterMock = new Mock<ICommandTextFormatter>();
+        var optionsMock = new Mock<IOptions<ConsoleCommandServiceOptions>>();
         formatterMock.Setup(f => f.FormatCommandUsage(It.IsAny<string>(), It.IsAny<string?>(), It.IsAny<CommandParameterInfo[]>(), It.IsAny<bool>()))
             .Returns("formatted");
+        optionsMock.Setup(f => f.Value)
+            .Returns(new ConsoleCommandServiceOptions());
 
-        var service = new DefaultConsoleCommandMessageService(formatterMock.Object);
+        var service = new DefaultConsoleCommandMessageService(formatterMock.Object, optionsMock.Object);
         var overload = CreateDefinition("test");
 
         var result = service.SendUsage(context, new[] { overload });

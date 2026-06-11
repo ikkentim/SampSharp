@@ -1,3 +1,5 @@
+using Microsoft.Extensions.Options;
+
 namespace SampSharp.Entities.SAMP.Commands;
 
 /// <summary>
@@ -7,16 +9,20 @@ namespace SampSharp.Entities.SAMP.Commands;
 internal class DefaultConsoleCommandMessageService : IConsoleCommandMessageService
 {
     private readonly ICommandTextFormatter _formatter;
+    private readonly ConsoleCommandServiceOptions _options;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="DefaultConsoleCommandMessageService"/> class with the specified command text formatter.
     /// </summary>
     /// <param name="formatter">A formatter used to format command text.</param>
-    public DefaultConsoleCommandMessageService(ICommandTextFormatter formatter)
+    /// <param name="options">The command service options.</param>
+    public DefaultConsoleCommandMessageService(ICommandTextFormatter formatter, IOptions<ConsoleCommandServiceOptions> options)
     {
         ArgumentNullException.ThrowIfNull(formatter);
+        ArgumentNullException.ThrowIfNull(options);
 
         _formatter = formatter;
+        _options = options.Value;
     }
 
     /// <inheritdoc />
@@ -43,11 +49,11 @@ internal class DefaultConsoleCommandMessageService : IConsoleCommandMessageServi
 
             var text = _formatter.FormatCommandUsage(commandName, group, overload.ParsedParameters, includeSlash: false);
 
-            context.SendMessage($"Usage: {text}");
+            context.SendMessage($"{_options.UsageMessagePrefix} {text}");
         }
         else
         {
-            context.SendMessage("Usage:");
+            context.SendMessage(_options.UsageMessagePrefix);
             foreach (var overload in overloads)
             {
                 // If usedCommandName is provided (e.g., an alias), use it as the complete path without the group
