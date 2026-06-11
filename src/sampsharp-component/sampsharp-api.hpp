@@ -30,10 +30,13 @@ struct SampSharpInfo
 // Delegate type for the cleanup callback, called when the component is unloaded during shutdown.
 typedef void(API_CALLTYPE* on_cleanup_fn)();
 
+// Delegate type for the ready callback, called when all components are loaded open.mp is ready.
+typedef void(API_CALLTYPE* on_ready_fn)();
+
 // Delegate type for the on_free_component callback, called when a component is freed.
 typedef void(API_CALLTYPE* on_free_component_fn)(IComponent* component);
 
-// Delegate type for the configure callback function, used to set the on_cleanup and on_free_component callbacks.
+// Delegate type for the configure callback function, used to set the various callbacks.
 typedef void(API_CALLTYPE* configure_callback_fn)(void** cb);
 
 // Parameters for initializing the managed component, passed to the on_init callback.
@@ -43,13 +46,15 @@ typedef void(API_CALLTYPE* configure_callback_fn)(void** cb);
 struct SampSharpInitParams
 {
     SampSharpInitParams(ICore* core, IComponentList* componentList, SampSharpInfo* info,
-                        configure_callback_fn setOnCleanup, configure_callback_fn setOnFreeComponent) :
+                        configure_callback_fn setOnCleanup, configure_callback_fn setOnFreeComponent, 
+                        configure_callback_fn setOnReady) :
         size(sizeof(SampSharpInitParams)),
         info(info),
         core(core),
         componentList(componentList),
         setOnCleanup(setOnCleanup),
-        setOnFreeComponent(setOnFreeComponent)
+        setOnFreeComponent(setOnFreeComponent),
+        setOnReady(setOnReady)
     {
     }
 
@@ -65,8 +70,10 @@ struct SampSharpInitParams
     configure_callback_fn setOnCleanup;
     // Function to configure a onFreeComponent callback. Callback should have signature configure_callback_fn.
     configure_callback_fn setOnFreeComponent;
+    // Function to configure a ready callback. Callback should have signature on_ready_fn.
+    configure_callback_fn setOnReady;
 };
 
 // Delegate type for the on_init callback, called when the component is loaded. The callback should initialize the
-// managed component and optionally set the on_cleanup and on_free_component callbacks.
+// managed component and optionally set the various callbacks.
 typedef void(CORECLR_DELEGATE_CALLTYPE* on_init_fn)(SampSharpInitParams);

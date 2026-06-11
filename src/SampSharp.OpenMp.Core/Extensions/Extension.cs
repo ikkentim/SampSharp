@@ -43,10 +43,26 @@ public abstract partial class Extension : IDisposable
     /// </summary>
     public void Dispose()
     {
+        if (IsDisposed)
+        {
+            return;
+        }
+
         Detach();
 
         FreeUnmanagedResources();
         GC.SuppressFinalize(this);
+
+        Dispose(true);
+    }
+
+    /// <summary>
+    /// When overridden in a derived class, performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources. This method is called by the public <see cref="Dispose" /> method and the finalizer.
+    /// </summary>
+    /// <param name="disposing"><see langword="true" /> if called from <see cref="Dispose" />; <see langword="false" /> if called from the finalizer.</param>
+    protected virtual void Dispose(bool disposing)
+    {
+
     }
 
     /// <summary>
@@ -57,6 +73,8 @@ public abstract partial class Extension : IDisposable
         // Theoretically, this should never be called, as one of the unmanaged resources is a GC handle pointing to this
         // object. But just to be sure, we'll free the resources here as well.
         FreeUnmanagedResources();
+
+        Dispose(false);
     }
 
     /// <summary>

@@ -43,7 +43,17 @@ public interface IStartupContext
     event EventHandler? Initialized;
 
     /// <summary>
+    /// Occurs when the server is ready to run the gamemode.
+    /// </summary>
+    event EventHandler? Ready;
+
+    /// <summary>
     /// Occurs when an open.mp component is being freed. The component which is being freed is passed as an argument.
     /// </summary>
     event EventHandler<IComponent>? ComponentFreed;
+
+    /// <summary>
+    /// Resets the unhandled exception handler to the default handler provided by SampSharp.
+    /// </summary>
+    void ResetExceptionHandler();
 }

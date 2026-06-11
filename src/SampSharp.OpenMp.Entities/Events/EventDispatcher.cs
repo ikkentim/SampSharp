@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -26,7 +27,8 @@ internal sealed partial class EventDispatcher : IEventDispatcher, IEventService
     /// <summary>
     /// Initializes a new instance of the <see cref="EventDispatcher" /> class.
     /// </summary>
-    public EventDispatcher(IServiceProvider serviceProvider, IEntityManager entityManager, ILogger<EventDispatcher> logger, ISystemRegistry systemRegistry, IUnhandledExceptionHandler unhandledExceptionHandler)
+    public EventDispatcher(IServiceProvider serviceProvider, IEntityManager entityManager, ILogger<EventDispatcher> logger, ISystemRegistry systemRegistry,
+        IUnhandledExceptionHandler unhandledExceptionHandler)
     {
         _serviceProvider = serviceProvider;
         _entityManager = entityManager;
@@ -54,7 +56,7 @@ internal sealed partial class EventDispatcher : IEventDispatcher, IEventService
             return;
         }
 
-        if(!@event.Cache.TryGetValue(NullValue.Instance, out var invoke))
+        if (!@event.Cache.TryGetValue(NullValue.Instance, out var invoke))
         {
             invoke = CreateEventInvoke(@event, null);
             @event.Cache.TryAdd(NullValue.Instance, invoke);
@@ -62,7 +64,7 @@ internal sealed partial class EventDispatcher : IEventDispatcher, IEventService
 
         var result = invoke(arguments);
 
-        if(result is Task task)
+        if (result is Task task)
         {
             HandleTask(task);
         }
@@ -79,7 +81,7 @@ internal sealed partial class EventDispatcher : IEventDispatcher, IEventService
         }
 
         var defaultKey = defaultValue ?? (object)NullValue.Instance;
-        if(!@event.Cache.TryGetValue(defaultKey, out var invoke))
+        if (!@event.Cache.TryGetValue(defaultKey, out var invoke))
         {
             invoke = CreateEventInvoke(@event, defaultValue);
             @event.Cache.TryAdd(defaultKey, invoke);
@@ -98,12 +100,12 @@ internal sealed partial class EventDispatcher : IEventDispatcher, IEventService
             return resultAsT;
         }
 
-        if(result is Task<T> { IsCompleted: true } taskT)
+        if (result is Task<T> { IsCompleted: true } taskT)
         {
             return taskT.Result;
         }
 
-        if(result is Task task)
+        if (result is Task task)
         {
             HandleTask(task);
         }
@@ -148,10 +150,11 @@ internal sealed partial class EventDispatcher : IEventDispatcher, IEventService
         return @event;
     }
 
+    [DebuggerHidden]
     private object? InnerInvoke(EventContext context, Event @event, object? defaultResult)
     {
         object? result = null;
-        
+
         foreach (var targetSite in @event.TargetSites)
         {
             targetSite.Target ??= _serviceProvider.GetService(targetSite.TargetType);
@@ -240,7 +243,7 @@ internal sealed partial class EventDispatcher : IEventDispatcher, IEventService
         var compiled = MethodInvokerFactory.Compile(method, parameterInfos);
         var targetSiteName = $"{method.DeclaringType?.FullName}.{method.Name}";
 
-        return new TargetSiteData(target, (instance, eventContext) =>
+        return new TargetSiteData(target, [DebuggerHidden](instance, eventContext) =>
         {
             try
             {
@@ -250,9 +253,10 @@ internal sealed partial class EventDispatcher : IEventDispatcher, IEventService
                     return compiled.Invoke(instance, args, eventContext.EventServices, _entityManager);
                 }
 
-                LogEventArgumentsCountMismatch(eventContext.Name, args.Length, targetSiteName, string.Join(", ", method.GetParameters().Select(p => $"{p.ParameterType.Name} {p.Name}")), sourceParamCount);
+                LogEventArgumentsCountMismatch(eventContext.Name, args.Length, targetSiteName,
+                    string.Join(", ", method.GetParameters().Select(p => $"{p.ParameterType.Name} {p.Name}")), sourceParamCount);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 SampSharpExceptionHandler.HandleException(targetSiteName, ex);
             }
@@ -269,20 +273,20 @@ internal sealed partial class EventDispatcher : IEventDispatcher, IEventService
         var context = new EventContextImpl(@event.Name, _serviceProvider);
 
         // In order to chain the middleware from first to last, the middleware must be nested from last to first
-        EventDelegate invoke = ctx => InnerInvoke(ctx, @event, defaultResult);
+        EventDelegate invoke = [DebuggerHidden](ctx) => InnerInvoke(ctx, @event, defaultResult);
         for (var i = @event.Middleware.Count - 1; i >= 0; i--)
         {
             invoke = @event.Middleware[i](invoke);
         }
 
-        return args =>
+        return [DebuggerHidden](args) =>
         {
             try
             {
                 context.SetArguments(args);
                 return invoke(context);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 SampSharpExceptionHandler.HandleException(@event.Name, ex);
                 return null;
@@ -318,6 +322,7 @@ internal sealed partial class EventDispatcher : IEventDispatcher, IEventService
     [LoggerMessage(LogLevel.Debug, "Adding event listener on {Type}.{Method}.")]
     private partial void LogAddingEventListener(Type? type, string method);
 
-    [LoggerMessage(LogLevel.Error, "Event \"{EventName}\" argument count mismatch: dispatcher passed {ArgsLength} arg(s), handler {TargetSite}({HandlerParams}) expects {SourceParamCount}")]
+    [LoggerMessage(LogLevel.Error,
+        "Event \"{EventName}\" argument count mismatch: dispatcher passed {ArgsLength} arg(s), handler {TargetSite}({HandlerParams}) expects {SourceParamCount}")]
     partial void LogEventArgumentsCountMismatch(string eventName, int argsLength, string targetSite, string handlerParams, int sourceParamCount);
 }
