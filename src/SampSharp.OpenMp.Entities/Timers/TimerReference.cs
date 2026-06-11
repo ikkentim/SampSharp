@@ -18,7 +18,15 @@ public class TimerReference
     /// <summary>
     /// Gets the time span until the next tick of this timer.
     /// </summary>
-    public TimeSpan NextTick => new(Info.NextTick - Stopwatch.GetTimestamp());
+    public TimeSpan NextTick
+    {
+        get
+        {
+            // Difference between future tick and current time (both in Stopwatch ticks).
+            long delta = Info.NextTick - Stopwatch.GetTimestamp();
+            return StopwatchTime.ToTimeSpan(delta);
+        }
+    }
 
     internal TimerInfo Info { get; set; }
 

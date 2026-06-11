@@ -42,6 +42,8 @@ internal sealed partial class TimerSystem : ITickingSystem, ITimerService
         {
             var timer = _timers[i];
 
+            // IMPORTANT:
+            // Both NextTick and timestamp are in Stopwatch ticks, so the comparison is valid across platforms.
             while (timer.NextTick <= timestamp)
             {
                 try
@@ -97,7 +99,15 @@ internal sealed partial class TimerSystem : ITickingSystem, ITimerService
             throw new ArgumentOutOfRangeException(nameof(interval), interval, "The interval should be a nonzero positive value.");
         }
 
-        var invoker = new TimerInfo(intervalTicks: interval.Ticks, nextTick: Stopwatch.GetTimestamp() + interval.Ticks, invoke: null!, true);
+        long intervalTicks = StopwatchTime.ToStopwatchTicks(interval);
+        var invoker = new TimerInfo(
+            intervalTicks: intervalTicks, 
+            // IMPORTANT: 
+            // Keeping everything in Stopwatch ticks ensures correct behavior cross-plataform.
+            nextTick: Stopwatch.GetTimestamp() + intervalTicks, 
+            invoke: null!, 
+            isActive: true
+        );
 
         var reference = new TimerReference(invoker, action.Target, action.Method);
 
@@ -157,11 +167,15 @@ internal sealed partial class TimerSystem : ITickingSystem, ITimerService
                 LogLowInterval(target, method.Name, attribute.IntervalTimeSpan);
             }
 
+            long intervalTicks = StopwatchTime.ToStopwatchTicks(attribute.IntervalTimeSpan);
             var timer = new TimerInfo(
-                intervalTicks: attribute.IntervalTimeSpan.Ticks, 
-                nextTick: tick + attribute.IntervalTimeSpan.Ticks, 
+                intervalTicks: intervalTicks,
+                // IMPORTANT: 
+                // Keeping everything in Stopwatch ticks ensures correct behavior cross-plataform.
+                nextTick: tick + intervalTicks, 
                 invoke: () => compiled(service, null, _serviceProvider, null), 
-                isActive: true);
+                isActive: true
+            );
 
             timer.Reference = new TimerReference(timer, service, method);
 
