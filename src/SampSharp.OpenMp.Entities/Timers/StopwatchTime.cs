@@ -15,9 +15,7 @@ internal static class StopwatchTime
     /// of Stopwatch ticks so both values can be used in the same time system.
     /// </summary>
     public static long ToStopwatchTicks(TimeSpan time)
-    {
-        return (long)(time.TotalSeconds * Stopwatch.Frequency);
-    }
+        => (long)(time.TotalSeconds * Stopwatch.Frequency);
 
     /// <summary>
     /// Converts Stopwatch ticks to a TimeSpan.
@@ -27,7 +25,5 @@ internal static class StopwatchTime
     /// a TimeSpan using Stopwatch.Frequency.
     /// </summary>
     public static TimeSpan ToTimeSpan(long stopwatchTicks)
-    {
-        return TimeSpan.FromSeconds(stopwatchTicks / (double)Stopwatch.Frequency);
-    }
+        => TimeSpan.FromSeconds(stopwatchTicks / (double)Stopwatch.Frequency);
 }
