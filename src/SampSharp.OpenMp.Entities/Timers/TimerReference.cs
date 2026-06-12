@@ -22,9 +22,8 @@ public class TimerReference
     {
         get
         {
-            // Difference between future tick and current time (both in Stopwatch ticks).
-            long delta = Info.NextTick - Stopwatch.GetTimestamp();
-            return StopwatchTime.ToTimeSpan(delta);
+            long remainingStopwatchTicks = Info.NextTick - Stopwatch.GetTimestamp();
+            return StopwatchTime.ToTimeSpan(remainingStopwatchTicks);
         }
     }
 

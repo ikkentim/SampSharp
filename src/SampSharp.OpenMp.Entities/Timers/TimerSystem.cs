@@ -99,12 +99,12 @@ internal sealed partial class TimerSystem : ITickingSystem, ITimerService
             throw new ArgumentOutOfRangeException(nameof(interval), interval, "The interval should be a nonzero positive value.");
         }
 
-        long intervalTicks = StopwatchTime.ToStopwatchTicks(interval);
+        long intervalStopwatchTicks = StopwatchTime.ToStopwatchTicks(interval);
         var invoker = new TimerInfo(
-            intervalTicks: intervalTicks, 
+            intervalTicks: intervalStopwatchTicks, 
             // IMPORTANT: 
             // Keeping everything in Stopwatch ticks ensures correct behavior cross-plataform.
-            nextTick: Stopwatch.GetTimestamp() + intervalTicks, 
+            nextTick: Stopwatch.GetTimestamp() + intervalStopwatchTicks, 
             invoke: null!, 
             isActive: true
         );
@@ -167,12 +167,12 @@ internal sealed partial class TimerSystem : ITickingSystem, ITimerService
                 LogLowInterval(target, method.Name, attribute.IntervalTimeSpan);
             }
 
-            long intervalTicks = StopwatchTime.ToStopwatchTicks(attribute.IntervalTimeSpan);
+            long intervalStopwatchTicks = StopwatchTime.ToStopwatchTicks(attribute.IntervalTimeSpan);
             var timer = new TimerInfo(
-                intervalTicks: intervalTicks,
+                intervalTicks: intervalStopwatchTicks,
                 // IMPORTANT: 
                 // Keeping everything in Stopwatch ticks ensures correct behavior cross-plataform.
-                nextTick: tick + intervalTicks, 
+                nextTick: tick + intervalStopwatchTicks, 
                 invoke: () => compiled(service, null, _serviceProvider, null), 
                 isActive: true
             );
