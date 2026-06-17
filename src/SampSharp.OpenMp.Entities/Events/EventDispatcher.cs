@@ -167,6 +167,11 @@ internal sealed partial class EventDispatcher : IEventDispatcher, IEventService
 
             var targetResult = targetSite.Invoke(targetSite.Target, context);
 
+            if (targetResult is Task task)
+            {
+                HandleTask(task);
+            }
+
             // Do not consider default result as invocation result
             if (targetResult is null || targetResult == defaultResult)
             {
