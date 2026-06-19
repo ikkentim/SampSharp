@@ -62,12 +62,7 @@ internal sealed partial class EventDispatcher : IEventDispatcher, IEventService
             @event.Cache.TryAdd(NullValue.Instance, invoke);
         }
 
-        var result = invoke(arguments);
-
-        if (result is Task task)
-        {
-            HandleTask(task);
-        }
+        invoke(arguments);
     }
 
     [return: NotNullIfNotNull(nameof(defaultValue))]
@@ -103,11 +98,6 @@ internal sealed partial class EventDispatcher : IEventDispatcher, IEventService
         if (result is Task<T> { IsCompleted: true } taskT)
         {
             return taskT.Result;
-        }
-
-        if (result is Task task)
-        {
-            HandleTask(task);
         }
 
         return defaultValue;
