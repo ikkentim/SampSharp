@@ -94,8 +94,10 @@ public class DefaultPlayerCommandMessageService : IPlayerCommandMessageService
         ArgumentNullException.ThrowIfNull(player);
         ArgumentNullException.ThrowIfNull(overload);
 
-        const string message = "You do not have permission to use this command.";
-        player.SendClientMessage(message);
+        if (_options.PermissionDeniedMessage is null)
+            return true;
+
+        player.SendClientMessage(_options.PermissionDeniedMessageColor, _options.PermissionDeniedMessage);
         return true;
     }
 
