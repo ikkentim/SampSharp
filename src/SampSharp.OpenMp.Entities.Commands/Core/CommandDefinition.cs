@@ -88,4 +88,16 @@ public class CommandDefinition
 
     /// <summary>Custom metadata tags attached to this overload.</summary>
     public IReadOnlyDictionary<string, string> Tags => _tags;
+
+    /// <summary>
+    /// Gets the value of the specified command tag, or <see langword="null"/>
+    /// if the tag is not present.
+    /// </summary>
+    public string? GetTag(string key)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(key);
+        return _tags.TryGetValue(key, out var value)
+            ? value
+            : null;
+    }
 }
