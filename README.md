@@ -22,6 +22,13 @@ Examples
 --------
 Example gamemodes and sample projects are available at [https://github.com/sampsharp/samples](https://github.com/sampsharp/samples)
 
+Projects
+--------
+Real projects built with SampSharp:
+
+- [Capture the Flag](https://github.com/DevD4v3/Capture-The-Flag)
+- [Open Roleplay](https://github.com/OpenRoleplay/OpenRP.Framework)
+
 Building for Developers
 -----------------------
 
