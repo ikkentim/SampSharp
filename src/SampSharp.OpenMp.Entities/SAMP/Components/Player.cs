@@ -510,7 +510,7 @@ public class Player : WorldEntity
     {
         get
         {
-            var stats = Resource.GetNetworkData().Value.Network.GetStatistics();
+            var stats = Resource.GetNetworkData().Value.Network.GetStatistics(Resource);
             return TimeSpan.FromMilliseconds(stats.ConnectionElapsedTime);
         }
     }
@@ -522,7 +522,7 @@ public class Player : WorldEntity
     {
         get
         {
-            var stats = Resource.GetNetworkData().Value.Network.GetStatistics();
+            var stats = Resource.GetNetworkData().Value.Network.GetStatistics(Resource);
             return (int)stats.MessagesReceived;
         }
     }
@@ -534,7 +534,7 @@ public class Player : WorldEntity
     {
         get
         {
-            var stats = Resource.GetNetworkData().Value.Network.GetStatistics();
+            var stats = Resource.GetNetworkData().Value.Network.GetStatistics(Resource);
             return (int)stats.MessagesReceivedPerSecond;
         }
     }
@@ -546,7 +546,7 @@ public class Player : WorldEntity
     {
         get
         {
-            var stats = Resource.GetNetworkData().Value.Network.GetStatistics();
+            var stats = Resource.GetNetworkData().Value.Network.GetStatistics(Resource);
             return (int)stats.MessagesSent;
         }
     }
@@ -558,7 +558,7 @@ public class Player : WorldEntity
     {
         get
         {
-            var stats = Resource.GetNetworkData().Value.Network.GetStatistics();
+            var stats = Resource.GetNetworkData().Value.Network.GetStatistics(Resource);
             return (int)stats.BytesReceived;
         }
     }
@@ -570,7 +570,7 @@ public class Player : WorldEntity
     {
         get
         {
-            var stats = Resource.GetNetworkData().Value.Network.GetStatistics();
+            var stats = Resource.GetNetworkData().Value.Network.GetStatistics(Resource);
             return (int)stats.TotalBytesSent;
         }
     }
@@ -582,7 +582,7 @@ public class Player : WorldEntity
     {
         get
         {
-            var stats = Resource.GetNetworkData().Value.Network.GetStatistics();
+            var stats = Resource.GetNetworkData().Value.Network.GetStatistics(Resource);
             return (ConnectionStatus)stats.ConnectMode;
         }
     }
@@ -805,7 +805,7 @@ public class Player : WorldEntity
     /// <returns>A <see cref="NetworkStats" /> object containing the player's network statistics.</returns>
     public NetworkStats GetNetworkStats()
     {
-        return new NetworkStats(Resource.GetNetworkData().Value.Network.GetStatistics());
+        return new NetworkStats(Resource.GetNetworkData().Value.Network.GetStatistics(Resource));
     }
 
     /// <summary>(Re)Spawns a player.</summary>
