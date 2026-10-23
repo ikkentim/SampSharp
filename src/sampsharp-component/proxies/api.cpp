@@ -250,11 +250,14 @@ PROXY_EVENT_HANDLER_EVENT(void, onPlayerExitedMenu, IPlayer&)
 PROXY_EVENT_HANDLER_END(MenuEventHandler, onPlayerSelectedMenuRow, onPlayerExitedMenu)
 
 // include/Server/Components/NPCs
+// The vectors taken by const reference are proxied by value, as declared on the managed side: by value, a Vector3
+// is passed by hidden pointer on Windows x64 but in SSE registers on Linux x64 (System V), where a reference
+// parameter reads a wrong address (crash in NPC::setPosition).
 PROXY(INPC, IPlayer*, getPlayer);
 PROXY(INPC, Vector3, getPosition);
-PROXY(INPC, void, setPosition, const Vector3&, bool);
+PROXY(INPC, void, setPosition, Vector3, bool);
 PROXY(INPC, GTAQuat, getRotation);
-PROXY(INPC, void, setRotation, const GTAQuat&, bool);
+PROXY(INPC, void, setRotation, GTAQuat, bool);
 PROXY(INPC, int, getVirtualWorld);
 PROXY(INPC, void, setVirtualWorld, int);
 PROXY(INPC, unsigned, getInterior);
@@ -301,10 +304,10 @@ PROXY(INPC, PlayerWeaponState, getWeaponState);
 PROXY(INPC, void, setWeaponState, PlayerWeaponState);
 PROXY(INPC, void, setAmmoInClip, int);
 PROXY(INPC, int, getAmmoInClip);
-PROXY(INPC, void, shoot, int, PlayerBulletHitType, uint8_t, const Vector3&, const Vector3&, bool, EntityCheckType);
+PROXY(INPC, void, shoot, int, PlayerBulletHitType, uint8_t, Vector3, Vector3, bool, EntityCheckType);
 PROXY(INPC, bool, isShooting);
-PROXY(INPC, void, aimAt, const Vector3&, bool, int, bool, const Vector3&, EntityCheckType);
-PROXY(INPC, void, aimAtPlayer, IPlayer&, bool, int, bool, const Vector3&, const Vector3&, EntityCheckType);
+PROXY(INPC, void, aimAt, Vector3, bool, int, bool, Vector3, EntityCheckType);
+PROXY(INPC, void, aimAtPlayer, IPlayer&, bool, int, bool, Vector3, Vector3, EntityCheckType);
 PROXY(INPC, void, stopAim);
 PROXY(INPC, bool, isAiming);
 PROXY(INPC, bool, isAimingAtPlayer, IPlayer&);
@@ -378,12 +381,12 @@ PROXY(INPCComponent, int, createPath);
 PROXY(INPCComponent, bool, destroyPath, int);
 PROXY(INPCComponent, void, destroyAllPaths);
 PROXY(INPCComponent, size_t, getPathCount);
-PROXY(INPCComponent, bool, addPointToPath, int, const Vector3&, float);
+PROXY(INPCComponent, bool, addPointToPath, int, Vector3, float);
 PROXY(INPCComponent, bool, removePointFromPath, int, size_t);
 PROXY(INPCComponent, bool, clearPath, int);
 PROXY(INPCComponent, size_t, getPathPointCount, int);
 PROXY(INPCComponent, bool, getPathPoint, int, size_t, Vector3&, float&);
-PROXY(INPCComponent, bool, hasPathPointInRange, int, const Vector3&, float);
+PROXY(INPCComponent, bool, hasPathPointInRange, int, Vector3, float);
 PROXY(INPCComponent, bool, isValidPath, int);
 PROXY(INPCComponent, int, loadRecord, StringView);
 PROXY(INPCComponent, bool, unloadRecord, int);
